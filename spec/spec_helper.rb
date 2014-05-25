@@ -20,6 +20,9 @@ require 'fakeweb'
 
 require 'versioneye-core'
 
+require 'versioneye/domain_factories/product_factory'
+require 'versioneye/domain_factories/user_factory'
+
 Mongoid.load!("config/mongoid.yml", :test)
 Mongoid.logger.level = Logger::ERROR
 Moped.logger.level   = Logger::ERROR

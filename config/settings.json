@@ -47,7 +47,7 @@
     "bitbucket_username": "versioneye_test",
     "cocoapods_spec_git": "https://github.com/CocoaPods/Specs.git",
     "cocoapods_spec_url": "https://github.com/CocoaPods/Specs",
-    "cocoapods_spec": "/home/versioneye/cocoapods/cocoapods-specs",
+    "cocoapods_spec": "~/cocoapods/cocoapods-specs",
     "elasticsearch_product_index": "/product_test",
     "elasticsearch_url": "localhost:9200",
     "elasticsearch_user_index": "/user_test",
