@@ -6,7 +6,6 @@ module Versioneye
     require 'versioneye/crawlers/cocoapods_podspec_parser'
     require 'versioneye/crawlers/composer_utils'
     require 'versioneye/crawlers/crawler_utils'
-    require 'versioneye/crawlers/git_crawler'
     require 'versioneye/crawlers/github_crawler'
     require 'versioneye/crawlers/github_version_crawler'
     require 'versioneye/crawlers/npm_crawler'

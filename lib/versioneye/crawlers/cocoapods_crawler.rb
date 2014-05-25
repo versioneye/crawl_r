@@ -6,22 +6,21 @@ class CocoapodsCrawler < GitCrawler
     ActiveSupport::BufferedLogger.new('log/cocoapods.log')
   end
 
+  def run cmd_string
+    logger.info "Running: $ #{cmd_string}"
+    `#{cmd_string}`
+  end
+
   def self.crawl
     self.new.crawl
   end
 
-  def initialize
-    super Settings.instance.cocoapods_spec_git, Settings.instance.cocoapods_spec
-  end
-
   def crawl
-    logger.info 'crawl.start'
-    p "crawl.start"
-    setup
+    git_url = Settings.instance.cocoapods_spec_git
+    dir = Settings.instance.cocoapods_spec
 
-    logger.info 'crawl.update'
-    p "crawl.update"
-    update
+    run "git clone #{git_url} #{dir}"
+    run "(cd #{dir} && git pull)"
 
     i = 0
     all_spec_files do |filepath|
