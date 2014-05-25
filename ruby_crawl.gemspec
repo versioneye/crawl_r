@@ -36,7 +36,6 @@ Gem::Specification.new do |s|
     "lib/versioneye/crawlers/cocoapods_podspec_parser.rb",
     "lib/versioneye/crawlers/composer_utils.rb",
     "lib/versioneye/crawlers/crawler_utils.rb",
-    "lib/versioneye/crawlers/git_crawler.rb",
     "lib/versioneye/crawlers/github_crawler.rb",
     "lib/versioneye/crawlers/github_version_crawler.rb",
     "lib/versioneye/crawlers/npm_crawler.rb",
