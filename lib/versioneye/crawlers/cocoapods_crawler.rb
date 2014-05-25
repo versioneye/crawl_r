@@ -1,6 +1,4 @@
-require 'git_crawler'
-
-class CocoapodsCrawler < GitCrawler
+class CocoapodsCrawler < Versioneye::Crawl
 
   def logger
     ActiveSupport::BufferedLogger.new('log/cocoapods.log')
