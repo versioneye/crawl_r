@@ -1,0 +1,581 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.github.com/rate_limit
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 3.1.0
+      Authorization:
+      - token 8db49bc64f46ec9d73a4570903a24bf997b32a7e
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Sun, 25 May 2014 14:13:24 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '5000'
+      X-Ratelimit-Reset:
+      - '1401030804'
+      Cache-Control:
+      - no-cache
+      X-Oauth-Scopes:
+      - gist, repo, user
+      X-Accepted-Oauth-Scopes:
+      - repo
+      X-Github-Media-Type:
+      - github.v3; format=json
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      Content-Security-Policy:
+      - default-src 'none'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Github-Request-Id:
+      - 2E05133D:3D68:3BEF89A:5381FA83
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      Vary:
+      - Accept-Encoding
+      X-Served-By:
+      - c046d59f93ede9ab52d5ac29f1ed70f7
+    body:
+      encoding: UTF-8
+      string: '{"resources":{"core":{"limit":5000,"remaining":5000,"reset":1401030804},"search":{"limit":30,"remaining":30,"reset":1401027264}},"rate":{"limit":5000,"remaining":5000,"reset":1401030804}}'
+    http_version: 
+  recorded_at: Sun, 25 May 2014 14:13:24 GMT
+- request:
+    method: get
+    uri: https://api.github.com/rate_limit
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 3.1.0
+      Authorization:
+      - token 8db49bc64f46ec9d73a4570903a24bf997b32a7e
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Sun, 25 May 2014 14:13:24 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '5000'
+      X-Ratelimit-Reset:
+      - '1401030804'
+      Cache-Control:
+      - no-cache
+      X-Oauth-Scopes:
+      - gist, repo, user
+      X-Accepted-Oauth-Scopes:
+      - repo
+      X-Github-Media-Type:
+      - github.v3; format=json
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      Content-Security-Policy:
+      - default-src 'none'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Github-Request-Id:
+      - 2E05133D:3D67:2E0B6D6:5381FA84
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      Vary:
+      - Accept-Encoding
+      X-Served-By:
+      - 88d924ed861736d2749ce1a55766cb53
+    body:
+      encoding: UTF-8
+      string: '{"resources":{"core":{"limit":5000,"remaining":5000,"reset":1401030804},"search":{"limit":30,"remaining":30,"reset":1401027264}},"rate":{"limit":5000,"remaining":5000,"reset":1401030804}}'
+    http_version: 
+  recorded_at: Sun, 25 May 2014 14:13:24 GMT
+- request:
+    method: get
+    uri: https://api.github.com/rate_limit
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 3.1.0
+      Authorization:
+      - token 8db49bc64f46ec9d73a4570903a24bf997b32a7e
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Sun, 25 May 2014 14:13:26 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '5000'
+      X-Ratelimit-Reset:
+      - '1401030806'
+      Cache-Control:
+      - no-cache
+      X-Oauth-Scopes:
+      - gist, repo, user
+      X-Accepted-Oauth-Scopes:
+      - repo
+      X-Github-Media-Type:
+      - github.v3; format=json
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      Content-Security-Policy:
+      - default-src 'none'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Github-Request-Id:
+      - 2E05133D:3D66:1FDE397:5381FA85
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      Vary:
+      - Accept-Encoding
+      X-Served-By:
+      - c436b2b44345c72ff906059f604991e7
+    body:
+      encoding: UTF-8
+      string: '{"resources":{"core":{"limit":5000,"remaining":5000,"reset":1401030806},"search":{"limit":30,"remaining":30,"reset":1401027266}},"rate":{"limit":5000,"remaining":5000,"reset":1401030806}}'
+    http_version: 
+  recorded_at: Sun, 25 May 2014 14:13:26 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/versioneye/jquery
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Chrome/28(www.versioneye.com, contact@versioneye.com)
+      Connection:
+      - Keep-Alive
+      - keep-alive
+      Authorization:
+      - token 8db49bc64f46ec9d73a4570903a24bf997b32a7e
+      Keep-Alive:
+      - 30
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Sun, 25 May 2014 14:13:27 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4999'
+      X-Ratelimit-Reset:
+      - '1401030807'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Last-Modified:
+      - Sat, 25 Jan 2014 16:44:25 GMT
+      Etag:
+      - '"7b7121f674a281086c9303f7b7c02928"'
+      X-Oauth-Scopes:
+      - gist, repo, user
+      X-Accepted-Oauth-Scopes:
+      - repo
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      X-Github-Media-Type:
+      - github.v3; format=json
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      Content-Security-Policy:
+      - default-src 'none'
+      Content-Length:
+      - '14354'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Github-Request-Id:
+      - 2E05133D:3D67:2E0BA75:5381FA87
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Served-By:
+      - 3061975e1f37121b3751604ad153c687
+    body:
+      encoding: UTF-8
+      string: '{"id":16234889,"name":"jquery","full_name":"versioneye/jquery","owner":{"login":"versioneye","id":3974102,"avatar_url":"https://avatars.githubusercontent.com/u/3974102?","gravatar_id":"879225ddb1056345f41cdb5575ed13f7","url":"https://api.github.com/users/versioneye","html_url":"https://github.com/versioneye","followers_url":"https://api.github.com/users/versioneye/followers","following_url":"https://api.github.com/users/versioneye/following{/other_user}","gists_url":"https://api.github.com/users/versioneye/gists{/gist_id}","starred_url":"https://api.github.com/users/versioneye/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/versioneye/subscriptions","organizations_url":"https://api.github.com/users/versioneye/orgs","repos_url":"https://api.github.com/users/versioneye/repos","events_url":"https://api.github.com/users/versioneye/events{/privacy}","received_events_url":"https://api.github.com/users/versioneye/received_events","type":"Organization","site_admin":false},"private":false,"html_url":"https://github.com/versioneye/jquery","description":"jQuery
+        JavaScript Library","fork":true,"url":"https://api.github.com/repos/versioneye/jquery","forks_url":"https://api.github.com/repos/versioneye/jquery/forks","keys_url":"https://api.github.com/repos/versioneye/jquery/keys{/key_id}","collaborators_url":"https://api.github.com/repos/versioneye/jquery/collaborators{/collaborator}","teams_url":"https://api.github.com/repos/versioneye/jquery/teams","hooks_url":"https://api.github.com/repos/versioneye/jquery/hooks","issue_events_url":"https://api.github.com/repos/versioneye/jquery/issues/events{/number}","events_url":"https://api.github.com/repos/versioneye/jquery/events","assignees_url":"https://api.github.com/repos/versioneye/jquery/assignees{/user}","branches_url":"https://api.github.com/repos/versioneye/jquery/branches{/branch}","tags_url":"https://api.github.com/repos/versioneye/jquery/tags","blobs_url":"https://api.github.com/repos/versioneye/jquery/git/blobs{/sha}","git_tags_url":"https://api.github.com/repos/versioneye/jquery/git/tags{/sha}","git_refs_url":"https://api.github.com/repos/versioneye/jquery/git/refs{/sha}","trees_url":"https://api.github.com/repos/versioneye/jquery/git/trees{/sha}","statuses_url":"https://api.github.com/repos/versioneye/jquery/statuses/{sha}","languages_url":"https://api.github.com/repos/versioneye/jquery/languages","stargazers_url":"https://api.github.com/repos/versioneye/jquery/stargazers","contributors_url":"https://api.github.com/repos/versioneye/jquery/contributors","subscribers_url":"https://api.github.com/repos/versioneye/jquery/subscribers","subscription_url":"https://api.github.com/repos/versioneye/jquery/subscription","commits_url":"https://api.github.com/repos/versioneye/jquery/commits{/sha}","git_commits_url":"https://api.github.com/repos/versioneye/jquery/git/commits{/sha}","comments_url":"https://api.github.com/repos/versioneye/jquery/comments{/number}","issue_comment_url":"https://api.github.com/repos/versioneye/jquery/issues/comments/{number}","contents_url":"https://api.github.com/repos/versioneye/jquery/contents/{+path}","compare_url":"https://api.github.com/repos/versioneye/jquery/compare/{base}...{head}","merges_url":"https://api.github.com/repos/versioneye/jquery/merges","archive_url":"https://api.github.com/repos/versioneye/jquery/{archive_format}{/ref}","downloads_url":"https://api.github.com/repos/versioneye/jquery/downloads","issues_url":"https://api.github.com/repos/versioneye/jquery/issues{/number}","pulls_url":"https://api.github.com/repos/versioneye/jquery/pulls{/number}","milestones_url":"https://api.github.com/repos/versioneye/jquery/milestones{/number}","notifications_url":"https://api.github.com/repos/versioneye/jquery/notifications{?since,all,participating}","labels_url":"https://api.github.com/repos/versioneye/jquery/labels{/name}","releases_url":"https://api.github.com/repos/versioneye/jquery/releases{/id}","created_at":"2014-01-25T16:44:16Z","updated_at":"2014-01-25T16:44:25Z","pushed_at":"2014-01-25T07:22:46Z","git_url":"git://github.com/versioneye/jquery.git","ssh_url":"git@github.com:versioneye/jquery.git","clone_url":"https://github.com/versioneye/jquery.git","svn_url":"https://github.com/versioneye/jquery","homepage":"http://jquery.com/","size":18528,"stargazers_count":0,"watchers_count":0,"language":"JavaScript","has_issues":false,"has_downloads":false,"has_wiki":true,"forks_count":0,"mirror_url":null,"open_issues_count":0,"forks":0,"open_issues":0,"watchers":0,"default_branch":"master","permissions":{"admin":false,"push":false,"pull":true},"organization":{"login":"versioneye","id":3974102,"avatar_url":"https://avatars.githubusercontent.com/u/3974102?","gravatar_id":"879225ddb1056345f41cdb5575ed13f7","url":"https://api.github.com/users/versioneye","html_url":"https://github.com/versioneye","followers_url":"https://api.github.com/users/versioneye/followers","following_url":"https://api.github.com/users/versioneye/following{/other_user}","gists_url":"https://api.github.com/users/versioneye/gists{/gist_id}","starred_url":"https://api.github.com/users/versioneye/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/versioneye/subscriptions","organizations_url":"https://api.github.com/users/versioneye/orgs","repos_url":"https://api.github.com/users/versioneye/repos","events_url":"https://api.github.com/users/versioneye/events{/privacy}","received_events_url":"https://api.github.com/users/versioneye/received_events","type":"Organization","site_admin":false},"parent":{"id":167174,"name":"jquery","full_name":"jquery/jquery","owner":{"login":"jquery","id":70142,"avatar_url":"https://avatars.githubusercontent.com/u/70142?","gravatar_id":"6906f317a4733f4379b06c32229ef02f","url":"https://api.github.com/users/jquery","html_url":"https://github.com/jquery","followers_url":"https://api.github.com/users/jquery/followers","following_url":"https://api.github.com/users/jquery/following{/other_user}","gists_url":"https://api.github.com/users/jquery/gists{/gist_id}","starred_url":"https://api.github.com/users/jquery/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/jquery/subscriptions","organizations_url":"https://api.github.com/users/jquery/orgs","repos_url":"https://api.github.com/users/jquery/repos","events_url":"https://api.github.com/users/jquery/events{/privacy}","received_events_url":"https://api.github.com/users/jquery/received_events","type":"Organization","site_admin":false},"private":false,"html_url":"https://github.com/jquery/jquery","description":"jQuery
+        JavaScript Library","fork":false,"url":"https://api.github.com/repos/jquery/jquery","forks_url":"https://api.github.com/repos/jquery/jquery/forks","keys_url":"https://api.github.com/repos/jquery/jquery/keys{/key_id}","collaborators_url":"https://api.github.com/repos/jquery/jquery/collaborators{/collaborator}","teams_url":"https://api.github.com/repos/jquery/jquery/teams","hooks_url":"https://api.github.com/repos/jquery/jquery/hooks","issue_events_url":"https://api.github.com/repos/jquery/jquery/issues/events{/number}","events_url":"https://api.github.com/repos/jquery/jquery/events","assignees_url":"https://api.github.com/repos/jquery/jquery/assignees{/user}","branches_url":"https://api.github.com/repos/jquery/jquery/branches{/branch}","tags_url":"https://api.github.com/repos/jquery/jquery/tags","blobs_url":"https://api.github.com/repos/jquery/jquery/git/blobs{/sha}","git_tags_url":"https://api.github.com/repos/jquery/jquery/git/tags{/sha}","git_refs_url":"https://api.github.com/repos/jquery/jquery/git/refs{/sha}","trees_url":"https://api.github.com/repos/jquery/jquery/git/trees{/sha}","statuses_url":"https://api.github.com/repos/jquery/jquery/statuses/{sha}","languages_url":"https://api.github.com/repos/jquery/jquery/languages","stargazers_url":"https://api.github.com/repos/jquery/jquery/stargazers","contributors_url":"https://api.github.com/repos/jquery/jquery/contributors","subscribers_url":"https://api.github.com/repos/jquery/jquery/subscribers","subscription_url":"https://api.github.com/repos/jquery/jquery/subscription","commits_url":"https://api.github.com/repos/jquery/jquery/commits{/sha}","git_commits_url":"https://api.github.com/repos/jquery/jquery/git/commits{/sha}","comments_url":"https://api.github.com/repos/jquery/jquery/comments{/number}","issue_comment_url":"https://api.github.com/repos/jquery/jquery/issues/comments/{number}","contents_url":"https://api.github.com/repos/jquery/jquery/contents/{+path}","compare_url":"https://api.github.com/repos/jquery/jquery/compare/{base}...{head}","merges_url":"https://api.github.com/repos/jquery/jquery/merges","archive_url":"https://api.github.com/repos/jquery/jquery/{archive_format}{/ref}","downloads_url":"https://api.github.com/repos/jquery/jquery/downloads","issues_url":"https://api.github.com/repos/jquery/jquery/issues{/number}","pulls_url":"https://api.github.com/repos/jquery/jquery/pulls{/number}","milestones_url":"https://api.github.com/repos/jquery/jquery/milestones{/number}","notifications_url":"https://api.github.com/repos/jquery/jquery/notifications{?since,all,participating}","labels_url":"https://api.github.com/repos/jquery/jquery/labels{/name}","releases_url":"https://api.github.com/repos/jquery/jquery/releases{/id}","created_at":"2009-04-03T15:20:14Z","updated_at":"2014-05-25T13:25:19Z","pushed_at":"2014-05-23T17:53:46Z","git_url":"git://github.com/jquery/jquery.git","ssh_url":"git@github.com:jquery/jquery.git","clone_url":"https://github.com/jquery/jquery.git","svn_url":"https://github.com/jquery/jquery","homepage":"http://jquery.com/","size":35981,"stargazers_count":30715,"watchers_count":30715,"language":"JavaScript","has_issues":false,"has_downloads":false,"has_wiki":true,"forks_count":6894,"mirror_url":null,"open_issues_count":20,"forks":6894,"open_issues":20,"watchers":30715,"default_branch":"master"},"source":{"id":167174,"name":"jquery","full_name":"jquery/jquery","owner":{"login":"jquery","id":70142,"avatar_url":"https://avatars.githubusercontent.com/u/70142?","gravatar_id":"6906f317a4733f4379b06c32229ef02f","url":"https://api.github.com/users/jquery","html_url":"https://github.com/jquery","followers_url":"https://api.github.com/users/jquery/followers","following_url":"https://api.github.com/users/jquery/following{/other_user}","gists_url":"https://api.github.com/users/jquery/gists{/gist_id}","starred_url":"https://api.github.com/users/jquery/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/jquery/subscriptions","organizations_url":"https://api.github.com/users/jquery/orgs","repos_url":"https://api.github.com/users/jquery/repos","events_url":"https://api.github.com/users/jquery/events{/privacy}","received_events_url":"https://api.github.com/users/jquery/received_events","type":"Organization","site_admin":false},"private":false,"html_url":"https://github.com/jquery/jquery","description":"jQuery
+        JavaScript Library","fork":false,"url":"https://api.github.com/repos/jquery/jquery","forks_url":"https://api.github.com/repos/jquery/jquery/forks","keys_url":"https://api.github.com/repos/jquery/jquery/keys{/key_id}","collaborators_url":"https://api.github.com/repos/jquery/jquery/collaborators{/collaborator}","teams_url":"https://api.github.com/repos/jquery/jquery/teams","hooks_url":"https://api.github.com/repos/jquery/jquery/hooks","issue_events_url":"https://api.github.com/repos/jquery/jquery/issues/events{/number}","events_url":"https://api.github.com/repos/jquery/jquery/events","assignees_url":"https://api.github.com/repos/jquery/jquery/assignees{/user}","branches_url":"https://api.github.com/repos/jquery/jquery/branches{/branch}","tags_url":"https://api.github.com/repos/jquery/jquery/tags","blobs_url":"https://api.github.com/repos/jquery/jquery/git/blobs{/sha}","git_tags_url":"https://api.github.com/repos/jquery/jquery/git/tags{/sha}","git_refs_url":"https://api.github.com/repos/jquery/jquery/git/refs{/sha}","trees_url":"https://api.github.com/repos/jquery/jquery/git/trees{/sha}","statuses_url":"https://api.github.com/repos/jquery/jquery/statuses/{sha}","languages_url":"https://api.github.com/repos/jquery/jquery/languages","stargazers_url":"https://api.github.com/repos/jquery/jquery/stargazers","contributors_url":"https://api.github.com/repos/jquery/jquery/contributors","subscribers_url":"https://api.github.com/repos/jquery/jquery/subscribers","subscription_url":"https://api.github.com/repos/jquery/jquery/subscription","commits_url":"https://api.github.com/repos/jquery/jquery/commits{/sha}","git_commits_url":"https://api.github.com/repos/jquery/jquery/git/commits{/sha}","comments_url":"https://api.github.com/repos/jquery/jquery/comments{/number}","issue_comment_url":"https://api.github.com/repos/jquery/jquery/issues/comments/{number}","contents_url":"https://api.github.com/repos/jquery/jquery/contents/{+path}","compare_url":"https://api.github.com/repos/jquery/jquery/compare/{base}...{head}","merges_url":"https://api.github.com/repos/jquery/jquery/merges","archive_url":"https://api.github.com/repos/jquery/jquery/{archive_format}{/ref}","downloads_url":"https://api.github.com/repos/jquery/jquery/downloads","issues_url":"https://api.github.com/repos/jquery/jquery/issues{/number}","pulls_url":"https://api.github.com/repos/jquery/jquery/pulls{/number}","milestones_url":"https://api.github.com/repos/jquery/jquery/milestones{/number}","notifications_url":"https://api.github.com/repos/jquery/jquery/notifications{?since,all,participating}","labels_url":"https://api.github.com/repos/jquery/jquery/labels{/name}","releases_url":"https://api.github.com/repos/jquery/jquery/releases{/id}","created_at":"2009-04-03T15:20:14Z","updated_at":"2014-05-25T13:25:19Z","pushed_at":"2014-05-23T17:53:46Z","git_url":"git://github.com/jquery/jquery.git","ssh_url":"git@github.com:jquery/jquery.git","clone_url":"https://github.com/jquery/jquery.git","svn_url":"https://github.com/jquery/jquery","homepage":"http://jquery.com/","size":35981,"stargazers_count":30715,"watchers_count":30715,"language":"JavaScript","has_issues":false,"has_downloads":false,"has_wiki":true,"forks_count":6894,"mirror_url":null,"open_issues_count":20,"forks":6894,"open_issues":20,"watchers":30715,"default_branch":"master"},"network_count":6894,"subscribers_count":2}'
+    http_version: 
+  recorded_at: Sun, 25 May 2014 14:13:27 GMT
+- request:
+    method: get
+    uri: https://raw.github.com/versioneye/jquery/master/bower.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 301
+      message: Moved Permanently
+    headers:
+      Date:
+      - Sun, 25 May 2014 14:13:28 GMT
+      Server:
+      - Apache
+      Location:
+      - https://raw.githubusercontent.com/versioneye/jquery/master/bower.json
+      Content-Length:
+      - '0'
+      Accept-Ranges:
+      - bytes
+      Via:
+      - 1.1 varnish
+      Age:
+      - '0'
+      X-Served-By:
+      - cache-fra1221-FRA
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      Vary:
+      - Accept-Encoding
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Sun, 25 May 2014 14:13:28 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/versioneye/jquery/master/bower.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sun, 25 May 2014 14:13:28 GMT
+      Server:
+      - Apache
+      Content-Security-Policy:
+      - default-src 'none'
+      Access-Control-Allow-Origin:
+      - https://render.githubusercontent.com
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      X-Content-Type-Options:
+      - nosniff
+      Strict-Transport-Security:
+      - max-age=31536000
+      Etag:
+      - '"5572668baed18c5728e9e027eecefc5c4aef6525"'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Cache-Control:
+      - max-age=300
+      Content-Length:
+      - '423'
+      Accept-Ranges:
+      - bytes
+      Via:
+      - 1.1 varnish
+      X-Served-By:
+      - cache-fra1233-FRA
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      Vary:
+      - Authorization,Accept-Encoding
+      Expires:
+      - Sun, 25 May 2014 14:18:28 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "name": "jquery",
+          "version": "2.1.1pre",
+          "ignore": [
+            "**/.*",
+            "build",
+            "speed",
+            "test",
+            "*.md",
+            "AUTHORS.txt",
+            "Gruntfile.js",
+            "package.json",
+            "bower.json"
+          ],
+          "dependencies": {
+            "sizzle": "1.10.16"
+          },
+          "devDependencies": {
+            "requirejs": "~2.1.8",
+            "qunit": "~1.12.0",
+            "sinon": "~1.7.3"
+          },
+          "keywords": [
+            "jquery",
+            "javascript",
+            "library"
+          ]
+        }
+    http_version: 
+  recorded_at: Sun, 25 May 2014 14:13:28 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/versioneye/jquery/tags
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Chrome/28(www.versioneye.com, contact@versioneye.com)
+      Connection:
+      - Keep-Alive
+      - keep-alive
+      Authorization:
+      - token 8db49bc64f46ec9d73a4570903a24bf997b32a7e
+      Keep-Alive:
+      - 30
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Sun, 25 May 2014 14:13:29 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4998'
+      X-Ratelimit-Reset:
+      - '1401030807'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Last-Modified:
+      - Sat, 25 Jan 2014 16:44:25 GMT
+      Etag:
+      - '"7b7121f674a281086c9303f7b7c02928"'
+      X-Oauth-Scopes:
+      - gist, repo, user
+      X-Accepted-Oauth-Scopes:
+      - ''
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Link:
+      - <https://api.github.com/repositories/16234889/tags?page=2>; rel="next", <https://api.github.com/repositories/16234889/tags?page=4>;
+        rel="last"
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      Content-Security-Policy:
+      - default-src 'none'
+      Content-Length:
+      - '10282'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Github-Request-Id:
+      - 2E05133D:3D63:303542:5381FA88
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Served-By:
+      - 88d924ed861736d2749ce1a55766cb53
+    body:
+      encoding: UTF-8
+      string: '[{"name":"2.1.0-rc1","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/2.1.0-rc1","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/2.1.0-rc1","commit":{"sha":"dea4e5fc6c47a27865de65ec6feef3429dbf13b9","url":"https://api.github.com/repos/versioneye/jquery/commits/dea4e5fc6c47a27865de65ec6feef3429dbf13b9"}},{"name":"2.1.0-beta3","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/2.1.0-beta3","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/2.1.0-beta3","commit":{"sha":"dfb03b41baa583ec79bd28c110278ce0268b4704","url":"https://api.github.com/repos/versioneye/jquery/commits/dfb03b41baa583ec79bd28c110278ce0268b4704"}},{"name":"2.1.0-beta2","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/2.1.0-beta2","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/2.1.0-beta2","commit":{"sha":"adf904ccfaf3b34134ac2bbcec0db83e43d43be8","url":"https://api.github.com/repos/versioneye/jquery/commits/adf904ccfaf3b34134ac2bbcec0db83e43d43be8"}},{"name":"2.1.0-beta1","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/2.1.0-beta1","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/2.1.0-beta1","commit":{"sha":"1185427c4c35ea57e3634ca735422e23d2e55751","url":"https://api.github.com/repos/versioneye/jquery/commits/1185427c4c35ea57e3634ca735422e23d2e55751"}},{"name":"2.1.0","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/2.1.0","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/2.1.0","commit":{"sha":"cac43f3ef791b7e68c1917a734fb92e04450c111","url":"https://api.github.com/repos/versioneye/jquery/commits/cac43f3ef791b7e68c1917a734fb92e04450c111"}},{"name":"2.0.3","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/2.0.3","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/2.0.3","commit":{"sha":"f576d00d9fe48b5e6f9c1c8d3287f2b893937dbb","url":"https://api.github.com/repos/versioneye/jquery/commits/f576d00d9fe48b5e6f9c1c8d3287f2b893937dbb"}},{"name":"2.0.2","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/2.0.2","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/2.0.2","commit":{"sha":"b21c88ff0c293db0711d378411901259052ca2b4","url":"https://api.github.com/repos/versioneye/jquery/commits/b21c88ff0c293db0711d378411901259052ca2b4"}},{"name":"2.0.1","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/2.0.1","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/2.0.1","commit":{"sha":"6190370ab7406b526c29cda0a4c8301b6a259660","url":"https://api.github.com/repos/versioneye/jquery/commits/6190370ab7406b526c29cda0a4c8301b6a259660"}},{"name":"2.0.0-beta3","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/2.0.0-beta3","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/2.0.0-beta3","commit":{"sha":"baa50b5e1709dc66354c647e14ac819338cdf5b9","url":"https://api.github.com/repos/versioneye/jquery/commits/baa50b5e1709dc66354c647e14ac819338cdf5b9"}},{"name":"2.0.0b2","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/2.0.0b2","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/2.0.0b2","commit":{"sha":"4cbc235c0d6c9ef5e11c4fc243275e38e9044cb4","url":"https://api.github.com/repos/versioneye/jquery/commits/4cbc235c0d6c9ef5e11c4fc243275e38e9044cb4"}},{"name":"2.0.0b1","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/2.0.0b1","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/2.0.0b1","commit":{"sha":"2cc06af007ad2f85b52ee757296d235fcf93337a","url":"https://api.github.com/repos/versioneye/jquery/commits/2cc06af007ad2f85b52ee757296d235fcf93337a"}},{"name":"2.0.0","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/2.0.0","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/2.0.0","commit":{"sha":"6aaa8a113fd067b493fd365dae829472f9da351d","url":"https://api.github.com/repos/versioneye/jquery/commits/6aaa8a113fd067b493fd365dae829472f9da351d"}},{"name":"1.11.0-rc1","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/1.11.0-rc1","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/1.11.0-rc1","commit":{"sha":"5c62f3cd019218e1b401ce2cf4cad644772e387f","url":"https://api.github.com/repos/versioneye/jquery/commits/5c62f3cd019218e1b401ce2cf4cad644772e387f"}},{"name":"1.11.0-beta3","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/1.11.0-beta3","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/1.11.0-beta3","commit":{"sha":"5bb568cd61cb127ef4ebcc63bb48a37cd5af562d","url":"https://api.github.com/repos/versioneye/jquery/commits/5bb568cd61cb127ef4ebcc63bb48a37cd5af562d"}},{"name":"1.11.0-beta2","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/1.11.0-beta2","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/1.11.0-beta2","commit":{"sha":"02cb5be0bb5a49cda3a187d169d89d91874bbf1e","url":"https://api.github.com/repos/versioneye/jquery/commits/02cb5be0bb5a49cda3a187d169d89d91874bbf1e"}},{"name":"1.11.0-beta1","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/1.11.0-beta1","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/1.11.0-beta1","commit":{"sha":"b44595824c3f23441eab2f34551587c5ae6fd31c","url":"https://api.github.com/repos/versioneye/jquery/commits/b44595824c3f23441eab2f34551587c5ae6fd31c"}},{"name":"1.11.0","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/1.11.0","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/1.11.0","commit":{"sha":"c4fb2008f28dc7c0030f545195455023674301de","url":"https://api.github.com/repos/versioneye/jquery/commits/c4fb2008f28dc7c0030f545195455023674301de"}},{"name":"1.10.2","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/1.10.2","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/1.10.2","commit":{"sha":"3b0b953d98bd13efd8c6b37d5318c5bf1e74931c","url":"https://api.github.com/repos/versioneye/jquery/commits/3b0b953d98bd13efd8c6b37d5318c5bf1e74931c"}},{"name":"1.10.1","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/1.10.1","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/1.10.1","commit":{"sha":"3a67de7635fc2faa09c0943018500394d6acd550","url":"https://api.github.com/repos/versioneye/jquery/commits/3a67de7635fc2faa09c0943018500394d6acd550"}},{"name":"1.10.0-beta1","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/1.10.0-beta1","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/1.10.0-beta1","commit":{"sha":"3a8fcde250da0db237396e9ab97fb099eb68c624","url":"https://api.github.com/repos/versioneye/jquery/commits/3a8fcde250da0db237396e9ab97fb099eb68c624"}},{"name":"1.10.0","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/1.10.0","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/1.10.0","commit":{"sha":"61bc65ed043509db804def7b8ec15027a2bf661d","url":"https://api.github.com/repos/versioneye/jquery/commits/61bc65ed043509db804def7b8ec15027a2bf661d"}},{"name":"1.9.1","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/1.9.1","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/1.9.1","commit":{"sha":"28d946384799abcd7608c3beda898a0a11ac88d7","url":"https://api.github.com/repos/versioneye/jquery/commits/28d946384799abcd7608c3beda898a0a11ac88d7"}},{"name":"1.9.0rc1","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/1.9.0rc1","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/1.9.0rc1","commit":{"sha":"11eb1c4e4844650fde794e08d149a09a359e2cda","url":"https://api.github.com/repos/versioneye/jquery/commits/11eb1c4e4844650fde794e08d149a09a359e2cda"}},{"name":"1.9.0b1","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/1.9.0b1","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/1.9.0b1","commit":{"sha":"d2262fbd9b26d9ac53b88a7f4eea246f7bac1776","url":"https://api.github.com/repos/versioneye/jquery/commits/d2262fbd9b26d9ac53b88a7f4eea246f7bac1776"}},{"name":"1.9.0","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/1.9.0","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/1.9.0","commit":{"sha":"8574d8bd709b7ed1211f60e575cfd97705f077de","url":"https://api.github.com/repos/versioneye/jquery/commits/8574d8bd709b7ed1211f60e575cfd97705f077de"}},{"name":"1.8rc1","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/1.8rc1","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/1.8rc1","commit":{"sha":"e02e61ca87e58beb8a05708b686bca74e54a07dd","url":"https://api.github.com/repos/versioneye/jquery/commits/e02e61ca87e58beb8a05708b686bca74e54a07dd"}},{"name":"1.8b2","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/1.8b2","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/1.8b2","commit":{"sha":"a7df439e24e9b087a540ef7c658e5fec65d538c8","url":"https://api.github.com/repos/versioneye/jquery/commits/a7df439e24e9b087a540ef7c658e5fec65d538c8"}},{"name":"1.8b1","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/1.8b1","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/1.8b1","commit":{"sha":"2236c55b9135dc9867218cc35b713bacdd0a8350","url":"https://api.github.com/repos/versioneye/jquery/commits/2236c55b9135dc9867218cc35b713bacdd0a8350"}},{"name":"1.8.3+1","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/1.8.3+1","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/1.8.3+1","commit":{"sha":"4b2e9799512135f817c9a54ed3e8f0e006a489c2","url":"https://api.github.com/repos/versioneye/jquery/commits/4b2e9799512135f817c9a54ed3e8f0e006a489c2"}},{"name":"1.8.3","zipball_url":"https://api.github.com/repos/versioneye/jquery/zipball/1.8.3","tarball_url":"https://api.github.com/repos/versioneye/jquery/tarball/1.8.3","commit":{"sha":"ab409d14bc6db42b4af3ba753be1b55fe8f897d8","url":"https://api.github.com/repos/versioneye/jquery/commits/ab409d14bc6db42b4af3ba753be1b55fe8f897d8"}}]'
+    http_version: 
+  recorded_at: Sun, 25 May 2014 14:13:29 GMT
+- request:
+    method: get
+    uri: https://api.github.com/rate_limit
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 3.1.0
+      Authorization:
+      - token 8db49bc64f46ec9d73a4570903a24bf997b32a7e
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Sun, 25 May 2014 14:13:29 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4998'
+      X-Ratelimit-Reset:
+      - '1401030807'
+      Cache-Control:
+      - no-cache
+      X-Oauth-Scopes:
+      - gist, repo, user
+      X-Accepted-Oauth-Scopes:
+      - repo
+      X-Github-Media-Type:
+      - github.v3; format=json
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      Content-Security-Policy:
+      - default-src 'none'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Github-Request-Id:
+      - 2E05133D:3D67:2E0BC9C:5381FA89
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      Vary:
+      - Accept-Encoding
+      X-Served-By:
+      - 971af40390ac4398fcdd45c8dab0fbe7
+    body:
+      encoding: UTF-8
+      string: '{"resources":{"core":{"limit":5000,"remaining":4998,"reset":1401030807},"search":{"limit":30,"remaining":30,"reset":1401027269}},"rate":{"limit":5000,"remaining":4998,"reset":1401030807}}'
+    http_version: 
+  recorded_at: Sun, 25 May 2014 14:13:29 GMT
+recorded_with: VCR 2.9.0
