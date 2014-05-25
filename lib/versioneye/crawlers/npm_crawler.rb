@@ -1,4 +1,4 @@
-class NpmCrawler
+class NpmCrawler < Versioneye::Crawl
 
 
   def self.logger

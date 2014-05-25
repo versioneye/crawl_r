@@ -1,4 +1,4 @@
-class PackagistCrawler
+class PackagistCrawler < Versioneye::Crawl
 
 
   def self.logger

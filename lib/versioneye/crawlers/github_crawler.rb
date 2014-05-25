@@ -1,4 +1,4 @@
-class GithubCrawler
+class GithubCrawler < Versioneye::Crawl
 
   include HTTParty
 

@@ -1,4 +1,4 @@
-class TikiCrawler
+class TikiCrawler < Versioneye::Crawl
 
 
   def self.logger

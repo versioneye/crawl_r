@@ -1,11 +1,11 @@
-class GitCrawler
+class GitCrawler < Versioneye::Crawl
 
   def initialize git_url, dir
     @git_url, @dir = git_url, dir
   end
 
   def run cmd_string
-    Rails.logger.info "Running: $ #{cmd_string}"
+    log.info "Running: $ #{cmd_string}"
     `#{cmd_string}`
   end
 

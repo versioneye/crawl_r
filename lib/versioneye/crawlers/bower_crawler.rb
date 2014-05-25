@@ -1,7 +1,7 @@
 # require 'crawler_task'
 # require 'github'
 
-class BowerCrawler
+class BowerCrawler < Versioneye::Crawl
 
   A_MINIMUM_RATE_LIMIT = 50
   A_MAX_RETRY = 12 # 12x10 ~> after that worker'll starve to death

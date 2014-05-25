@@ -4,6 +4,7 @@ require 'mongoid'
 require 'httparty'
 
 require 'settings'
+require 'versioneye/crawl'
 
 
 class RubyCrawl
