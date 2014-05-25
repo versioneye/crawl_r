@@ -2,6 +2,7 @@
 
 require 'rubygems'
 require 'bundler'
+
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -9,16 +10,16 @@ rescue Bundler::BundlerError => e
   $stderr.puts "Run `bundle install` to install missing gems"
   exit e.status_code
 end
-require 'rake'
 
+require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://guides.rubygems.org/specification-reference/ for more options
   gem.name = "ruby_crawl"
   gem.homepage = "http://github.com/reiz/ruby_crawl"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{VersionEye crawlers implemented in Ruby}
+  gem.description = %Q{VersionEye crawlers implemented in Ruby}
   gem.email = "robert.reiz.81@gmail.com"
   gem.authors = ["reiz"]
   # dependencies defined in Gemfile
