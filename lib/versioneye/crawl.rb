@@ -1,6 +1,8 @@
 module Versioneye
   class Crawl
 
+    require 'versioneye/model'
+
     require 'versioneye/crawlers/bower_crawler'
     require 'versioneye/crawlers/cocoapods_crawler'
     require 'versioneye/crawlers/cocoapods_podspec_parser'
