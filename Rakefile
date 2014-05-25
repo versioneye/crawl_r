@@ -57,7 +57,7 @@ Dir.glob('lib/*.rake').each { |r| import r }
 namespace :versioneye do
 
   require 'versioneye-core'
-  require 'ruby_crawl'
+  # require 'ruby_crawl'
 
   # ***** Crawler Tasks *****
 
