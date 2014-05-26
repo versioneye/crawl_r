@@ -1,8 +1,9 @@
 source "http://rubygems.org"
 
 gem 'log4r'              , '~> 1.1.0'
-# gem 'versioneye-core'    , :git => 'git@github.com:versioneye/versioneye-core.git', :tag => 'v1.4.3'
-gem 'versioneye-core'    , :path => "~/workspace/versioneye/versioneye-core"
+
+gem 'versioneye-core'    , :git => 'git@github.com:versioneye/versioneye-core.git', :tag => 'v1.4.3'
+# gem 'versioneye-core'    , :path => "~/workspace/versioneye/versioneye-core"
 
 group :development do
   gem "shoulda", ">= 0"

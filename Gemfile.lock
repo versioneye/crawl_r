@@ -1,5 +1,7 @@
-PATH
-  remote: ~/workspace/versioneye/versioneye-core
+GIT
+  remote: git@github.com:versioneye/versioneye-core.git
+  revision: 0471a74b78bf2d79f16090944692fd3447fdafa6
+  tag: v1.4.3
   specs:
     versioneye-core (1.4.3)
       actionmailer (~> 3.2.17)
