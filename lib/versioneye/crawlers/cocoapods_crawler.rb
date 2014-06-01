@@ -25,10 +25,17 @@ class CocoapodsCrawler < Versioneye::Crawl
     run "(cd #{dir} && git pull)"
 
     i = 0
+    logger.info "start reading podspecs"
     all_spec_files do |filepath|
       i += 1
       logger.info "Parse CocoaPods Spec ##{i}: #{filepath}"
-      p "Parse CocoaPods Spec ##{i}: #{filepath}"
+      parse_spec filepath
+    end
+
+    logger.info "start reading podspecs json"
+    all_spec_json_files do |filepath|
+      i += 1
+      logger.info "Parse CocoaPods Spec JSON ##{i}: #{filepath}"
       parse_spec filepath
     end
   rescue => e
@@ -52,6 +59,17 @@ class CocoapodsCrawler < Versioneye::Crawl
     logger.error e.backtrace.join('\n')
   end
 
+
+  # traverse directory, search for .podspec files
+  def all_spec_json_files(&block)
+    dir = Settings.instance.cocoapods_spec
+    Dir.glob "#{dir}/**/*.podspec.json" do |filepath|
+      block.call filepath
+    end
+  rescue => e
+    logger.error e.message
+    logger.error e.backtrace.join('\n')
+  end
 
   # traverse directory, search for .podspec files
   def all_spec_files(&block)

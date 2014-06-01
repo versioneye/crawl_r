@@ -37,7 +37,7 @@ class CocoapodsPodspecParser
 
     set_prod_key_and_version
 
-    @product = get_product
+    @product = find_or_create_product
     update_product
 
     @product
@@ -58,25 +58,24 @@ class CocoapodsPodspecParser
     @version  = @podspec.version.to_s
   end
 
-  def get_product
 
+  def find_or_create_product
     product = Product.find_by_lang_key(Product::A_LANGUAGE_OBJECTIVEC, prod_key)
+    return product if !product.nil?
 
-    unless product
-      product = Product.new
-      product.update_attributes({
-        :reindex       => true,
-        :prod_key      => prod_key,
-        :name          => name,
-        :name_downcase => prod_key,
-        :description   => description,
+    product = Product.new
+    product.update_attributes({
+      :reindex       => true,
+      :prod_key      => prod_key,
+      :name          => name,
+      :name_downcase => prod_key,
+      :description   => description,
 
-        :language      => language,
-        :prod_type     => prod_type,
-      })
-      product.save
-    end
-
+      :language      => language,
+      :prod_type     => prod_type,
+    })
+    product.save
+    logger.info "New product created: #{product.to_s}"
     product
   end
 
@@ -168,6 +167,7 @@ class CocoapodsPodspecParser
     dependency
   end
 
+
   def create_version
     # versions aren't stored at product
     # this is what ProductService.update_version_data does
@@ -175,10 +175,12 @@ class CocoapodsPodspecParser
     return nil if version_numbers.member? version
 
     @product.add_version( version )
+    logger.info " - new version #{version} for #{@product.language}/#{@product.prod_key}"
 
     CrawlerUtils.create_newest @product, version
     CrawlerUtils.create_notifications @product, version
   end
+
 
   def create_license
     # create new license if version doesn't exist yet

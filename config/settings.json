@@ -5,7 +5,7 @@
     "bitbucket_token": "HgSkE62pTT3HmxFGAm",
     "cocoapods_spec_git": "https://github.com/CocoaPods/Specs.git",
     "cocoapods_spec_url": "https://github.com/CocoaPods/Specs",
-    "cocoapods_spec": "~/cocoapods/cocoapods-specs",
+    "cocoapods_spec": "/Users/robertreiz/cocoapods/cocoapods-specs",
     "elasticsearch_product_index": "product",
     "elasticsearch_url": "localhost:9200",
     "elasticsearch_user_index": "user",
