@@ -1,17 +1,21 @@
 class CocoapodsCrawler < Versioneye::Crawl
 
+
   def logger
     ActiveSupport::BufferedLogger.new('log/cocoapods.log')
   end
+
 
   def run cmd_string
     logger.info "Running: $ #{cmd_string}"
     `#{cmd_string}`
   end
 
+
   def self.crawl
     self.new.crawl
   end
+
 
   def crawl
     git_url = Settings.instance.cocoapods_spec_git
@@ -27,7 +31,11 @@ class CocoapodsCrawler < Versioneye::Crawl
       p "Parse CocoaPods Spec ##{i}: #{filepath}"
       parse_spec filepath
     end
+  rescue => e
+    logger.error e.message
+    logger.error e.backtrace.join('\n')
   end
+
 
   def parse_spec filepath
     # parse every podspec file
@@ -41,7 +49,9 @@ class CocoapodsCrawler < Versioneye::Crawl
     end
   rescue => e
     logger.error e.message
+    logger.error e.backtrace.join('\n')
   end
+
 
   # traverse directory, search for .podspec files
   def all_spec_files(&block)
@@ -49,6 +59,9 @@ class CocoapodsCrawler < Versioneye::Crawl
     Dir.glob "#{dir}/**/*.podspec" do |filepath|
       block.call filepath
     end
+  rescue => e
+    logger.error e.message
+    logger.error e.backtrace.join('\n')
   end
 
 end
