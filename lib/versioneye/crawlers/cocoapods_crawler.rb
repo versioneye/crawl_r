@@ -45,7 +45,8 @@ class CocoapodsCrawler < Versioneye::Crawl
 
   # traverse directory, search for .podspec files
   def all_spec_files(&block)
-    Dir.glob "#{@dir}/**/*.podspec" do |filepath|
+    dir = Settings.instance.cocoapods_spec
+    Dir.glob "#{dir}/**/*.podspec" do |filepath|
       block.call filepath
     end
   end

@@ -1,27 +1,3 @@
-GIT
-  remote: git@github.com:versioneye/versioneye-core.git
-  revision: 0471a74b78bf2d79f16090944692fd3447fdafa6
-  tag: v1.4.3
-  specs:
-    versioneye-core (1.4.3)
-      actionmailer (~> 3.2.17)
-      aws-sdk (~> 1.0)
-      cocoapods-core (~> 0.32.0)
-      dalli (~> 2.7.0)
-      httparty (~> 0.13.1)
-      json (~> 1.8.0)
-      kgio (~> 2.9.0)
-      log4r (~> 1.1.0)
-      mongoid (~> 3.1.0)
-      naturalsorter (~> 2.0.10)
-      nokogiri (~> 1.6.0)
-      oauth (~> 0.4.7)
-      octokit (~> 3.1.0)
-      persistent_httparty (~> 0.1.0)
-      semverly (~> 1.0.0)
-      stripe (~> 1.11.0)
-      tire (~> 0.6.2)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -179,6 +155,24 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.39)
+    versioneye-core (1.7.0)
+      actionmailer (~> 3.2.17)
+      aws-sdk (~> 1.0)
+      cocoapods-core (~> 0.32.0)
+      dalli (~> 2.7.0)
+      httparty (~> 0.13.1)
+      json (~> 1.8.0)
+      kgio (~> 2.9.0)
+      log4r (~> 1.1.0)
+      mongoid (~> 3.1.0)
+      naturalsorter (~> 2.0.10)
+      nokogiri (~> 1.6.0)
+      oauth (~> 0.4.7)
+      octokit (~> 3.1.0)
+      persistent_httparty (~> 0.1.0)
+      semverly (~> 1.0.0)
+      stripe (~> 1.11.0)
+      tire (~> 0.6.2)
 
 PLATFORMS
   ruby
@@ -190,4 +184,4 @@ DEPENDENCIES
   rdoc (~> 3.12)
   shoulda
   simplecov
-  versioneye-core!
+  versioneye-core (= 1.7.0)
