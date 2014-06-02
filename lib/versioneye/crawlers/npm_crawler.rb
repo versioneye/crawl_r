@@ -27,6 +27,7 @@ class NpmCrawler < Versioneye::Crawl
     packages
   end
 
+
   def self.get_first_level_list_from_registry
     self.logger.info 'Start fetching first level list'
     packages = JSON.parse HTTParty.get('http://registry.npmjs.org/-/short' ).response.body
@@ -38,6 +39,7 @@ class NpmCrawler < Versioneye::Crawl
     nil
   end
 
+
   def self.get_first_level_list_from_html
     self.logger.info 'Start fetching first level list from HTML'
     packages = Array.new
@@ -46,6 +48,7 @@ class NpmCrawler < Versioneye::Crawl
     end
     packages
   end
+
 
   def self.fetch_names_from page
     packages = Array.new
@@ -59,6 +62,7 @@ class NpmCrawler < Versioneye::Crawl
     self.logger.error e.backtrace.join('\n')
     Array.new
   end
+
 
   def self.get_known_packages
     self.logger.info 'get_known_packages'
