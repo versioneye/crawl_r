@@ -1,3 +1,30 @@
+GIT
+  remote: git@github.com:versioneye/versioneye-core.git
+  revision: 3b76047ea56031e82e7651ecc1accf4cb9c70f0b
+  tag: v1.10.5
+  specs:
+    versioneye-core (1.10.5)
+      actionmailer (~> 3.2.17)
+      aws-sdk (~> 1.0)
+      cocoapods-core (~> 0.33.0)
+      dalli (~> 2.7.0)
+      httparty (~> 0.13.1)
+      json (~> 1.8.0)
+      kgio (~> 2.9.0)
+      log4r (~> 1.1.0)
+      mongoid (~> 3.1.0)
+      naturalsorter (~> 2.0.10)
+      nokogiri (~> 1.6.0)
+      oauth (~> 0.4.7)
+      octokit (~> 3.1.0)
+      pdfkit (~> 0.6.2)
+      persistent_httparty (~> 0.1.0)
+      semverly (~> 1.0.0)
+      stripe (~> 1.13.0)
+      tire (~> 0.6.2)
+      will_paginate_mongoid (= 2.0.1)
+      wkhtmltopdf-binary (~> 0.9.9.1)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -156,32 +183,11 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.39)
-    versioneye-core (1.10.5)
-      actionmailer (~> 3.2.17)
-      aws-sdk (~> 1.0)
-      cocoapods-core (~> 0.33.0)
-      dalli (~> 2.7.0)
-      httparty (~> 0.13.1)
-      json (~> 1.8.0)
-      kgio (~> 2.9.0)
-      log4r (~> 1.1.0)
-      mongoid (~> 3.1.0)
-      naturalsorter (~> 2.0.10)
-      nokogiri (~> 1.6.0)
-      oauth (~> 0.4.7)
-      octokit (~> 3.1.0)
-      pdfkit (~> 0.6.2)
-      persistent_httparty (~> 0.1.0)
-      semverly (~> 1.0.0)
-      stripe (~> 1.13.0)
-      tire (~> 0.6.2)
-      will_paginate_mongoid (= 2.0.1)
-      wkhtmltopdf-binary (~> 0.9.9.1)
     will_paginate (3.0.5)
     will_paginate_mongoid (2.0.1)
       mongoid
       will_paginate (~> 3.0)
-    wkhtmltopdf-binary (0.9.9.1)
+    wkhtmltopdf-binary (0.9.9.3)
 
 PLATFORMS
   ruby
@@ -193,4 +199,4 @@ DEPENDENCIES
   rdoc (~> 3.12)
   shoulda
   simplecov
-  versioneye-core (= 1.10.5)
+  versioneye-core!
