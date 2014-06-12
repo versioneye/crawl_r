@@ -5,9 +5,9 @@ class ComposerUtils
     license = version_obj['license']
     return nil if license.nil? || license.empty?
     license.each do |license_name|
-      license_obj = License.new({ :language => product.language, :prod_key => product.prod_key,
-        :version => version_number, :name => license_name })
-      license_obj.save
+      License.find_or_create_by :language => product.language,
+        :prod_key => product.prod_key, :version => version_number,
+        :name => license_name
     end
   end
 
