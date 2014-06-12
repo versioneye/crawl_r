@@ -1,5 +1,15 @@
 class PackagistLicenseCrawler < PackagistCrawler
 
+  def self.crawl
+    start_time = Time.now
+    packages = self.get_first_level_list
+    packages.each do |name|
+      self.crawle_package name
+    end
+    duration = Time.now - start_time
+    self.logger.info(" *** This crawl took #{duration} *** ")
+    return nil
+  end
 
   def self.crawle_package name
     return nil if name.to_s.empty?
