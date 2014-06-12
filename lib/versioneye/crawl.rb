@@ -12,6 +12,7 @@ module Versioneye
     require './lib/versioneye/crawlers/github_version_crawler'
     require './lib/versioneye/crawlers/npm_crawler'
     require './lib/versioneye/crawlers/packagist_crawler'
+    require './lib/versioneye/crawlers/packagist_license_crawler'
     require './lib/versioneye/crawlers/tiki_crawler'
 
     def self.log

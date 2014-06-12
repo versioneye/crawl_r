@@ -25,7 +25,7 @@ class PackagistCrawler < Versioneye::Crawl
 
 
   def self.crawle_package name
-    return nil if name.nil? || name.empty?
+    return nil if name.to_s.empty?
 
     resource     = "http://packagist.org/packages/#{name}.json"
     pack         = JSON.parse HTTParty.get( resource ).response.body
