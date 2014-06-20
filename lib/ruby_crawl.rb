@@ -13,6 +13,7 @@ class RubyCrawl
     puts "initialize ruby_crawl"
     init_logger
     init_mongodb
+    init_settings
   end
 
   def init_logger
@@ -21,6 +22,10 @@ class RubyCrawl
 
   def init_mongodb
     Mongoid.load!("config/mongoid.yml", Settings.instance.environment)
+  end
+
+  def init_settings
+    Settings.instance.reload_from_db GlobalSetting.new
   end
 
 end
