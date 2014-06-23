@@ -18,6 +18,8 @@ class CocoapodsCrawler < Versioneye::Crawl
 
 
   def crawl
+    Settings.instance.reload_from_db GlobalSetting.new
+
     git_url = Settings.instance.cocoapods_spec_git
     dir = Settings.instance.cocoapods_spec
 
