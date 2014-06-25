@@ -20,7 +20,10 @@ class CocoapodsPodspecParser
   # important parts of the parsed domain model output
   attr_reader :name, :prod_key, :version
 
-  def initialize
+  attr_accessor :base_url
+
+  def initialize base_url
+    @base_url  = base_url
     @language  = Product::A_LANGUAGE_OBJECTIVEC
     @prod_type = Project::A_TYPE_COCOAPODS
   end
@@ -241,7 +244,7 @@ class CocoapodsPodspecParser
       language: language,
       prod_key: prod_key,
       version_id: version,
-      link: "#{Settings.instance.cocoapods_spec_url}/blob/master/#{name}/#{version}/#{name}.podspec",
+      link: "#{base_url}/blob/master/#{name}/#{version}/#{name}.podspec",
       name: "#{name}.podspec",
     })
     Versionarchive.create_archive_if_not_exist( archive )
