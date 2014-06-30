@@ -4,6 +4,7 @@ class ComposerUtils
   def self.create_license( product, version_number, version_obj )
     license = version_obj['license']
     return nil if license.nil? || license.empty?
+
     license.each do |license_name|
       License.find_or_create_by :language => product.language,
         :prod_key => product.prod_key, :version => version_number,
@@ -35,6 +36,7 @@ class ComposerUtils
   def self.create_archive product, version_number, version_obj
     dist = version_obj['dist']
     return nil if dist.nil? || dist.empty?
+
     dist_url  = dist['url']
     dist_type = dist['type']
     dist_name = "#{product.name}.#{dist_type}"

@@ -23,6 +23,14 @@ namespace :versioneye do
     puts "---"
   end
 
+  desc "crawl Firegento"
+  task :crawl_firegento do
+    puts "START to crawle Firegento repository"
+    RubyCrawl.new
+    FiregentoCrawler.crawl
+    puts "---"
+  end
+
   desc "crawl NPM"
   task :crawl_npm do
     puts "START to crawle NPM repository"

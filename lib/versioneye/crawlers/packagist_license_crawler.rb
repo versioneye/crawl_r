@@ -46,4 +46,5 @@ class PackagistLicenseCrawler < PackagistCrawler
     ComposerUtils.create_license( product, version_number, version_obj )
   end
 
+
 end

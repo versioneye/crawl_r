@@ -13,7 +13,9 @@ module Versioneye
     require './lib/versioneye/crawlers/npm_crawler'
     require './lib/versioneye/crawlers/packagist_crawler'
     require './lib/versioneye/crawlers/packagist_license_crawler'
+    require './lib/versioneye/crawlers/satis_crawler'
     require './lib/versioneye/crawlers/tiki_crawler'
+    require './lib/versioneye/crawlers/firegento_crawler'
 
     def self.log
       Versioneye::Log.instance.log
