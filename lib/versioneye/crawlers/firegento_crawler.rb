@@ -33,4 +33,12 @@ class FiregentoCrawler < SatisCrawler
   end
 
 
+  private
+
+
+    def self.homepage_url product
+      "#{@@base_url}#!/#{product.prod_key}"
+    end
+
+
 end

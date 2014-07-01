@@ -64,7 +64,8 @@ class SatisCrawler < Versioneye::Crawl
       product.repositories.push repository
     end
     product.save
-    Versionlink.create_project_link( Product::A_LANGUAGE_PHP, product.prod_key, @@base_url, @@link_name )
+    url = homepage_url( product )
+    Versionlink.create_project_link( Product::A_LANGUAGE_PHP, product.prod_key, url, @@link_name )
     product
   end
 
@@ -121,6 +122,11 @@ class SatisCrawler < Versioneye::Crawl
     rescue => e
       self.logger.error "ERROR in create_links Message: #{e.message}"
       self.logger.error e.backtrace.join('\n')
+    end
+
+
+    def self.homepage_url product
+      @@base_url
     end
 
 
