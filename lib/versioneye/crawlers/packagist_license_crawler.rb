@@ -19,7 +19,7 @@ class PackagistLicenseCrawler < PackagistCrawler
     resource     = "http://packagist.org/packages/#{name}.json"
     pack         = JSON.parse HTTParty.get( resource ).response.body
     package      = pack['package']
-    package_name = package['name']
+    package_name = package['name'].to_s.downcase
     versions     = package['versions']
     return nil if package_name.to_s.empty?
     return nil if versions.nil? || versions.empty?
