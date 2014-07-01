@@ -5,6 +5,7 @@ class TikiCrawler < SatisCrawler
   end
 
   @@base_url = 'http://composer.tiki.org/'
+  @@link_name = 'Tiki Page'
 
 
   def self.crawl

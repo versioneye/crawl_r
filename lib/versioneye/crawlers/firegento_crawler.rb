@@ -5,6 +5,7 @@ class FiregentoCrawler < SatisCrawler
   end
 
   @@base_url = 'http://packages.firegento.com/'
+  @@link_name = 'Firegento Page'
 
 
   def self.crawl

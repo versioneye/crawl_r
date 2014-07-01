@@ -9,6 +9,7 @@ class SatisCrawler < Versioneye::Crawl
   end
 
   @@base_url = 'http://composer.tiki.org/'
+  @@link_name = 'Tiki Page'
 
 
   def self.crawle_package package
@@ -63,7 +64,7 @@ class SatisCrawler < Versioneye::Crawl
       product.repositories.push repository
     end
     product.save
-    Versionlink.create_project_link( Product::A_LANGUAGE_PHP, product.prod_key, @@base_url, 'Tiki Page' )
+    Versionlink.create_project_link( Product::A_LANGUAGE_PHP, product.prod_key, @@base_url, @@link_name )
     product
   end
 
