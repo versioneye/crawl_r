@@ -53,7 +53,10 @@ class SatisCrawler < Versioneye::Crawl
 
 
   def self.find_or_create_product name, description = nil
-    product = Product.find_or_create_by( prod_key: name, language: Product::A_LANGUAGE_PHP )
+    return nil if name.to_s.empty?
+
+    prod_key = name.downcase
+    product  = Product.find_or_create_by( prod_key: prod_key, language: Product::A_LANGUAGE_PHP )
     product.reindex       = true
     product.name          = name
     product.name_downcase = name.downcase
