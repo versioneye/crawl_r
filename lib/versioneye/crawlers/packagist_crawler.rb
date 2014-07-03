@@ -72,6 +72,7 @@ class PackagistCrawler < Versioneye::Crawl
   def self.init_product name
     product = Product.find_by_lang_key( Product::A_LANGUAGE_PHP, name.downcase )
     return product if product
+
     self.logger.info " -- New PHP Package - #{name}"
     Product.new({:reindex => true})
   end
