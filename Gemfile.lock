@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:versioneye/versioneye-core.git
-  revision: 8280867bbd7ea6a4119dd558bb6b1e492dce050a
-  tag: v2.0.3
+  revision: d25ae9a7bf30ef01585bebf2414fc6ad4fe14093
+  tag: v2.0.5
   specs:
-    versioneye-core (2.0.3)
+    versioneye-core (2.0.5)
       actionmailer (~> 3.2.17)
       aws-sdk (~> 1.0)
       cocoapods-core (~> 0.33.0)
@@ -49,7 +49,7 @@ GEM
       multi_json (~> 1.0)
     addressable (2.3.6)
     ansi (1.4.3)
-    aws-sdk (1.44.0)
+    aws-sdk (1.46.0)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
     builder (3.0.4)
@@ -183,7 +183,7 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.39)
-    will_paginate (3.0.5)
+    will_paginate (3.0.6)
     will_paginate_mongoid (2.0.1)
       mongoid
       will_paginate (~> 3.0)
