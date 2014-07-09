@@ -204,15 +204,23 @@ class CocoapodsPodspecParser
 
   def create_repository
     repo = repository
-    unless @product.repositories.member?( repo )
-      @product.repositories.push( repo )
+    if @product.repositories.nil?
+      @product.repositories = []
     end
+    if @product.repositories.empty?
+      @product.repositories.push( repo )
+      return nil
+    end
+    @product.repositories.each do |repo|
+      return nil if repo.src.eql?(@base_url)
+    end
+    @product.repositories.push( repo )
   end
 
   def repository
     Repository.new({
-      :repotype => 'git',
-      :src => @podspec.source[:git]
+      :repotype => Project::A_TYPE_COCOAPODS,
+      :src => @base_url
       })
   end
 
