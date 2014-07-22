@@ -44,7 +44,12 @@ class CocoapodsCrawler < Versioneye::Crawl
   end
 
   def crawl_secondary
+    return if Settings.instance.respond_to?("cocoapods_spec_git_2") == false
+    return if Settings.instance.respond_to?("cocoapods_spec_dir_2") == false
+    return if Settings.instance.respond_to?("cocoapods_spec_url_2") == false
+
     p "crawl_secondary ..."
+
     cocoa_git = Settings.instance.cocoapods_spec_git_2
     cocoa_dir = Settings.instance.cocoapods_spec_dir_2
     cocoa_url = Settings.instance.cocoapods_spec_url_2
