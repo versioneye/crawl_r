@@ -232,7 +232,7 @@ class NpmCrawler < Versioneye::Crawl
   def self.create_licenses( product, version_number, licenses )
     licenses.each do |licence|
       if licence.is_a?(String)
-        create_single_license( product, version_number, license )
+        create_single_license( product, version_number, licence )
       else
         license_name = licence["type"]
         license_url  = licence["url"]
