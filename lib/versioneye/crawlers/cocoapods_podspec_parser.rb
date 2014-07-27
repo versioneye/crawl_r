@@ -186,19 +186,7 @@ class CocoapodsPodspecParser
 
 
   def create_license
-    # create new license if version doesn't exist yet
-    licenses = License.where( {:language => language, :prod_key => prod_key, :version  => version} )
-    return nil if licenses.first
-
-    license = License.new({
-      :language => language,
-      :prod_key => prod_key,
-      :version  => version,
-
-      :name     => @podspec.license[:type],
-      :comments => @podspec.license[:text],
-    })
-    license.save
+    License.find_or_create language, prod_key, version, @podspec.license[:type], nil, @podspec.license[:text]
   end
 
 
