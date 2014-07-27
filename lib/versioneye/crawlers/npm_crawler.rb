@@ -35,7 +35,7 @@ class NpmCrawler < Versioneye::Crawl
     packages
   rescue => e
     self.logger.error "ERROR in get_first_level_list: #{e.message}"
-    self.logger.error e.backtrace.join('\n')
+    self.logger.error e.backtrace.join("\n")
     nil
   end
 
@@ -59,7 +59,7 @@ class NpmCrawler < Versioneye::Crawl
     packages
   rescue => e
     self.logger.error "ERROR in fetch_names_from page: #{e.message}"
-    self.logger.error e.backtrace.join('\n')
+    self.logger.error e.backtrace.join("\n")
     Array.new
   end
 
@@ -101,7 +101,7 @@ class NpmCrawler < Versioneye::Crawl
     ProductService.update_version_data( product )
   rescue => e
     self.logger.error "ERROR in crawle_package Message: #{e.message}"
-    self.logger.error e.backtrace.join('\n')
+    self.logger.error e.backtrace.join("\n")
     store_error crawl, e.message, e.backtrace, name
   end
 
@@ -309,7 +309,7 @@ class NpmCrawler < Versioneye::Crawl
     hp
   rescue => e
     logger.error "Error in homepage_for #{e.message}"
-    logger.error e.backtrace.join('\n')
+    logger.error e.backtrace.join("\n")
     nil
   end
 
@@ -319,7 +319,7 @@ class NpmCrawler < Versioneye::Crawl
     version_db.released_at     = DateTime.parse( version_db.released_string )
   rescue => e
     logger.error "Error in parse_release_date #{e.message}"
-    logger.error e.backtrace.join('\n')
+    logger.error e.backtrace.join("\n")
   end
 
 

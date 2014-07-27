@@ -64,10 +64,10 @@ class CrawlerUtils
     def self.log_exception e, logger = nil
       if logger
         logger.error e.message
-        logger.error e.backtrace.join('\n')
+        logger.error e.backtrace.join("\n")
       else
         p e.message
-        p e.backtrace.join('\n')
+        p e.backtrace.join("\n")
       end
     end
 

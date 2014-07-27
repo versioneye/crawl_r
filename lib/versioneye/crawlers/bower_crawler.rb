@@ -334,7 +334,7 @@ class BowerCrawler < Versioneye::Crawl
     logger.info "#-- #{task_name} is done in #{runtime} seconds. success: #{success}, failed: #{failed}, unfinished: #{unfinished}"
   rescue => ex
     logger.error ex.message
-    logger.error ex.backtrace.join('\n')
+    logger.error ex.backtrace.join("\n")
   end
 
 
@@ -367,7 +367,7 @@ class BowerCrawler < Versioneye::Crawl
     response
   rescue => e
     logger.error "Cant check headers of url: `#{url}`. #{e.message}"
-    logger.error e.backtrace.join('\n')
+    logger.error e.backtrace.join("\n")
   end
 
   # TODO refactor. This method is to big.
@@ -444,7 +444,7 @@ class BowerCrawler < Versioneye::Crawl
     product
   rescue => e
     logger.error "add_bower_package | cant save product for #{repo_info}: #{product.errors.full_messages.to_sentence} - e.message"
-    logger.error e.backtrace.join('\n')
+    logger.error e.backtrace.join("\n")
     nil
   end
 
@@ -463,7 +463,7 @@ class BowerCrawler < Versioneye::Crawl
     prod
   rescue => e
     logger.error e.message
-    logger.error e.backtrace.join('\n')
+    logger.error e.backtrace.join("\n")
     nil
   end
 
@@ -501,7 +501,7 @@ class BowerCrawler < Versioneye::Crawl
     content
   rescue => e
     logger.error "Error: cant parse JSON file for #{file_url}. #{e.message}"
-    logger.error e.backtrace.join('\n')
+    logger.error e.backtrace.join("\n")
     nil
   end
 
@@ -556,7 +556,7 @@ class BowerCrawler < Versioneye::Crawl
     return nil if released_string.to_s.empty?
     released_string.to_datetime
   rescue => e
-    logger.error e.backtrace.join('\n')
+    logger.error e.backtrace.join("\n")
     nil
   end
 
@@ -706,7 +706,7 @@ class BowerCrawler < Versioneye::Crawl
     prod
   rescue => e
     logger.error e.message
-    logger.error e.backtrace.join('\n')
+    logger.error e.backtrace.join("\n")
     nil
   end
 
@@ -773,7 +773,7 @@ class BowerCrawler < Versioneye::Crawl
     prod_version
   rescue => e
     logger.error e.message
-    logger.error e.backtrace.join('\n')
+    logger.error e.backtrace.join("\n")
     nil
   end
 
@@ -799,7 +799,7 @@ class BowerCrawler < Versioneye::Crawl
     dependency
   rescue => e
     logger.error "Error: Cant save dependency `#{dep_name}` with version `#{dep_version}` for #{prod[:prod_key]}. -- #{e.message}"
-    logger.error e.backtrace.join('\n')
+    logger.error e.backtrace.join("\n")
     nil
   end
 
@@ -884,7 +884,7 @@ class BowerCrawler < Versioneye::Crawl
     }
   rescue => e
     logger.error e.message
-    logger.error e.backtrace.join('\n')
+    logger.error e.backtrace.join("\n")
     nil
   end
 

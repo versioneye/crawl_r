@@ -44,7 +44,7 @@ class PackagistCrawler < Versioneye::Crawl
     ProductService.update_version_data( product )
   rescue => e
     self.logger.error "ERROR in crawle_package Message:   #{e.message}"
-    self.logger.error e.backtrace.join('\n')
+    self.logger.error e.backtrace.join("\n")
   end
 
 
@@ -117,7 +117,7 @@ class PackagistCrawler < Versioneye::Crawl
     ComposerUtils.create_dependencies product, version_number, version_obj
   rescue => e
     self.logger.error "ERROR in create_new_version Message:   #{e.message}"
-    self.logger.error e.backtrace.join('\n')
+    self.logger.error e.backtrace.join("\n")
   end
 
 end

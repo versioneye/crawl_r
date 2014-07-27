@@ -24,7 +24,7 @@ class CocoapodsCrawler < Versioneye::Crawl
     crawl_secondary
   rescue => e
     logger.error e.message
-    logger.error e.backtrace.join('\n')
+    logger.error e.backtrace.join("\n")
   end
 
 
@@ -40,7 +40,7 @@ class CocoapodsCrawler < Versioneye::Crawl
     end
   rescue => e
     logger.error e.message
-    logger.error e.backtrace.join('\n')
+    logger.error e.backtrace.join("\n")
   end
 
   def crawl_secondary
@@ -58,7 +58,7 @@ class CocoapodsCrawler < Versioneye::Crawl
     end
   rescue => e
     logger.error e.message
-    logger.error e.backtrace.join('\n')
+    logger.error e.backtrace.join("\n")
   end
 
 
@@ -82,7 +82,7 @@ class CocoapodsCrawler < Versioneye::Crawl
     end
   rescue => e
     logger.error e.message
-    logger.error e.backtrace.join('\n')
+    logger.error e.backtrace.join("\n")
   end
 
 
@@ -98,7 +98,7 @@ class CocoapodsCrawler < Versioneye::Crawl
     end
   rescue => e
     logger.error e.message
-    logger.error e.backtrace.join('\n')
+    logger.error e.backtrace.join("\n")
   end
 
 
@@ -109,7 +109,7 @@ class CocoapodsCrawler < Versioneye::Crawl
     end
   rescue => e
     logger.error e.message
-    logger.error e.backtrace.join('\n')
+    logger.error e.backtrace.join("\n")
   end
 
   # traverse directory, search for .podspec files
@@ -119,7 +119,7 @@ class CocoapodsCrawler < Versioneye::Crawl
     end
   rescue => e
     logger.error e.message
-    logger.error e.backtrace.join('\n')
+    logger.error e.backtrace.join("\n")
   end
 
 

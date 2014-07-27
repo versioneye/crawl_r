@@ -32,7 +32,7 @@ class PackagistLicenseCrawler < PackagistCrawler
     end
   rescue => e
     self.logger.error "ERROR in crawle_package Message:   #{e.message}"
-    self.logger.error e.backtrace.join('\n')
+    self.logger.error e.backtrace.join("\n")
   end
 
 

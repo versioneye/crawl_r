@@ -24,7 +24,7 @@ class SatisCrawler < Versioneye::Crawl
     end
   rescue => e
     self.logger.error "ERROR in crawle_package Message:   #{e.message}"
-    self.logger.error e.backtrace.join('\n')
+    self.logger.error e.backtrace.join("\n")
   end
 
 
@@ -96,7 +96,7 @@ class SatisCrawler < Versioneye::Crawl
     ComposerUtils.create_dependencies product, version_number, version_obj
   rescue => e
     self.logger.error "ERROR in create_new_version Message:   #{e.message}"
-    self.logger.error e.backtrace.join('\n')
+    self.logger.error e.backtrace.join("\n")
   end
 
 
@@ -124,7 +124,7 @@ class SatisCrawler < Versioneye::Crawl
       end
     rescue => e
       self.logger.error "ERROR in create_links Message: #{e.message}"
-      self.logger.error e.backtrace.join('\n')
+      self.logger.error e.backtrace.join("\n")
     end
 
 

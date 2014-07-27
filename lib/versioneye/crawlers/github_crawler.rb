@@ -45,7 +45,7 @@ class GithubCrawler < Versioneye::Crawl
     end
   rescue => e
     self.logger.error "ERROR in crawle_package(#{name}) Message: #{e.message}"
-    self.logger.error e.backtrace.join('\n')
+    self.logger.error e.backtrace.join("\n")
     nil
   end
 
@@ -85,7 +85,7 @@ class GithubCrawler < Versioneye::Crawl
     version
   rescue => e
     self.logger.error "ERROR in set_release_date: #{e.message}"
-    self.logger.error e.backtrace.join('\n')
+    self.logger.error e.backtrace.join("\n")
     nil
   end
 

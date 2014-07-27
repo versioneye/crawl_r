@@ -28,7 +28,7 @@ class FiregentoCrawler < SatisCrawler
     packages = body['packages']
   rescue => e
     self.logger.error "ERROR in get_first_level_list of #{@@base_url}: Message: #{e.message}"
-    self.logger.error e.backtrace.join('\n')
+    self.logger.error e.backtrace.join("\n")
     nil
   end
 
