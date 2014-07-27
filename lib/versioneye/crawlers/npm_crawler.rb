@@ -227,9 +227,13 @@ class NpmCrawler < Versioneye::Crawl
 
   def self.create_licenses( product, version_number, licenses )
     licenses.each do |licence|
-      license_name = licence["type"]
-      license_url  = licence["url"]
-      create_single_license( product, version_number, license_name, license_url )
+      if licence.is_a?(String)
+        create_single_license( product, version_number, license )
+      else
+        license_name = licence["type"]
+        license_url  = licence["url"]
+        create_single_license( product, version_number, license_name, license_url )
+      end
     end
   end
 
