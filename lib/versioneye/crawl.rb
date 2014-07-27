@@ -11,6 +11,7 @@ module Versioneye
     require './lib/versioneye/crawlers/github_crawler'
     require './lib/versioneye/crawlers/github_version_crawler'
     require './lib/versioneye/crawlers/npm_crawler'
+    require './lib/versioneye/crawlers/npm_license_crawler'
     require './lib/versioneye/crawlers/packagist_crawler'
     require './lib/versioneye/crawlers/packagist_license_crawler'
     require './lib/versioneye/crawlers/satis_crawler'

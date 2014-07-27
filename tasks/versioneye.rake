@@ -39,6 +39,14 @@ namespace :versioneye do
     puts "---"
   end
 
+  desc "crawl NPM licenses only"
+  task :crawl_npm_licenses do
+    puts "START to crawle NPM repository"
+    RubyCrawl.new
+    NpmLicenseCrawler.crawl
+    puts "---"
+  end
+
   desc "crawl Cococapods"
   task :crawl_cocoapods do
     puts "START to crawle CocoaPods repository"

@@ -134,7 +134,7 @@ class NpmCrawler < Versioneye::Crawl
   def self.init_product prod_key
     product = Product.find_by_lang_key( Product::A_LANGUAGE_NODEJS, prod_key )
     return product if product
-    self.logger.info " -- New Node.JS Package - #{name}"
+
     Product.new({:prod_key => prod_key, :reindex => true})
   end
 
@@ -202,17 +202,40 @@ class NpmCrawler < Versioneye::Crawl
 
 
   def self.create_license( product, version_number, version_obj )
+    check_single_license product, version_number, version_obj
+    check_licenses product, version_number, version_obj
+  end
+
+
+  def self.check_single_license( product, version_number, version_obj )
     license_name = version_obj['license']
     return nil if license_name.to_s.empty?
 
-    product.version = version_number
-    license_obj = License.for_product( product )
-    return nil if license_obj
+    create_single_license( product, version_number, license_name )
+  end
 
-    self.logger.info " -- Node.JS Package - #{product} adding new license - #{license_name}"
-    license_obj = License.new({ :language => product.language, :prod_key => product.prod_key,
-      :version => version_number, :name => license_name })
-    license_obj.save
+  def self.check_licenses( product, version_number, version_obj )
+    licenses = version_obj['licenses']
+    return nil if licenses.nil? || licenses.empty?
+
+    if licenses.is_a?( String )
+      create_single_license( product, version_number, licenses )
+    else
+      create_licenses( product, version_number, licenses )
+    end
+  end
+
+  def self.create_licenses( product, version_number, licenses )
+    licenses.each do |licence|
+      license_name = licence["type"]
+      license_url  = licence["url"]
+      create_single_license( product, version_number, license_name, license_url )
+    end
+  end
+
+  def self.create_single_license( product, version_number, license_name, license_url = nil )
+    license = License.find_or_create( product.language, product.prod_key, version_number, license_name, license_url )
+    self.logger.info " -- New license - #{license.to_s}"
   end
 
 
