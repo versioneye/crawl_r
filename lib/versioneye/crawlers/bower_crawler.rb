@@ -274,7 +274,7 @@ class BowerCrawler < Versioneye::Crawl
     Base64.decode64(file_data[:content])
   end
 
-  #add latest version for dependencies missing prod_version
+  # Add latest version for dependencies missing prod_version
   def self.update_product_dependencies(product, version_label)
     all_dependencies = Dependency.where(prod_key: product[:prod_key])
     deps_without_version = all_dependencies.keep_if {|dep| dep[:prod_key].nil? }
@@ -284,7 +284,7 @@ class BowerCrawler < Versioneye::Crawl
     end
   end
 
-  # using: task_executor(task_name) {|task_name| crawl_money}
+  # Using: task_executor(task_name) {|task_name| crawl_money}
   def self.crawler_task_executor(task_name, token)
     logger.info "#-- #{task_name} is starting ... "
     start_time = Time.now
