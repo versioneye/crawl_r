@@ -1,9 +1,28 @@
 # require 'ruby_crawl'
 
+require 'rufus-scheduler'
 require 'versioneye-core'
 require './lib/ruby_crawl'
 
 namespace :versioneye do
+
+  desc "start scheduler for crawl_r"
+  task :scheduler_crawl_r do
+    RubyCrawl.new
+    scheduler = Rufus::Scheduler.new
+    env = Settings.instance.environment
+
+    value = GlobalSetting.get(env, 'SCHEDULE_CRAWL_COCOAPODS')
+    # value = '1 * * * *' if value.to_s.empty?
+    if value
+      scheduler.cron value do
+        CocoapodsCrawler.crawl
+        GithubVersionCrawler.crawl
+      end
+    end
+
+    scheduler.join
+  end
 
   # ***** Crawler Tasks *****
 

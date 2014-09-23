@@ -2,9 +2,10 @@ source "http://rubygems.org"
 
 gem 'log4r'              , '~> 1.1.0'
 
-gem 'versioneye-core'    , :git => 'git@github.com:versioneye/versioneye-core.git', :tag => 'v4.1.8'
+gem 'versioneye-core'    , :git => 'git@github.com:versioneye/versioneye-core.git', :tag => 'v5.6.11'
 # gem 'versioneye-core'    , :path => "~/workspace/versioneye/versioneye-core"
-# gem 'versioneye-core', '1.10.5'
+
+gem 'rufus-scheduler', '3.0.9'
 
 group :development do
   gem "shoulda"  , ">= 0"
