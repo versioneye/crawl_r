@@ -208,10 +208,16 @@ class NpmCrawler < Versioneye::Crawl
 
 
   def self.check_single_license( product, version_number, version_obj )
-    license_name = version_obj['license']
-    return nil if license_name.to_s.empty?
+    license_value = version_obj['license']
+    return nil if license_value.to_s.empty?
 
-    create_single_license( product, version_number, license_name )
+    if license_value.is_a? String
+      create_single_license( product, version_number, license_value )
+    elsif license_value.is_a? Hash
+      license_type = license_value["type"]
+      license_url  = license_value["url"]
+      create_single_license( product, version_number, license_type, license_url )
+    end
   end
 
   def self.check_licenses( product, version_number, version_obj )
