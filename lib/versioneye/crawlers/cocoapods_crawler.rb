@@ -31,8 +31,8 @@ class CocoapodsCrawler < Versioneye::Crawl
   def crawl_primary
     p "crawl_primary ..."
     cocoa_git = Settings.instance.cocoapods_spec_git
-    cocoa_dir = Settings.instance.cocoapods_spec_dir
     cocoa_url = Settings.instance.cocoapods_spec_url
+    cocoa_dir = Settings.instance.cocoapods_spec_dir
     if cocoa_git.to_s.empty? || cocoa_dir.to_s.empty?
       p 'no cocoa_git registered'
     else
@@ -45,14 +45,14 @@ class CocoapodsCrawler < Versioneye::Crawl
 
   def crawl_secondary
     return if Settings.instance.respond_to?("cocoapods_spec_git_2") == false
-    return if Settings.instance.respond_to?("cocoapods_spec_dir_2") == false
     return if Settings.instance.respond_to?("cocoapods_spec_url_2") == false
+    return if Settings.instance.respond_to?("cocoapods_spec_dir_2") == false
 
     p "crawl_secondary ..."
 
     cocoa_git = Settings.instance.cocoapods_spec_git_2
-    cocoa_dir = Settings.instance.cocoapods_spec_dir_2
     cocoa_url = Settings.instance.cocoapods_spec_url_2
+    cocoa_dir = Settings.instance.cocoapods_spec_dir_2
     if !cocoa_git.to_s.empty? && !cocoa_dir.to_s.empty?
       crawl_repo cocoa_git, cocoa_dir, cocoa_url
     end
