@@ -14,14 +14,17 @@ namespace :versioneye do
 
     value = GlobalSetting.get(env, 'SCHEDULE_CRAWL_COCOAPODS')
     # value = '1 * * * *' if value.to_s.empty?
-    if value
+    if !value.to_s.empty?
       scheduler.cron value do
-        CocoapodsCrawler.crawl
-        GithubVersionCrawler.crawl
+        CommonCrawlProducer.new "cocoa_pods_1"
       end
     end
 
     scheduler.join
+    while 1 == 1
+      p "keep alive rake task"
+      sleep 30
+    end
   end
 
   # ***** Crawler Tasks *****
@@ -91,5 +94,17 @@ namespace :versioneye do
     BowerCrawler.crawl reiz.github_token
     puts "---"
   end
+
+
+  # --- Workers ---
+
+  desc "Start CocoaPodsWorker"
+  task :cocoa_pods_worker do
+    puts "START cocoa_pods_worker"
+    RubyCrawl.new
+    CommonCrawlWorker.new.work
+    puts "---"
+  end
+
 
 end

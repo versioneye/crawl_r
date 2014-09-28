@@ -1,11 +1,12 @@
 GIT
   remote: git@github.com:versioneye/versioneye-core.git
-  revision: 392c924d8c297c9077e2f99b7d0cba401075ccf5
-  tag: v5.6.11
+  revision: cb9388dca064c388e77e801373c6ce81c14cb237
+  tag: v5.14.0
   specs:
-    versioneye-core (5.6.11)
+    versioneye-core (5.14.0)
       actionmailer (~> 3.2.17)
       aws-sdk (~> 1.0)
+      bundler (= 1.7.3)
       bunny (~> 1.4.0)
       cocoapods-core (~> 0.34.0.rc2)
       dalli (~> 2.7.0)
@@ -51,15 +52,15 @@ GEM
     addressable (2.3.6)
     amq-protocol (1.9.2)
     ansi (1.4.3)
-    aws-sdk (1.53.0)
-      aws-sdk-v1 (= 1.53.0)
-    aws-sdk-v1 (1.53.0)
+    aws-sdk (1.54.0)
+      aws-sdk-v1 (= 1.54.0)
+    aws-sdk-v1 (1.54.0)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
     builder (3.0.4)
     bunny (1.4.1)
       amq-protocol (>= 1.9.2)
-    cocoapods-core (0.34.0.rc2)
+    cocoapods-core (0.34.1)
       activesupport (>= 3.2.15)
       fuzzy_match (~> 2.0.4)
       json_pure (~> 1.8)
@@ -74,16 +75,16 @@ GEM
     fuzzy_match (2.0.4)
     gene_pool (1.4.1)
       thread_safe
-    git (1.2.7)
-    github_api (0.11.3)
+    git (1.2.8)
+    github_api (0.12.1)
       addressable (~> 2.3)
-      descendants_tracker (~> 0.0.1)
+      descendants_tracker (~> 0.0.4)
       faraday (~> 0.8, < 0.10)
-      hashie (>= 1.2)
+      hashie (>= 3.2)
       multi_json (>= 1.7.5, < 2.0)
-      nokogiri (~> 1.6.0)
+      nokogiri (~> 1.6.3)
       oauth2
-    hashie (3.2.0)
+    hashie (3.3.1)
     hashr (0.0.22)
     highline (1.6.21)
     hike (1.2.3)
@@ -148,7 +149,7 @@ GEM
     rack-test (0.6.2)
       rack (>= 1.0)
     rake (10.3.2)
-    rdoc (4.1.1)
+    rdoc (4.1.2)
       json (~> 1.4)
     rest-client (1.7.2)
       mime-types (>= 1.16, < 3.0)
@@ -163,11 +164,11 @@ GEM
       shoulda-context (~> 1.0, >= 1.0.1)
       shoulda-matchers (>= 1.4.1, < 3.0)
     shoulda-context (1.2.1)
-    shoulda-matchers (2.6.2)
+    shoulda-matchers (2.7.0)
       activesupport (>= 3.0.0)
-    simplecov (0.9.0)
+    simplecov (0.9.1)
       docile (~> 1.1.0)
-      multi_json
+      multi_json (~> 1.0)
       simplecov-html (~> 0.8.0)
     simplecov-html (0.8.0)
     sprockets (2.2.2)
@@ -192,7 +193,7 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.40)
+    tzinfo (0.3.41)
     will_paginate (3.0.7)
     will_paginate_mongoid (2.0.1)
       mongoid
@@ -203,7 +204,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.0)
+  bundler (= 1.7.3)
   jeweler (~> 2.0.1)
   log4r (~> 1.1.0)
   rdoc (~> 4.1.1)
