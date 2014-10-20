@@ -41,6 +41,7 @@ class BowerCrawler < Versioneye::Crawl
     crawl_serial(token, source_url) if not concurrent
   end
 
+
   def self.crawl_serial(token, source_url)
     logger.info "Using serial crawler - hopefully just for debugging."
     crawl_registered_list(source_url) # Filters out everything what is not on GitHub. If not on GitHub, skip it! And create tasks for the next crawler.
@@ -49,6 +50,7 @@ class BowerCrawler < Versioneye::Crawl
     crawl_versions(token)
     crawl_tag_project(token)
   end
+
 
   def self.crawl_concurrent(token, source_url)
     logger.info "running Bower crawler on concurrent threads."
@@ -63,8 +65,8 @@ class BowerCrawler < Versioneye::Crawl
   end
 
   def self.crawl_registered_list(source_url)
-    response = HTTParty.get(source_url)
-    app_list = JSON.parse(response.body, symbolize_names: true)
+    response = HTTParty.get( source_url )
+    app_list = JSON.parse( response.body, symbolize_names: true )
     tasks    = 0
 
     if app_list.nil? or app_list.empty?
@@ -73,7 +75,7 @@ class BowerCrawler < Versioneye::Crawl
     end
 
     app_list.each_with_index do |app, i|
-      repo_info = url_to_repo_info(app[:url])
+      repo_info = url_to_repo_info( app[:url] )
       if repo_info.nil? or repo_info.empty?
         # save non-supported url for further analyse
         task = to_existence_task({
@@ -475,7 +477,7 @@ class BowerCrawler < Versioneye::Crawl
     pkg_info = nil
     supported_files = Set.new ['bower.json', 'component.json', 'module.json', 'package.json']
     supported_files.to_a.each do |filename|
-      file_url     = "https://raw.github.com/#{fullname}/#{branch}/#{filename}"
+      file_url     = "https://raw.githubusercontent.com/#{fullname}/#{branch}/#{filename}"
       project_file = read_project_file_from_url( file_url, token )
       if project_file.is_a?(Hash)
         logger.info "Found: #{filename} for #{task[:repo_fullname]}"
@@ -865,9 +867,8 @@ class BowerCrawler < Versioneye::Crawl
   end
 
   def self.url_to_repo_info(repo_url)
-    if (repo_url =~ /github.com\//i).nil?
-      return nil
-    end
+    return nil if (repo_url =~ /github.com\//i).nil?
+
     parts = repo_url.split("/")
     owner = parts[parts.length - 2]
     repo  = parts[parts.length - 1]
