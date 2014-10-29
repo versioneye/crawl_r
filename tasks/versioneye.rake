@@ -95,6 +95,15 @@ namespace :versioneye do
     puts "---"
   end
 
+  desc "crawl Licenses"
+  task :crawl_licenses do
+    puts "START to crawle licenses "
+    RubyCrawl.new
+    LicenseCrawler.crawl
+    puts "---"
+  end
+
+
 
   # --- Workers ---
 
