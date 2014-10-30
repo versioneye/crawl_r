@@ -12,7 +12,7 @@ class LicenseCrawler < Versioneye::Crawl
   def self.crawl
     links_uniq = []
     links = Versionlink.where(:link => /http.+github\.com\/\w*\/\w*[\/]*$/i)
-    p "found #{links.count} github links"
+    logger.info "found #{links.count} github links"
     links.each do |link|
       next if links_uniq.include?(link.link)
       links_uniq << link.link
@@ -26,18 +26,17 @@ class LicenseCrawler < Versioneye::Crawl
 
       process link, product
     end
-    p "found #{links_uniq.count} unique  github links"
+    logger.info "found #{links_uniq.count} unique  github links"
   end
 
 
   def self.process link, product
-    p "process #{link.link}"
     repo_name = link.link
     repo_name = repo_name.gsub(/\?.*/i, "")
     repo_name = repo_name.gsub(/http.+github\.com\//i, "")
     sps = repo_name.split("/")
     if sps.count > 2
-      p " - SKIP #{repo_name}"
+      logger.info " - SKIP #{repo_name}"
       return
     end
 
@@ -68,36 +67,36 @@ class LicenseCrawler < Versioneye::Crawl
 
   def self.recognize_license content, raw_url, product
     if is_mit?( content )
-      p " -- MIT found at #{raw_url} --- "
+      logger.info " -- MIT found at #{raw_url} --- "
       find_or_create( product, 'MIT', raw_url )
       return 'MIT'
     end
 
     if is_apache_20?( content ) || is_apache_20_short?( content )
-      p " -- Apache License 2.0 found at #{raw_url} --- "
+      logger.info " -- Apache License 2.0 found at #{raw_url} --- "
       find_or_create( product, 'Apache License 2.0', raw_url )
       return 'LGPL-3.0'
     end
 
     if is_bsd?( content )
-      p " -- BSD found at #{raw_url} --- "
+      logger.info " -- BSD found at #{raw_url} --- "
       find_or_create( product, 'BSD', raw_url )
       return 'BSD'
     end
 
     if is_gpl_30?( content )
-      p " -- GPL-3.0 found at #{raw_url} --- "
+      logger.info " -- GPL-3.0 found at #{raw_url} --- "
       find_or_create( product, 'GPL-3.0', raw_url )
       return 'GPL-3.0'
     end
 
     if is_lgpl_30?( content )
-      p " -- LGPL-3.0 found at #{raw_url} --- "
+      logger.info " -- LGPL-3.0 found at #{raw_url} --- "
       find_or_create( product, 'LGPL-3.0', raw_url )
       return 'LGPL-3.0'
     end
 
-    p " -- NOT RECOGNIZED at #{raw_url} -- "
+    logger.info " -- NOT RECOGNIZED at #{raw_url} -- "
     nil
   end
 
@@ -134,7 +133,7 @@ class LicenseCrawler < Versioneye::Crawl
       link.save
     rescue => e
       p e.message
-      p "DELETE #{link.to_s}"
+      logger.info "DELETE #{link.to_s}"
       link.remove
       false
     end
@@ -144,6 +143,7 @@ class LicenseCrawler < Versioneye::Crawl
       content = prepare_content content
       content = content.gsub("'", "\"")
       content = content.gsub("`", "\"")
+      content = content.gsub("‘", "\"")
 
       return false if content.match(/Permission is hereby granted, free of charge, to any person obtaining/i).nil?
       return false if content.match(/a copy of this software and associated documentation files/i).nil?
