@@ -157,7 +157,9 @@ class LicenseCrawler < Versioneye::Crawl
       return false if content.match(/a copy of this software and associated documentation files/i).nil?
       return false if content.match(/to deal in the Software without restriction, including/i).nil?
 
-      return false if content.match(/THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND/i).nil?
+      return false if content.match(/THE SOFTWARE IS PROVIDED/i).nil?
+      return false if content.match(/AS IS/i).nil?
+      return false if content.match(/WITHOUT WARRANTY OF ANY KIND/i).nil?
       return false if content.match(/EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF/i).nil?
       return false if content.match(/MERCHANTABILITY, FITNESS FOR A PARTICULAR PURP/i).nil?
       return false if content.match(/LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION/i).nil?
@@ -211,9 +213,6 @@ class LicenseCrawler < Versioneye::Crawl
       content = content.gsub(/\n/, " ")
       content = content.gsub(/\r/, " ")
       content = content.gsub(/\s+/, " ")
-      content = content.gsub("'", "\"")
-      content = content.gsub("`", "\"")
-      content = content.gsub("‘", "\"")
       content
     end
 
