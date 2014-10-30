@@ -56,6 +56,14 @@ describe LicenseCrawler do
       License.first.name.should eq('Apache License 2.0')
     end
 
+    it "finds Apache License 2.0" do
+      License.count.should == 0
+      product = ProductFactory.create_new
+      LicenseCrawler.process_github_master('nearinfinity/active_blur', product).should be_truthy
+      License.count.should == 1
+      License.first.name.should eq('Apache License 2.0')
+    end
+
   end
 
 end

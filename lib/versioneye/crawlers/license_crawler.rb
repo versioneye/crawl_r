@@ -73,7 +73,7 @@ class LicenseCrawler < Versioneye::Crawl
       return 'MIT'
     end
 
-    if is_apache_20?( content )
+    if is_apache_20?( content ) || is_apache_20_short?( content )
       p " -- Apache License 2.0 found at #{raw_url} --- "
       find_or_create( product, 'Apache License 2.0', raw_url )
       return 'LGPL-3.0'
@@ -155,11 +155,16 @@ class LicenseCrawler < Versioneye::Crawl
 
     def self.is_apache_20? content
       content = prepare_content content
-
       return false if content.match(/Apache License Version 2.0/i).nil?
       return false if content.match(/TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION/i).nil?
       return false if content.match(/shall mean the terms and conditions for use, reproduction, and distribution as defined by Sections 1 through 9 of this document/i).nil?
+      return true
+    end
 
+    def self.is_apache_20_short? content
+      content = prepare_content content
+      return false if content.match(/http\:\/\/www\.apache\.org\/licenses\/LICENSE-2\.0/i).nil?
+      return false if content.match(/Licensed under the Apache License, Version 2.0/i).nil?
       return true
     end
 
