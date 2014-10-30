@@ -123,7 +123,7 @@ class LicenseCrawler < Versioneye::Crawl
 
 
     def self.is_mit? content
-      content = content.gsub(/\n/, "")
+      content = content.gsub(/\n/, " ")
       content = content.gsub(/\r/, " ")
       content = content.gsub("  ", " ")
 
