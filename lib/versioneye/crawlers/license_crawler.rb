@@ -79,6 +79,12 @@ class LicenseCrawler < Versioneye::Crawl
       return 'LGPL-3.0'
     end
 
+    if is_bsd?( content )
+      p " -- BSD found at #{raw_url} --- "
+      find_or_create( product, 'BSD', raw_url )
+      return 'BSD'
+    end
+
     if is_gpl_30?( content )
       p " -- GPL-3.0 found at #{raw_url} --- "
       find_or_create( product, 'GPL-3.0', raw_url )
@@ -137,6 +143,7 @@ class LicenseCrawler < Versioneye::Crawl
     def self.is_mit? content
       content = prepare_content content
       content = content.gsub("'", "\"")
+      content = content.gsub("`", "\"")
 
       return false if content.match(/Permission is hereby granted, free of charge, to any person obtaining/i).nil?
       return false if content.match(/a copy of this software and associated documentation files/i).nil?
@@ -187,6 +194,17 @@ class LicenseCrawler < Versioneye::Crawl
       return false if content.match(/GNU LESSER GENERAL PUBLIC LICENSE/i).nil?
       return false if content.match(/Version 3/i).nil?
       return false if content.match(/the GNU Lesser General Public License incorporates the terms and conditions of version 3 of the GNU General Public License/i).nil?
+
+      return true
+    end
+
+
+    def self.is_bsd? content
+      content = prepare_content content
+
+      return false if content.match(/is distributed under the BSD license/i).nil?
+      return false if content.match(/Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met/i).nil?
+      return false if content.match(/THIS SOFTWARE IS PROVIDED BY THE AUTHOR/i).nil?
 
       return true
     end
