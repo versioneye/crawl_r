@@ -68,6 +68,9 @@ class LicenseCrawler < Versioneye::Crawl
   def self.recognize_license content, raw_url, product
     return nil if content.to_s.strip.empty?
 
+    content = prepare_content content
+    return nil if content.to_s.strip.empty?
+
     if is_mit?( content )
       logger.info " -- MIT found at #{raw_url} --- "
       find_or_create( product, 'MIT', raw_url )
@@ -101,8 +104,12 @@ class LicenseCrawler < Versioneye::Crawl
     logger.info " -- NOT RECOGNIZED at #{raw_url} -- "
     nil
   rescue => e
+    p "ERROR in recognize_license for url: #{raw_url}"
+    p e.message
+    p e.backtrace.join("\n")
     logger.error "ERROR in recognize_license for url: #{raw_url}"
     logger.error e.message
+    logger.error e.backtrace.join("\n")
     nil
   end
 
@@ -146,9 +153,6 @@ class LicenseCrawler < Versioneye::Crawl
 
 
     def self.is_mit? content
-      content = prepare_content content
-
-
       return false if content.match(/Permission is hereby granted, free of charge, to any person obtaining/i).nil?
       return false if content.match(/a copy of this software and associated documentation files/i).nil?
       return false if content.match(/to deal in the Software without restriction, including/i).nil?
@@ -165,7 +169,6 @@ class LicenseCrawler < Versioneye::Crawl
 
 
     def self.is_apache_20? content
-      content = prepare_content content
       return false if content.match(/Apache License Version 2.0/i).nil?
       return false if content.match(/TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION/i).nil?
       return false if content.match(/shall mean the terms and conditions for use, reproduction, and distribution as defined by Sections 1 through 9 of this document/i).nil?
@@ -173,7 +176,6 @@ class LicenseCrawler < Versioneye::Crawl
     end
 
     def self.is_apache_20_short? content
-      content = prepare_content content
       return false if content.match(/http\:\/\/www\.apache\.org\/licenses\/LICENSE-2\.0/i).nil?
       return false if content.match(/Licensed under the Apache License, Version 2.0/i).nil?
       return true
@@ -181,35 +183,26 @@ class LicenseCrawler < Versioneye::Crawl
 
 
     def self.is_gpl_30? content
-      content = prepare_content content
-
       return false if content.match(/GNU GENERAL PUBLIC LICENSE/i).nil?
       return false if content.match(/Version 3/i).nil?
       return false if content.match(/The GNU General Public License is a free, copyleft license for/i).nil?
       return false if content.match(/"This License" refers to version 3 of the GNU General Public License/i).nil?
-
       return true
     end
 
 
     def self.is_lgpl_30? content
-      content = prepare_content content
-
       return false if content.match(/GNU LESSER GENERAL PUBLIC LICENSE/i).nil?
       return false if content.match(/Version 3/i).nil?
       return false if content.match(/the GNU Lesser General Public License incorporates the terms and conditions of version 3 of the GNU General Public License/i).nil?
-
       return true
     end
 
 
     def self.is_bsd? content
-      content = prepare_content content
-
       return false if content.match(/is distributed under the BSD license/i).nil?
       return false if content.match(/Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met/i).nil?
       return false if content.match(/THIS SOFTWARE IS PROVIDED BY THE AUTHOR/i).nil?
-
       return true
     end
 
