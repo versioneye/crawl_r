@@ -73,10 +73,22 @@ class LicenseCrawler < Versioneye::Crawl
       return 'MIT'
     end
 
+    if is_apache_20?( content )
+      p " -- Apache License 2.0 found at #{raw_url} --- "
+      find_or_create( product, 'Apache License 2.0', raw_url )
+      return 'LGPL-3.0'
+    end
+
     if is_gpl_30?( content )
       p " -- GPL-3.0 found at #{raw_url} --- "
       find_or_create( product, 'GPL-3.0', raw_url )
       return 'GPL-3.0'
+    end
+
+    if is_lgpl_30?( content )
+      p " -- LGPL-3.0 found at #{raw_url} --- "
+      find_or_create( product, 'LGPL-3.0', raw_url )
+      return 'LGPL-3.0'
     end
 
     p " -- NOT RECOGNIZED at #{raw_url} -- "
@@ -123,9 +135,7 @@ class LicenseCrawler < Versioneye::Crawl
 
 
     def self.is_mit? content
-      content = content.gsub(/\n/, " ")
-      content = content.gsub(/\r/, " ")
-      content = content.gsub("  ", " ")
+      content = prepare_content content
 
       return false if content.match(/Permission is hereby granted, free of charge, to any person obtaining/i).nil?
       return false if content.match(/a copy of this software and associated documentation files/i).nil?
@@ -142,8 +152,20 @@ class LicenseCrawler < Versioneye::Crawl
       return true
     end
 
+
+    def self.is_apache_20? content
+      content = prepare_content content
+
+      return false if content.match(/Apache License Version 2.0/i).nil?
+      return false if content.match(/TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION/i).nil?
+      return false if content.match(/shall mean the terms and conditions for use, reproduction, and distribution as defined by Sections 1 through 9 of this document/i).nil?
+
+      return true
+    end
+
+
     def self.is_gpl_30? content
-      content = content.gsub(/\n/, "")
+      content = prepare_content content
 
       return false if content.match(/GNU GENERAL PUBLIC LICENSE/i).nil?
       return false if content.match(/Version 3/i).nil?
@@ -151,6 +173,25 @@ class LicenseCrawler < Versioneye::Crawl
       return false if content.match(/"This License" refers to version 3 of the GNU General Public License/i).nil?
 
       return true
+    end
+
+
+    def self.is_lgpl_30? content
+      content = prepare_content content
+
+      return false if content.match(/GNU LESSER GENERAL PUBLIC LICENSE/i).nil?
+      return false if content.match(/Version 3/i).nil?
+      return false if content.match(/the GNU Lesser General Public License incorporates the terms and conditions of version 3 of the GNU General Public License/i).nil?
+
+      return true
+    end
+
+
+    def self.prepare_content content
+      content = content.gsub(/\n/, " ")
+      content = content.gsub(/\r/, " ")
+      content = content.gsub(/\s+/, " ")
+      content
     end
 
 
