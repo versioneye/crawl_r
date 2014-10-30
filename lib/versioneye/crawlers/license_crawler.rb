@@ -136,6 +136,7 @@ class LicenseCrawler < Versioneye::Crawl
 
     def self.is_mit? content
       content = prepare_content content
+      content = content.gsub("'", "\"")
 
       return false if content.match(/Permission is hereby granted, free of charge, to any person obtaining/i).nil?
       return false if content.match(/a copy of this software and associated documentation files/i).nil?
@@ -143,8 +144,7 @@ class LicenseCrawler < Versioneye::Crawl
 
       return false if content.match(/THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND/i).nil?
       return false if content.match(/EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF/i).nil?
-      return false if content.match(/MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND/i).nil?
-      return false if content.match(/NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE/i).nil?
+      return false if content.match(/MERCHANTABILITY, FITNESS FOR A PARTICULAR PURP/i).nil?
       return false if content.match(/LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION/i).nil?
       return false if content.match(/OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION/i).nil?
       return false if content.match(/WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE./i).nil?
