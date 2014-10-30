@@ -66,6 +66,8 @@ class LicenseCrawler < Versioneye::Crawl
 
 
   def self.recognize_license content, raw_url, product
+    return nil if content.to_s.strip.empty?
+
     if is_mit?( content )
       logger.info " -- MIT found at #{raw_url} --- "
       find_or_create( product, 'MIT', raw_url )
@@ -97,6 +99,9 @@ class LicenseCrawler < Versioneye::Crawl
     end
 
     logger.info " -- NOT RECOGNIZED at #{raw_url} -- "
+    nil
+  rescue => e
+    logger.error e.message
     nil
   end
 
@@ -141,9 +146,7 @@ class LicenseCrawler < Versioneye::Crawl
 
     def self.is_mit? content
       content = prepare_content content
-      content = content.gsub("'", "\"")
-      content = content.gsub("`", "\"")
-      content = content.gsub("‘", "\"")
+
 
       return false if content.match(/Permission is hereby granted, free of charge, to any person obtaining/i).nil?
       return false if content.match(/a copy of this software and associated documentation files/i).nil?
@@ -214,6 +217,12 @@ class LicenseCrawler < Versioneye::Crawl
       content = content.gsub(/\n/, " ")
       content = content.gsub(/\r/, " ")
       content = content.gsub(/\s+/, " ")
+      content = content.gsub("'", "\"")
+      content = content.gsub("`", "\"")
+      content = content.gsub("‘", "\"")
+      content
+    rescue => e
+      logger.error e.message
       content
     end
 
