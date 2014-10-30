@@ -101,6 +101,7 @@ class LicenseCrawler < Versioneye::Crawl
     logger.info " -- NOT RECOGNIZED at #{raw_url} -- "
     nil
   rescue => e
+    logger.error "ERROR in recognize_license for url: #{raw_url}"
     logger.error e.message
     nil
   end
@@ -220,9 +221,6 @@ class LicenseCrawler < Versioneye::Crawl
       content = content.gsub("'", "\"")
       content = content.gsub("`", "\"")
       content = content.gsub("‘", "\"")
-      content
-    rescue => e
-      logger.error e.message
       content
     end
 
