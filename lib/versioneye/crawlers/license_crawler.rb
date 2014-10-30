@@ -124,6 +124,8 @@ class LicenseCrawler < Versioneye::Crawl
 
     def self.is_mit? content
       content = content.gsub(/\n/, "")
+      content = content.gsub(/\r/, " ")
+      content = content.gsub("  ", " ")
 
       return false if content.match(/Permission is hereby granted, free of charge, to any person obtaining/i).nil?
       return false if content.match(/a copy of this software and associated documentation files/i).nil?
