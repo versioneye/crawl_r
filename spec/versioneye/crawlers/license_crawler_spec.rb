@@ -48,6 +48,14 @@ describe LicenseCrawler do
       License.first.name.should eq('GPL-3.0')
     end
 
+    it "finds GPL-2" do
+      License.count.should == 0
+      product = ProductFactory.create_new
+      LicenseCrawler.process_github_master('benjaminoakes/airplane_mode', product).should be_truthy
+      License.count.should == 1
+      License.first.name.should eq('GPL-2.0')
+    end
+
     it "finds LGPL-3" do
       License.count.should == 0
       product = ProductFactory.create_new

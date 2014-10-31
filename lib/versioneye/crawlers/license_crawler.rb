@@ -95,6 +95,12 @@ class LicenseCrawler < Versioneye::Crawl
       return 'GPL-3.0'
     end
 
+    if is_gpl_20?( content )
+      logger.info " -- GPL-2.0 found at #{raw_url} --- "
+      find_or_create( product, 'GPL-2.0', raw_url )
+      return 'GPL-2.0'
+    end
+
     if is_lgpl_30?( content )
       logger.info " -- LGPL-3.0 found at #{raw_url} --- "
       find_or_create( product, 'LGPL-3.0', raw_url )
@@ -250,10 +256,15 @@ class LicenseCrawler < Versioneye::Crawl
 
 
     def self.is_gpl_30? content
-      return false if content.match(/GNU GENERAL PUBLIC LICENSE/i).nil?
-      return false if content.match(/Version 3/i).nil?
+      return false if content.match(/GNU GENERAL PUBLIC LICENSE Version 3/i).nil?
       return false if content.match(/The GNU General Public License is a free, copyleft license for/i).nil?
       return false if content.match(/"This License" refers to version 3 of the GNU General Public License/i).nil?
+      return true
+    end
+
+    def self.is_gpl_20? content
+      return false if content.match(/GNU GENERAL PUBLIC LICENSE Version 2/i).nil?
+      return false if content.match(/the GNU General Public License is intended to guarantee your freedom to share and change free software/i).nil?
       return true
     end
 
