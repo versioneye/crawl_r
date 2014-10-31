@@ -310,7 +310,7 @@ class LicenseCrawler < Versioneye::Crawl
       return false if content.match(/AS IS/i).nil?
       return false if content.match(/AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT/i).nil?
       return false if content.match(/LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR/i).nil?
-      return false if content.match(/A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE/i).nil?
+      return false if content.match(/A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL/i).nil?
       return false if content.match(/BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES/i).nil?
       return false if content.match(/INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION/i).nil?
       return false if content.match(/HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT/i).nil?
