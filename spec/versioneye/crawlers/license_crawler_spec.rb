@@ -80,6 +80,22 @@ describe LicenseCrawler do
       License.first.name.should eq('BSD')
     end
 
+    it "finds Ruby" do
+      License.count.should == 0
+      product = ProductFactory.create_new
+      LicenseCrawler.process_github_master('solutious/bone', product).should be_truthy
+      License.count.should == 1
+      License.first.name.should eq('Ruby')
+    end
+
+    it "finds Ruby" do
+      License.count.should == 0
+      product = ProductFactory.create_new
+      LicenseCrawler.process_github_master('ruport/ruport', product).should be_truthy
+      License.count.should == 1
+      License.first.name.should eq('Ruby')
+    end
+
   end
 
 end

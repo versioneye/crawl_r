@@ -101,12 +101,15 @@ class LicenseCrawler < Versioneye::Crawl
       return 'LGPL-3.0'
     end
 
+    if is_ruby?( content )
+      logger.info " -- Ruby found at #{raw_url} --- "
+      find_or_create( product, 'Ruby', raw_url )
+      return 'Ruby'
+    end
+
     logger.info " -- NOT RECOGNIZED at #{raw_url} -- "
     nil
   rescue => e
-    p "ERROR in recognize_license for url: #{raw_url}"
-    p e.message
-    p e.backtrace.join("\n")
     logger.error "ERROR in recognize_license for url: #{raw_url}"
     logger.error e.message
     logger.error e.backtrace.join("\n")
@@ -166,6 +169,41 @@ class LicenseCrawler < Versioneye::Crawl
       return false if content.match(/OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION/i).nil?
       return false if content.match(/WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE./i).nil?
 
+      return true
+    end
+
+
+    def self.is_ruby? content
+      return false if content.match(/place your modifications in the Public Domain or otherwise/i).nil?
+      return false if content.match(/make them Freely Available, such as by posting said/i).nil?
+      return false if content.match(/modifications to Usenet or an equivalent medium, or by allowing/i).nil?
+      return false if content.match(/the author to include your modifications in the software/i).nil?
+
+      return false if content.match(/use the modified software only within your corporation or organization/i).nil?
+
+      return false if content.match(/rename any non-standard executables so the names do not conflict with standard executables, which must also be provided./i).nil?
+
+      return false if content.match(/make other distribution arrangements with the author./i).nil?
+
+      return false if content.match(/You may distribute the software in object code or executable/i).nil?
+      return false if content.match(/form, provided that you do at least ONE of the following/i).nil?
+
+      return false if content.match(/distribute the executables and library files of the software/i).nil?
+      return false if content.match(/accompany the distribution with the machine-readable source of the software/i).nil?
+
+      return false if content.match(/give non-standard executables non-standard names, with/i).nil?
+      return false if content.match(/instructions on where to get the original software distribution/i).nil?
+      return false if content.match(/make other distribution arrangements with the author/i).nil?
+
+      return false if content.match(/You may modify and include the part of the software into any other software/i).nil?
+      return false if content.match(/possibly commercial/i).nil?
+
+      return false if content.match(/The scripts and library files supplied as input to or produced a/i).nil?
+      return false if content.match(/output from the software do not automatically fall under the/i).nil?
+
+      return false if content.match(/THIS SOFTWARE IS PROVIDED/i).nil?
+      return false if content.match(/AS IS/i).nil?
+      return false if content.match(/AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE/i).nil?
       return true
     end
 
