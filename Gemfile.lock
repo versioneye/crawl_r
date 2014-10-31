@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:versioneye/versioneye-core.git
-  revision: 95217bcbe7dedf828b4df932f7fe3a911dc0f1f8
-  tag: v6.10.1
+  revision: d2708cf51778831fd2c1c35145e9d19f20780eaf
+  tag: v6.10.2
   specs:
-    versioneye-core (6.10.1)
+    versioneye-core (6.10.2)
       actionmailer (~> 3.2.17)
       aws-sdk (~> 1.0)
       bundler (= 1.7.4)
@@ -197,7 +197,7 @@ GEM
       multi_json (~> 1.0)
       simplecov-html (~> 0.8.0)
     simplecov-html (0.8.0)
-    sprockets (2.2.2)
+    sprockets (2.2.3)
       hike (~> 1.2)
       multi_json (~> 1.0)
       rack (~> 1.0)
