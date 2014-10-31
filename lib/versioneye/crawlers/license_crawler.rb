@@ -119,6 +119,12 @@ class LicenseCrawler < Versioneye::Crawl
       return 'New BSD'
     end
 
+    if is_BSD_2_clause?( content )
+      logger.info " -- BSD 2-clause License found at #{raw_url} --- "
+      find_or_create( product, 'BSD 2-clause', raw_url )
+      return 'BSD 2-clause'
+    end
+
     logger.info " -- NOT RECOGNIZED at #{raw_url} -- "
     nil
   rescue => e
@@ -240,6 +246,23 @@ class LicenseCrawler < Versioneye::Crawl
       return true
     end
 
+    def self.is_BSD_2_clause? content
+      return false if content.match(/BSD 2-clause/i).nil?
+      return false if content.match(/Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met/i).nil?
+      return false if content.match(/Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer/i).nil?
+      return false if content.match(/THIS SOFTWARE IS PROVIDED BY/i).nil?
+      return false if content.match(/AS IS/i).nil?
+      return false if content.match(/AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT/i).nil?
+      return false if content.match(/LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR/i).nil?
+      return false if content.match(/A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE/i).nil?
+      return false if content.match(/BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES/i).nil?
+      return false if content.match(/INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION/i).nil?
+      return false if content.match(/HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT/i).nil?
+      return false if content.match(/INCLUDING NEGLIGENCE OR OTHERWISE/i).nil?
+      return false if content.match(/ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE/i).nil?
+      return true
+    end
+
 
     def self.is_apache_20? content
       return false if content.match(/Apache License Version 2.0/i).nil?
@@ -275,7 +298,6 @@ class LicenseCrawler < Versioneye::Crawl
       return false if content.match(/the GNU Lesser General Public License incorporates the terms and conditions of version 3 of the GNU General Public License/i).nil?
       return true
     end
-
 
     def self.is_bsd? content
       return false if content.match(/is distributed under the BSD license/i).nil?
