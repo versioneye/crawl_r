@@ -371,9 +371,13 @@ class LicenseCrawler < Versioneye::Crawl
 
 
     def self.prepare_content content
+      content = content.force_encoding("UTF-8")
+      content = content.gsub(/\u2028/, "")
       content = content.gsub(/\n/, " ")
       content = content.gsub(/\r/, " ")
+      content = content.gsub("\xE2\x80\xA8", " ")
       content = content.gsub(/\s+/, " ")
+
       content
     end
 
