@@ -80,6 +80,22 @@ describe LicenseCrawler do
       License.first.name.should eq('BSD')
     end
 
+    it "finds New BSD" do
+      License.count.should == 0
+      product = ProductFactory.create_new
+      LicenseCrawler.process_github_master('MrRuru/spree_coupon_preview', product).should be_truthy
+      License.count.should == 1
+      License.first.name.should eq('New BSD')
+    end
+
+    it "finds New BSD" do
+      License.count.should == 0
+      product = ProductFactory.create_new
+      LicenseCrawler.process_github_master('johndavid400/spree_news', product).should be_truthy
+      License.count.should == 1
+      License.first.name.should eq('New BSD')
+    end
+
     it "finds Ruby" do
       License.count.should == 0
       product = ProductFactory.create_new

@@ -107,6 +107,12 @@ class LicenseCrawler < Versioneye::Crawl
       return 'Ruby'
     end
 
+    if is_new_bsd?( content )
+      logger.info " -- New BSD License found at #{raw_url} --- "
+      find_or_create( product, 'New BSD', raw_url )
+      return 'New BSD'
+    end
+
     logger.info " -- NOT RECOGNIZED at #{raw_url} -- "
     nil
   rescue => e
@@ -204,6 +210,26 @@ class LicenseCrawler < Versioneye::Crawl
       return false if content.match(/THIS SOFTWARE IS PROVIDED/i).nil?
       return false if content.match(/AS IS/i).nil?
       return false if content.match(/AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE/i).nil?
+      return true
+    end
+
+
+    def self.is_new_bsd? content
+      return false if content.match(/Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met/i).nil?
+      return false if content.match(/Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer/i).nil?
+      return false if content.match(/Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/i).nil?
+      return false if content.match(/or other materials provided with the distribution/i).nil?
+      return false if content.match(/Neither the name /i).nil?
+      return false if content.match(/nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission/i).nil?
+      return false if content.match(/THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS/i).nil?
+      return false if content.match(/AS IS/i).nil?
+      return false if content.match(/AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT/i).nil?
+      return false if content.match(/LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR/i).nil?
+      return false if content.match(/A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES/i).nil?
+      return false if content.match(/INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION/i).nil?
+      return false if content.match(/HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT/i).nil?
+      return false if content.match(/INCLUDING NEGLIGENCE OR OTHERWISE/i).nil?
+      return false if content.match(/ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE/i).nil?
       return true
     end
 
