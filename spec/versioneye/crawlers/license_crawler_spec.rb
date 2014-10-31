@@ -56,6 +56,14 @@ describe LicenseCrawler do
       License.first.name.should eq('GPL-2.0')
     end
 
+    it "finds AGPL-3" do
+      License.count.should == 0
+      product = ProductFactory.create_new
+      LicenseCrawler.process_github_master('brighterplanet/fuel_purchase', product).should be_truthy
+      License.count.should == 1
+      License.first.name.should eq('AGPL-3.0')
+    end
+
     it "finds LGPL-3" do
       License.count.should == 0
       product = ProductFactory.create_new

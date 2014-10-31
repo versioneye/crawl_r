@@ -89,16 +89,22 @@ class LicenseCrawler < Versioneye::Crawl
       return 'BSD'
     end
 
+    if is_gpl_20?( content )
+      logger.info " -- GPL-2.0 found at #{raw_url} --- "
+      find_or_create( product, 'GPL-2.0', raw_url )
+      return 'GPL-2.0'
+    end
+
     if is_gpl_30?( content )
       logger.info " -- GPL-3.0 found at #{raw_url} --- "
       find_or_create( product, 'GPL-3.0', raw_url )
       return 'GPL-3.0'
     end
 
-    if is_gpl_20?( content )
-      logger.info " -- GPL-2.0 found at #{raw_url} --- "
-      find_or_create( product, 'GPL-2.0', raw_url )
-      return 'GPL-2.0'
+    if is_agpl_30?( content )
+      logger.info " -- AGPL-3.0 found at #{raw_url} --- "
+      find_or_create( product, 'AGPL-3.0', raw_url )
+      return 'AGPL-3.0'
     end
 
     if is_lgpl_30?( content )
@@ -278,6 +284,12 @@ class LicenseCrawler < Versioneye::Crawl
     end
 
 
+    def self.is_gpl_20? content
+      return false if content.match(/GNU GENERAL PUBLIC LICENSE Version 2/i).nil?
+      return false if content.match(/the GNU General Public License is intended to guarantee your freedom to share and change free software/i).nil?
+      return true
+    end
+
     def self.is_gpl_30? content
       return false if content.match(/GNU GENERAL PUBLIC LICENSE Version 3/i).nil?
       return false if content.match(/The GNU General Public License is a free, copyleft license for/i).nil?
@@ -285,9 +297,11 @@ class LicenseCrawler < Versioneye::Crawl
       return true
     end
 
-    def self.is_gpl_20? content
-      return false if content.match(/GNU GENERAL PUBLIC LICENSE Version 2/i).nil?
-      return false if content.match(/the GNU General Public License is intended to guarantee your freedom to share and change free software/i).nil?
+    def self.is_agpl_30? content
+      return false if content.match(/AFFERO GENERAL PUBLIC LICENSE Version 3/i).nil?
+      return false if content.match(/The GNU Affero General Public License is a free/i).nil?
+      return false if content.match(/Affero General Public License is designed specifically to ensure that/i).nil?
+      return false if content.match(/refers to version 3 of the GNU Affero General Public License/i).nil?
       return true
     end
 
