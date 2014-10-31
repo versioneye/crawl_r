@@ -131,7 +131,7 @@ class LicenseCrawler < Versioneye::Crawl
       return 'BSD 2-clause'
     end
 
-    logger.info " -- NOT RECOGNIZED at #{raw_url} -- "
+    logger.info " ---- NOT RECOGNIZED at #{raw_url} ---- "
     nil
   rescue => e
     logger.error "ERROR in recognize_license for url: #{raw_url}"
@@ -186,9 +186,6 @@ class LicenseCrawler < Versioneye::Crawl
       return false if content.match(/to use, copy, modify, merge, publish, distribute, sublicense, and\/or sell/i).nil?
       return false if content.match(/copies of the Software, and to permit persons to whom the Software is/i).nil?
       return false if content.match(/furnished to do so, subject to the following conditions/i).nil?
-
-      return false if content.match(/The above copyright notice and this permission notice shall be included in/i).nil?
-      return false if content.match(/all copies or substantial portions of the Software/i).nil?
 
       return false if content.match(/THE SOFTWARE IS PROVIDED/i).nil?
       return false if content.match(/AS IS/i).nil?
