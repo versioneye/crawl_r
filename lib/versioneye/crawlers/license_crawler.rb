@@ -80,7 +80,7 @@ class LicenseCrawler < Versioneye::Crawl
     if is_apache_20?( content ) || is_apache_20_short?( content )
       logger.info " -- Apache License 2.0 found at #{raw_url} --- "
       find_or_create( product, 'Apache License 2.0', raw_url )
-      return 'LGPL-3.0'
+      return 'Apache License 2.0'
     end
 
     if is_bsd?( content )
@@ -307,9 +307,8 @@ class LicenseCrawler < Versioneye::Crawl
 
 
     def self.is_lgpl_30? content
-      return false if content.match(/GNU LESSER GENERAL PUBLIC LICENSE/i).nil?
-      return false if content.match(/Version 3/i).nil?
-      return false if content.match(/the GNU Lesser General Public License incorporates the terms and conditions of version 3 of the GNU General Public License/i).nil?
+      return false if content.match(/GNU (LESSER|Library) General public license Version 3/i).nil?
+      return false if content.match(/the GNU (LESSER|Library) General Public License incorporates the terms and conditions of version 3 of the/i).nil?
       return true
     end
 
