@@ -182,7 +182,13 @@ class LicenseCrawler < Versioneye::Crawl
     def self.is_mit? content
       return false if content.match(/Permission is hereby granted, free of charge, to any person obtaining/i).nil?
       return false if content.match(/a copy of this software and associated documentation files/i).nil?
-      return false if content.match(/to deal in the Software without restriction, including/i).nil?
+      return false if content.match(/to deal in the Software without restriction, including without limitation the rights/i).nil?
+      return false if content.match(/to use, copy, modify, merge, publish, distribute, sublicense, and\/or sell/i).nil?
+      return false if content.match(/copies of the Software, and to permit persons to whom the Software is/i).nil?
+      return false if content.match(/furnished to do so, subject to the following conditions/i).nil?
+
+      return false if content.match(/The above copyright notice and this permission notice shall be included in/i).nil?
+      return false if content.match(/all copies or substantial portions of the Software/i).nil?
 
       return false if content.match(/THE SOFTWARE IS PROVIDED/i).nil?
       return false if content.match(/AS IS/i).nil?
@@ -191,7 +197,7 @@ class LicenseCrawler < Versioneye::Crawl
       return false if content.match(/MERCHANTABILITY, FITNESS FOR A PARTICULAR PURP/i).nil?
       return false if content.match(/LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION/i).nil?
       return false if content.match(/OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION/i).nil?
-      return false if content.match(/WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE./i).nil?
+      return false if content.match(/WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE/i).nil?
 
       return true
     end
