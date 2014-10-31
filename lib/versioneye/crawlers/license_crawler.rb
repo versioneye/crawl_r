@@ -253,9 +253,9 @@ class LicenseCrawler < Versioneye::Crawl
     end
 
     def self.is_BSD_2_clause? content
-      return false if content.match(/BSD 2-clause/i).nil?
       return false if content.match(/Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met/i).nil?
       return false if content.match(/Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer/i).nil?
+      return false if content.match(/Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and\/or other materials provided with the distribution/i).nil?
       return false if content.match(/THIS SOFTWARE IS PROVIDED BY/i).nil?
       return false if content.match(/AS IS/i).nil?
       return false if content.match(/AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT/i).nil?

@@ -135,6 +135,13 @@ describe LicenseCrawler do
       License.count.should == 1
       License.first.name.should eq('BSD 2-clause')
     end
+    it "finds BSD 2-clause" do
+      License.count.should == 0
+      product = ProductFactory.create_new
+      LicenseCrawler.process_github_master('mintdigital/execjslint', product).should be_truthy
+      License.count.should == 1
+      License.first.name.should eq('BSD 2-clause')
+    end
 
     it "finds Ruby" do
       License.count.should == 0
