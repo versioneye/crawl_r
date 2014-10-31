@@ -77,6 +77,12 @@ class LicenseCrawler < Versioneye::Crawl
       return 'MIT'
     end
 
+    if is_unlicense?( content )
+      logger.info " -- the unlicense found at #{raw_url} --- "
+      find_or_create( product, 'The Unlicense', raw_url )
+      return 'The Unlicense'
+    end
+
     if is_apache_20?( content ) || is_apache_20_short?( content )
       logger.info " -- Apache License 2.0 found at #{raw_url} --- "
       find_or_create( product, 'Apache License 2.0', raw_url )
@@ -186,6 +192,33 @@ class LicenseCrawler < Versioneye::Crawl
       return false if content.match(/to use, copy, modify, merge, publish, distribute, sublicense, and\/or sell/i).nil?
       return false if content.match(/copies of the Software, and to permit persons to whom the Software is/i).nil?
       return false if content.match(/furnished to do so, subject to the following conditions/i).nil?
+
+      return false if content.match(/THE SOFTWARE IS PROVIDED/i).nil?
+      return false if content.match(/AS IS/i).nil?
+      return false if content.match(/WITHOUT WARRANTY OF ANY KIND/i).nil?
+      return false if content.match(/EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF/i).nil?
+      return false if content.match(/MERCHANTABILITY, FITNESS FOR A PARTICULAR PURP/i).nil?
+      return false if content.match(/LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION/i).nil?
+      return false if content.match(/OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION/i).nil?
+      return false if content.match(/WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE/i).nil?
+
+      return true
+    end
+
+
+    def self.is_unlicense? content
+      return false if content.match(/This is free and unencumbered software released into the public domain/i).nil?
+      return false if content.match(/Anyone is free to copy, modify, publish, use, compile, sell, or/i).nil?
+      return false if content.match(/distribute this software, either in source code form or as a compiled/i).nil?
+      return false if content.match(/binary, for any purpose, commercial or non-commercial, and by any means/i).nil?
+
+      return false if content.match(/In jurisdictions that recognize copyright laws, the author or authors/i).nil?
+      return false if content.match(/of this software dedicate any and all copyright interest in the/i).nil?
+      return false if content.match(/software to the public domain. We make this dedication for the benefit/i).nil?
+      return false if content.match(/of the public at large and to the detriment of our heirs and/i).nil?
+      return false if content.match(/successors. We intend this dedication to be an overt act of/i).nil?
+      return false if content.match(/relinquishment in perpetuity of all present and future rights to this/i).nil?
+      return false if content.match(/software under copyright law/i).nil?
 
       return false if content.match(/THE SOFTWARE IS PROVIDED/i).nil?
       return false if content.match(/AS IS/i).nil?
