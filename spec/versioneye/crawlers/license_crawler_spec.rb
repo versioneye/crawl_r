@@ -96,6 +96,22 @@ describe LicenseCrawler do
       License.first.name.should eq('New BSD')
     end
 
+    it "finds New BSD" do
+      License.count.should == 0
+      product = ProductFactory.create_new
+      LicenseCrawler.process_github_master('citrus/spree_essential_cms', product).should be_truthy
+      License.count.should == 1
+      License.first.name.should eq('New BSD')
+    end
+
+    it "finds New BSD" do
+      License.count.should == 0
+      product = ProductFactory.create_new
+      LicenseCrawler.process_github_master('adzap/ar_mailer', product).should be_truthy
+      License.count.should == 1
+      License.first.name.should eq('New BSD')
+    end
+
     it "finds Ruby" do
       License.count.should == 0
       product = ProductFactory.create_new
