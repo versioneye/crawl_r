@@ -733,7 +733,7 @@ class BowerCrawler < Versioneye::Crawl
 
   def self.create_or_update_license(product, license_info)
     return nil if product.nil?
-    return nil if license_info[:name].nil? || license_info[:name].empty?
+    return nil if license_info[:name].nil? || license_info[:name].empty? || license_info[:name].to_s.eql?("unknown")
 
     new_license = License.find_or_create_by(
       language: product[:language],
