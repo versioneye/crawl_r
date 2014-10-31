@@ -78,9 +78,15 @@ class LicenseCrawler < Versioneye::Crawl
     end
 
     if is_unlicense?( content )
-      logger.info " -- the unlicense found at #{raw_url} --- "
+      logger.info " -- The Unlicense found at #{raw_url} --- "
       find_or_create( product, 'The Unlicense', raw_url )
       return 'The Unlicense'
+    end
+
+    if is_dwtfywt?( content )
+      logger.info " -- DO WHAT THE FUCK YOU WANT found at #{raw_url} --- "
+      find_or_create( product, 'DWTFYWTP License', raw_url )
+      return 'DWTFYWTP License'
     end
 
     if is_apache_20?( content ) || is_apache_20_short?( content )
@@ -229,6 +235,14 @@ class LicenseCrawler < Versioneye::Crawl
       return false if content.match(/OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION/i).nil?
       return false if content.match(/WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE/i).nil?
 
+      return true
+    end
+
+
+    def self.is_dwtfywt? content
+      return false if content.match(/DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE/i).nil?
+      return false if content.match(/TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION/i).nil?
+      return false if content.match(/You just DO WHAT THE FUCK YOU WANT TO/i).nil?
       return true
     end
 
