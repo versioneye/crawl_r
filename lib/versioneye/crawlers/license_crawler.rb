@@ -196,7 +196,8 @@ class LicenseCrawler < Versioneye::Crawl
       return false if content.match(/Permission is hereby granted, free of charge, to any person obtaining/i).nil?
       return false if content.match(/a copy of this software and associated documentation files/i).nil?
       return false if content.match(/to deal in the Software without restriction, including without limitation the rights/i).nil?
-      return false if content.match(/to use, copy, modify, merge, publish, distribute, sublicense, and\/or sell/i).nil?
+      return false if content.match(/to use, copy, modify, merge, publish, distribute, sublicense, and/i).nil?
+      return false if content.match(/or sell/i).nil?
       return false if content.match(/copies of the Software, and to permit persons to whom the Software is/i).nil?
       return false if content.match(/furnished to do so, subject to the following conditions/i).nil?
 
@@ -306,7 +307,8 @@ class LicenseCrawler < Versioneye::Crawl
     def self.is_BSD_2_clause? content
       return false if content.match(/Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met/i).nil?
       return false if content.match(/Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer/i).nil?
-      return false if content.match(/Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and\/or other materials provided with the distribution/i).nil?
+      return false if content.match(/Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/i).nil?
+      return false if content.match(/or other materials provided with the distribution/i).nil?
       return false if content.match(/THIS SOFTWARE IS PROVIDED BY/i).nil?
       return false if content.match(/AS IS/i).nil?
       return false if content.match(/AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT/i).nil?
