@@ -47,3 +47,6 @@ pkg
 
 # For rubinius:
 #*.rbc
+
+log/.*.log
+log/license.log

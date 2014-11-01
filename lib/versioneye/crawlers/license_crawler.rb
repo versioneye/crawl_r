@@ -72,7 +72,49 @@ class LicenseCrawler < Versioneye::Crawl
     content = prepare_content content
     return nil if content.to_s.strip.empty?
 
-    if is_mit?( content )
+    if is_new_bsd?( content )
+      logger.info " -- New BSD License found at #{raw_url} --- "
+      find_or_create( product, 'New BSD', raw_url )
+      return 'New BSD'
+    end
+
+    if is_BSD_2_clause?( content )
+      logger.info " -- BSD 2-clause License found at #{raw_url} --- "
+      find_or_create( product, 'BSD 2-clause', raw_url )
+      return 'BSD 2-clause'
+    end
+
+    if is_gpl_30?( content )
+      logger.info " -- GPL-3.0 found at #{raw_url} --- "
+      find_or_create( product, 'GPL-3.0', raw_url )
+      return 'GPL-3.0'
+    end
+
+    if is_gpl_20?( content )
+      logger.info " -- GPL-2.0 found at #{raw_url} --- "
+      find_or_create( product, 'GPL-2.0', raw_url )
+      return 'GPL-2.0'
+    end
+
+    if is_agpl_30?( content )
+      logger.info " -- AGPL-3.0 found at #{raw_url} --- "
+      find_or_create( product, 'AGPL-3.0', raw_url )
+      return 'AGPL-3.0'
+    end
+
+    if is_lgpl_30?( content )
+      logger.info " -- LGPL-3.0 found at #{raw_url} --- "
+      find_or_create( product, 'LGPL-3.0', raw_url )
+      return 'LGPL-3.0'
+    end
+
+    if is_ruby?( content )
+      logger.info " -- Ruby found at #{raw_url} --- "
+      find_or_create( product, 'Ruby', raw_url )
+      return 'Ruby'
+    end
+
+    if is_mit?( content ) || is_mit_ol?( content )
       logger.info " -- MIT found at #{raw_url} --- "
       find_or_create( product, 'MIT', raw_url )
       return 'MIT'
@@ -100,48 +142,6 @@ class LicenseCrawler < Versioneye::Crawl
       logger.info " -- Mozilla Public License Version 2.0 found at #{raw_url} --- "
       find_or_create( product, 'MPL-2.0', raw_url )
       return 'MPL-2.0'
-    end
-
-    if is_gpl_20?( content )
-      logger.info " -- GPL-2.0 found at #{raw_url} --- "
-      find_or_create( product, 'GPL-2.0', raw_url )
-      return 'GPL-2.0'
-    end
-
-    if is_gpl_30?( content )
-      logger.info " -- GPL-3.0 found at #{raw_url} --- "
-      find_or_create( product, 'GPL-3.0', raw_url )
-      return 'GPL-3.0'
-    end
-
-    if is_agpl_30?( content )
-      logger.info " -- AGPL-3.0 found at #{raw_url} --- "
-      find_or_create( product, 'AGPL-3.0', raw_url )
-      return 'AGPL-3.0'
-    end
-
-    if is_lgpl_30?( content )
-      logger.info " -- LGPL-3.0 found at #{raw_url} --- "
-      find_or_create( product, 'LGPL-3.0', raw_url )
-      return 'LGPL-3.0'
-    end
-
-    if is_ruby?( content )
-      logger.info " -- Ruby found at #{raw_url} --- "
-      find_or_create( product, 'Ruby', raw_url )
-      return 'Ruby'
-    end
-
-    if is_new_bsd?( content )
-      logger.info " -- New BSD License found at #{raw_url} --- "
-      find_or_create( product, 'New BSD', raw_url )
-      return 'New BSD'
-    end
-
-    if is_BSD_2_clause?( content )
-      logger.info " -- BSD 2-clause License found at #{raw_url} --- "
-      find_or_create( product, 'BSD 2-clause', raw_url )
-      return 'BSD 2-clause'
     end
 
     logger.info " ---- NOT RECOGNIZED at #{raw_url} ---- "
@@ -209,7 +209,13 @@ class LicenseCrawler < Versioneye::Crawl
       return false if content.match(/LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION/i).nil?
       return false if content.match(/OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION/i).nil?
       return false if content.match(/WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE/i).nil?
+      return false if content.match("BSD License")
 
+      return true
+    end
+
+    def self.is_mit_ol? content
+      return false if content.match(/is distributed under \[MIT license\]\(http\:\/\/mutedsolutions.mit-license.org\/\)/i).nil?
       return true
     end
 
