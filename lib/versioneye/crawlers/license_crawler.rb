@@ -138,7 +138,7 @@ class LicenseCrawler < Versioneye::Crawl
       return 'Apache License 2.0'
     end
 
-    if is_mpl_20?( content )
+    if is_mpl_20?( content ) || is_mpl_20_short?( content )
       logger.info " -- Mozilla Public License Version 2.0 found at #{raw_url} --- "
       find_or_create( product, 'MPL-2.0', raw_url )
       return 'MPL-2.0'
@@ -360,6 +360,13 @@ class LicenseCrawler < Versioneye::Crawl
       return false if content.match(/under Patent Claims infringed by Covered Software in the absence of its Contributions/i).nil?
       return false if content.match(/This License does not grant any rights in the trademarks/i).nil?
       return false if content.match(/No Contributor makes additional grants as a result of Your choice to distribute the Covered Software under a subsequent version of this License/i).nil?
+      return true
+    end
+
+    def self.is_mpl_20_short? content
+      return false if content.match(/This Source Code Form is subject to the terms of the Mozilla Public/i).nil?
+      return false if content.match(/License,* v. 2.0. If a copy of the MPL was not distributed with this/i).nil?
+      return false if content.match(/file,* You can obtain one at/i).nil?
       return true
     end
 
