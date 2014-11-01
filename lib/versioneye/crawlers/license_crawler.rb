@@ -399,6 +399,7 @@ class LicenseCrawler < Versioneye::Crawl
       content = content.gsub(/\n/, " ")
       content = content.gsub(/\r/, " ")
       content = content.gsub("\xE2\x80\xA8", " ")
+      content = content.gsub(/\s+, /, ", ")
       content = content.gsub(/\s+/, " ")
 
       content

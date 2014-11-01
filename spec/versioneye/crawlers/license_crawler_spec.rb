@@ -27,6 +27,14 @@ describe LicenseCrawler do
     it "finds MIT" do
       License.count.should == 0
       product = ProductFactory.create_new
+      LicenseCrawler.process_github_master('ryanzec/utilities', product).should be_truthy
+      License.count.should == 1
+      License.first.name.should eq('MIT')
+    end
+
+    it "finds MIT" do
+      License.count.should == 0
+      product = ProductFactory.create_new
       LicenseCrawler.process_github_master('achirkunov/spatial_adapter', product).should be_truthy
       License.count.should == 1
       License.first.name.should eq('MIT')
