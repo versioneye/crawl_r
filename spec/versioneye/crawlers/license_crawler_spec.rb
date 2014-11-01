@@ -144,12 +144,12 @@ describe LicenseCrawler do
       License.first.name.should eq('MPL-2.0')
     end
 
-    it "finds BSD" do
+    it "finds New BSD" do
       License.count.should == 0
       product = ProductFactory.create_new
       LicenseCrawler.process_github_master('paneq/active_reload', product).should be_truthy
       License.count.should == 1
-      License.first.name.should eq('BSD')
+      License.first.name.should eq('New BSD')
     end
 
     it "finds New BSD" do
@@ -180,6 +180,14 @@ describe LicenseCrawler do
       License.count.should == 0
       product = ProductFactory.create_new
       LicenseCrawler.process_github_master('adzap/ar_mailer', product).should be_truthy
+      License.count.should == 1
+      License.first.name.should eq('New BSD')
+    end
+
+    it "finds New BSD" do
+      License.count.should == 0
+      product = ProductFactory.create_new
+      LicenseCrawler.process_github_master('ecomfe/zrender', product).should be_truthy
       License.count.should == 1
       License.first.name.should eq('New BSD')
     end

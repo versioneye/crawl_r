@@ -102,12 +102,6 @@ class LicenseCrawler < Versioneye::Crawl
       return 'MPL-2.0'
     end
 
-    if is_bsd?( content )
-      logger.info " -- BSD found at #{raw_url} --- "
-      find_or_create( product, 'BSD', raw_url )
-      return 'BSD'
-    end
-
     if is_gpl_20?( content )
       logger.info " -- GPL-2.0 found at #{raw_url} --- "
       find_or_create( product, 'GPL-2.0', raw_url )
@@ -291,17 +285,21 @@ class LicenseCrawler < Versioneye::Crawl
 
 
     def self.is_new_bsd? content
-      return false if content.match(/Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met/i).nil?
+      return false if content.match(/Redistribution and use/i).nil?
+      return false if content.match(/in source and binary forms, with or without modification, are permitted provided that the following conditions are met/i).nil?
+
       return false if content.match(/Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer/i).nil?
+
       return false if content.match(/Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/i).nil?
       return false if content.match(/or other materials provided with the distribution/i).nil?
-      return false if content.match(/Neither the name/i).nil?
-      return false if content.match(/nor the names of .* contributors may be used to endorse or promote products derived from this software without specific prior written permission/i).nil?
+
+      return false if content.match(/the names of .* contributors may be used to endorse or promote products derived from this software without specific prior written permission/i).nil? && content.match(/The name of the author may not be used to endorse or promote products derived from this software without specific prior written permission/i).nil?
+
       return false if content.match(/THIS SOFTWARE IS PROVIDED BY/i).nil?
       return false if content.match(/AS IS/i).nil?
       return false if content.match(/AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT/i).nil?
       return false if content.match(/LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR/i).nil?
-      return false if content.match(/A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE/i).nil?
+      return false if content.match(/A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL/i).nil?
       return false if content.match(/BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES/i).nil?
       return false if content.match(/INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION/i).nil?
       return false if content.match(/HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT/i).nil?
@@ -312,9 +310,12 @@ class LicenseCrawler < Versioneye::Crawl
 
     def self.is_BSD_2_clause? content
       return false if content.match(/Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met/i).nil?
+
       return false if content.match(/Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer/i).nil?
+
       return false if content.match(/Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/i).nil?
       return false if content.match(/or other materials provided with the distribution/i).nil?
+
       return false if content.match(/THIS SOFTWARE IS PROVIDED BY/i).nil?
       return false if content.match(/AS IS/i).nil?
       return false if content.match(/AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT/i).nil?
@@ -382,13 +383,6 @@ class LicenseCrawler < Versioneye::Crawl
     def self.is_lgpl_30? content
       return false if content.match(/GNU (LESSER|Library) General public license Version 3/i).nil?
       return false if content.match(/the GNU (LESSER|Library) General Public License incorporates the terms and conditions of version 3 of the/i).nil?
-      return true
-    end
-
-    def self.is_bsd? content
-      return false if content.match(/is distributed under the BSD license/i).nil?
-      return false if content.match(/Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met/i).nil?
-      return false if content.match(/THIS SOFTWARE IS PROVIDED BY THE AUTHOR/i).nil?
       return true
     end
 
