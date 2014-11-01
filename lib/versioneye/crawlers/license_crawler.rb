@@ -14,8 +14,9 @@ class LicenseCrawler < Versioneye::Crawl
     links = Versionlink.where(:link => /http.+github\.com\/\w*\/\w*[\/]*$/i, :language => 'JavaScript')
     logger.info "found #{links.count} github links"
     links.each do |link|
-      next if links_uniq.include?(link.link)
-      links_uniq << link.link
+      ukey = "#{link.language}::#{link.prod_key}::#{link.link}"
+      next if links_uniq.include?(ukey)
+      links_uniq << ukey
 
       product = fetch_product link
       next if product.nil?
@@ -328,7 +329,7 @@ class LicenseCrawler < Versioneye::Crawl
     end
 
     def self.is_apache_20_short? content
-      return false if content.match(/http\:\/\/www\.apache\.org\/licenses\/LICENSE-2\.0/i).nil?
+      return false if content.match(/apache\.org\/licenses\/LICENSE-2\.0/i).nil?
       return false if content.match(/Licensed under the Apache License, Version 2.0/i).nil?
       return true
     end
