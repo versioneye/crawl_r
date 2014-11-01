@@ -337,7 +337,7 @@ class LicenseCrawler < Versioneye::Crawl
 
 
     def self.is_apache_20? content
-      return false if content.match(/Apache License Version 2.0/i).nil?
+      return false if content.match(/Apache License Version,* 2.0/i).nil?
       return false if content.match(/TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION/i).nil?
       return false if content.match(/shall mean the terms and conditions for use, reproduction, and distribution as defined by Sections 1 through 9 of this document/i).nil?
       return true
@@ -351,7 +351,7 @@ class LicenseCrawler < Versioneye::Crawl
 
 
     def self.is_mpl_20? content
-      return false if content.match(/Mozilla Public License Version 2.0/i).nil?
+      return false if content.match(/Mozilla Public License,* \w*\s*2.0/i).nil?
       return false if content.match(/Contributor/i).nil?
       return false if content.match(/means each individual or legal entity that creates, contributes to the creation of, or owns Covered Software/i).nil?
       return false if content.match(/means Covered Software of a particular Contributor/i).nil?
@@ -365,20 +365,20 @@ class LicenseCrawler < Versioneye::Crawl
 
 
     def self.is_gpl_20? content
-      return false if content.match(/GNU GENERAL PUBLIC LICENSE Version 2/i).nil?
+      return false if content.match(/GNU GENERAL PUBLIC LICENSE,* Version 2/i).nil?
       return false if content.match(/the GNU General Public License is intended to guarantee your freedom to share and change free software/i).nil?
       return true
     end
 
     def self.is_gpl_30? content
-      return false if content.match(/GNU GENERAL PUBLIC LICENSE Version 3/i).nil?
+      return false if content.match(/GNU GENERAL PUBLIC LICENSE,* Version 3/i).nil?
       return false if content.match(/The GNU General Public License is a free, copyleft license for/i).nil?
       return false if content.match(/"This License" refers to version 3 of the GNU General Public License/i).nil?
       return true
     end
 
     def self.is_agpl_30? content
-      return false if content.match(/AFFERO GENERAL PUBLIC LICENSE Version 3/i).nil?
+      return false if content.match(/AFFERO GENERAL PUBLIC LICENSE,* Version 3/i).nil?
       return false if content.match(/The GNU Affero General Public License is a free/i).nil?
       return false if content.match(/Affero General Public License is designed specifically to ensure that/i).nil?
       return false if content.match(/refers to version 3 of the GNU Affero General Public License/i).nil?
@@ -387,7 +387,7 @@ class LicenseCrawler < Versioneye::Crawl
 
 
     def self.is_lgpl_30? content
-      return false if content.match(/GNU (LESSER|Library) General public license Version 3/i).nil?
+      return false if content.match(/GNU (LESSER|Library) General public license,* Version 3/i).nil?
       return false if content.match(/the GNU (LESSER|Library) General Public License incorporates the terms and conditions of version 3 of the/i).nil?
       return true
     end
