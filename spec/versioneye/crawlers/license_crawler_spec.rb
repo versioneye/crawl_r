@@ -136,6 +136,14 @@ describe LicenseCrawler do
       License.first.name.should eq('Apache License 2.0')
     end
 
+    it "finds Mozilla Public License Version 2.0" do
+      License.count.should == 0
+      product = ProductFactory.create_new
+      LicenseCrawler.process_github_master('ronalchn/ajax_pagination', product).should be_truthy
+      License.count.should == 1
+      License.first.name.should eq('MPL-2.0')
+    end
+
     it "finds BSD" do
       License.count.should == 0
       product = ProductFactory.create_new

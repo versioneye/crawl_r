@@ -96,6 +96,12 @@ class LicenseCrawler < Versioneye::Crawl
       return 'Apache License 2.0'
     end
 
+    if is_mpl_20?( content )
+      logger.info " -- Mozilla Public License Version 2.0 found at #{raw_url} --- "
+      find_or_create( product, 'MPL-2.0', raw_url )
+      return 'MPL-2.0'
+    end
+
     if is_bsd?( content )
       logger.info " -- BSD found at #{raw_url} --- "
       find_or_create( product, 'BSD', raw_url )
@@ -333,6 +339,20 @@ class LicenseCrawler < Versioneye::Crawl
     def self.is_apache_20_short? content
       return false if content.match(/apache\.org\/licenses\/LICENSE-2\.0/i).nil?
       return false if content.match(/Licensed under the Apache License, Version 2.0/i).nil?
+      return true
+    end
+
+
+    def self.is_mpl_20? content
+      return false if content.match(/Mozilla Public License Version 2.0/i).nil?
+      return false if content.match(/Contributor/i).nil?
+      return false if content.match(/means each individual or legal entity that creates, contributes to the creation of, or owns Covered Software/i).nil?
+      return false if content.match(/means Covered Software of a particular Contributor/i).nil?
+      return false if content.match(/Mozilla Foundation is the license steward. Except as provided in Section 10.3/i).nil?
+      return false if content.match(/The licenses granted in this Section 2 are the only rights granted under this License/i).nil?
+      return false if content.match(/under Patent Claims infringed by Covered Software in the absence of its Contributions/i).nil?
+      return false if content.match(/This License does not grant any rights in the trademarks/i).nil?
+      return false if content.match(/No Contributor makes additional grants as a result of Your choice to distribute the Covered Software under a subsequent version of this License/i).nil?
       return true
     end
 
