@@ -103,6 +103,13 @@ describe LicenseCrawler do
       License.count.should == 1
       License.first.name.should eq('GPL-3.0')
     end
+    it "finds GPL-3" do
+      License.count.should == 0
+      product = ProductFactory.create_new
+      LicenseCrawler.process_github_master('czonsius/thumbelina', product).should be_truthy
+      License.count.should == 1
+      License.first.name.should eq('GPL-3.0')
+    end
 
     it "finds GPL-2" do
       License.count.should == 0

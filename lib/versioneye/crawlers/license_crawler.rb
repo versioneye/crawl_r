@@ -84,7 +84,7 @@ class LicenseCrawler < Versioneye::Crawl
       return 'BSD 2-clause'
     end
 
-    if is_gpl_30?( content )
+    if is_gpl_30?( content ) || is_gpl_30_short?( content )
       logger.info " -- GPL-3.0 found at #{raw_url} --- "
       find_or_create( product, 'GPL-3.0', raw_url )
       return 'GPL-3.0'
@@ -383,6 +383,17 @@ class LicenseCrawler < Versioneye::Crawl
       return false if content.match(/"This License" refers to version 3 of the GNU General Public License/i).nil?
       return true
     end
+
+    def self.is_gpl_30_short? content
+      return false if content.match(/License: GNU General Public License,* version 3 \(GPL-3.0\)/i).nil?
+      return false if content.match(/http\:\/\/www\.opensource\.org\/licenses\/gpl-3\.0\.html/i).nil?
+      return false if content.match("BSD")
+      return false if content.match("MIT")
+      return false if content.match("Mozilla")
+      return false if content.match("CCL")
+      return true
+    end
+
 
     def self.is_agpl_30? content
       return false if content.match(/AFFERO GENERAL PUBLIC LICENSE,* Version 3/i).nil?
