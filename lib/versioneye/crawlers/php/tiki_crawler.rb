@@ -14,12 +14,12 @@ class TikiCrawler < SatisCrawler
   end
 
 
-  def self.get_first_level_list
-    body = JSON.parse HTTParty.get("#{@@base_url}/packages.json" ).response.body
+  def get_first_level_list
+    body = JSON.parse HTTParty.get("#{@base_url}/packages.json" ).response.body
     body['packages']
   rescue => e
-    self.logger.error "ERROR in get_first_level_list of #{@@base_url}: Message: #{e.message}"
-    self.logger.error e.backtrace.join("\n")
+    logger.error "ERROR in get_first_level_list of #{@base_url}: Message: #{e.message}"
+    logger.error e.backtrace.join("\n")
     nil
   end
 
