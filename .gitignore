@@ -50,3 +50,6 @@ pkg
 
 log/.*.log
 log/license.log
+log/firegento.log
+log/magento.log
+log/logger.log

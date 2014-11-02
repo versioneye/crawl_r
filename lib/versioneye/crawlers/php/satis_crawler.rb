@@ -4,15 +4,45 @@ class SatisCrawler < Versioneye::Crawl
   # Find more infos to Satis here:
   # https://getcomposer.org/doc/articles/handling-private-packages-with-satis.md
 
-  def self.logger
+  def logger
     ActiveSupport::BufferedLogger.new('log/satis.log')
   end
 
-  @@base_url = 'http://composer.tiki.org/'
-  @@link_name = 'Tiki Page'
+
+  attr_accessor :base_url, :link_name
+
+  def initialize base_url, link_name
+    @base_url  = base_url
+    @link_name = link_name
+  end
 
 
-  def self.crawle_package package
+  def crawl
+    start_time = Time.now
+    packages = get_first_level_list
+    packages.each do |package|
+      crawle_package package
+    end
+    duration = Time.now - start_time
+    logger.info(" *** This crawl took #{duration} *** ")
+    return nil
+  end
+
+
+  def get_first_level_list
+    body = JSON.parse HTTParty.get("#{@base_url}/packages.json" ).response.body
+    sha1 = body['includes'].first.last['sha1']
+    url = "#{@base_url}include/all$#{sha1}.json"
+    body = JSON.parse HTTParty.get( url ).response.body
+    packages = body['packages']
+  rescue => e
+    logger.error "ERROR in get_first_level_list of #{@base_url}: Message: #{e.message}"
+    logger.error e.backtrace.join("\n")
+    nil
+  end
+
+
+  def crawle_package package
     return nil if package.nil? || package.empty?
 
     versions = package.last
@@ -23,14 +53,15 @@ class SatisCrawler < Versioneye::Crawl
       self.process_version version_object
     end
   rescue => e
-    self.logger.error "ERROR in crawle_package Message:   #{e.message}"
-    self.logger.error e.backtrace.join("\n")
+    logger.error "ERROR in crawle_package Message:   #{e.message}"
+    logger.error e.backtrace.join("\n")
   end
 
 
-  def self.process_version version_object
+  def process_version version_object
     name        = version_object['name']
     description = version_object['description']
+    description = nil if description.to_s.eql?('N/A')
     product     = find_or_create_product name, description
 
     version_number = version_object['version']
@@ -49,10 +80,11 @@ class SatisCrawler < Versioneye::Crawl
       Versionarchive.remove_archives Product::A_LANGUAGE_PHP, product.prod_key, version_number
       ComposerUtils.create_archive     product, version_number, version_object
     end
+    ProductService.update_newest_version product
   end
 
 
-  def self.find_or_create_product name, description = nil
+  def find_or_create_product name, description = nil
     return nil if name.to_s.empty?
 
     prod_key = name.downcase
@@ -62,18 +94,18 @@ class SatisCrawler < Versioneye::Crawl
     product.name_downcase = name.downcase
     product.description   = description
     product.prod_type     = Project::A_TYPE_COMPOSER
-    if !includes_repo? product, @@base_url
-      repository = Repository.new({:src => @@base_url, :repotype => Project::A_TYPE_COMPOSER })
+    if !includes_repo? product, @base_url
+      repository = Repository.new({:src => @base_url, :repotype => Project::A_TYPE_COMPOSER })
       product.repositories.push repository
     end
     product.save
     url = homepage_url( product )
-    Versionlink.create_project_link( Product::A_LANGUAGE_PHP, product.prod_key, url, @@link_name )
+    Versionlink.create_project_link( Product::A_LANGUAGE_PHP, product.prod_key, url, @link_name )
     product
   end
 
 
-  def self.create_new_version product, version_number, version_obj
+  def create_new_version product, version_number, version_obj
     version_db                 = Version.new({version: version_number})
     if version_obj['time']
       version_db.released_string = version_obj['time']
@@ -83,7 +115,7 @@ class SatisCrawler < Versioneye::Crawl
     product.reindex = true
     product.save
 
-    self.logger.info " -- PHP Package: #{product.prod_key} -- with new version: #{version_number}"
+    logger.info " -- PHP Package: #{product.prod_key} -- with new version: #{version_number}"
 
     CrawlerUtils.create_newest product, version_number, logger
     CrawlerUtils.create_notifications product, version_number, logger
@@ -95,15 +127,15 @@ class SatisCrawler < Versioneye::Crawl
     ComposerUtils.create_archive product, version_number, version_obj
     ComposerUtils.create_dependencies product, version_number, version_obj
   rescue => e
-    self.logger.error "ERROR in create_new_version Message:   #{e.message}"
-    self.logger.error e.backtrace.join("\n")
+    logger.error "ERROR in create_new_version Message:   #{e.message}"
+    logger.error e.backtrace.join("\n")
   end
 
 
   private
 
 
-    def self.includes_repo? product, src
+    def includes_repo? product, src
       return false if product.repositories.nil? || product.repositories.empty?
       product.repositories.each do |repo|
         return true if repo.src.eql?( src )
@@ -112,7 +144,7 @@ class SatisCrawler < Versioneye::Crawl
     end
 
 
-    def self.create_links product, version_number, version_obj
+    def create_links product, version_number, version_obj
       Versionlink.create_versionlink product.language, product.prod_key, version_number, version_obj['homepage'], "Homepage"
       return nil if version_obj['support'].to_s.empty?
 
@@ -123,13 +155,13 @@ class SatisCrawler < Versioneye::Crawl
         Versionlink.create_versionlink product.language, product.prod_key, version_number, version_obj['support']['source'], "Source"
       end
     rescue => e
-      self.logger.error "ERROR in create_links Message: #{e.message}"
-      self.logger.error e.backtrace.join("\n")
+      logger.error "ERROR in create_links Message: #{e.message}"
+      logger.error e.backtrace.join("\n")
     end
 
 
-    def self.homepage_url product
-      @@base_url
+    def homepage_url product
+      "#{@base_url}#!/#{product.prod_key}"
     end
 
 

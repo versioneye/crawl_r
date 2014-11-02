@@ -53,6 +53,14 @@ namespace :versioneye do
     puts "---"
   end
 
+  desc "crawl Magento"
+  task :crawl_magento do
+    puts "START to crawle Magento repository"
+    RubyCrawl.new
+    MagentoCrawler.crawl
+    puts "---"
+  end
+
   desc "crawl NPM"
   task :crawl_npm do
     puts "START to crawle NPM repository"

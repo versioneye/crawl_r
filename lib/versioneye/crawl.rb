@@ -13,12 +13,14 @@ module Versioneye
     require './lib/versioneye/crawlers/github_version_crawler'
     require './lib/versioneye/crawlers/npm_crawler'
     require './lib/versioneye/crawlers/npm_license_crawler'
-    require './lib/versioneye/crawlers/packagist_crawler'
-    require './lib/versioneye/crawlers/packagist_license_crawler'
-    require './lib/versioneye/crawlers/satis_crawler'
-    require './lib/versioneye/crawlers/tiki_crawler'
-    require './lib/versioneye/crawlers/firegento_crawler'
     require './lib/versioneye/crawlers/license_crawler'
+
+    require './lib/versioneye/crawlers/php/packagist_crawler'
+    require './lib/versioneye/crawlers/php/packagist_license_crawler'
+    require './lib/versioneye/crawlers/php/satis_crawler'
+    require './lib/versioneye/crawlers/php/magento_crawler'
+    require './lib/versioneye/crawlers/php/firegento_crawler'
+    require './lib/versioneye/crawlers/php/tiki_crawler'
 
     def self.log
       Versioneye::Log.instance.log

@@ -1,22 +1,16 @@
 class TikiCrawler < SatisCrawler
 
-  def self.logger
+  def logger
     ActiveSupport::BufferedLogger.new('log/tiki.log')
   end
 
-  @@base_url = 'http://composer.tiki.org/'
-  @@link_name = 'Tiki Page'
+  A_BASE_URL  = 'http://composer.tiki.org/'
+  A_LINK_NAME = 'Tiki Page'
 
 
   def self.crawl
-    start_time = Time.now
-    packages = get_first_level_list
-    packages.each do |package|
-      crawle_package package
-    end
-    duration = Time.now - start_time
-    self.logger.info(" *** This crawl took #{duration} *** ")
-    return nil
+    crawler = TikiCrawler.new A_BASE_URL, A_LINK_NAME
+    crawler.crawl
   end
 
 
@@ -29,5 +23,12 @@ class TikiCrawler < SatisCrawler
     nil
   end
 
+
+  private
+
+
+    def homepage_url product
+      @base_url
+    end
 
 end
