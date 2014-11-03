@@ -31,10 +31,13 @@ class SatisCrawler < Versioneye::Crawl
 
   def get_first_level_list
     body = JSON.parse HTTParty.get("#{@base_url}/packages.json" ).response.body
+    packages = body['packages']
+    return packages if packages && !packages.empty?
+
     sha1 = body['includes'].first.last['sha1']
     url = "#{@base_url}include/all$#{sha1}.json"
     body = JSON.parse HTTParty.get( url ).response.body
-    packages = body['packages']
+    body['packages']
   rescue => e
     logger.error "ERROR in get_first_level_list of #{@base_url}: Message: #{e.message}"
     logger.error e.backtrace.join("\n")
