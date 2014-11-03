@@ -50,7 +50,7 @@ class LicenseCrawler < Versioneye::Crawl
 
 
   def self.process_github_master repo_name, product
-    licens_forms = ['LICENSE', 'MIT-LICENSE', 'LICENSE.md', 'license.md', 'LICENSE.txt', 'README.md']
+    licens_forms = ['LICENSE.md', 'LICENSE.txt', 'LICENSE', 'MIT-LICENSE', 'license.md', 'README.md']
     licens_forms.each do |lf|
       raw_url = "https://raw.githubusercontent.com/#{repo_name}/master/#{lf}"
       license_found = process_url raw_url, product
