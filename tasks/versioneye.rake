@@ -111,6 +111,14 @@ namespace :versioneye do
     puts "---"
   end
 
+  desc "Sync NPM to Bower Licenses"
+  task :bower_npm_license_sync do
+    puts "START to sync NPM - Bower Licenses "
+    RubyCrawl.new
+    BowerNpmLicenseSync.sync
+    puts "---"
+  end
+
 
 
   # --- Workers ---
