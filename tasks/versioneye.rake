@@ -20,6 +20,14 @@ namespace :versioneye do
       end
     end
 
+    value = GlobalSetting.get(env, 'satis_schedule')
+    # value = '1 * * * *' if value.to_s.empty?
+    if !value.to_s.empty?
+      scheduler.cron value do
+        CommonCrawlProducer.new "satis_1"
+      end
+    end
+
     scheduler.join
     while 1 == 1
       p "keep alive rake task"
