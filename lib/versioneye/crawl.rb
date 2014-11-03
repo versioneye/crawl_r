@@ -14,6 +14,7 @@ module Versioneye
     require './lib/versioneye/crawlers/npm_crawler'
     require './lib/versioneye/crawlers/npm_license_crawler'
     require './lib/versioneye/crawlers/license_crawler'
+    require './lib/versioneye/crawlers/bower_npm_license_sync'
 
     require './lib/versioneye/crawlers/php/packagist_crawler'
     require './lib/versioneye/crawlers/php/packagist_license_crawler'
