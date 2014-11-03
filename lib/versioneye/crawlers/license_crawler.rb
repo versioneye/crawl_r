@@ -67,6 +67,10 @@ class LicenseCrawler < Versioneye::Crawl
     lic_info = recognize_license resp.body, raw_url, product
     return false if lic_info.nil?
     return true
+  rescue => e
+    logger.error e.message
+    logger.error e.backtrace.join("\n")
+    false
   end
 
 
