@@ -11,7 +11,7 @@ class LicenseCrawler < Versioneye::Crawl
 
   def self.crawl
     links_uniq = []
-    links = Versionlink.where(:link => /http.+github\.com\/\w*\/\w*[\/]*$/i)
+    links = Versionlink.where(:link => /http.+github\.com\/\w*\/\w*[\/]*$/i, :language => "JavaScript")
     logger.info "found #{links.count} github links"
     links.each do |link|
       ukey = "#{link.language}::#{link.prod_key}::#{link.link}"
@@ -21,9 +21,13 @@ class LicenseCrawler < Versioneye::Crawl
       product = fetch_product link
       next if product.nil?
 
-      # This step is temporary for the init crawl
-      licenses = product.licenses true
+      licenses = License.where({:language => link.language, :prod_key => link.prod_key,
+        :version => nil, :source => A_SOURCE_GMB })
       next if licenses && !licenses.empty?
+
+      # This step is temporary for the init crawl
+      # licenses = product.licenses true
+      # next if licenses && !licenses.empty?
 
       process link, product
     end
@@ -46,7 +50,7 @@ class LicenseCrawler < Versioneye::Crawl
 
 
   def self.process_github_master repo_name, product
-    licens_forms = ['LICENSE', 'MIT-LICENSE', 'LICENSE.md', 'LICENSE.txt']
+    licens_forms = ['LICENSE', 'MIT-LICENSE', 'LICENSE.md', 'LICENSE.txt', 'README.md']
     licens_forms.each do |lf|
       raw_url = "https://raw.githubusercontent.com/#{repo_name}/master/#{lf}"
       license_found = process_url raw_url, product
