@@ -11,8 +11,7 @@ class LicenseCrawler < Versioneye::Crawl
 
   def self.crawl
     links_uniq = []
-    # links = Versionlink.where(:link => /http.+github\.com\/\S*\/\S*[\/]*$/i, :language => "JavaScript")
-    links = Versionlink.where(:link => /http.+github\.com\/\S*angular\S*$/i, :language => "JavaScript")
+    links = Versionlink.where(:link => /http.+github\.com\/\S*\/\S*[\/]*$/i, :language => "JavaScript")
     logger.info "found #{links.count} github links"
     links.each do |link|
       ukey = "#{link.language}::#{link.prod_key}::#{link.link}"
