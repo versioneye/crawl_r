@@ -9,9 +9,14 @@ class LicenseCrawler < Versioneye::Crawl
   end
 
 
-  def self.crawl
+  def self.crawl language = nil
     links_uniq = []
-    links = Versionlink.where(:link => /http.+github\.com\/\S*\/\S*[\/]*$/i, :language => "JavaScript")
+    links = []
+    if language
+      links = Versionlink.where(:link => /http.+github\.com\/\S*\/\S*[\/]*$/i, :language => language)
+    else
+      links = Versionlink.where(:link => /http.+github\.com\/\S*\/\S*[\/]*$/i)
+    end
     logger.info "found #{links.count} github links"
     links.each do |link|
       ukey = "#{link.language}::#{link.prod_key}::#{link.link}"
@@ -180,7 +185,10 @@ class LicenseCrawler < Versioneye::Crawl
       end
       ensure_language(link, product)
 
-      link.remove if product.nil?
+      if product.nil?
+        logger.info "REMOVE link #{link.to_s} because no corresponding product found!"
+        link.remove
+      end
 
       product
     end
