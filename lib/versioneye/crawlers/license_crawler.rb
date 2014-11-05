@@ -44,6 +44,9 @@ class LicenseCrawler < Versioneye::Crawl
     repo_name = link.link
     repo_name = repo_name.gsub(/\?.*/i, "")
     repo_name = repo_name.gsub(/http.+github\.com\//i, "")
+    if repo_name.match(/\/$/)
+      repo_name = repo_name.gsub(/\/$/, "")
+    end
     sps = repo_name.split("/")
     if sps.count > 2
       logger.info " - SKIP #{repo_name}"
