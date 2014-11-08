@@ -50,11 +50,11 @@ class PackagistCrawler < Versioneye::Crawl
 
   def self.process_version version, product
     version_number = String.new(version[0])
+    return nil if is_branch?( product, version_number )
+
+    version_number.gsub!('v', '') if version_number.to_s.match(/v[0-9]+\..*/)
     version_obj = version[1]
-    if version_number && version_number.match(/v[0-9]+\..*/)
-      version_number.gsub!('v', '')
-    end
-    db_version = product.version_by_number version_number
+    db_version  = product.version_by_number version_number
     if db_version.nil?
       PackagistCrawler.create_new_version( product, version_number, version_obj )
       return nil
@@ -119,5 +119,27 @@ class PackagistCrawler < Versioneye::Crawl
     self.logger.error "ERROR in create_new_version Message:   #{e.message}"
     self.logger.error e.backtrace.join("\n")
   end
+
+
+  def self.is_branch? product, version_string
+    links = product.http_version_links_combined
+    return false if links.nil? || links.empty?
+
+    github_link = nil
+    links.each do |link|
+      if link.link.match(/http.+github\.com\//i)
+        github_link = link
+        break
+      end
+    end
+    return false if github_link.nil?
+
+    raw_url = "https://github.com/#{product.prod_key}/releases/tag/#{version_string}"
+    resp = HttpService.fetch_response raw_url
+    return false if resp.code.to_i == 200
+
+    return true
+  end
+
 
 end
