@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:versioneye/versioneye-core.git
-  revision: 5d32b425b9aa07d2b1b0a787302304d2858325a1
-  tag: v6.14.2
+  revision: f64911f20cb27294a2866b35be8aca6cbddb6016
+  tag: v6.15.4
   specs:
-    versioneye-core (6.14.2)
+    versioneye-core (6.15.4)
       actionmailer (~> 3.2.17)
       aws-sdk (~> 1.0)
       bundler (= 1.7.4)
@@ -58,7 +58,7 @@ GEM
       json (~> 1.4)
       nokogiri (>= 1.4.4)
     builder (3.0.4)
-    bunny (1.6.2)
+    bunny (1.6.3)
       amq-protocol (>= 1.9.2)
     capybara (2.4.4)
       mime-types (>= 1.16)
