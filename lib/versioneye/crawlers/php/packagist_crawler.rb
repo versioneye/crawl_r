@@ -139,6 +139,7 @@ class PackagistCrawler < Versioneye::Crawl
     raw_url = "https://github.com/#{uri_sp[0]}/#{uri_sp[1]}/releases/tag/#{version_string}"
     resp = HttpService.fetch_response raw_url
     return false if resp.code.to_i == 200
+    return false if resp.code.to_i == 301
 
     return true
   end
