@@ -143,5 +143,4 @@ class PackagistCrawler < Versioneye::Crawl
     return true
   end
 
-# 
 end
