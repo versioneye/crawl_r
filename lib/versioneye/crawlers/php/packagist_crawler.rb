@@ -134,9 +134,16 @@ class PackagistCrawler < Versioneye::Crawl
     end
     return false if github_link.nil?
 
-    uri = github_link.link.gsub(/http.+github\.com\//i, "")
-    uri_sp = uri.split("/")
-    raw_url = "https://github.com/#{uri_sp[0]}/#{uri_sp[1]}/releases/tag/#{version_string}"
+    raw_url = "https://github.com/#{product.prod_key}"
+    resp = HttpService.fetch_response raw_url
+    if resp.code.to_i == 200 
+      raw_url = "https://github.com/#{product.prod_key}/releases/tag/#{version_string}"  
+    else 
+      uri = github_link.link.gsub(/http.+github\.com\//i, "")
+      uri_sp = uri.split("/")
+      raw_url = "https://github.com/#{uri_sp[0]}/#{uri_sp[1]}/releases/tag/#{version_string}"  
+    end
+
     resp = HttpService.fetch_response raw_url
     return false if resp.code.to_i == 200
     return false if resp.code.to_i == 301
