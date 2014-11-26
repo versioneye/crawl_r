@@ -127,19 +127,21 @@ class PackagistCrawler < Versioneye::Crawl
 
     github_link = nil
     links.each do |link|
-      if link.link.match(/http.+github\.com\//i)
+      if link.link.match(/http.+github\.com\/\S*\/\S*[\/]*$/i)
         github_link = link
         break
       end
     end
     return false if github_link.nil?
 
-    raw_url = "https://github.com/#{product.prod_key}/releases/tag/#{version_string}"
+    uri = github_link.link.gsub(/http.+github\.com\//i, "")
+    uri_sp = uri.split("/")
+    raw_url = "https://github.com/#{uri_sp[0]}/#{uri_sp[1]}/releases/tag/#{version_string}"
     resp = HttpService.fetch_response raw_url
     return false if resp.code.to_i == 200
 
     return true
   end
 
-
+# 
 end
