@@ -22,6 +22,7 @@ module Versioneye
     require './lib/versioneye/crawlers/php/magento_crawler'
     require './lib/versioneye/crawlers/php/firegento_crawler'
     require './lib/versioneye/crawlers/php/tiki_crawler'
+    require './lib/versioneye/crawlers/php/branch_cleaner'
 
     def self.log
       Versioneye::Log.instance.log
