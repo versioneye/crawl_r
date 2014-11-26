@@ -13,6 +13,7 @@ class BranchCleaner
       next if is_branch == false 
 
       p "#{product.prod_key} - #{version.to_s} is a branch!"
+      product.remove_version version.to_s 
     end
   end
 
