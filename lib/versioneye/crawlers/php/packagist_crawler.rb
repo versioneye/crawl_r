@@ -153,6 +153,7 @@ class PackagistCrawler < Versioneye::Crawl
   def self.has_tag? product, version_number, version_obj
     source = version_obj['source']['url']  
     source = source.gsub(".git", "") if source.match(/\.git$/)
+    return true if !source.match(/github\.com/)
 
     raw_url = "#{source}/releases/tag/#{version_number}"
 

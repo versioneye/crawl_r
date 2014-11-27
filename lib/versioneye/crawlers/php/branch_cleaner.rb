@@ -12,7 +12,7 @@ class BranchCleaner
   def self.clean_product product 
     product.versions.each do |version| 
       version_number = version.to_s 
-      link = Versionlink.where( language: "PHP", prod_key: product.prod_key, version_id: version.to_s, name: "Source" ).first
+      link = Versionlink.where( language: "PHP", prod_key: product.prod_key, version_id: version.to_s, name: "Source", link: /github\.com/ ).first
       next if link.nil? 
 
       raw_url = "#{link}/releases/tag/#{version_number}"
