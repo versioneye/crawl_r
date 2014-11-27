@@ -50,10 +50,14 @@ class PackagistCrawler < Versioneye::Crawl
 
   def self.process_version version, product
     version_number = String.new(version[0])
-    return nil if is_branch?( product, version_number )
-
-    version_number.gsub!('v', '') if version_number.to_s.match(/v[0-9]+\..*/)
     version_obj = version[1]
+    
+    if has_tag_variants?(product, version_number, version_obj) == false 
+      self.logger.info "No tag found for #{product.prod_key} - #{version_number}"
+      return nil 
+    end
+
+    version_number.gsub!(/^v/, '') if version_number.to_s.match(/^v[0-9]+\..*/)
     db_version  = product.version_by_number version_number
     if db_version.nil?
       PackagistCrawler.create_new_version( product, version_number, version_obj )
@@ -118,6 +122,34 @@ class PackagistCrawler < Versioneye::Crawl
   rescue => e
     self.logger.error "ERROR in create_new_version Message:   #{e.message}"
     self.logger.error e.backtrace.join("\n")
+  end
+
+
+  def self.has_tag_variants? product, version_number, version_obj
+    tag = has_tag? product, version_number, version_obj
+    return true if tag == true 
+
+    if version_number.to_s.match(/^v/)
+      version_number.gsub!(/^v/, '') 
+    else 
+      version_number = "v#{version_number}"
+    end
+    has_tag? product, version_number, version_obj
+  end
+
+
+  def self.has_tag? product, version_number, version_obj
+    source = version_obj['source']['url']  
+    source = source.gsub(".git", "") if source.match(/\.git$/)
+
+    raw_url = "#{source}/releases/tag/#{version_number}"
+
+    resp = HttpService.fetch_response raw_url
+    return true if resp.code.to_i == 200
+    return false 
+  rescue => e 
+    self.logger.error e.backtrace.join("\n")
+    false 
   end
 
 
