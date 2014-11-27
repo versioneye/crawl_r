@@ -51,15 +51,15 @@ class PackagistCrawler < Versioneye::Crawl
   def self.process_version version, product
     version_number = String.new(version[0])
     version_obj = version[1]
-    
-    if has_tag_variants?(product, version_number, version_obj) == false 
-      self.logger.info "No tag found for #{product.prod_key} - #{version_number}"
-      return nil 
-    end
 
     version_number.gsub!(/^v/, '') if version_number.to_s.match(/^v[0-9]+\..*/)
     db_version  = product.version_by_number version_number
     if db_version.nil?
+      if has_tag_variants?(product, version_number, version_obj) == false 
+        self.logger.info "No tag found for #{product.prod_key} - #{version_number}"
+        return nil 
+      end
+
       PackagistCrawler.create_new_version( product, version_number, version_obj )
       return nil
     end
@@ -113,7 +113,7 @@ class PackagistCrawler < Versioneye::Crawl
     CrawlerUtils.create_newest product, version_number, logger
     CrawlerUtils.create_notifications product, version_number, logger
 
-    Versionlink.create_versionlink product.language, product.prod_key, version_number, version_obj['homepage'], "Homepage"
+    create_links product, version_number, version_obj  
 
     ComposerUtils.create_license( product, version_number, version_obj )
     ComposerUtils.create_developers version_obj['authors'], product, version_number
@@ -122,6 +122,18 @@ class PackagistCrawler < Versioneye::Crawl
   rescue => e
     self.logger.error "ERROR in create_new_version Message:   #{e.message}"
     self.logger.error e.backtrace.join("\n")
+  end
+
+
+  def self.create_links product, version_number, version_obj
+    Versionlink.create_versionlink product.language, product.prod_key, version_number, version_obj['homepage'], "Homepage"
+
+    source = version_obj['source']['url']  
+    source = source.gsub(".git", "") if source.match(/\.git$/)
+    Versionlink.create_versionlink product.language, product.prod_key, version_number, source, "Source"
+  rescue => e
+    self.logger.error "ERROR in create_links Message: #{e.message}"
+    self.logger.error e.backtrace.join("\n")  
   end
 
 
