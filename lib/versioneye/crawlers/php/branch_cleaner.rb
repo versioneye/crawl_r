@@ -1,10 +1,12 @@
 class BranchCleaner 
 
   def self.clean 
-    products = Product.where(:language => "PHP")
-    products.each do |product|
-      clean_product product
-    end
+    ProductService.all_products_paged.each do |products|
+      products.each do |product|
+        next if !product.language.eql?("PHP")
+        clean_product product
+      end
+    end   
   end
 
   def self.clean_product product 
