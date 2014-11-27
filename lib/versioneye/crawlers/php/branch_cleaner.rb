@@ -1,7 +1,7 @@
 class BranchCleaner 
 
   def self.clean 
-    ProductService.all_products_paged.each do |products|
+    ProductService.all_products_paged do |products|
       products.each do |product|
         next if !product.language.eql?("PHP")
         clean_product product
