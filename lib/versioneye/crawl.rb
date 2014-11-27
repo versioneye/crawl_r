@@ -18,6 +18,7 @@ module Versioneye
 
     require './lib/versioneye/crawlers/php/packagist_crawler'
     require './lib/versioneye/crawlers/php/packagist_license_crawler'
+    require './lib/versioneye/crawlers/php/packagist_source_crawler'
     require './lib/versioneye/crawlers/php/satis_crawler'
     require './lib/versioneye/crawlers/php/magento_crawler'
     require './lib/versioneye/crawlers/php/firegento_crawler'
