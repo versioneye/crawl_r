@@ -28,7 +28,7 @@ class Bower < Versioneye::Crawl
   end
 
   
-  def self.refresh_rate_limits token 
+  def self.ensure_ratelimit_existence token 
     10.times do |i|
       break if rate_limits
 
@@ -42,7 +42,7 @@ class Bower < Versioneye::Crawl
 
   
   def self.check_request_limit(token)
-    refresh_rate_limits token 
+    ensure_ratelimit_existence token 
 
     if rate_limits.nil?
       logger.error "Get no rate_limits from Github API - smt very bad is going on."
@@ -52,6 +52,13 @@ class Bower < Versioneye::Crawl
 
     rate_limits[:remaining] -= 1 
     remaining = rate_limits[:remaining]
+    if remaining <= A_MINIMUM_RATE_LIMIT
+      rl = rate_limits
+      rl = nil 
+      ensure_ratelimit_existence token 
+    end
+
+    remaining = rate_limits[:remaining]
     time_left = (rate_limits[:resets_in] - Time.now.to_i) / 60 #in minutes
     time_left += 1 #add additional minute for rounding errors and warming up
     if remaining <= A_MINIMUM_RATE_LIMIT and time_left > 0
@@ -59,7 +66,9 @@ class Bower < Versioneye::Crawl
       logger.info "Going to stop crawling for next #{time_left} minutes"
       sleep time_left.minutes
       logger.info "Waking up and going to continue crawling."
-      refresh_rate_limits token 
+      rl = rate_limits
+      rl = nil 
+      ensure_ratelimit_existence token 
     end
 
     remaining = rate_limits[:remaining]
