@@ -58,12 +58,15 @@ class BowerTagCrawler < Bower
   # Reads information of commit data, which includes link to commit tree
   def self.fetch_commit_tree(commit_url, token)
     check_request_limit(token)
-    uri = URI(commit_url)
-    data = Github.get_json(uri.path, token)
+    data = Github.get_json(commit_url, token)
     if data.nil?
       logger.error "fetch_commit_tree | cant read commit information on #{commit_url}"
     end
     data
+  rescue => e 
+    logger.error e.message 
+    logger.error e.backtrace.join("\n")
+    nil 
   end
 
 
