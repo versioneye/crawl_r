@@ -1,8 +1,7 @@
 class BowerStarter < Bower 
 
   
-  # token = GitHub user token
-  def self.crawl(token, source_url = 'https://bower.herokuapp.com/packages', concurrent = true)
+  def self.crawl(source_url = 'https://bower.herokuapp.com/packages', concurrent = true)
     crawl_registered_list(source_url)
   end
 
