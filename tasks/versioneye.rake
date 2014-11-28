@@ -102,15 +102,6 @@ namespace :versioneye do
     puts "---"
   end
 
-  desc "crawl Bower.io"
-  task :crawl_bower do
-    puts "START to crawle Bower.io repository"
-    RubyCrawl.new
-    reiz = User.find_by_username('reiz')
-    BowerCrawler.crawl reiz.github_token
-    puts "---"
-  end
-
   desc "crawl Licenses"
   task :crawl_licenses do
     puts "START to crawle licenses "
@@ -124,6 +115,51 @@ namespace :versioneye do
     puts "START to sync NPM - Bower Licenses "
     RubyCrawl.new
     BowerNpmLicenseSync.sync
+    puts "---"
+  end
+
+
+  desc "crawl Bower.io"
+  task :crawl_bower do
+    puts "START to crawle Bower.io repository"
+    RubyCrawl.new
+    BowerStarter.crawl 
+    puts "---"
+  end
+
+  desc "Bower source checker "
+  task :crawl_bower_source_checker do
+    puts "START bower souce checker"
+    RubyCrawl.new
+    reiz = User.find_by_username('reiz')
+    BowerSourceChecker.crawl reiz.github_token
+    puts "---"
+  end
+
+  desc "Bower projects crawler "
+  task :crawl_bower_projects do
+    puts "START bower projects crawler"
+    RubyCrawl.new
+    reiz = User.find_by_username('reiz')
+    BowerProjectsCrawler.crawl reiz.github_token
+    puts "---"
+  end
+
+  desc "Bower versions crawler "
+  task :crawl_bower_versions do
+    puts "START bower versions crawler"
+    RubyCrawl.new
+    reiz = User.find_by_username('reiz')
+    BowerVersionsCrawler.crawl reiz.github_token
+    puts "---"
+  end
+
+  desc "Bower tag crawler "
+  task :crawl_bower_tags do
+    puts "START bower tag crawler"
+    RubyCrawl.new
+    reiz = User.find_by_username('reiz')
+    BowerTagCrawler.crawl reiz.github_token
     puts "---"
   end
 
