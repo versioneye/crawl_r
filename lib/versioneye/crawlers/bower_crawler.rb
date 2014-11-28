@@ -52,6 +52,23 @@ class BowerCrawler < Versioneye::Crawl
   end
 
 
+  def self.crawl_serial_package(token, name, url)
+    register_package name, url 
+    
+    crawl_existing_sources(token)     # Checks if the github url really exists! And create tasks for the next crawler.
+    to_poison_pill( A_TASK_CHECK_EXISTENCE )
+    
+    crawl_projects(token)             # Crawles bower.json file and creates/updates basic project infos in DB.
+    to_poison_pill( A_TASK_READ_PROJECT )
+    
+    crawl_versions(token)
+    to_poison_pill( A_TASK_READ_VERSIONS )
+
+    crawl_tag_project(token)
+    to_poison_pill( A_TASK_TAG_PROJECT )
+  end
+
+
   def self.crawl_concurrent(token, source_url)
     logger.info "running Bower crawler on concurrent threads."
     tasks = []
@@ -64,6 +81,7 @@ class BowerCrawler < Versioneye::Crawl
     tasks.each {|task| task.join}
   end
 
+  
   def self.crawl_registered_list(source_url)
     response = HTTParty.get( source_url )
     app_list = JSON.parse( response.body, symbolize_names: true )
@@ -75,31 +93,39 @@ class BowerCrawler < Versioneye::Crawl
     end
 
     app_list.each_with_index do |app, i|
-      repo_info = url_to_repo_info( app[:url] )
-      if repo_info.nil? or repo_info.empty?
-        # save non-supported url for further analyse
-        task = to_existence_task({
-          name: "not_supported",
-          owner: "bower",
-          fullname: app[:url],
-          url: app[:url]
-        })
-        task.update_attributes!({task_failed: true, url_exists: false})
-        next
-      else
-        repo_info[:registry_name] = app[:name]
-        task = to_existence_task(repo_info)
-        task.update_attributes!({
-          task_failed: false,
-          re_crawl: true,
-          url_exists: true
-        })
-        tasks += 1
-      end
+      register_package app[:name], app[:url], tasks
     end
+    
     to_poison_pill(A_TASK_CHECK_EXISTENCE)
     logger.info "#-- Got #{tasks} registered libraries of Bower."
   end
+
+
+  def self.register_package name, url, tasks = 0 
+    repo_info = url_to_repo_info( url )
+    
+    if repo_info && !repo_info.empty?
+      repo_info[:registry_name] = name
+      task = to_existence_task(repo_info)
+      task.update_attributes!({
+        task_failed: false,
+        re_crawl: true,
+        url_exists: true
+      })
+      tasks += 1
+      return 
+    end
+    
+    # save non-supported url for further analyse
+    task = to_existence_task({
+      name: "not_supported",
+      owner: "bower",
+      fullname: url,
+      url: url
+    })
+    task.update_attributes!({task_failed: true, url_exists: false})
+  end
+
 
   # checks does url of source exists or not
   def self.crawl_existing_sources(token)
@@ -109,6 +135,7 @@ class BowerCrawler < Versioneye::Crawl
       result = check_repo_existence(task, token)
     end
   end
+
 
   def self.crawl_projects(token)
     task_name = A_TASK_READ_PROJECT
@@ -376,6 +403,7 @@ class BowerCrawler < Versioneye::Crawl
   def self.check_repo_existence(task, token)
     success  = false
     repo_url = "https://github.com/#{task[:repo_fullname]}"
+    p "check_repo_existence for #{repo_url}"
     response = http_head(repo_url)
     return false if response.nil? or response.is_a?(Boolean)
 
