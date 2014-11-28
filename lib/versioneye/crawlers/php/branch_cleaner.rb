@@ -34,6 +34,7 @@ class BranchCleaner
     end
   rescue => e 
     p e.message
+    p e.backtrace.join("\n")
   end
 
 end
