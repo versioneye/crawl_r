@@ -53,21 +53,19 @@ class Bower < Versioneye::Crawl
     rate_limits[:remaining] -= 1 
     remaining = rate_limits[:remaining]
     if remaining <= A_MINIMUM_RATE_LIMIT
-      rl = rate_limits
-      rl = nil 
+      @@rate_limits = nil 
       ensure_ratelimit_existence token 
     end
 
     remaining = rate_limits[:remaining]
     time_left = (rate_limits[:resets_in] - Time.now.to_i) / 60 #in minutes
     time_left += 1 #add additional minute for rounding errors and warming up
-    if remaining <= A_MINIMUM_RATE_LIMIT and time_left > 0
+    if remaining.to_i < A_MINIMUM_RATE_LIMIT.to_i 
       logger.info "Remaining requests #{remaining}"
       logger.info "Going to stop crawling for next #{time_left} minutes"
       sleep time_left.minutes
       logger.info "Waking up and going to continue crawling."
-      rl = rate_limits
-      rl = nil 
+      @@rate_limits = nil 
       ensure_ratelimit_existence token 
     end
 
