@@ -51,7 +51,7 @@ class Bower < Versioneye::Crawl
     end
 
     rate_limits[:remaining] -= 1 
-    remaining = rate_limits[:remaining]
+    remaining = rate_limits[:remaining].to_s 
     if remaining <= A_MINIMUM_RATE_LIMIT
       @@rate_limits = nil 
       ensure_ratelimit_existence token 
@@ -151,9 +151,9 @@ class Bower < Versioneye::Crawl
       sleep A_SLEEP_TIME
     end
 
-    if task.nil?
-      task = to_poison_pill(task_name)
-    end
+    # if task.nil?
+    #   task = to_poison_pill(task_name)
+    # end
     task
   end
 
