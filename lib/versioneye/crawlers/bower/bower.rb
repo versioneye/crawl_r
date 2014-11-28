@@ -160,6 +160,17 @@ class Bower < Versioneye::Crawl
   end
 
 
+  def self.to_poison_pill(task_name)
+    task = CrawlerTask.find_or_create_by({task: task_name, poison_pill: true})
+    task.update_attributes({
+      re_crawl: true,
+      url_exists: true,
+      weight: -10  # will be the last when getting sorted list
+    })
+    task
+  end
+
+
   def self.to_existence_task(repo_info)
     task = CrawlerTask.find_or_create_by(
       task: A_TASK_CHECK_EXISTENCE,
