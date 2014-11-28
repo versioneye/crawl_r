@@ -20,7 +20,6 @@ class BowerSourceChecker < Bower
   def self.check_repo_existence(task, token)
     success  = false
     repo_url = "https://github.com/#{task[:repo_fullname]}"
-    p "check_repo_existence for #{repo_url}"
     response = http_head(repo_url)
     return false if response.nil? or response.is_a?(Boolean)
 
@@ -28,7 +27,7 @@ class BowerSourceChecker < Bower
     if response_code == 200
       read_task = to_read_task(task, task[:url])
       read_task.update_attributes({
-        registry_name: task[:registry_name], #registered name on bower.io, not same as github repo and projectfile
+        registry_name: task[:registry_name], # Registered name on bower.io, not same as github repo and projectfile
         weight: 10
       })
       success = true
@@ -83,7 +82,8 @@ class BowerSourceChecker < Bower
       weight: 1 + task[:weight].to_i,
       url_exists: true,
       re_crawl: true,
-      url: url
+      url: url, 
+      weight: 20
     })
 
     read_task

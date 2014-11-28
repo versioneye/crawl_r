@@ -8,7 +8,6 @@ class BowerTagCrawler < Bower
   
   def self.crawl_tag_project(token)
     task_name = A_TASK_TAG_PROJECT
-    result = false
     crawler_task_executor(task_name, token) do |task, token|
       tag_name = task[:tag_name]
       commit_info = task[:data].deep_symbolize_keys
@@ -50,7 +49,7 @@ class BowerTagCrawler < Bower
       to_dependencies(prod, pkg_info, :dependencies,     Dependency::A_SCOPE_REQUIRE)
       to_dependencies(prod, pkg_info, :dev_dependencies, Dependency::A_SCOPE_DEVELOPMENT)
 
-      result =  true
+      true 
     end
   end
 

@@ -114,10 +114,10 @@ class Bower < Versioneye::Crawl
       if result
         success += 1
         waited = 0
-        update_task task, { crawled_at: DateTime.now, re_crawl: false, task_failed: false }
+        update_task task, { crawled_at: DateTime.now, re_crawl: false, task_failed: false, weight: 0 }
       else
         failed += 1
-        update_task task, { task_failed: true, fails: task[:fails] + 1, re_crawl: false }
+        update_task task, { task_failed: true, fails: task[:fails] + 1, re_crawl: false, weight: 0 }
       end
 
       logger.info "#{task_name}| success: #{success} , failed: #{failed}"
@@ -133,8 +133,8 @@ class Bower < Versioneye::Crawl
 
 
   def self.update_task task, attributes 
-    task.save 
     task.update_attributes( attributes )
+    task.save 
   rescue => e 
     logger.error ex.message
     logger.error ex.backtrace.join("\n")

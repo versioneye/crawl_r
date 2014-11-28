@@ -203,7 +203,7 @@ class BowerProjectsCrawler < Bower
       registry_name: task[:registry_name],
       url: task[:url],
       url_exists: true,
-      weight: 1,
+      weight: 20,
       re_crawl: true
     })
     version_task

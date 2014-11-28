@@ -34,7 +34,8 @@ class BowerStarter < Bower
       task.update_attributes!({
         task_failed: false,
         re_crawl: true,
-        url_exists: true
+        url_exists: true, 
+        weight: 20
       })
       tasks += 1
       return 
@@ -45,7 +46,8 @@ class BowerStarter < Bower
       name: "not_supported",
       owner: "bower",
       fullname: url,
-      url: url
+      url: url, 
+      re_crawl: false,
     })
     task.update_attributes!({task_failed: true, url_exists: false})
   end

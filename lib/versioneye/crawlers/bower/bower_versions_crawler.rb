@@ -52,6 +52,15 @@ class BowerVersionsCrawler < Bower
   end
 
 
+  def self.handle_no_tags task, product 
+    logger.warn "`#{task[:repo_fullname]}` has no versions - going to skip."
+    if product.version.to_s.empty?
+      product.remove
+    end
+    true
+  end
+
+
   def self.to_tag_project_task(task, tag)
     tag_task = CrawlerTask.find_or_create_by(
       task: A_TASK_TAG_PROJECT,
@@ -72,15 +81,6 @@ class BowerVersionsCrawler < Bower
       re_crawl: true
     })
   end 
-
-
-  def self.handle_no_tags task, product 
-    logger.warn "`#{task[:repo_fullname]}` has no versions - going to skip."
-    if product.version.to_s.empty?
-      product.remove
-    end
-    true
-  end
 
 
   def self.parse_repo_tag(repo_fullname, product, tag, token)
