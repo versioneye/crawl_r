@@ -25,6 +25,13 @@ module Versioneye
     require './lib/versioneye/crawlers/php/tiki_crawler'
     require './lib/versioneye/crawlers/php/branch_cleaner'
 
+    require './lib/versioneye/crawlers/bower/bower'
+    require './lib/versioneye/crawlers/bower/bower_source_checker'
+    require './lib/versioneye/crawlers/bower/bower_projects_crawler'
+    require './lib/versioneye/crawlers/bower/bower_versions_crawler'
+    require './lib/versioneye/crawlers/bower/bower_tag_crawler'
+    require './lib/versioneye/crawlers/bower/bower_starter'
+
     def self.log
       Versioneye::Log.instance.log
     end
