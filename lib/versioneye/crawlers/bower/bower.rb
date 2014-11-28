@@ -232,6 +232,40 @@ class Bower < Versioneye::Crawl
   end
 
 
+  def self.read_license(info, project_info)
+    license_info = project_info[:license]
+    if license_info.is_a?(String)
+      info[:licenses] = [{name: license_info, url: nil}]
+    elsif license_info.is_a?(Array)
+      info[:licenses] = []
+      license_info.each do |lic|
+        if lic.is_a?(String)
+          info[:licenses] << {name: lic, url: nil}
+        elsif lic.is_a?(Hash)
+          info[:licenses] << {name: lic[:type], url: lic[:url]}
+        end
+      end
+    end
+  end
+
+  def self.read_licenses(info, project_info)
+    # support for npm.js licenses
+    info[:licenses] = []
+    if project_info[:licenses].is_a?(Array)
+      project_info[:licenses].to_a.each do |lic|
+        if lic.is_a?(String)
+          info[:licenses] << {name: lic, url: nil}
+        else lic.is_a?(Hash)
+          info[:licenses] << {name: lic[:type], url: lic[:url]}
+        end
+      end
+    elsif project_info[:licenses].is_a?(Hash)
+      lic = project_info[:licenses]
+      info[:licenses] << {name: lic[:type], url: lic[:url]}
+    end
+  end
+
+
   def self.make_prod_key(task_info)
     "#{task_info[:repo_owner]}/#{task_info[:registry_name]}".strip.downcase
   end
