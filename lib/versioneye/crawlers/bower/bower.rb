@@ -51,13 +51,13 @@ class Bower < Versioneye::Crawl
     end
 
     rate_limits[:remaining] -= 1 
-    remaining = rate_limits[:remaining].to_s 
-    if remaining <= A_MINIMUM_RATE_LIMIT
+    remaining = rate_limits[:remaining].to_i 
+    if remaining < A_MINIMUM_RATE_LIMIT
       @@rate_limits = nil 
       ensure_ratelimit_existence token 
     end
 
-    remaining = rate_limits[:remaining]
+    remaining = rate_limits[:remaining].to_i 
     time_left = (rate_limits[:resets_in] - Time.now.to_i) / 60 #in minutes
     time_left += 1 #add additional minute for rounding errors and warming up
     if remaining.to_i < A_MINIMUM_RATE_LIMIT.to_i 
