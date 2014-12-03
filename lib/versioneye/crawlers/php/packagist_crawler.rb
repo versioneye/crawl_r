@@ -6,11 +6,15 @@ class PackagistCrawler < Versioneye::Crawl
   end
 
 
-  def self.crawl
+  def self.crawl serial = false 
     start_time = Time.now
     packages = PackagistCrawler.get_first_level_list
     packages.each do |name|
-      PackagistCrawler.crawle_package name
+      if serial == true 
+        PackagistCrawler.crawle_package( name ) 
+      else 
+        PackagistCrawlProducer.new( name ) # Let the rabbit do the work! 
+      end
     end
     duration = Time.now - start_time
     self.logger.info(" *** This crawl took #{duration} *** ")

@@ -167,11 +167,19 @@ namespace :versioneye do
 
   # --- Workers ---
 
-  desc "Start CocoaPodsWorker"
-  task :cocoa_pods_worker do
-    puts "START cocoa_pods_worker"
+  desc "Start CommonCrawlWorker"
+  task :common_crawl_worker do
+    puts "START CommonCrawlWorker"
     RubyCrawl.new
     CommonCrawlWorker.new.work
+    puts "---"
+  end
+
+  desc "Start PackagistCrawlWorker"
+  task :packagist_crawl_worker do
+    puts "START PackagistCrawlWorker"
+    RubyCrawl.new
+    PackagistCrawlWorker.new.work
     puts "---"
   end
 

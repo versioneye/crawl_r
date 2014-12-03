@@ -1,14 +1,14 @@
 GIT
   remote: git@github.com:versioneye/versioneye-core.git
-  revision: 8e4bed7c0c39d906e77ff93a33714ef487b71d7b
-  tag: v6.18.0
+  revision: 110210aac65320024f6d9920a1c48a50715ad1e8
+  tag: v6.19.3
   specs:
-    versioneye-core (6.18.0)
+    versioneye-core (6.19.3)
       actionmailer (~> 3.2.17)
       aws-sdk (~> 1.0)
       bundler (= 1.7.7)
       bunny (~> 1.6.0)
-      cocoapods-core (~> 0.34.4)
+      cocoapods-core (~> 0.35.0)
       dalli (~> 2.7.0)
       httparty (~> 0.13.1)
       json (~> 1.8.0)
@@ -66,10 +66,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    cocoapods-core (0.34.4)
+    cocoapods-core (0.35.0)
       activesupport (>= 3.2.15)
       fuzzy_match (~> 2.0.4)
-      json_pure (~> 1.8)
       nap (~> 0.8.0)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
@@ -116,7 +115,6 @@ GEM
       rdoc
     journey (1.0.4)
     json (1.8.1)
-    json_pure (1.8.1)
     jwt (1.2.0)
     kgio (2.9.2)
     log4r (1.1.10)
@@ -136,7 +134,7 @@ GEM
     multipart-post (2.0.0)
     nap (0.8.0)
     naturalsorter (3.0.0)
-    netrc (0.8.0)
+    netrc (0.9.0)
     nokogiri (1.6.4.1)
       mini_portile (~> 0.6.0)
     oauth (0.4.7)
