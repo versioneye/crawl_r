@@ -60,7 +60,6 @@ class PackagistCrawler < Versioneye::Crawl
     db_version  = product.version_by_number version_number
     if db_version.nil?
       if has_tag_variants?(product, version_number, version_obj) == false 
-        self.logger.info "No tag found for #{product.prod_key} - #{version_number}"
         return nil 
       end
 
