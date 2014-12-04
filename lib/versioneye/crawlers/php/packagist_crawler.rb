@@ -149,7 +149,22 @@ class PackagistCrawler < Versioneye::Crawl
     else 
       version_number = "v#{version_number}"
     end
-    has_tag? product, version_number, version_obj
+    tag = has_tag? product, version_number, version_obj
+    return true if tag == true 
+    
+    if version_number.match(/\.0\.0$/)
+      version_number.gsub!(/\.0\.0$/, "")
+      tag = has_tag?(product, version_number, version_obj) 
+      return true if tag == true 
+    end
+
+    if version_number.match(/\.0$/)
+      version_number.gsub!(/\.0$/, "")
+      tag = has_tag? product, version_number, version_obj
+      return true if tag == true 
+    end
+    
+    return tag
   end
 
 
