@@ -1,12 +1,12 @@
 GIT
   remote: git@github.com:versioneye/versioneye-core.git
-  revision: 110210aac65320024f6d9920a1c48a50715ad1e8
-  tag: v6.19.3
+  revision: 37e579d7e4e98abe67abfa1fffe039487c8489a5
+  tag: v6.20.1
   specs:
-    versioneye-core (6.19.3)
+    versioneye-core (6.20.1)
       actionmailer (~> 3.2.17)
       aws-sdk (~> 1.0)
-      bundler (= 1.7.7)
+      bundler (= 1.7.8)
       bunny (~> 1.6.0)
       cocoapods-core (~> 0.35.0)
       dalli (~> 2.7.0)
@@ -18,7 +18,7 @@ GIT
       naturalsorter (~> 3.0.0)
       nokogiri (~> 1.6.0)
       oauth (~> 0.4.7)
-      octokit (~> 3.5.2)
+      octokit (~> 3.7.0)
       pdfkit (~> 0.6.2)
       persistent_httparty (~> 0.1.0)
       semverly (~> 1.0.0)
@@ -52,9 +52,9 @@ GEM
     addressable (2.3.6)
     amq-protocol (1.9.2)
     ansi (1.4.3)
-    aws-sdk (1.59.0)
-      aws-sdk-v1 (= 1.59.0)
-    aws-sdk-v1 (1.59.0)
+    aws-sdk (1.59.1)
+      aws-sdk-v1 (= 1.59.1)
+    aws-sdk-v1 (1.59.1)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
     builder (3.0.4)
@@ -96,7 +96,7 @@ GEM
       multi_json (>= 1.7.5, < 2.0)
       nokogiri (~> 1.6.3)
       oauth2
-    hashie (3.3.1)
+    hashie (3.3.2)
     hashr (0.0.22)
     highline (1.6.21)
     hike (1.2.3)
@@ -135,7 +135,7 @@ GEM
     nap (0.8.0)
     naturalsorter (3.0.0)
     netrc (0.9.0)
-    nokogiri (1.6.4.1)
+    nokogiri (1.6.5)
       mini_portile (~> 0.6.0)
     oauth (0.4.7)
     oauth2 (1.0.0)
@@ -144,8 +144,8 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (~> 1.2)
-    octokit (3.5.2)
-      sawyer (~> 0.5.3)
+    octokit (3.7.0)
+      sawyer (~> 0.6.0, >= 0.5.3)
     origin (1.1.0)
     pdfkit (0.6.2)
     persistent_http (1.0.6)
@@ -159,8 +159,8 @@ GEM
       rack (>= 0.4)
     rack-test (0.6.2)
       rack (>= 1.0)
-    rake (10.4.0)
-    rdoc (4.1.2)
+    rake (10.4.2)
+    rdoc (4.2.0)
       json (~> 1.4)
     rest-client (1.7.2)
       mime-types (>= 1.16, < 3.0)
@@ -180,7 +180,7 @@ GEM
     rufus-scheduler (3.0.9)
       tzinfo
     safe_yaml (1.0.4)
-    sawyer (0.5.5)
+    sawyer (0.6.0)
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
     semverly (1.0.0)
@@ -234,14 +234,14 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (= 1.7.7)
+  bundler (= 1.7.8)
   capybara (~> 2.4.1)
   database_cleaner (~> 1.3.0)
   factory_girl (~> 4.5.0)
   fakeweb (~> 1.3.0)
   jeweler (~> 2.0.1)
   log4r (~> 1.1.0)
-  rdoc (~> 4.1.1)
+  rdoc (~> 4.2.0)
   rspec (~> 3.1.0)
   rufus-scheduler (= 3.0.9)
   shoulda
