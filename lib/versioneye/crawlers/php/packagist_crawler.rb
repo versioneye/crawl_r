@@ -179,6 +179,7 @@ class PackagistCrawler < Versioneye::Crawl
     return true if resp.code.to_i == 200
     return false 
   rescue => e 
+    self.logger.error e.message
     self.logger.error e.backtrace.join("\n")
     false 
   end
