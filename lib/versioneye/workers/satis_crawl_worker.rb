@@ -1,11 +1,11 @@
-class PackagistCrawlWorker < Worker
+class SatisCrawlWorker < Worker
 
 
   def work
     connection = get_connection
     connection.start
     channel = connection.create_channel
-    queue   = channel.queue("packagist_crawl", :durable => true)
+    queue   = channel.queue("satis_crawl", :durable => true)
 
     log_msg = " [*] Waiting for messages in #{queue.name}. To exit press CTRL+C"
     puts log_msg
@@ -30,10 +30,12 @@ class PackagistCrawlWorker < Worker
   def process_work package_name
     return nil if package_name.to_s.empty?
     
-    if package_name.eql?('::packagist::')
-      PackagistCrawler.crawl 
-    else 
-      PackagistCrawler.crawle_package package_name
+    if package_name.eql?('::tiki::')
+      TikiCrawler.crawl
+    elsif package_name.eql?('::firegento::')
+      FiregentoCrawler.crawl 
+    elsif package_name.eql?('::magento::')
+      MagentoCrawler.crawl 
     end
     
     log.info "Crawl done for #{package_name}"

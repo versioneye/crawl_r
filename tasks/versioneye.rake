@@ -35,6 +35,62 @@ namespace :versioneye do
     end
   end
 
+  desc "start scheduler for crawl_r prod"
+  task :scheduler_crawl_r_prod do
+    RubyCrawl.new
+    scheduler = Rufus::Scheduler.new
+    env = Settings.instance.environment
+
+    value = GlobalSetting.get(env, 'SCHEDULE_CRAWL_COCOAPODS')
+    value = '1 * * * *' if value.to_s.empty?
+    if !value.to_s.empty?
+      scheduler.cron value do
+        CommonCrawlProducer.new "cocoa_pods_1"
+      end
+    end
+
+    value = '0 1 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        NpmCrawlProducer.new "::npm::"
+      end
+    end
+
+    value = '0 2 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        PackagistCrawlProducer.new "::packagist::"
+      end
+    end
+
+    value = '20 2 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        SatisCrawlProducer.new "::tiki::"
+      end
+    end
+
+    value = '25 2 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        SatisCrawlProducer.new "::firegento::"
+      end
+    end
+
+    value = '30 2 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        SatisCrawlProducer.new "::magento::"
+      end
+    end
+
+    scheduler.join
+    while 1 == 1
+      p "keep alive rake task"
+      sleep 30
+    end
+  end
+
   # ***** Crawler Tasks *****
 
   desc "crawl Packagist"
@@ -180,6 +236,22 @@ namespace :versioneye do
     puts "START PackagistCrawlWorker"
     RubyCrawl.new
     PackagistCrawlWorker.new.work
+    puts "---"
+  end
+
+  desc "Start SatisCrawlWorker"
+  task :satis_crawl_worker do
+    puts "START SatisCrawlWorker"
+    RubyCrawl.new
+    SatisCrawlWorker.new.work
+    puts "---"
+  end
+
+  desc "Start NpmCrawlWorker"
+  task :npm_crawl_worker do
+    puts "START NpmCrawlWorker"
+    RubyCrawl.new
+    NpmCrawlWorker.new.work
     puts "---"
   end
 
