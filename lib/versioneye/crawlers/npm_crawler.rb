@@ -6,15 +6,16 @@ class NpmCrawler < Versioneye::Crawl
   end
 
 
-  def self.crawl
-    crawl = crawle_object
+  def self.crawl serial = false 
     packages = get_first_level_list
     packages.each do |name|
-      crawle_package name, crawl
+      if serial == true 
+        crawle_package name
+      else 
+        NpmCrawlProducer.new( name ) # Let the rabbit do the work! 
+      end
+      
     end
-    crawl.duration = Time.now - crawl.created_at
-    crawl.save
-    self.logger.info(" *** This crawle took #{crawl.duration} *** ")
   end
 
   def self.get_first_level_list
@@ -75,7 +76,7 @@ class NpmCrawler < Versioneye::Crawl
   end
 
 
-  def self.crawle_package name, crawl
+  def self.crawle_package name
     self.logger.info "crawl #{name}"
     prod_json = JSON.parse HTTParty.get("http://registry.npmjs.org/#{name}").response.body
     versions  = prod_json['versions']
@@ -96,17 +97,16 @@ class NpmCrawler < Versioneye::Crawl
       db_version     = product.version_by_number version_number
       next if db_version
 
-      create_new_version product, version_number, version_obj, time, crawl
+      create_new_version product, version_number, version_obj, time
     end
     ProductService.update_version_data( product )
   rescue => e
     self.logger.error "ERROR in crawle_package Message: #{e.message}"
     self.logger.error e.backtrace.join("\n")
-    store_error crawl, e.message, e.backtrace, name
   end
 
 
-  def self.create_new_version product, version_number, version_obj, time, crawl
+  def self.create_new_version product, version_number, version_obj, time
     version_db = Version.new({:version => version_number})
     parse_release_date( version_db, time )
     product.versions.push version_db
@@ -127,7 +127,6 @@ class NpmCrawler < Versioneye::Crawl
   rescue => e
     self.logger.error "ERROR in create_new_version Message:   #{e.message}"
     self.logger.error e.backtrace.join("\n")
-    store_error crawl, e.message, e.backtrace, product.name
   end
 
 
@@ -148,18 +147,6 @@ class NpmCrawler < Versioneye::Crawl
     product.prod_type     = Project::A_TYPE_NPM
     product.language      = Product::A_LANGUAGE_NODEJS
     product.save
-  end
-
-
-  def self.crawle_object
-    crawl                 = Crawle.new
-    crawl.crawler_name    = 'NpmCrawler'
-    crawl.crawler_version = '0.1.0'
-    crawl.repository_src  = 'http://registry.npmjs.org/'
-    crawl.start_point     = '/'
-    crawl.exec_group      = Time.now.strftime('%Y-%m-%d-%I-%M')
-    crawl.save
-    return crawl
   end
 
 
@@ -335,15 +322,5 @@ class NpmCrawler < Versioneye::Crawl
     logger.error "Error in parse_release_date #{e.message}"
     logger.error e.backtrace.join("\n")
   end
-
-
-  def self.store_error( crawl, subject, message, source )
-    error = ErrorMessage.new({:subject => "#{subject}", :errormessage => "#{message}", :source => "#{source}", :crawle_id => crawl.id })
-    error.save
-  rescue => e
-    self.logger.error "ERROR in store_error: #{e.message}"
-    self.logger.error e.backtrace.join("\n")
-  end
-
 
 end
