@@ -1,5 +1,6 @@
 class NpmCrawler < Versioneye::Crawl
 
+  A_NPM_REGISTRY_INDEX = 'https://skimdb.npmjs.com/registry/_all_docs' 
 
   def self.logger
     ActiveSupport::BufferedLogger.new('log/npm.log')
@@ -8,13 +9,14 @@ class NpmCrawler < Versioneye::Crawl
 
   def self.crawl serial = false 
     packages = get_first_level_list
-    packages.each do |name|
+    packages.each do |package|
+      name = package['key'] if package.is_a? Hash 
+      name = package if !package.is_a? Hash 
       if serial == true 
         crawle_package name
       else 
         NpmCrawlProducer.new( name ) # Let the rabbit do the work! 
       end
-      
     end
   end
 
@@ -31,9 +33,9 @@ class NpmCrawler < Versioneye::Crawl
 
   def self.get_first_level_list_from_registry
     self.logger.info 'Start fetching first level list'
-    packages = JSON.parse HTTParty.get('http://registry.npmjs.org/-/short' ).response.body
+    packages = JSON.parse HTTParty.get( A_NPM_REGISTRY_INDEX ).response.body
     self.logger.info ' -- done.'
-    packages
+    packages['rows']
   rescue => e
     self.logger.error "ERROR in get_first_level_list: #{e.message}"
     self.logger.error e.backtrace.join("\n")
