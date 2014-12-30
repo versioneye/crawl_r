@@ -33,6 +33,8 @@ class CommonCrawlWorker < Worker
     if message.eql?("cocoa_pods_1")
       CocoapodsCrawler.crawl
       GithubVersionCrawler.crawl
+    elsif message.eql?('::github::')
+      GithubCrawler.crawl 
     elsif message.eql?('satis_1')
       base_url = GlobalSetting.get env, 'satis_base_url'
       crawler  = SatisCrawler.new base_url, "Satis Page"

@@ -84,6 +84,13 @@ namespace :versioneye do
       end
     end
 
+    value = '30 3 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        CommonCrawlProducer.new "::github::"
+      end
+    end
+
     scheduler.join
     while 1 == 1
       p "keep alive rake task"
@@ -252,7 +259,7 @@ namespace :versioneye do
     puts "START NpmCrawlWorker"
     RubyCrawl.new
     NpmCrawlWorker.new.work
-    puts "---"
+    puts "--- THE END ---"
   end
 
 
