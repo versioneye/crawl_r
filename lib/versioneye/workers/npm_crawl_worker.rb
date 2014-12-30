@@ -35,9 +35,6 @@ class NpmCrawlWorker < Worker
     else 
       NpmCrawler.crawle_package package_name
     end
-
-    
-
   rescue => e
     p e.message 
     p e.backtrace.join("\n")
