@@ -49,6 +49,13 @@ namespace :versioneye do
       end
     end
 
+    value = '11 1 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        BowerCrawlProducer.new "::bower::"
+      end
+    end
+
     value = '0 1 * * *'
     if !value.to_s.empty?
       scheduler.cron value do
