@@ -13,6 +13,10 @@ class Bower < Versioneye::Crawl
     ActiveSupport::BufferedLogger.new('log/bower.log')
   end
 
+  def logger
+    Bower.logger
+  end
+
   
   @@rate_limits = nil
 
@@ -32,7 +36,7 @@ class Bower < Versioneye::Crawl
     10.times do |i|
       break if rate_limits
 
-      val = github_rate_limit(token) #ask rate limit from API
+      val = github_rate_limit(token) # Ask rate limit from API
       rate_limits(val)
       break if rate_limits
       
@@ -170,21 +174,15 @@ class Bower < Versioneye::Crawl
 
 
   def self.to_existence_task(repo_info)
-    task = CrawlerTask.find_or_create_by(
-      task: A_TASK_CHECK_EXISTENCE,
-      repo_fullname: repo_info[:full_name]
-    )
-
-    task.update_attributes({
+    CrawlerTask.new({
+      task: A_TASK_CHECK_EXISTENCE, 
+      repo_fullname: repo_info[:full_name], 
       repo_owner: repo_info[:owner],
       repo_name: repo_info[:repo],
       registry_name: repo_info[:registry_name],
       url: repo_info[:url],
-      runs: task[:runs] + 1,
       re_crawl: true
-    })
-
-    task
+      })
   end
 
 

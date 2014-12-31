@@ -1,31 +1,21 @@
 class BowerVersionsCrawler < Bower 
 
   
-  def self.crawl token 
-    crawl_versions(token)
-  end 
-
-
-  # Imports package versions
-  def self.crawl_versions(token)
-    task_name = A_TASK_READ_VERSIONS
-    result = false
-    crawler_task_executor(task_name, token) do |task, token|
+  def self.crawl_versions task, token 
+    product  = Product.fetch_bower task[:registry_name]
+    if product.nil?
       prod_key = make_prod_key(task)
-      product  = Product.fetch_bower task[:registry_name]
-      if product.nil?
-        logger.error "#{task_name} | Cant find product for #{task[:repo_fullname]} with prod_key #{prod_key}"
-        next
-      end
-
-      tags = Github.repo_tags_all(task[:repo_fullname], token)
-      if tags && !tags.empty?
-        result = process_tags task, product, tags, token   
-      else
-        result = handle_no_tags task, product
-      end
-      result
+      logger.error "#{task_name} | Cant find product for #{task[:repo_fullname]} with prod_key #{prod_key}"
+      return false 
     end
+
+    tags = Github.repo_tags_all(task[:repo_fullname], token)
+    if tags && !tags.empty?
+      result = process_tags task, product, tags, token   
+    else
+      result = handle_no_tags task, product
+    end
+    false 
   end
 
 
@@ -34,12 +24,13 @@ class BowerVersionsCrawler < Bower
     logger.info "#{task[:repo_fullname]} has #{tags_count} tags."
     if product.versions && product.versions.count == tags_count
       logger.info "-- skip #{task[:repo_fullname]} because tags count (#{tags_count}) is equal to versions.count."
+      return true 
     end
 
     tags.each do |tag|
       parse_repo_tag( task[:repo_fullname], product, tag, token )
-      to_tag_project_task(task, tag)
-      sleep 1/100.0 # Just force little pause asking commit info -> github may block
+      tag_task = to_tag_project_task(task, tag) 
+      BowerTagCrawler.crawl_tag_deep tag_task, token 
     end
 
     latest_version = product.sorted_versions.first
@@ -61,44 +52,37 @@ class BowerVersionsCrawler < Bower
   end
 
 
-  def self.to_tag_project_task(task, tag)
-    tag_task = CrawlerTask.find_or_create_by(
+  def self.to_tag_project_task(task, tag)    
+    CrawlerTask.new(
       task: A_TASK_TAG_PROJECT,
       repo_fullname: task[:repo_fullname],
-      tag_name: tag[:name]
-    )
-
-    tag_task.update_attributes({
-      runs: tag_task[:runs] + 1,
+      tag_name: tag[:name], 
       repo_name: task[:repo_name],
       repo_owner: task[:repo_owner],
       registry_name: task[:registry_name],
-      tag_name: tag[:name],
       data: tag[:commit],
       url: tag[:commit][:url],
-      url_exists: true,
-      weight: 10,
-      re_crawl: true
-    })
+      url_exists: true
+    )
   end 
 
 
   def self.parse_repo_tag(repo_fullname, product, tag, token)
     if product.nil? or tag.nil?
       logger.error "-- parse_repo_tag(repo_fullname, product, tag, token) - Product or tag cant be nil"
-      return
+      return false 
     end
 
     tag = tag.deep_symbolize_keys
     tag_name = CrawlerUtils.remove_version_prefix( tag[:name].to_s )
     if tag_name.nil?
       logger.error "-- Skipped tag `#{tag_name}` "
-      return
+      return false 
     end
 
     if product.version_by_number( tag_name )
       logger.info "-- #{product.prod_key} : #{tag_name} exists already"
-      return
+      return false 
     end
 
     add_new_version(product, tag_name, tag, token)
@@ -107,6 +91,7 @@ class BowerVersionsCrawler < Bower
 
     logger.info " -- Added version `#{product.prod_key}` : #{tag_name} "
     create_version_archive(product, tag_name, tag[:zipball_url]) if tag.has_key?(:zipball_url)
+    true 
   end
 
 
@@ -133,8 +118,11 @@ class BowerVersionsCrawler < Bower
   # Add latest version for dependencies missing prod_version
   def self.update_product_dependencies(product, version_label)
     logger.info "update_product_dependencies for #{product.prod_key} version: #{version_label}"
-    all_dependencies = Dependency.where(prod_key: product[:prod_key])
-    deps_without_version = all_dependencies.keep_if {|dep| dep[:prod_key].nil? }
+    deps_without_version = Dependency.where(
+      language: product.language,
+      prod_type: Project::A_TYPE_BOWER, 
+      prod_key: product[:prod_key], 
+      prod_version: nil)
     deps_without_version.each do |dep|
       dep[:prod_version] = product[:version]
       dep.save

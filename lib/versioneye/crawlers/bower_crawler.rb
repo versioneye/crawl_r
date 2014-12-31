@@ -88,7 +88,7 @@ class BowerCrawler < Versioneye::Crawl
     tasks    = 0
 
     if app_list.nil? or app_list.empty?
-      logger.info "Error: cant read list of registered bower packages from: `#{source_url}`"
+      logger.error "Error: cant read list of registered bower packages from: `#{source_url}`"
       return nil
     end
 

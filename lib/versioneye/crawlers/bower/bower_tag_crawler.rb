@@ -1,56 +1,56 @@
 class BowerTagCrawler < Bower 
 
   
-  def self.crawl token 
-    crawl_tag_project token 
-  end
+  def self.crawl_tag_deep task, token 
+    tag_name    = task[:tag_name]
+    cleaned_tag = CrawlerUtils.remove_version_prefix( tag_name.to_s )
+    prod        = Product.fetch_bower(task[:registry_name])
 
-  
-  def self.crawl_tag_project(token)
-    task_name = A_TASK_TAG_PROJECT
-    crawler_task_executor(task_name, token) do |task, token|
-      tag_name = task[:tag_name]
-      commit_info = task[:data].deep_symbolize_keys
-      repo_name = task[:repo_fullname]
-
-      logger.debug "#-- going to read project deps for #{repo_name} with `#{tag_name}`"
-      commit_tree  = fetch_commit_tree(commit_info[:url], token)
-      if commit_tree.nil?
-        logger.debug "commit_tree is nil"
-        next 
-      end
-
-      project_info = fetch_project_info_by_sha(repo_name, commit_tree[:sha], token, tag_name)
-      if project_info.nil?
-        logger.debug "project_info is nil"
-        next 
-      end
-
-      project_file = fetch_project_file(repo_name, project_info[:url], token)
-      if project_file.nil? 
-        logger.debug "project_file is nil"
-        next 
-      end
-
-      file_content = parse_json(project_file)
-      if file_content.nil? or file_content.is_a?(TrueClass)
-        logger.debug "file_content is nil"
-        next 
-      end
-
-      unless file_content.has_key?(:version)
-        logger.warn "No version found in project file on tag #{tag_name} of #{repo_name}. Going to use tag."
-        cleaned_tag = CrawlerUtils.remove_version_prefix( tag_name.to_s )
-        file_content[:version] = cleaned_tag
-      end
-
-      pkg_info = to_pkg_info(task[:owner], task[:repo], project_info[:url], file_content)
-      prod = Product.fetch_bower(task[:registry_name])
-      to_dependencies(prod, pkg_info, :dependencies,     Dependency::A_SCOPE_REQUIRE)
-      to_dependencies(prod, pkg_info, :dev_dependencies, Dependency::A_SCOPE_DEVELOPMENT)
-
-      true 
+    dep_count = Dependency.where(:language => prod.language, :prod_type => prod.prod_type, 
+      :prod_key => prod.prod_key, :prod_version => cleaned_tag).count 
+    if dep_count > 0 
+      logger.debug "tag #{tag_name} has already dependencies"
+      return false 
     end
+    
+    commit_info = task[:data].deep_symbolize_keys
+    repo_name   = task[:repo_fullname]
+
+    logger.debug "#-- going to read project deps for #{repo_name} with `#{tag_name}`"
+    commit_tree  = fetch_commit_tree(commit_info[:url], token)
+    if commit_tree.nil?
+      logger.debug "commit_tree is nil"
+      return false
+    end
+
+    project_info = fetch_project_info_by_sha(repo_name, commit_tree[:sha], token, tag_name)
+    if project_info.nil?
+      logger.debug "project_info is nil"
+      return false
+    end
+
+    project_file = fetch_project_file(repo_name, project_info[:url], token)
+    if project_file.nil? 
+      logger.debug "project_file is nil"
+      return false
+    end
+
+    file_content = parse_json(project_file)
+    if file_content.nil? or file_content.is_a?(TrueClass)
+      logger.debug "file_content is nil"
+      return false
+    end
+
+    unless file_content.has_key?(:version)
+      logger.warn "No version found in project file on tag #{tag_name} of #{repo_name}. Going to use tag."
+      file_content[:version] = cleaned_tag
+    end
+
+    pkg_info = to_pkg_info(task[:owner], task[:repo], project_info[:url], file_content)
+    to_dependencies(prod, pkg_info, :dependencies,     Dependency::A_SCOPE_REQUIRE)
+    to_dependencies(prod, pkg_info, :dev_dependencies, Dependency::A_SCOPE_DEVELOPMENT)
+
+    true 
   end
 
 
