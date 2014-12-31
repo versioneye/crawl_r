@@ -1,7 +1,9 @@
 class NpmCrawler < Versioneye::Crawl
 
+  
   A_NPM_REGISTRY_INDEX = 'https://skimdb.npmjs.com/registry/_all_docs' 
 
+  
   def self.logger
     ActiveSupport::BufferedLogger.new('log/npm.log')
   end
@@ -20,6 +22,7 @@ class NpmCrawler < Versioneye::Crawl
     end
   end
 
+  
   def self.get_first_level_list
     packages = get_first_level_list_from_registry
     if packages.nil? || packages.empty? || packages.count < 50
@@ -209,6 +212,7 @@ class NpmCrawler < Versioneye::Crawl
     end
   end
 
+  
   def self.check_licenses( product, version_number, version_obj )
     licenses = version_obj['licenses']
     return nil if licenses.nil? || licenses.empty?
@@ -224,6 +228,7 @@ class NpmCrawler < Versioneye::Crawl
     end
   end
 
+  
   def self.create_licenses( product, version_number, licenses )
     licenses.each do |licence|
       if licence.is_a?(String)
@@ -236,6 +241,7 @@ class NpmCrawler < Versioneye::Crawl
     end
   end
 
+  
   def self.create_single_license( product, version_number, license_name, license_url = nil )
     license = License.find_or_create( product.language, product.prod_key, version_number, license_name, license_url )
     self.logger.info " -- New license - #{license.to_s}"
@@ -297,6 +303,7 @@ class NpmCrawler < Versioneye::Crawl
     nil
   end
 
+  
   def self.repository_for version_obj
     version_obj['repository']['url']
   rescue => e
@@ -304,6 +311,7 @@ class NpmCrawler < Versioneye::Crawl
     nil
   end
 
+  
   def self.homepage_for version_obj
     hp = version_obj['homepage']
     if hp.is_a? Array
@@ -324,5 +332,6 @@ class NpmCrawler < Versioneye::Crawl
     logger.error "Error in parse_release_date #{e.message}"
     logger.error e.backtrace.join("\n")
   end
+
 
 end
