@@ -269,5 +269,13 @@ namespace :versioneye do
     puts "--- THE END ---"
   end
 
+  desc "Start BowerCrawlWorker"
+  task :bower_crawl_worker do
+    puts "START BowerCrawlWorker"
+    RubyCrawl.new
+    BowerCrawlWorker.new.work
+    puts "--- THE END ---"
+  end
+
 
 end
