@@ -7,7 +7,6 @@ module Versioneye
     require './lib/versioneye/crawlers/new_bower_crawler'
     require './lib/versioneye/crawlers/cocoapods_crawler'
     require './lib/versioneye/crawlers/cocoapods_podspec_parser'
-    require './lib/versioneye/crawlers/composer_utils'
     require './lib/versioneye/crawlers/crawler_utils'
     require './lib/versioneye/crawlers/github_crawler'
     require './lib/versioneye/crawlers/github_version_crawler'
@@ -24,6 +23,7 @@ module Versioneye
     require './lib/versioneye/crawlers/php/firegento_crawler'
     require './lib/versioneye/crawlers/php/tiki_crawler'
     require './lib/versioneye/crawlers/php/branch_cleaner'
+    require './lib/versioneye/crawlers/php/composer_utils'
 
     require './lib/versioneye/crawlers/bower/bower'
     require './lib/versioneye/crawlers/bower/bower_source_checker'
