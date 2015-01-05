@@ -42,17 +42,10 @@ namespace :versioneye do
     env = Settings.instance.environment
 
     value = GlobalSetting.get(env, 'SCHEDULE_CRAWL_COCOAPODS')
-    value = '1 * * * *' if value.to_s.empty?
+    value = '1 0 * * *' if value.to_s.empty?
     if !value.to_s.empty?
       scheduler.cron value do
         CommonCrawlProducer.new "cocoa_pods_1"
-      end
-    end
-
-    value = '11 1 * * *'
-    if !value.to_s.empty?
-      scheduler.cron value do
-        BowerCrawlProducer.new "::bower::"
       end
     end
 
@@ -60,6 +53,13 @@ namespace :versioneye do
     if !value.to_s.empty?
       scheduler.cron value do
         NpmCrawlProducer.new "::npm::"
+      end
+    end
+
+    value = '11 1 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        BowerCrawlProducer.new "::bower::"
       end
     end
 
