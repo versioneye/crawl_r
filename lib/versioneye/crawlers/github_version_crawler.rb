@@ -32,7 +32,7 @@ class GithubVersionCrawler < Versioneye::Crawl
 
 
   def self.add_version_to_product ( product )
-    repo = product.repositories.map(&:src).uniq.first
+    repo = git_repo_src( product )
     return nil if repo.to_s.empty?
     return nil if repo.to_s.eql?('https://github.com/CocoaPods/Specs')
 
@@ -43,6 +43,14 @@ class GithubVersionCrawler < Versioneye::Crawl
   rescue => e
     logger.error e.message
     logger.error e.backtrace.join("\n")
+  end
+
+
+  def self.git_repo_src product 
+    product.repositories.each do |repo| 
+      return repo.src if /#{Settings.instance.github_base_url}\/(.+)\/(.+)\.git/.match repo.src
+    end
+    return nil
   end
 
 
