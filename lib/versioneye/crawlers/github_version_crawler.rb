@@ -34,6 +34,7 @@ class GithubVersionCrawler < Versioneye::Crawl
   def self.add_version_to_product ( product )
     repo = product.repositories.map(&:src).uniq.first
     return nil if repo.to_s.empty?
+    return nil if repo.to_s.eql?('https://github.com/CocoaPods/Specs')
 
     github_versions = versions_for_github_url( repo )
     return nil if github_versions.nil? || github_versions.empty?
