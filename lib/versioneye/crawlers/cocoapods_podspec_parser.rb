@@ -102,15 +102,11 @@ class CocoapodsPodspecParser
 
 
   def create_dependencies
-
     deps = get_podspec_dependencies
-
     hash = hash_of_dependencies_to_versions(deps)
-
     hash.each_pair do |spec, version|
       create_dependency(spec, version)
     end
-
   end
 
   # returns a list of dependencies
