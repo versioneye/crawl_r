@@ -17,7 +17,6 @@ class BowerStarter < Bower
     end
 
     app_list.each_with_index do |app, i|
-      logger.info "----"
       logger.info "start - #{i} - #{app[:name]}"
       if concurrent 
         BowerCrawlProducer.new("#{app[:name]}::#{app[:url]}")
