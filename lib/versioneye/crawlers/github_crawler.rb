@@ -24,7 +24,7 @@ class GithubCrawler < Versioneye::Crawl
   end
 
   def self.crawle_package name, crawl = nil, resource = nil
-    logger.info "crawl package #{name}"
+    logger.info "crawl github package #{name}"
     repository = OctokitApi.client.repo name
     return nil if repository.nil?
 
