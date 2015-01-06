@@ -13,7 +13,9 @@ class CommonCrawlWorker < Worker
 
     begin
       queue.subscribe(:ack => true, :block => true) do |delivery_info, properties, message|
-        puts " [x] Received #{message}"
+        log_msg = " [x] Received #{message}"
+        puts log_msg 
+        log.info log_msg 
 
         process_work message
 
@@ -41,7 +43,9 @@ class CommonCrawlWorker < Worker
       GithubCrawler.crawl 
     end
 
-    log.info "Job done for #{message}"
+    log_msg = "Job done for #{message}"
+    p log_msg 
+    log.info log_msg 
   rescue => e
     p e.message 
     p e.backtrace.join("\n")
