@@ -41,14 +41,49 @@ namespace :versioneye do
     scheduler = Rufus::Scheduler.new
     env = Settings.instance.environment
 
+    # Crawl it once a hour. A crawl takes ~ 20 minutes! 
     value = GlobalSetting.get(env, 'SCHEDULE_CRAWL_COCOAPODS')
-    value = '1 0 * * *' if value.to_s.empty?
+    value = '1 * * * *' if value.to_s.empty?
     if !value.to_s.empty?
       scheduler.cron value do
         CommonCrawlProducer.new "cocoa_pods_1"
       end
     end
 
+    # Crawl it once a hour. A crawl takes ~ 1 minutes! 
+    value = '20 * * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        SatisCrawlProducer.new "::tiki::"
+      end
+    end
+
+    # Crawl it once a hour. A crawl takes ~ 3 minutes! 
+    value = '22 * * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        SatisCrawlProducer.new "::firegento::"
+      end
+    end
+
+    # Crawl it once a hour. A crawl takes ~ 3 minutes! 
+    value = '25 * * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        SatisCrawlProducer.new "::magento::"
+      end
+    end
+
+    # Crawl it once a hour. A crawl takes ~ 3 minutes! 
+    value = '28 * * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        CommonCrawlProducer.new "::github::"
+      end
+    end
+    
+    
+    # This crawl takes almost 7 hours
     value = '0 1 * * *'
     if !value.to_s.empty?
       scheduler.cron value do
@@ -56,48 +91,21 @@ namespace :versioneye do
       end
     end
 
-    value = '11 1 * * *'
+    value = '11 2 * * *'
     if !value.to_s.empty?
       scheduler.cron value do
         BowerCrawlProducer.new "::bower::"
       end
     end
 
-    value = '0 2 * * *'
+    value = '0 3 * * *'
     if !value.to_s.empty?
       scheduler.cron value do
         PackagistCrawlProducer.new "::packagist::"
       end
-    end
+    end    
 
-    value = '20 2 * * *'
-    if !value.to_s.empty?
-      scheduler.cron value do
-        SatisCrawlProducer.new "::tiki::"
-      end
-    end
-
-    value = '25 2 * * *'
-    if !value.to_s.empty?
-      scheduler.cron value do
-        SatisCrawlProducer.new "::firegento::"
-      end
-    end
-
-    value = '30 2 * * *'
-    if !value.to_s.empty?
-      scheduler.cron value do
-        SatisCrawlProducer.new "::magento::"
-      end
-    end
-
-    value = '30 3 * * *'
-    if !value.to_s.empty?
-      scheduler.cron value do
-        CommonCrawlProducer.new "::github::"
-      end
-    end
-
+    
     scheduler.join
     while 1 == 1
       p "keep alive rake task"
