@@ -19,9 +19,9 @@ class GithubVersionCrawler < Versioneye::Crawl
   def self.products( language, empty_release_dates, desc = true )
     products = Mongoid::Criteria.new(Product)
     if empty_release_dates
-      products = Product.where({ :language => language, 'versions.released_at' => nil })
+      products = Product.where({ :prod_type => Project::A_TYPE_COCOAPODS, :language => language, 'versions.released_at' => nil })
     else
-      products = Product.where({ :language => language }) if !empty_release_dates
+      products = Product.where({ :prod_type => Project::A_TYPE_COCOAPODS, :language => language }) if !empty_release_dates
     end
 
     products = products.desc(:name) if desc
@@ -57,7 +57,12 @@ class GithubVersionCrawler < Versioneye::Crawl
       logger.info "update #{product.name} v #{version} was released at #{version.released_at}"
     end
     remaining = OctokitApi.client.ratelimit.remaining
-    logger.info "check version dates for #{product.prod_key} - Remaining API requests: #{remaining}"
+    if remaining < 60 
+      logger.info "Remaining API requests: #{remaining} - Going to sleep for a while!" 
+      sleep 60 # sleep a minute!
+    else 
+      logger.info "check version dates for #{product.prod_key} - Remaining API requests: #{remaining}"
+    end
   end
 
   
