@@ -41,14 +41,6 @@ namespace :versioneye do
     scheduler = Rufus::Scheduler.new
     env = Settings.instance.environment
 
-    # Crawl it once a hour. A crawl takes ~ 20 minutes! 
-    value = GlobalSetting.get(env, 'SCHEDULE_CRAWL_COCOAPODS')
-    value = '1 * * * *' if value.to_s.empty?
-    if !value.to_s.empty?
-      scheduler.cron value do
-        CommonCrawlProducer.new "cocoa_pods_1"
-      end
-    end
 
     # Crawl it once a hour. A crawl takes ~ 1 minutes! 
     value = '20 * * * *'
@@ -81,7 +73,16 @@ namespace :versioneye do
         CommonCrawlProducer.new "::github::"
       end
     end
-    
+
+
+    # Crawl it once a day. A crawl takes ~ 20 minutes! 
+    value = GlobalSetting.get(env, 'SCHEDULE_CRAWL_COCOAPODS')
+    value = '1 0 * * *' if value.to_s.empty?
+    if !value.to_s.empty?
+      scheduler.cron value do
+        CommonCrawlProducer.new "cocoa_pods_1"
+      end
+    end
     
     # This crawl takes almost 7 hours
     value = '0 1 * * *'
