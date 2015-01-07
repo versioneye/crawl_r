@@ -29,6 +29,7 @@ class PackagistCrawler < Versioneye::Crawl
 
 
   def self.crawle_package name
+    self.logger.info "crawl #{name}"
     return nil if name.to_s.empty?
 
     resource     = "http://packagist.org/packages/#{name}.json"
