@@ -1,12 +1,12 @@
 GIT
   remote: git@github.com:versioneye/versioneye-core.git
-  revision: d2b6f32cab4423f09869b4d35a678d985b6790f6
-  tag: v7.0.6
+  revision: 99e571639535b69987ac447f8c5ca6755cd8e1cc
+  tag: v7.0.9
   specs:
-    versioneye-core (7.0.6)
+    versioneye-core (7.0.9)
       actionmailer (~> 3.2.17)
       aws-sdk (~> 1.0)
-      bundler (~> 1.7.9)
+      bundler (~> 1.7.11)
       bunny (~> 1.6.3)
       cocoapods-core (~> 0.35.0)
       dalli (~> 2.7.0)
@@ -73,7 +73,7 @@ GEM
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
     dalli (2.7.2)
-    database_cleaner (1.3.0)
+    database_cleaner (1.4.0)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.2.5)
@@ -82,7 +82,7 @@ GEM
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
     fakeweb (1.3.0)
-    faraday (0.9.0)
+    faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
     fuzzy_match (2.0.4)
     gene_pool (1.4.1)
@@ -234,9 +234,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.7.9)
+  bundler (~> 1.7.11)
   capybara (~> 2.4.1)
-  database_cleaner (~> 1.3.0)
+  database_cleaner (~> 1.4.0)
   factory_girl (~> 4.5.0)
   fakeweb (~> 1.3.0)
   jeweler (~> 2.0.1)

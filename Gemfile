@@ -1,9 +1,9 @@
 source "http://rubygems.org"
 
 gem 'log4r'              , '~> 1.1.0'
-gem 'bundler'            , '~> 1.7.9'
+gem 'bundler'            , '~> 1.7.11'
 
-gem 'versioneye-core'    , :git => 'git@github.com:versioneye/versioneye-core.git', :tag => 'v7.0.6'
+gem 'versioneye-core'    , :git => 'git@github.com:versioneye/versioneye-core.git', :tag => 'v7.0.9'
 # gem 'versioneye-core'    , :path => "~/workspace/versioneye/versioneye-core"
 
 gem 'rufus-scheduler', '3.0.9'
@@ -17,7 +17,7 @@ end
 group :test do
   gem 'simplecov'       , '~> 0.9.0'
   gem 'rspec'           , '~> 3.1.0'
-  gem 'database_cleaner', '~> 1.3.0'
+  gem 'database_cleaner', '~> 1.4.0'
   gem 'factory_girl'    , '~> 4.5.0'
   gem 'capybara'        , '~> 2.4.1'
   gem 'vcr'             , '~> 2.9.2',  :require => false
