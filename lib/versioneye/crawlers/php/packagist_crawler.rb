@@ -177,7 +177,8 @@ class PackagistCrawler < Versioneye::Crawl
     raw_url = "#{source}/releases/tag/#{version_number}"
 
     resp = HttpService.fetch_response raw_url
-    return true if resp.code.to_i == 200
+    return false if resp.nil? 
+    return true  if resp.code.to_i == 200
     return false 
   rescue => e 
     self.logger.error e.message
