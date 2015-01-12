@@ -66,8 +66,16 @@ namespace :versioneye do
       end
     end
 
+    # Crawl it once a hour. A crawl takes ~ 1 minute! 
+    value = '29 * * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        SatisCrawlProducer.new "::zendframework::"
+      end
+    end
+
     # Crawl it once a hour. A crawl takes ~ 3 minutes! 
-    value = '28 * * * *'
+    value = '30 * * * *'
     if !value.to_s.empty?
       scheduler.cron value do
         CommonCrawlProducer.new "::github::"
@@ -105,7 +113,7 @@ namespace :versioneye do
         PackagistCrawlProducer.new "::packagist::"
       end
     end    
-
+    
     
     scheduler.join
     while 1 == 1
@@ -145,6 +153,14 @@ namespace :versioneye do
     puts "START to crawle Magento repository"
     RubyCrawl.new
     MagentoCrawler.crawl
+    puts "---"
+  end
+
+  desc "crawl Zendframework"
+  task :crawl_zendframework do
+    puts "START to crawle Zendframework repository"
+    RubyCrawl.new
+    ZendframeworkCrawler.crawl
     puts "---"
   end
 
