@@ -82,7 +82,9 @@ class BowerVersionsCrawler < Bower
       return false 
     end
 
-    if tag_name.match(/(-build)+.*(sha\.)+/xi) || tag_name.match(/(-beta)+.*(nightly-)+/xi)
+    if tag_name.match(/(-build)+.*(sha\.)+/xi) || 
+       tag_name.match(/(-beta)+.*(nightly-)+/xi) || 
+       tag_name.match(/.+(-master-)\S{7}/xi)
       logger.error "-- Skip build tags! Specially for AngularJS!"
       return false 
     end
