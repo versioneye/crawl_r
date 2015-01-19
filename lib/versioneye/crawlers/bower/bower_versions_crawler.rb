@@ -28,7 +28,9 @@ class BowerVersionsCrawler < Bower
     end
 
     tags.each do |tag|
-      parse_repo_tag( task[:repo_fullname], product, tag, token )
+      result = parse_repo_tag( task[:repo_fullname], product, tag, token )
+      next if result == false 
+      
       tag_task = to_tag_project_task(task, tag) 
       BowerTagCrawler.crawl_tag_deep tag_task, token 
     end
@@ -77,6 +79,11 @@ class BowerVersionsCrawler < Bower
     tag_name = CrawlerUtils.remove_version_prefix( tag[:name].to_s )
     if tag_name.nil?
       logger.error "-- Skipped tag `#{tag_name}` "
+      return false 
+    end
+
+    if tag_name.match(/(-build)+.*(sha\.)+/xi)
+      logger.error "-- Skip build tags! Specially for AngularJS!"
       return false 
     end
 
