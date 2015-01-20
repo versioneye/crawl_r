@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:versioneye/versioneye-core.git
-  revision: 99e571639535b69987ac447f8c5ca6755cd8e1cc
-  tag: v7.0.9
+  revision: b88be1405fdc50c4290c80119c9e9aaa6388fd3a
+  tag: v7.0.22
   specs:
-    versioneye-core (7.0.9)
+    versioneye-core (7.0.22)
       actionmailer (~> 3.2.17)
       aws-sdk (~> 1.0)
       bundler (~> 1.7.11)
@@ -51,10 +51,10 @@ GEM
       multi_json (~> 1.0)
     addressable (2.3.6)
     amq-protocol (1.9.2)
-    ansi (1.4.3)
-    aws-sdk (1.60.2)
-      aws-sdk-v1 (= 1.60.2)
-    aws-sdk-v1 (1.60.2)
+    ansi (1.5.0)
+    aws-sdk (1.61.0)
+      aws-sdk-v1 (= 1.61.0)
+    aws-sdk-v1 (1.61.0)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
     builder (3.0.4)
@@ -116,7 +116,7 @@ GEM
     journey (1.0.4)
     json (1.8.1)
     jwt (1.2.0)
-    kgio (2.9.2)
+    kgio (2.9.3)
     log4r (1.1.10)
     mail (2.5.4)
       mime-types (~> 1.16)
