@@ -19,7 +19,7 @@ class BowerStarter < Bower
     app_list.each_with_index do |app, i|
       logger.info "start - #{i} - #{app[:name]}"
       
-      if app[:name].to_s.eql?('bower-everything')
+      if app[:name].to_s.eql?('bower-everything') || app[:name].to_s.eql?('everything')
         logger.info "Skip bower-everything! Too many dependencies!"
         next 
       end
