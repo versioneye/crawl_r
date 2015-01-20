@@ -18,6 +18,12 @@ class BowerStarter < Bower
 
     app_list.each_with_index do |app, i|
       logger.info "start - #{i} - #{app[:name]}"
+      
+      if app[:name].to_s.eql?('bower-everything')
+        logger.info "Skip bower-everything! Too many dependencies!"
+        next 
+      end
+      
       if concurrent 
         BowerCrawlProducer.new("#{app[:name]}::#{app[:url]}")
       else 
