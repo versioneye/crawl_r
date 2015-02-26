@@ -60,7 +60,7 @@ class PackagistCrawler < Versioneye::Crawl
     version_number.gsub!(/^v/, '') if version_number.to_s.match(/^v[0-9]+\..*/)
     db_version  = product.version_by_number version_number
     if db_version.nil?
-      if has_tag_variants?(product, version_number, version_obj) == false 
+      if !version_number.eql?('dev-master') && has_tag_variants?(product, version_number, version_obj) == false 
         return nil 
       end
 
