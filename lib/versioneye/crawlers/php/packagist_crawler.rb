@@ -65,7 +65,6 @@ class PackagistCrawler < Versioneye::Crawl
       end
 
       PackagistCrawler.create_new_version( product, version_number, version_obj )
-      return nil
     end
 
     if version_number.match(/\Adev\-/)
