@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:versioneye/versioneye-core.git
-  revision: a37ff1c6e9af6082548bac6b5c63b9ddf90d3583
-  tag: v7.3.17
+  revision: cc2d869ed9d5948fa9eb6faf5b19285740e29a49
+  tag: v7.3.19
   specs:
-    versioneye-core (7.3.17)
+    versioneye-core (7.3.19)
       actionmailer (~> 3.2.21)
       aws-sdk (~> 1.0)
       bundler (~> 1.8.2)
@@ -129,7 +129,7 @@ GEM
       origin (~> 1.0)
       tzinfo (~> 0.3.29)
     moped (1.5.2)
-    multi_json (1.10.1)
+    multi_json (1.11.0)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     nap (0.8.0)
