@@ -1,14 +1,14 @@
 GIT
   remote: git@github.com:versioneye/versioneye-core.git
-  revision: 2e31b08d6fe9734907efcfe1241b989208a3217c
-  tag: v7.6.3
+  revision: e5ad94672d68b9a2f556987d0c41636590cc46cd
+  tag: v7.6.14
   specs:
-    versioneye-core (7.6.3)
+    versioneye-core (7.6.14)
       actionmailer (~> 3.2.21)
-      aws-sdk (~> 1.0)
-      bundler (~> 1.8.2)
+      aws-sdk (~> 2.0.31)
+      bundler (~> 1.9.1)
       bunny (~> 1.7.0)
-      cocoapods-core (~> 0.35.0)
+      cocoapods-core (~> 0.36.0)
       dalli (~> 2.7.0)
       httparty (~> 0.13.1)
       json (~> 1.8.0)
@@ -18,7 +18,7 @@ GIT
       naturalsorter (~> 3.0.2)
       nokogiri (~> 1.6.0)
       oauth (~> 0.4.7)
-      octokit (~> 3.7.0)
+      octokit (~> 3.8.0)
       pdfkit (~> 0.6.2)
       persistent_httparty (~> 0.1.0)
       semverly (~> 1.0.0)
@@ -52,11 +52,15 @@ GEM
     addressable (2.3.7)
     amq-protocol (1.9.2)
     ansi (1.5.0)
-    aws-sdk (1.63.0)
-      aws-sdk-v1 (= 1.63.0)
-    aws-sdk-v1 (1.63.0)
-      json (~> 1.4)
-      nokogiri (>= 1.4.4)
+    aws-sdk (2.0.31)
+      aws-sdk-resources (= 2.0.31)
+    aws-sdk-core (2.0.31)
+      builder (~> 3.0)
+      jmespath (~> 1.0)
+      multi_json (~> 1.0)
+      multi_xml (~> 0.5)
+    aws-sdk-resources (2.0.31)
+      aws-sdk-core (= 2.0.31)
     builder (3.0.4)
     bunny (1.7.0)
       amq-protocol (>= 1.9.2)
@@ -66,7 +70,7 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    cocoapods-core (0.35.0)
+    cocoapods-core (0.36.0)
       activesupport (>= 3.2.15)
       fuzzy_match (~> 2.0.4)
       nap (~> 0.8.0)
@@ -113,6 +117,8 @@ GEM
       nokogiri (>= 1.5.10)
       rake
       rdoc
+    jmespath (1.0.2)
+      multi_json (~> 1.0)
     journey (1.0.4)
     json (1.8.2)
     jwt (1.4.1)
@@ -144,7 +150,7 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (~> 1.2)
-    octokit (3.7.1)
+    octokit (3.8.0)
       sawyer (~> 0.6.0, >= 0.5.3)
     origin (1.1.0)
     pdfkit (0.6.2)
@@ -234,7 +240,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.8.0)
+  bundler (~> 1.9.1)
   capybara (~> 2.4.1)
   database_cleaner (~> 1.4.0)
   factory_girl (~> 4.5.0)

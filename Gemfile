@@ -1,9 +1,9 @@
 source "http://rubygems.org"
 
 gem 'log4r'              , '~> 1.1.0'
-gem 'bundler'            , '~> 1.8.0'
+gem 'bundler'            , '~> 1.9.1'
 
-gem 'versioneye-core'    , :git => 'git@github.com:versioneye/versioneye-core.git', :tag => 'v7.6.3'
+gem 'versioneye-core'    , :git => 'git@github.com:versioneye/versioneye-core.git', :tag => 'v7.6.14'
 # gem 'versioneye-core'    , :path => "~/workspace/versioneye/versioneye-core"
 
 gem 'rufus-scheduler', '3.0.9'
