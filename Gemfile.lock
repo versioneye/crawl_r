@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:versioneye/versioneye-core.git
-  revision: cb0f4fb421e2c2cf40546728bb2f5fd8c4b28334
-  tag: v7.8.7
+  revision: c8e6472ee89c1d8239716cbf5e1ab4c9ce93c516
+  tag: v7.8.9
   specs:
-    versioneye-core (7.8.7)
+    versioneye-core (7.8.9)
       actionmailer (~> 3.2.21)
       aws-sdk (~> 2.0.31)
       bundler (~> 1.9.1)
@@ -103,7 +103,7 @@ GEM
       oauth2
     hashie (3.4.1)
     hashr (0.0.22)
-    highline (1.7.1)
+    highline (1.7.2)
     hike (1.2.3)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
