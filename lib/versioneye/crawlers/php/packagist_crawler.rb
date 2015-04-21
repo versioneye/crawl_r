@@ -106,7 +106,7 @@ class PackagistCrawler < Versioneye::Crawl
   def self.create_new_version product, version_number, version_obj
     version_db                 = Version.new({version: version_number})
     version_db.released_string = version_obj['time']
-    version_db.released_at     = DateTime.parse(version_obj['time'])
+    version_db.released_at     = date_from version_obj['time']
     product.versions.push version_db
     product.reindex = true
     product.save
@@ -214,6 +214,14 @@ class PackagistCrawler < Versioneye::Crawl
     return false if resp.code.to_i == 301
 
     return true
+  end
+
+
+  def self.date_from released_string
+    DateTime.parse(released_string)
+  rescue => e 
+    logger.error e.message
+    nil 
   end
 
 end
