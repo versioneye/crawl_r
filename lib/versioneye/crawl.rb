@@ -3,6 +3,7 @@ module Versioneye
 
     require 'versioneye/model'
 
+    require './lib/versioneye/crawlers/biicode_crawler'
     require './lib/versioneye/crawlers/cocoapods_crawler'
     require './lib/versioneye/crawlers/cocoapods_podspec_parser'
     require './lib/versioneye/crawlers/crawler_utils'
