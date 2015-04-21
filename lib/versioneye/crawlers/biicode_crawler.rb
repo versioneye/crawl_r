@@ -26,14 +26,20 @@ class BiicodeCrawler < Versioneye::Crawl
 
   def self.process block_name 
     block_url = "https://webapi.biicode.com/v1/blocks/#{block_name}"
-    block = JSON.parse HTTParty.get( block_url ).response.body
-
+    block     = JSON.parse HTTParty.get( block_url ).response.body
+    
+    tags_url  = "https://webapi.biicode.com/v1/blocks/#{block_name}/tags"
+    tags_json = JSON.parse HTTParty.get( block_url ).response.body
+    tags      = tags_json['tags'] 
+    tags      = ["CPP"] if tags.nil? || tags.empty?
+    
     product = init_product block_name
     product.description = block['description']
     product.version = block['version']
+    product.tags = 
     product.save 
 
-    p "#{block_name} - #{block['description']} - #{block['version']}"
+    p "#{block_name} - #{block['description']} - #{block['version']} - #{tags}"
     
     versions_url = "https://webapi.biicode.com/v1/misc/versions/#{block_name}"
     versions = JSON.parse HTTParty.get( versions_url ).response.body
@@ -67,10 +73,36 @@ class BiicodeCrawler < Versioneye::Crawl
     CrawlerUtils.create_newest product, version_string, logger
     CrawlerUtils.create_notifications product, version_string, logger
 
+    create_dependencies product, version_string
     # links 
-    # tags 
-    # dependencies 
     # licenses 
+  end
+
+
+  def self.create_dependencies product, version_string
+    dep_url = "https://webapi.biicode.com/v1/blocks/#{product.prod_key}/#{version_string}/requirements"
+    requirements = JSON.parse HTTParty.get( dep_url ).response.body
+    return nil if requirements.nil? || requirements.empty? 
+
+    requirements.each do |requirement| 
+      prod_key = "#{requirement['owner']}/#{requirement['creator']}/#{requirement['block_name']}/#{requirement['branch']}"
+      req_vers = requirement['time'] 
+      
+      dep = Dependency.find_by( Product::A_LANGUAGE_BIICODE, product.prod_key, version_string, prod_key, req_vers, prod_key )
+      next if dep 
+
+      dependency = Dependency.new({:name => prod_key, :version => req_vers,
+        :dep_prod_key => prod_key, :prod_key => product.prod_key,
+        :prod_version => version_string, :scope => Dependency::A_SCOPE_COMPILE, :prod_type => Project::A_TYPE_BIICODE,
+        :language => Product::A_LANGUAGE_BIICODE })
+      dependency.save
+      dependency.update_known
+    end
+  end
+
+
+  def self.create_links product 
+
   end
 
 
@@ -83,7 +115,7 @@ class BiicodeCrawler < Versioneye::Crawl
       :prod_type => Project::A_TYPE_BIICODE, 
       :language => Product::A_LANGUAGE_BIICODE, 
       :prod_key => name.downcase, 
-      :name => name.downcase, 
+      :name => name, 
       :name_downcase => name.downcase, 
       :reindex => true})
   end
