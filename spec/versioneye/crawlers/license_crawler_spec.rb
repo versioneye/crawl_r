@@ -51,14 +51,6 @@ describe LicenseCrawler do
     it "finds MIT" do
       License.count.should == 0
       product = ProductFactory.create_new
-      LicenseCrawler.process_github_master('comster/house', product).should be_truthy
-      License.count.should == 1
-      License.first.name.should eq('MIT')
-    end
-
-    it "finds MIT" do
-      License.count.should == 0
-      product = ProductFactory.create_new
       LicenseCrawler.process_github_master('jschairb/doughboy', product).should be_truthy
       License.count.should == 1
       License.first.name.should eq('MIT')
@@ -135,28 +127,28 @@ describe LicenseCrawler do
       License.first.name.should eq('LGPL-3.0')
     end
 
-    it "finds Apache License 2.0" do
+    it "finds Apache-2.0" do
       License.count.should == 0
       product = ProductFactory.create_new
       LicenseCrawler.process_github_master('openrain/action_mailer_tls', product).should be_truthy
       License.count.should == 1
-      License.first.name.should eq('Apache License 2.0')
+      License.first.name.should eq('Apache-2.0')
     end
 
-    it "finds Apache License 2.0" do
+    it "finds Apache-2.0" do
       License.count.should == 0
       product = ProductFactory.create_new
       LicenseCrawler.process_github_master('nearinfinity/active_blur', product).should be_truthy
       License.count.should == 1
-      License.first.name.should eq('Apache License 2.0')
+      License.first.name.should eq('Apache-2.0')
     end
 
-    it "finds Apache License 2.0" do
+    it "finds Apache-2.0" do
       License.count.should == 0
       product = ProductFactory.create_new
       LicenseCrawler.process_github_master('csswizardry/csscv', product).should be_truthy
       License.count.should == 1
-      License.first.name.should eq('Apache License 2.0')
+      License.first.name.should eq('Apache-2.0')
     end
 
     it "finds Mozilla Public License Version 2.0" do

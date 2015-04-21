@@ -82,6 +82,14 @@ namespace :versioneye do
       end
     end
 
+    # Crawl it once a hour. 
+    value = '35 * * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        CommonCrawlProducer.new "::biicode::"
+      end
+    end
+
 
     # Crawl it once a day. A crawl takes ~ 20 minutes! 
     value = GlobalSetting.get(env, 'SCHEDULE_CRAWL_COCOAPODS')
@@ -283,6 +291,14 @@ namespace :versioneye do
     puts "START SatisCrawlWorker"
     RubyCrawl.new
     SatisCrawlWorker.new.work
+    puts "---"
+  end
+
+  desc "Start BiicodeCrawlWorker"
+  task :biicode_crawl_worker do
+    puts "START BiicodeCrawlWorker"
+    RubyCrawl.new
+    BiicodeCrawlWorker.new.work
     puts "---"
   end
 

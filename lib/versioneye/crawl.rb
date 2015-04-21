@@ -32,12 +32,14 @@ module Versioneye
     require './lib/versioneye/crawlers/bower/bower_tag_crawler'
     require './lib/versioneye/crawlers/bower/bower_starter'
 
+    require './lib/versioneye/producers/producer'
     require './lib/versioneye/producers/common_crawl_producer'
     require './lib/versioneye/producers/packagist_crawl_producer'
     require './lib/versioneye/producers/npm_crawl_producer'
     require './lib/versioneye/producers/satis_crawl_producer'
     require './lib/versioneye/producers/bower_crawl_producer'
 
+    require './lib/versioneye/workers/worker'
     require './lib/versioneye/workers/common_crawl_worker'
     require './lib/versioneye/workers/packagist_crawl_worker'
     require './lib/versioneye/workers/npm_crawl_worker'

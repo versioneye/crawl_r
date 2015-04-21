@@ -29,6 +29,8 @@ Moped.logger.level   = Logger::ERROR
 
 RSpec.configure do |config|
 
+  VersioneyeCore.new 
+
   config.before(:suite) do
     DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.orm = "mongoid"

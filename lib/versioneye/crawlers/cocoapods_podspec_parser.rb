@@ -22,7 +22,7 @@ class CocoapodsPodspecParser
 
   attr_accessor :base_url
 
-  def initialize base_url
+  def initialize base_url = 'https://github.com/CocoaPods/Specs'
     @base_url  = base_url
     @language  = Product::A_LANGUAGE_OBJECTIVEC
     @prod_type = Project::A_TYPE_COCOAPODS

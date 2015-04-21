@@ -41,13 +41,13 @@ describe CocoapodsPodspecParser do
       it 'should create dependencies' do
         DatabaseCleaner.clean
 
-        podspec = 'spec/fixtures/files/podspec/AeroGear-Push.podspec'
+        podspec = './spec/fixtures/files/podspec/AeroGear-Push.podspec'
         expect(File).to exist(podspec)
 
         parser  = CocoapodsPodspecParser.new
         product = parser.parse_file( podspec )
 
-        product.should be_true
+        product.should_not be_nil
         product.language.should eq 'Objective-C'
         product.prod_key.should eq 'aerogear-push'
         product.name.should eq 'AeroGear-Push'
