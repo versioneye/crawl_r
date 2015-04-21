@@ -2,6 +2,7 @@ class LicenseCrawler < Versioneye::Crawl
 
 
   A_SOURCE_GMB = 'GMB' # GitHub Master Branch
+  A_SOURCE_G   = 'GITHUB' # GitHub Master Branch
 
 
   def self.logger
@@ -58,21 +59,30 @@ class LicenseCrawler < Versioneye::Crawl
 
 
   def self.process_github_master repo_name, product
+    process_github( repo_name, 'master', product, nil ) 
+  end
+
+
+  def self.process_github( repo_name, branch = "master", product = nil, version = nil )
+    return nil if repo_name.to_s.empty? 
+    return nil if product.nil? 
+
     licens_forms = ['LICENSE.md', 'LICENSE.txt', 'LICENSE', 'MIT-LICENSE', 'license.md', 'README.md']
     licens_forms.each do |lf|
-      raw_url = "https://raw.githubusercontent.com/#{repo_name}/master/#{lf}"
-      license_found = process_url raw_url, product
+      raw_url = "https://raw.githubusercontent.com/#{repo_name}/#{branch}/#{lf}".gsub("\n", "").gsub("\t", "").strip 
+      raw_url = URI.encode raw_url
+      license_found = process_url( raw_url, product, version )
       return true if license_found
     end
     false
   end
 
 
-  def self.process_url raw_url, product
+  def self.process_url raw_url, product, version = nil 
     resp = HttpService.fetch_response raw_url
     return false if resp.code.to_i != 200
 
-    lic_info = recognize_license resp.body, raw_url, product
+    lic_info = recognize_license resp.body, raw_url, product, version
     return false if lic_info.nil?
     return true
   rescue => e
@@ -82,7 +92,7 @@ class LicenseCrawler < Versioneye::Crawl
   end
 
 
-  def self.recognize_license content, raw_url, product
+  def self.recognize_license content, raw_url, product, version = nil 
     return nil if content.to_s.strip.empty?
 
     content = prepare_content content
@@ -90,73 +100,73 @@ class LicenseCrawler < Versioneye::Crawl
 
     if is_new_bsd?( content )
       logger.info " -- New BSD License found at #{raw_url} --- "
-      find_or_create( product, 'New BSD', raw_url )
+      find_or_create( product, 'New BSD', raw_url, version )
       return 'New BSD'
     end
 
     if is_BSD_2_clause?( content )
       logger.info " -- BSD 2-clause License found at #{raw_url} --- "
-      find_or_create( product, 'BSD 2-clause', raw_url )
+      find_or_create( product, 'BSD 2-clause', raw_url, version )
       return 'BSD 2-clause'
     end
 
     if is_gpl_30?( content ) || is_gpl_30_short?( content )
       logger.info " -- GPL-3.0 found at #{raw_url} --- "
-      find_or_create( product, 'GPL-3.0', raw_url )
+      find_or_create( product, 'GPL-3.0', raw_url, version )
       return 'GPL-3.0'
     end
 
     if is_gpl_20?( content )
       logger.info " -- GPL-2.0 found at #{raw_url} --- "
-      find_or_create( product, 'GPL-2.0', raw_url )
+      find_or_create( product, 'GPL-2.0', raw_url, version )
       return 'GPL-2.0'
     end
 
     if is_agpl_30?( content )
       logger.info " -- AGPL-3.0 found at #{raw_url} --- "
-      find_or_create( product, 'AGPL-3.0', raw_url )
+      find_or_create( product, 'AGPL-3.0', raw_url, version )
       return 'AGPL-3.0'
     end
 
     if is_lgpl_30?( content )
       logger.info " -- LGPL-3.0 found at #{raw_url} --- "
-      find_or_create( product, 'LGPL-3.0', raw_url )
+      find_or_create( product, 'LGPL-3.0', raw_url, version )
       return 'LGPL-3.0'
     end
 
     if is_ruby?( content )
       logger.info " -- Ruby found at #{raw_url} --- "
-      find_or_create( product, 'Ruby', raw_url )
+      find_or_create( product, 'Ruby', raw_url, version )
       return 'Ruby'
     end
 
     if is_mit?( content ) || is_mit_ol?( content )
       logger.info " -- MIT found at #{raw_url} --- "
-      find_or_create( product, 'MIT', raw_url )
+      find_or_create( product, 'MIT', raw_url, version )
       return 'MIT'
     end
 
     if is_unlicense?( content )
       logger.info " -- The Unlicense found at #{raw_url} --- "
-      find_or_create( product, 'The Unlicense', raw_url )
+      find_or_create( product, 'The Unlicense', raw_url, version )
       return 'The Unlicense'
     end
 
     if is_dwtfywt?( content )
       logger.info " -- DO WHAT THE FUCK YOU WANT found at #{raw_url} --- "
-      find_or_create( product, 'DWTFYWTP License', raw_url )
+      find_or_create( product, 'DWTFYWTP License', raw_url, version )
       return 'DWTFYWTP License'
     end
 
     if is_apache_20?( content ) || is_apache_20_short?( content )
       logger.info " -- Apache License 2.0 found at #{raw_url} --- "
-      find_or_create( product, 'Apache License 2.0', raw_url )
-      return 'Apache License 2.0'
+      find_or_create( product, 'Apache-2.0', raw_url, version )
+      return 'Apache-2.0'
     end
 
     if is_mpl_20?( content ) || is_mpl_20_short?( content )
       logger.info " -- Mozilla Public License Version 2.0 found at #{raw_url} --- "
-      find_or_create( product, 'MPL-2.0', raw_url )
+      find_or_create( product, 'MPL-2.0', raw_url, version )
       return 'MPL-2.0'
     end
 
@@ -173,9 +183,9 @@ class LicenseCrawler < Versioneye::Crawl
   private
 
 
-    def self.find_or_create product, name, url
+    def self.find_or_create product, name, url, version = nil 
       License.find_or_create_by({:language => product.language, :prod_key => product.prod_key,
-        :version => nil, :name => name, :url => url, :source => A_SOURCE_GMB })
+        :version => version, :name => name, :url => url, :source => A_SOURCE_G })
     end
 
 
@@ -441,6 +451,5 @@ class LicenseCrawler < Versioneye::Crawl
 
       content
     end
-
 
 end
