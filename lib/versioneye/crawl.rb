@@ -33,6 +33,7 @@ module Versioneye
     require './lib/versioneye/crawlers/bower/bower_starter'
 
     require './lib/versioneye/producers/producer'
+    require './lib/versioneye/producers/biicode_crawl_producer'
     require './lib/versioneye/producers/common_crawl_producer'
     require './lib/versioneye/producers/packagist_crawl_producer'
     require './lib/versioneye/producers/npm_crawl_producer'
@@ -40,6 +41,7 @@ module Versioneye
     require './lib/versioneye/producers/bower_crawl_producer'
 
     require './lib/versioneye/workers/worker'
+    require './lib/versioneye/workers/biicode_crawl_worker'
     require './lib/versioneye/workers/common_crawl_worker'
     require './lib/versioneye/workers/packagist_crawl_worker'
     require './lib/versioneye/workers/npm_crawl_worker'
