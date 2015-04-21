@@ -86,7 +86,7 @@ namespace :versioneye do
     value = '35 * * * *'
     if !value.to_s.empty?
       scheduler.cron value do
-        CommonCrawlProducer.new "::biicode::"
+        BiicodeCrawlProducer.new "::biicode::"
       end
     end
 
