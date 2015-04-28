@@ -41,7 +41,7 @@ class LicenseCrawler < Versioneye::Crawl
   end
 
 
-  def self.process link, product
+  def self.process link, product, version = nil 
     repo_name = link.link
     repo_name = repo_name.gsub(/\?.*/i, "")
     repo_name = repo_name.gsub(/http.+github\.com\//i, "")
@@ -54,11 +54,11 @@ class LicenseCrawler < Versioneye::Crawl
       return
     end
 
-    process_github_master repo_name, product
+    process_github_master repo_name, product, version
   end
 
 
-  def self.process_github_master repo_name, product
+  def self.process_github_master repo_name, product, version = nil 
     process_github( repo_name, 'master', product, nil ) 
   end
 
