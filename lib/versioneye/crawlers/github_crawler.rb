@@ -42,6 +42,7 @@ class GithubCrawler < Versioneye::Crawl
       create_version repository, tag, product, version_number
       create_archive repository, tag, product, version_number
       update_resource resource, product
+      LicenseCrawler.process_github_master name, product
     end
   rescue => e
     self.logger.error "ERROR in crawle_package(#{name}) Message: #{e.message}"
