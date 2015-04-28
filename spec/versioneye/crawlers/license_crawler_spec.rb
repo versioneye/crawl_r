@@ -8,6 +8,14 @@ describe LicenseCrawler do
 
   describe 'process_github_master' do
 
+    it "finds PHP License 3.01" do
+      License.count.should == 0
+      product = ProductFactory.create_new
+      LicenseCrawler.process_github_master('php/php-src', product).should be_truthy
+      License.count.should == 1
+      License.first.name.should eq('PHP-3.01')
+    end
+
     it "finds MIT" do
       License.count.should == 0
       product = ProductFactory.create_new

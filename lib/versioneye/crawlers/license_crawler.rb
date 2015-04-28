@@ -140,6 +140,12 @@ class LicenseCrawler < Versioneye::Crawl
       return 'Ruby'
     end
 
+    if is_php_301?( content )
+      logger.info " -- PHP License 3.01 found at #{raw_url} --- "
+      find_or_create( product, 'PHP-3.01', raw_url, version )
+      return 'PHP-3.01'
+    end
+
     if is_mit?( content ) || is_mit_ol?( content )
       logger.info " -- MIT found at #{raw_url} --- "
       find_or_create( product, 'MIT', raw_url, version )
@@ -218,6 +224,19 @@ class LicenseCrawler < Versioneye::Crawl
       logger.info "DELETE #{link.to_s}"
       link.remove
       false
+    end
+
+
+
+    def self.is_php_301? content 
+      return false if content.match(/The PHP License, version 3\.01/i).nil?
+      return false if content.match(/Redistribution and use in source and binary forms/i).nil?
+      return false if content.match(/with or without/i).nil?
+      return false if content.match(/is permitted provided that the following conditions/i).nil?
+      return false if content.match(/The name "PHP" must not be used to endorse or promote products/i).nil?
+      return false if content.match(/written permission, please contact group@php.net/i).nil?
+
+      return true 
     end
 
 
