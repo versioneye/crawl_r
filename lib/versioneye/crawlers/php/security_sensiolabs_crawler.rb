@@ -88,6 +88,7 @@ class SecuritySensiolabsCrawler
       affected_string += version_range.to_s      
       versions = VersionService.from_ranges product.versions, version_range.first
       versions.each do |version| 
+        next if version.to_s.match(/\Adev\-/)
         next if sv.affected_versions.include?(version.to_s)
 
         sv.affected_versions.push(version.to_s)
@@ -107,10 +108,12 @@ class SecuritySensiolabsCrawler
   def self.fetch_sv prod_key, link_names
     return nil if link_names.to_a.empty? 
 
-    sv = SecurityVulnerability.by_language( Product::A_LANGUAGE_PHP ).by_prod_key( prod_key ).first
-    if sv 
-      link_names.each do |link_name|
-        return sv if sv.summary.to_s.eql?(link_name)
+    svs = SecurityVulnerability.by_language( Product::A_LANGUAGE_PHP ).by_prod_key( prod_key )
+    svs.each do |sv| 
+      if sv 
+        link_names.each do |link_name|
+          return sv if sv.summary.to_s.eql?(link_name)
+        end
       end
     end
 
