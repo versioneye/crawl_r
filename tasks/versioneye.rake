@@ -82,8 +82,16 @@ namespace :versioneye do
       end
     end
 
-    # Crawl it once a hour. 
+    # Crawl it once a hour. A crawl takes ~ 1 minutes! 
     value = '35 * * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        CommonCrawlProducer.new "::security_sensiolabs::"
+      end
+    end
+
+    # Crawl it once a hour. 
+    value = '37 * * * *'
     if !value.to_s.empty?
       scheduler.cron value do
         BiicodeCrawlProducer.new "::biicode::"

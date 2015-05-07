@@ -41,6 +41,8 @@ class CommonCrawlWorker < Worker
       crawler.crawl
     elsif message.eql?('::github::')
       GithubCrawler.crawl 
+    elsif message.eql?('::security_sensiolabs::')
+      SecuritySensiolabsCrawler.crawl 
     end
 
     log_msg = "Job done for #{message}"
