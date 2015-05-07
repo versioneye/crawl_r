@@ -140,6 +140,14 @@ namespace :versioneye do
     puts "---"
   end
 
+  desc "Start SecuritySensiolabsCrawler"
+  task :crawl_security_sensiolabs do
+    puts "START SecuritySensiolabsCrawler"
+    RubyCrawl.new
+    SecuritySensiolabsCrawler.crawl 
+    puts "---"
+  end
+
   desc "crawl Tiki"
   task :crawl_tiki do
     puts "START to crawle Tiki repository"
