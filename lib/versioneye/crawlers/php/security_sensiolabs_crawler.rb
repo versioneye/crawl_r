@@ -19,7 +19,7 @@ class SecuritySensiolabsCrawler
 
 
   def self.get_first_level_list 
-    url = "https://security.sensiolabs.org/database"
+    url = "https://security.sensiolabs.org/database.html"
     page = Nokogiri::HTML(open(url))
     page.xpath("//ul/li")
   end
@@ -55,6 +55,7 @@ class SecuritySensiolabsCrawler
     if !sv.links.include?( title )
       sv.links[title] = child['href'].strip 
     end
+    sv.cve = title if title.to_s.match(/\Acve/i)
     sv.summary = title if sv.summary.to_s.empty? 
   end
 
