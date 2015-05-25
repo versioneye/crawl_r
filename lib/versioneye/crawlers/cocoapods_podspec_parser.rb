@@ -8,7 +8,7 @@ require 'cocoapods-core'
 class CocoapodsPodspecParser
 
   def logger
-    ActiveSupport::BufferedLogger.new('log/cocoapods.log')
+    ActiveSupport::Logger.new('log/cocoapods.log')
   end
 
   # the same for all products

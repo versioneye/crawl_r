@@ -5,7 +5,7 @@ class SatisCrawler < Versioneye::Crawl
   # https://getcomposer.org/doc/articles/handling-private-packages-with-satis.md
 
   def logger
-    ActiveSupport::BufferedLogger.new('log/satis.log')
+    ActiveSupport::Logger.new('log/satis.log')
   end
 
 

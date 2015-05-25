@@ -4,7 +4,7 @@ class GithubVersionCrawler < Versioneye::Crawl
 
   
   def self.logger
-    ActiveSupport::BufferedLogger.new('log/github_version_crawler.log')
+    ActiveSupport::Logger.new('log/github_version_crawler.log')
   end
 
   

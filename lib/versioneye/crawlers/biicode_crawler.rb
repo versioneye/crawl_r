@@ -2,7 +2,7 @@ class BiicodeCrawler < Versioneye::Crawl
 
 
   def self.logger
-    ActiveSupport::BufferedLogger.new('log/biicode.log')
+    ActiveSupport::Logger.new('log/biicode.log')
   end
 
 

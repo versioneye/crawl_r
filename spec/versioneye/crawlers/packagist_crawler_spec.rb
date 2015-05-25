@@ -63,7 +63,7 @@ describe PackagistCrawler do
       PackagistCrawler.crawle_package "cakephp/cakephp"
       Product.count.should eq(1)
       product = Product.first
-      product.versions.count.should eq(22)
+      product.versions.count.should > 39
     end
   end
 

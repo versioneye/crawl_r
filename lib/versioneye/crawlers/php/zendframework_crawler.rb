@@ -1,7 +1,7 @@
 class ZendframeworkCrawler < SatisCrawler
 
   def logger
-    ActiveSupport::BufferedLogger.new('log/zend.log')
+    ActiveSupport::Logger.new('log/zend.log')
   end
 
   A_BASE_URL  = 'https://packages.zendframework.com/'

@@ -10,7 +10,7 @@ class Bower < Versioneye::Crawl
 
   
   def self.logger
-    ActiveSupport::BufferedLogger.new('log/bower.log')
+    ActiveSupport::Logger.new('log/bower.log')
   end
 
   def logger

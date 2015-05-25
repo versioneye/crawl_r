@@ -2,7 +2,7 @@ class SecuritySensiolabsCrawler
 
 
   def self.logger
-    ActiveSupport::BufferedLogger.new('log/security_sensiolabs.log')
+    ActiveSupport::Logger.new('log/security_sensiolabs.log')
   end
 
 

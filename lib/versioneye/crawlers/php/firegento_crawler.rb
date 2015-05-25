@@ -1,7 +1,7 @@
 class FiregentoCrawler < SatisCrawler
 
   def logger
-    ActiveSupport::BufferedLogger.new('log/firegento.log')
+    ActiveSupport::Logger.new('log/firegento.log')
   end
 
   A_BASE_URL  = 'http://packages.firegento.com/'

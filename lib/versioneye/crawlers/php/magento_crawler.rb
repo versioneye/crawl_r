@@ -1,7 +1,7 @@
 class MagentoCrawler < SatisCrawler
 
   def logger
-    ActiveSupport::BufferedLogger.new('log/magento.log')
+    ActiveSupport::Logger.new('log/magento.log')
   end
 
   A_BASE_URL  = 'http://packages.magento.com/'

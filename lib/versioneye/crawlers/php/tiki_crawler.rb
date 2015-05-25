@@ -1,7 +1,7 @@
 class TikiCrawler < SatisCrawler
 
   def logger
-    ActiveSupport::BufferedLogger.new('log/tiki.log')
+    ActiveSupport::Logger.new('log/tiki.log')
   end
 
   A_BASE_URL  = 'http://composer.tiki.org/'

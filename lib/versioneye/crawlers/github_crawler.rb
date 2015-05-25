@@ -3,7 +3,7 @@ class GithubCrawler < Versioneye::Crawl
   include HTTParty
 
   def self.logger
-    ActiveSupport::BufferedLogger.new('log/github.log')
+    ActiveSupport::Logger.new('log/github.log')
   end
 
   def self.crawl

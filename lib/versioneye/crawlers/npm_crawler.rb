@@ -5,7 +5,7 @@ class NpmCrawler < Versioneye::Crawl
 
   
   def self.logger
-    ActiveSupport::BufferedLogger.new('log/npm.log')
+    ActiveSupport::Logger.new('log/npm.log')
   end
 
 
