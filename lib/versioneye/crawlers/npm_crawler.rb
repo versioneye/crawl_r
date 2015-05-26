@@ -196,6 +196,9 @@ class NpmCrawler < Versioneye::Crawl
   def self.create_license( product, version_number, version_obj )
     check_single_license product, version_number, version_obj
     check_licenses product, version_number, version_obj
+  rescue => e 
+    self.logger.error "ERROR in create_license Message: #{e.message}"
+    self.logger.error e.backtrace.join("\n")
   end
 
 
@@ -209,6 +212,8 @@ class NpmCrawler < Versioneye::Crawl
       license_type = license_value["type"]
       license_url  = license_value["url"]
       create_single_license( product, version_number, license_type, license_url )
+    elsif license_value.is_a? Array 
+      create_licenses( product, version_number, license_value )
     end
   end
 
