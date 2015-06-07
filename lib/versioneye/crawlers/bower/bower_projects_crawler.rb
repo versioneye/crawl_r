@@ -100,7 +100,6 @@ class BowerProjectsCrawler < Bower
       prod_type:     Project::A_TYPE_BOWER,
       name:          pkg_info[:name].to_s,
       name_downcase: pkg_info[:name].to_s.downcase,
-      private_repo:  pkg_info[:private_repo],
       description:   pkg_info[:description].to_s
     )
     set_version(prod, pkg_info, token)

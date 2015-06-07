@@ -143,8 +143,7 @@ class Bower < Versioneye::Crawl
       dependencies: project_info[:dependencies],
       dev_dependencies: project_info[:devDependencies],
       homepage: project_info[:homepage],
-      url: project_url,
-      private_repo: false,
+      url: project_url
     }
 
     if project_info.has_key?(:license)
