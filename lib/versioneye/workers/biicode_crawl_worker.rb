@@ -12,11 +12,12 @@ class BiicodeCrawlWorker < Worker
     log.info log_msg
 
     begin
-      queue.subscribe(:ack => true, :block => true) do |delivery_info, properties, message|
+      queue.subscribe(:manual_ack => true, :block => true) do |delivery_info, properties, message|
         puts " [x] Received #{message}"
 
         process_work message
 
+        puts " [x] Done: #{message}"
         channel.ack(delivery_info.delivery_tag)
       end
     rescue => e
