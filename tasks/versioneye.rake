@@ -90,14 +90,6 @@ namespace :versioneye do
       end
     end
 
-    # Crawl it once a hour. 
-    value = '37 * * * *'
-    if !value.to_s.empty?
-      scheduler.cron value do
-        BiicodeCrawlProducer.new "::biicode::"
-      end
-    end
-
 
     # Crawl it once a day. A crawl takes ~ 20 minutes! 
     value = GlobalSetting.get(env, 'SCHEDULE_CRAWL_COCOAPODS')
@@ -128,8 +120,14 @@ namespace :versioneye do
       scheduler.cron value do
         PackagistCrawlProducer.new "::packagist::"
       end
-    end    
-    
+    end
+
+    value = '1 4 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        BiicodeCrawlProducer.new "::biicode::"
+      end
+    end
     
     scheduler.join
     while 1 == 1
