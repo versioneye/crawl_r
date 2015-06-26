@@ -24,7 +24,10 @@ class BiicodeCrawler < Versioneye::Crawl
 
 
   def self.process block_name 
-    p "process #{block_name}"
+    msg = "process #{block_name}"
+    self.logger.info msg 
+    p msg 
+    
     block_url = "https://webapi.biicode.com/v1/blocks/#{block_name}"
     block     = JSON.parse HTTParty.get( block_url ).response.body
     
@@ -36,7 +39,7 @@ class BiicodeCrawler < Versioneye::Crawl
     product = init_product block_name
     product.description = block['description']
     product.version = block['version']
-    product.tags = 
+    product.tags = tags 
     product.save 
     
     versions_url = "https://webapi.biicode.com/v1/misc/versions/#{block_name}"
@@ -72,7 +75,9 @@ class BiicodeCrawler < Versioneye::Crawl
     product.reindex = true
     product.save
 
-    self.logger.info " -- Biicode package: #{product.name} -- with new version: #{version_string}"
+    msg = " -- Biicode package: #{product.name} -- with new version: #{version_string}"
+    self.logger.info msg 
+    p msg 
 
     CrawlerUtils.create_newest product, version_string, logger
     CrawlerUtils.create_notifications product, version_string, logger
