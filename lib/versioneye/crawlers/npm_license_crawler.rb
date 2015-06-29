@@ -3,8 +3,12 @@ class NpmLicenseCrawler < NpmCrawler
 
   def self.crawl
     packages = get_first_level_list
-    packages.each do |name|
-      crawle_package name, crawl
+    packages.each do |package|
+      name = package['key'] if package.is_a? Hash 
+      name = package if !package.is_a? Hash 
+      next if name.match(/\A\@\w*\/\w*/)
+      
+      crawle_package name
     end
   end
 
@@ -33,3 +37,4 @@ class NpmLicenseCrawler < NpmCrawler
 
 
 end
+

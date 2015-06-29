@@ -14,6 +14,8 @@ class NpmCrawler < Versioneye::Crawl
     packages.each do |package|
       name = package['key'] if package.is_a? Hash 
       name = package if !package.is_a? Hash 
+      next if name.match(/\A\@\w*\/\w*/)
+
       if serial == true 
         crawle_package name
       else 
@@ -222,7 +224,7 @@ class NpmCrawler < Versioneye::Crawl
     repo_names = github_repo_names product 
     repo_names.each do |repo|
       logger.info "crawl license info from GitHub master branch for repo #{repo}"
-      LicenseCrawler.process_github_master repo, product, version_number
+      LicenseCrawler.process_github( repo, "master", product, version_number )
     end
   end 
 
@@ -274,7 +276,7 @@ class NpmCrawler < Versioneye::Crawl
   
   def self.create_single_license( product, version_number, license_name, license_url = nil )
     license = License.find_or_create( product.language, product.prod_key, version_number, license_name, license_url )
-    self.logger.info " -- New license - #{license.to_s}"
+    self.logger.info " -- find_or_create license - #{license.to_s}"
   end
 
 

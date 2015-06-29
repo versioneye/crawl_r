@@ -65,7 +65,7 @@ class LicenseCrawler < Versioneye::Crawl
 
   def self.process_github( repo_name, branch = "master", product = nil, version = nil )
     return nil if repo_name.to_s.empty? 
-    return nil if product.nil? 
+    return nil if product.nil?
 
     licens_forms = ['LICENSE.md', 'LICENSE.txt', 'LICENSE', 'MIT-LICENSE', 'license.md', 'README.md']
     licens_forms.each do |lf|
