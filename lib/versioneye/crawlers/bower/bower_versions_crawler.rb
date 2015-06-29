@@ -1,7 +1,7 @@
 class BowerVersionsCrawler < Bower 
 
   
-  def self.crawl_versions task, token 
+  def self.crawl_versions task, token, skipKnownVersions = true
     product  = Product.fetch_bower task[:registry_name]
     if product.nil?
       prod_key = make_prod_key(task)
@@ -11,7 +11,7 @@ class BowerVersionsCrawler < Bower
 
     tags = Github.repo_tags_all(task[:repo_fullname], token)
     if tags && !tags.empty?
-      result = process_tags task, product, tags, token   
+      result = process_tags task, product, tags, token, skipKnownVersions   
     else
       result = handle_no_tags task, product
     end
@@ -19,7 +19,7 @@ class BowerVersionsCrawler < Bower
   end
 
 
-  def self.process_tags task, product, tags, token 
+  def self.process_tags task, product, tags, token, skipKnownVersions = true 
     tags_count = tags.to_a.count
     logger.info "#{task[:repo_fullname]} has #{tags_count} tags."
     if product.versions && product.versions.count == tags_count
@@ -28,7 +28,7 @@ class BowerVersionsCrawler < Bower
     end
 
     tags.each do |tag|
-      result = parse_repo_tag( task[:repo_fullname], product, tag, token )
+      result = parse_repo_tag( task[:repo_fullname], product, tag, token, skipKnownVersions )
       next if result == false 
       
       tag_task = to_tag_project_task(task, tag) 
@@ -69,7 +69,7 @@ class BowerVersionsCrawler < Bower
   end
 
 
-  def self.parse_repo_tag(repo_fullname, product, tag, token)
+  def self.parse_repo_tag(repo_fullname, product, tag, token, skipKnownVersions = true)
     if product.nil? or tag.nil?
       logger.error "-- parse_repo_tag(repo_fullname, product, tag, token) - Product or tag cant be nil"
       return false 
@@ -89,23 +89,26 @@ class BowerVersionsCrawler < Bower
       return false 
     end
 
-    if product.version_by_number( tag_name )
+    if skipKnownVersions == true && product.version_by_number( tag_name )
       logger.info "-- #{product.prod_key} : #{tag_name} exists already"
       return false 
     end
 
-    add_new_version(product, tag_name, tag, token)
-    CrawlerUtils.create_newest product, tag_name, logger
-    CrawlerUtils.create_notifications product, tag_name, logger
-
-    logger.info " -- Added version `#{product.prod_key}` : #{tag_name} "
-    create_version_archive(product, tag_name, tag[:zipball_url]) if tag.has_key?(:zipball_url)
+    if add_new_version(product, tag_name, tag, token) 
+      CrawlerUtils.create_newest product, tag_name, logger
+      CrawlerUtils.create_notifications product, tag_name, logger
+      logger.info " -- Added version `#{product.prod_key}` : #{tag_name} "
+      create_version_archive(product, tag_name, tag[:zipball_url]) if tag.has_key?(:zipball_url)
+    end
 
     true 
   end
 
 
   def self.add_new_version( product, tag_name, tag, token )
+    version_obj = product.version_by_number( tag_name )
+    return false if version_obj
+
     new_version                 = Version.new version: tag_name
     new_version.released_string = release_date_string( tag, token )
     new_version.released_at     = released_date( new_version.released_string )

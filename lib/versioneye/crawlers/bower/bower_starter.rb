@@ -1,12 +1,12 @@
 class BowerStarter < Bower 
 
   
-  def self.crawl(token, source_url = 'https://bower.herokuapp.com/packages', concurrent = false )
-    crawl_registered_list(token, source_url, concurrent)
+  def self.crawl(token, source_url = 'https://bower.herokuapp.com/packages', concurrent = false, skipKnownVersions = true )
+    crawl_registered_list(token, source_url, concurrent, skipKnownVersions )
   end
 
 
-  def self.crawl_registered_list(token, source_url, concurrent = false)
+  def self.crawl_registered_list(token, source_url, concurrent = false, skipKnownVersions = true)
     response = HTTParty.get( source_url )
     app_list = JSON.parse( response.body, symbolize_names: true )
     logger.info "#{app_list.count} packages found for #{source_url}"
@@ -27,13 +27,13 @@ class BowerStarter < Bower
       if concurrent 
         BowerCrawlProducer.new("#{app[:name]}::#{app[:url]}")
       else 
-        register_package app[:name], app[:url], token 
+        register_package app[:name], app[:url], token, skipKnownVersions 
       end
     end
   end
 
 
-  def self.register_package name, url, token 
+  def self.register_package name, url, token, skipKnownVersions = true   
     repo_info = url_to_repo_info( url )    
     return nil if repo_info.nil? || repo_info.empty?
   
@@ -45,7 +45,7 @@ class BowerStarter < Bower
     resp = BowerProjectsCrawler.process_project task, token 
     return if resp == false 
 
-    BowerVersionsCrawler.crawl_versions task, token 
+    BowerVersionsCrawler.crawl_versions task, token, skipKnownVersions
   end
 
 end

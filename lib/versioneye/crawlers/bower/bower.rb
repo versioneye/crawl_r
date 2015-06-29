@@ -195,7 +195,7 @@ class Bower < Versioneye::Crawl
   end
 
 
-  def self.to_dependencies(prod, pkg_info, key, scope = nil)
+  def self.create_dependencies(prod, pkg_info, key, scope = nil)
     return nil if prod.nil? || !pkg_info.has_key?(key) || pkg_info[key].nil? || pkg_info[key].empty?
 
     deps = []
@@ -207,7 +207,7 @@ class Bower < Versioneye::Crawl
     prod_version = fetch_version_for_dep(prod, pkg_info) # TODO refactor it, give as param.
     pkg_info[key].each_pair do |prod_name, version|
       next if prod_name.to_s.strip.empty?
-      dep = to_dependency(prod, prod_version, prod_name, version, scope)
+      dep = create_dependency(prod, prod_version, prod_name, version, scope)
       deps << dep if dep
     end
     deps
@@ -225,7 +225,7 @@ class Bower < Versioneye::Crawl
     nil
   end
 
-  def self.to_dependency(prod, prod_version, dep_name, dep_version, scope = Dependency::A_SCOPE_REQUIRE)
+  def self.create_dependency(prod, prod_version, dep_name, dep_version, scope = Dependency::A_SCOPE_REQUIRE)
     dep_prod = Product.fetch_bower(dep_name)
     dep_prod_key = nil
     dep_prod_key = dep_prod.prod_key if dep_prod

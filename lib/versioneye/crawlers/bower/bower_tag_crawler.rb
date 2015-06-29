@@ -4,7 +4,7 @@ class BowerTagCrawler < Bower
   def self.crawl_tag_deep task, token 
     tag_name    = task[:tag_name]
     cleaned_tag = CrawlerUtils.remove_version_prefix( tag_name.to_s )
-    prod        = Product.fetch_bower(task[:registry_name])
+    product     = Product.fetch_bower(task[:registry_name])
     
     commit_info = task[:data].deep_symbolize_keys
     repo_name   = task[:repo_fullname]
@@ -38,10 +38,10 @@ class BowerTagCrawler < Bower
 
     pkg_info = to_pkg_info(task[:owner], task[:repo], project_info[:url], file_content)
 
-    to_dependencies(prod, pkg_info, :dependencies,     Dependency::A_SCOPE_REQUIRE)
-    to_dependencies(prod, pkg_info, :dev_dependencies, Dependency::A_SCOPE_DEVELOPMENT)
+    create_dependencies(product, pkg_info, :dependencies,     Dependency::A_SCOPE_REQUIRE)
+    create_dependencies(product, pkg_info, :dev_dependencies, Dependency::A_SCOPE_DEVELOPMENT)
 
-    find_or_create_licenses(prod, pkg_info)
+    find_or_create_licenses(product, pkg_info)
 
     true 
   end

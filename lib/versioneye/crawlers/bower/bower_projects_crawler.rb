@@ -79,8 +79,8 @@ class BowerProjectsCrawler < Bower
     Versionlink.create_project_link prod[:language], prod[:prod_key], "https://github.com/#{repo_info[:repo_fullname]}", "SCM"
     Versionlink.create_project_link prod[:language], prod[:prod_key], pkg_info[:homepage], "Homepage"
 
-    to_dependencies(prod, pkg_info, :dependencies,     Dependency::A_SCOPE_REQUIRE)
-    to_dependencies(prod, pkg_info, :dev_dependencies, Dependency::A_SCOPE_DEVELOPMENT)
+    create_dependencies( prod, pkg_info, :dependencies,     Dependency::A_SCOPE_REQUIRE )
+    create_dependencies( prod, pkg_info, :dev_dependencies, Dependency::A_SCOPE_DEVELOPMENT )
     
     if pkg_info.has_key?(:license)
       version_number = fetch_version_for_dep(prod, pkg_info)
