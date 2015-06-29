@@ -252,4 +252,18 @@ class Bower < Versioneye::Crawl
   end
 
 
+  def self.find_or_create_licenses(product, pkg_info)
+    version_number = pkg_info[:version]
+    pkg_info[:licenses].each do |license_info|
+      license_name = license_info[:name]
+      license_url  = license_info[:url]
+      License.find_or_create( product.language, product.prod_key, version_number, license_name, license_url )
+    end
+  rescue => e
+    logger.error "Error: Cant save dependency `#{dep_name}` with version `#{dep_version}` for #{prod[:prod_key]}. -- #{e.message}"
+    logger.error e.backtrace.join("\n")
+    nil
+  end
+
+
 end

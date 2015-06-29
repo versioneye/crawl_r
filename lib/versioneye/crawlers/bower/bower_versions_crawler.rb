@@ -66,7 +66,7 @@ class BowerVersionsCrawler < Bower
       url: tag[:commit][:url],
       url_exists: true
     )
-  end 
+  end
 
 
   def self.parse_repo_tag(repo_fullname, product, tag, token)
@@ -100,6 +100,7 @@ class BowerVersionsCrawler < Bower
 
     logger.info " -- Added version `#{product.prod_key}` : #{tag_name} "
     create_version_archive(product, tag_name, tag[:zipball_url]) if tag.has_key?(:zipball_url)
+    
     true 
   end
 

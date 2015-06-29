@@ -47,8 +47,11 @@ class BowerTagCrawler < Bower
     end
 
     pkg_info = to_pkg_info(task[:owner], task[:repo], project_info[:url], file_content)
+
     to_dependencies(prod, pkg_info, :dependencies,     Dependency::A_SCOPE_REQUIRE)
     to_dependencies(prod, pkg_info, :dev_dependencies, Dependency::A_SCOPE_DEVELOPMENT)
+
+    find_or_create_licenses(prod, pkg_info)   
 
     true 
   end
@@ -102,6 +105,7 @@ class BowerTagCrawler < Bower
     JSON.parse doc, symbolize_names: true
   rescue => e
     logger.error "cant parse doc: #{doc} \n #{e.message}"
+    nil 
   end
 
 
