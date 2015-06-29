@@ -75,6 +75,13 @@ class BowerTagCrawler < Bower
     end
 
     logger.info "-- Found #{bower_files.count} bower files for #{repo_name} #{tag}"
+
+    bower_files.each do |pf| 
+      if pf[:path].to_s.eql?('bower.json')
+        return pf 
+      end
+    end
+
     bower_files.first
   end
 
