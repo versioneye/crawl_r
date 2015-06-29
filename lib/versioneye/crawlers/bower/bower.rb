@@ -138,7 +138,7 @@ class Bower < Versioneye::Crawl
       artifact_id: repo,
       full_name: "#{owner}/#{repo}",
       version: project_info[:version],
-      licenses: [{name: "unknown", url: nil}], # default values, try to read real values later.
+      licenses: [{name: nil, url: nil}], # default values, try to read real values later.
       description: project_info[:description],
       dependencies: project_info[:dependencies],
       dev_dependencies: project_info[:devDependencies],
@@ -257,6 +257,8 @@ class Bower < Versioneye::Crawl
     pkg_info[:licenses].each do |license_info|
       license_name = license_info[:name]
       license_url  = license_info[:url]
+      next if license_name.to_s.empty? || license_name.to_s.eql?("unknown")
+      
       License.find_or_create( product.language, product.prod_key, version_number, license_name, license_url )
     end
   rescue => e
