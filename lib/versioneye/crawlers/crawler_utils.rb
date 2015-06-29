@@ -1,12 +1,23 @@
 class CrawlerUtils
 
+
   def self.create_newest( product, version_number, logger = nil )
     NewestService.create_newest( product, version_number, logger )
+  rescue => e 
+    logger.error "ERROR in create_notifications - Message: #{e.message}"
+    logger.error e.backtrace.join("\n")
+    nil 
   end
+
 
   def self.create_notifications(product, version_number, logger = nil)
     NewestService.create_notifications(product, version_number, logger)
+  rescue => e 
+    logger.error "ERROR in create_notifications - Message: #{e.message}"
+    logger.error e.backtrace.join("\n")
+    nil 
   end
+
 
   def self.remove_version_prefix version_number
     if version_number && version_number.match(/v[0-9]+\..*/)
@@ -23,5 +34,6 @@ class CrawlerUtils
     end
     version_number
   end
+
 
 end
