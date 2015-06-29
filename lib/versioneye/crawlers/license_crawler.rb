@@ -101,13 +101,13 @@ class LicenseCrawler < Versioneye::Crawl
     if is_new_bsd?( content )
       logger.info " -- New BSD License found at #{raw_url} --- "
       find_or_create( product, 'New BSD', raw_url, version )
-      return 'New BSD'
+      return 'BSD-3-Clause'
     end
 
     if is_BSD_2_clause?( content )
       logger.info " -- BSD 2-clause License found at #{raw_url} --- "
       find_or_create( product, 'BSD 2-clause', raw_url, version )
-      return 'BSD 2-clause'
+      return 'BSD-2-Clause'
     end
 
     if is_gpl_30?( content ) || is_gpl_30_short?( content )
