@@ -9,26 +9,19 @@ class BowerTagCrawler < Bower
     commit_info = task[:data].deep_symbolize_keys
     repo_name   = task[:repo_fullname]
 
-    logger.debug "#-- going to read project deps for #{repo_name} with `#{tag_name}`"
-    commit_tree  = fetch_commit_tree(commit_info[:url], token)
-    if commit_tree.nil?
-      logger.debug "commit_tree is nil"
-      return false
-    end
-
-    project_info = fetch_project_info_by_sha(repo_name, commit_tree[:sha], token, tag_name)
-    if project_info.nil?
+    project_info = fetch_project_info_by_sha(repo_name, commit_info[:sha], token, tag_name)
+    if project_info.nil? || project_info.empty?
       logger.debug "project_info is nil"
       return false
     end
 
     project_file = fetch_project_file(repo_name, project_info[:url], token)
-    if project_file.nil? 
+    if project_file.nil? || project_file.empty? 
       logger.debug "project_file is nil"
       return false
     end
 
-    file_content = parse_json(project_file)
+    file_content = parse_json( project_file )
     if file_content.nil? or file_content.is_a?(TrueClass)
       logger.debug "file_content is nil"
       return false
@@ -65,7 +58,7 @@ class BowerTagCrawler < Bower
   def self.fetch_project_info_by_sha(repo_name, sha, token, tag = nil)
     check_request_limit(token)
     project_files = Github.project_files_from_branch(repo_name, token, sha)
-    if project_files.nil?
+    if project_files.nil? || project_files.empty? 
       logger.error "Didnt get any supported project file for #{repo_name} on the tag sha: `#{sha}`"
       return
     end
@@ -89,7 +82,7 @@ class BowerTagCrawler < Bower
   def self.fetch_project_file(repo_name, project_url, token)
     logger.debug "Reading tag_project file for #{repo_name}: #{project_url}"
     file_data = Github.fetch_file(project_url, token)
-    if file_data.nil?
+    if file_data.nil? || file_data.empty? 
       logger.error "cant read content of project file for #{repo_name}: #{project_url}"
       return
     end
