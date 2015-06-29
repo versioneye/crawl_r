@@ -32,7 +32,7 @@ class BowerVersionsCrawler < Bower
       next if result == false 
       
       tag_task = to_tag_project_task(task, tag) 
-      BowerTagCrawler.crawl_tag_deep tag_task, token 
+      BowerTagCrawler.crawl_tag_deep tag_task, token
     end
 
     latest_version = product.sorted_versions.first
@@ -100,7 +100,7 @@ class BowerVersionsCrawler < Bower
 
     logger.info " -- Added version `#{product.prod_key}` : #{tag_name} "
     create_version_archive(product, tag_name, tag[:zipball_url]) if tag.has_key?(:zipball_url)
-    
+
     true 
   end
 

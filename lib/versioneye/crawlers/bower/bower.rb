@@ -252,7 +252,7 @@ class Bower < Versioneye::Crawl
   end
 
 
-  def self.find_or_create_licenses(product, pkg_info)
+  def self.find_or_create_licenses( product, pkg_info )
     version_number = pkg_info[:version]
     pkg_info[:licenses].each do |license_info|
       license_name = license_info[:name]

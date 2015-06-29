@@ -5,13 +5,6 @@ class BowerTagCrawler < Bower
     tag_name    = task[:tag_name]
     cleaned_tag = CrawlerUtils.remove_version_prefix( tag_name.to_s )
     prod        = Product.fetch_bower(task[:registry_name])
-
-    dep_count = Dependency.where(:language => prod.language, :prod_type => prod.prod_type, 
-      :prod_key => prod.prod_key, :prod_version => cleaned_tag).count 
-    if dep_count > 0 
-      logger.debug "tag #{tag_name} has already dependencies"
-      return false 
-    end
     
     commit_info = task[:data].deep_symbolize_keys
     repo_name   = task[:repo_fullname]
@@ -41,17 +34,14 @@ class BowerTagCrawler < Bower
       return false
     end
 
-    unless file_content.has_key?(:version)
-      logger.warn "No version found in project file on tag #{tag_name} of #{repo_name}. Going to use tag."
-      file_content[:version] = cleaned_tag
-    end
+    file_content[:version] = cleaned_tag
 
     pkg_info = to_pkg_info(task[:owner], task[:repo], project_info[:url], file_content)
 
     to_dependencies(prod, pkg_info, :dependencies,     Dependency::A_SCOPE_REQUIRE)
     to_dependencies(prod, pkg_info, :dev_dependencies, Dependency::A_SCOPE_DEVELOPMENT)
 
-    find_or_create_licenses(prod, pkg_info)   
+    find_or_create_licenses(prod, pkg_info)
 
     true 
   end

@@ -81,8 +81,13 @@ class BowerProjectsCrawler < Bower
 
     to_dependencies(prod, pkg_info, :dependencies,     Dependency::A_SCOPE_REQUIRE)
     to_dependencies(prod, pkg_info, :dev_dependencies, Dependency::A_SCOPE_DEVELOPMENT)
-
-    pkg_info[:licenses].to_a.each { |lic| create_or_update_license( prod, lic ) }
+    
+    if pkg_info.has_key?(:license)
+      version_number = fetch_version_for_dep(prod, pkg_info)
+      License.find_or_create( prod.language, prod.prod_key, version_number, pkg_info[:license], nil )
+    elsif pkg_info.has_key?(:licenses)
+      pkg_info[:licenses].to_a.each { |lic| create_or_update_license( prod, lic ) }  
+    end
 
     prod
   rescue => e
