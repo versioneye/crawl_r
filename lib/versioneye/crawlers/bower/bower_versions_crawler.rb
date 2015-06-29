@@ -22,7 +22,7 @@ class BowerVersionsCrawler < Bower
   def self.process_tags task, product, tags, token, skipKnownVersions = true 
     tags_count = tags.to_a.count
     logger.info "#{task[:repo_fullname]} has #{tags_count} tags."
-    if product.versions && product.versions.count == tags_count
+    if skipKnownVersions == true && product.versions && product.versions.count == tags_count
       logger.info "-- skip #{task[:repo_fullname]} because tags count (#{tags_count}) is equal to versions.count."
       return true 
     end
