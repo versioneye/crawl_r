@@ -7,34 +7,35 @@ class BowerTagCrawler < Bower
     product     = Product.fetch_bower(task[:registry_name])
     
     commit_info = task[:data].deep_symbolize_keys
+    sha         = commit_info[:sha]
     repo_name   = task[:repo_fullname]
 
-    project_info = fetch_project_info_by_sha(repo_name, commit_info[:sha], token, tag_name)
-    if project_info.nil? || project_info.empty?
-      logger.debug "project_info is nil"
+    bower_info = fetch_bowerjson_info_by_sha(repo_name, sha, token, tag_name)
+    if bower_info.nil? || bower_info.empty?
+      logger.debug "bower_info is nil"
       return false
     end
 
-    project_file = fetch_project_file(repo_name, project_info[:url], token)
-    if project_file.nil? || project_file.empty? 
-      logger.debug "project_file is nil"
+    bowerjson_content = fetch_file_content(repo_name, bower_info[:url], token)
+    if bowerjson_content.nil? || bowerjson_content.empty? 
+      logger.debug "bowerjson_content is nil"
       return false
     end
 
-    file_content = parse_json( project_file )
-    if file_content.nil? or file_content.is_a?(TrueClass)
-      logger.debug "file_content is nil"
+    bower_json = parse_json( bowerjson_content )
+    if bower_json.nil? or bower_json.is_a?(TrueClass)
+      logger.debug "bower_json is nil"
       return false
     end
 
-    file_content[:version] = cleaned_tag
+    bower_json[:version] = cleaned_tag
 
-    pkg_info = to_pkg_info(task[:owner], task[:repo], project_info[:url], file_content)
+    pkg_info = to_pkg_info(task[:owner], task[:repo], bower_info[:url], bower_json)
 
     create_dependencies(product, pkg_info, :dependencies,     Dependency::A_SCOPE_REQUIRE)
     create_dependencies(product, pkg_info, :dev_dependencies, Dependency::A_SCOPE_DEVELOPMENT)
 
-    find_or_create_licenses(product, pkg_info)
+    find_or_create_licenses( product, pkg_info, repo_name, sha, token )
 
     true 
   end
@@ -55,7 +56,7 @@ class BowerTagCrawler < Bower
   end
 
 
-  def self.fetch_project_info_by_sha(repo_name, sha, token, tag = nil)
+  def self.fetch_bowerjson_info_by_sha(repo_name, sha, token, tag = nil)
     check_request_limit(token)
     project_files = Github.project_files_from_branch(repo_name, token, sha)
     if project_files.nil? || project_files.empty? 
@@ -76,18 +77,6 @@ class BowerTagCrawler < Bower
     end
 
     bower_files.first
-  end
-
-
-  def self.fetch_project_file(repo_name, project_url, token)
-    logger.debug "Reading tag_project file for #{repo_name}: #{project_url}"
-    file_data = Github.fetch_file(project_url, token)
-    if file_data.nil? || file_data.empty? 
-      logger.error "cant read content of project file for #{repo_name}: #{project_url}"
-      return
-    end
-
-    Base64.decode64(file_data[:content])
   end
 
 

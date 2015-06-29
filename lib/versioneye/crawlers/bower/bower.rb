@@ -252,19 +252,85 @@ class Bower < Versioneye::Crawl
   end
 
 
-  def self.find_or_create_licenses( product, pkg_info )
+  def self.find_or_create_licenses( product, pkg_info, repo_name, sha, token )
+    license_list = find_or_create_licenses_from_bowerjson product, pkg_info
+    return nil if !license_list.empty? 
+
+    find_or_create_licenses_from_license_files( product, pkg_info, repo_name, sha, token )
+  rescue => e
+    logger.error "Error in find_or_create_licenses -- #{e.message}"
+    logger.error e.backtrace.join("\n")
+    nil
+  end
+
+
+  def self.find_or_create_licenses_from_bowerjson product, pkg_info
+    license_list = [] 
     version_number = pkg_info[:version]
     pkg_info[:licenses].each do |license_info|
       license_name = license_info[:name]
       license_url  = license_info[:url]
       next if license_name.to_s.empty? || license_name.to_s.eql?("unknown")
       
-      License.find_or_create( product.language, product.prod_key, version_number, license_name, license_url )
+      lic = License.find_or_create( product.language, product.prod_key, version_number, license_name, license_url )
+      license_list << lic
     end
-  rescue => e
-    logger.error "Error: Cant save dependency `#{dep_name}` with version `#{dep_version}` for #{prod[:prod_key]}. -- #{e.message}"
+    license_list
+  end
+
+
+  def self.find_or_create_licenses_from_license_files product, pkg_info, repo_name, sha, token
+    filenames = LicenseCrawler::LICENSE_FILES
+    files = files_from_gh_branch( filenames, repo_name, token, sha )
+    return nil if files.nil? || files.empty? 
+
+    files.each do |file_info| 
+      content = fetch_file_content(repo_name, file_info[:url], token)
+      result  = LicenseCrawler.recognize_license content, file_info[:url], product, pkg_info[:version]
+      return true if !result.to_s.empty?
+    end
+  end
+
+
+  def self.files_from_gh_branch(filenames, repo_name, token, branch_sha, branch = "master", try_n = 2)
+    branch_tree = nil
+
+    try_n.times do
+      branch_tree = Github.repo_branch_tree(repo_name, token, branch_sha)
+      break unless branch_tree.nil?
+      log.error "Going to read tree of branch `#{branch}` for #{repo_name} again after little pause."
+      sleep 1 # it's required to prevent bombing Github's api after our request got rejected
+    end
+
+    if branch_tree.nil? or !branch_tree.has_key?('tree')
+      msg = "Can't read tree for repo `#{repo_name}` on branch `#{branch}`."
+      log.error msg
+      return nil 
+    end
+
+    files = branch_tree['tree'].keep_if {|file| filenames.include?(file['path'].to_s) != nil}
+
+    files.each do |file|
+      file.deep_symbolize_keys!
+    end
+
+    files
+  end
+
+
+  def self.fetch_file_content(repo_name, project_url, token)
+    logger.debug "Reading tag_project file for #{repo_name}: #{project_url}"
+    file_data = Github.fetch_file(project_url, token)
+    if file_data.nil? || file_data.empty? || file_data[:content].nil? || file_data[:content].empty? 
+      logger.error "cant read content of project file for #{repo_name}: #{project_url}"
+      return ''
+    end
+
+    Base64.decode64(file_data[:content])
+  rescue => e 
+    logger.error "Error in fetch_file_content -- #{e.message}"
     logger.error e.backtrace.join("\n")
-    nil
+    ''
   end
 
 
