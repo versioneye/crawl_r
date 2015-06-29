@@ -4,6 +4,8 @@ class LicenseCrawler < Versioneye::Crawl
   A_SOURCE_GMB = 'GMB' # GitHub Master Branch
   A_SOURCE_G   = 'GITHUB' # GitHub Master Branch
 
+  LICENSE_FILES = ['LICENSE.md', 'LICENSE.txt', 'LICENSE', 'LICENCE', 'MIT-LICENSE', 'license.md', 'licence.md', 'README.md']
+
 
   def self.logger
     ActiveSupport::Logger.new('log/license.log')
@@ -67,8 +69,7 @@ class LicenseCrawler < Versioneye::Crawl
     return nil if repo_name.to_s.empty? 
     return nil if product.nil?
 
-    licens_forms = ['LICENSE.md', 'LICENSE.txt', 'LICENSE', 'LICENCE', 'MIT-LICENSE', 'license.md', 'licence.md', 'README.md']
-    licens_forms.each do |lf|
+    LICENSE_FILES.each do |lf|
       raw_url = "https://raw.githubusercontent.com/#{repo_name}/#{branch}/#{lf}".gsub("\n", "").gsub("\t", "").strip 
       raw_url = URI.encode raw_url
       license_found = process_url( raw_url, product, version )
