@@ -128,6 +128,7 @@ class NpmCrawler < Versioneye::Crawl
     create_versionlinks product, version_number, version_obj
     create_license      product, version_number, version_obj
     create_author       product, version_number, version_obj['author']
+    create_contributors product, version_number, version_obj['contributors']
     create_maintainers  product, version_number, version_obj['maintainers']
   rescue => e
     self.logger.error "ERROR in create_new_version Message:   #{e.message}"
@@ -149,13 +150,14 @@ class NpmCrawler < Versioneye::Crawl
     product.name          = name
     product.name_downcase = name.downcase
     product.description   = package['description']
+    product.tags          = package['keywords']
     product.prod_type     = Project::A_TYPE_NPM
     product.language      = Product::A_LANGUAGE_NODEJS
     product.save
   end
 
 
-  def self.create_author product, version_number, author
+  def self.create_author product, version_number, author, contributor = false
     return nil if author.nil? || author.empty?
 
     author_name     = author['name']
@@ -168,8 +170,18 @@ class NpmCrawler < Versioneye::Crawl
     developer = Developer.new({:language => Product::A_LANGUAGE_NODEJS,
       :prod_key => product.prod_key, :version => version_number,
       :name => author_name, :email => author_email,
-      :homepage => author_homepage, :role => author_role})
+      :homepage => author_homepage, :role => author_role, 
+      :contributor => contributor})
     developer.save
+  end
+
+
+  def self.create_contributors product, version_number, contributors
+    return nil if contributors.nil? || contributors.empty?
+
+    contributors.each do |contributor| 
+      create_author product, version_number, contributor, true 
+    end
   end
 
 
@@ -196,10 +208,23 @@ class NpmCrawler < Versioneye::Crawl
   def self.create_license( product, version_number, version_obj )
     check_single_license product, version_number, version_obj
     check_licenses product, version_number, version_obj
+    check_license_on_github( product, version_number )
   rescue => e 
     self.logger.error "ERROR in create_license Message: #{e.message}"
     self.logger.error e.backtrace.join("\n")
   end
+
+
+  def self.check_license_on_github( product, version_number )
+    product.version = version_number
+    return if !product.licenses.empty?
+
+    repo_names = github_repo_names product 
+    repo_names.each do |repo|
+      logger.info "crawl license info from GitHub master branch for repo #{repo}"
+      LicenseCrawler.process_github_master repo, product, version_number
+    end
+  end 
 
 
   def self.check_single_license( product, version_number, version_obj )
@@ -337,6 +362,23 @@ class NpmCrawler < Versioneye::Crawl
     logger.error "Error in parse_release_date #{e.message}"
     logger.error e.backtrace.join("\n")
   end
+
+
+  private 
+
+
+    def self.github_repo_names product 
+      matcher = "github.com\/([\w\.\-]+\/[\w\.\-]+)"
+      names = []
+      product.http_version_links_combined.each do |link| 
+        matches = link.link.match( /github.com\/([\w\.\-]+\/[\w\.\-]+)/ )
+        names << matches[1] if matches && matches[1]
+      end
+      names
+    rescue => e 
+      logger.error e.message
+      []
+    end
 
 
 end
