@@ -67,7 +67,7 @@ class LicenseCrawler < Versioneye::Crawl
     return nil if repo_name.to_s.empty? 
     return nil if product.nil?
 
-    licens_forms = ['LICENSE.md', 'LICENSE.txt', 'LICENSE', 'MIT-LICENSE', 'license.md', 'README.md']
+    licens_forms = ['LICENSE.md', 'LICENSE.txt', 'LICENSE', 'LICENCE', 'MIT-LICENSE', 'license.md', 'licence.md', 'README.md']
     licens_forms.each do |lf|
       raw_url = "https://raw.githubusercontent.com/#{repo_name}/#{branch}/#{lf}".gsub("\n", "").gsub("\t", "").strip 
       raw_url = URI.encode raw_url
