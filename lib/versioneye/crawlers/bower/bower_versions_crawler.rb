@@ -5,7 +5,7 @@ class BowerVersionsCrawler < Bower
     product  = Product.fetch_bower task[:registry_name]
     if product.nil?
       prod_key = make_prod_key(task)
-      logger.error "#{task_name} | Cant find product for #{task[:repo_fullname]} with prod_key #{prod_key}"
+      logger.error "Cant find product for #{task[:repo_fullname]} with prod_key #{prod_key}"
       return false 
     end
 
