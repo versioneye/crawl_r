@@ -30,14 +30,15 @@ class BowerCrawlWorker < Worker
   def process_work package_name
     return nil if package_name.to_s.empty?
 
+    user = User.find_by_email "reiz@versioneye.com"
+    token = user.github_token 
+
     if package_name.eql?('::bower::')
-      BowerStarter.crawl(nil, 'https://bower.herokuapp.com/packages', true )
+      BowerStarter.crawl(token, 'https://bower.herokuapp.com/packages', true )
     else 
       sps  = package_name.split("::")
       name = sps[0]
       url  = sps[1]
-      user = User.find_by_email "reiz@versioneye.com"
-      token = user.github_token 
       BowerStarter.register_package name, url, token 
     end
   rescue => e
