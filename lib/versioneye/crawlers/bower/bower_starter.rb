@@ -46,6 +46,10 @@ class BowerStarter < Bower
     return if resp == false 
 
     BowerVersionsCrawler.crawl_versions task, token, skipKnownVersions
+  rescue => e 
+    logger.error e.message 
+    logger.error e.backtrace.join("\n")
+    nil 
   end
 
 end
