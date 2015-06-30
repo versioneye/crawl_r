@@ -49,10 +49,13 @@ class BowerProjectsCrawler < Bower
       return nil
     end
 
-    pkg_file[:repo_fullname] = repo_info[:repo_fullname]
+    pkg_file[:repo_fullname]  = repo_info[:repo_fullname]
+    pkg_file[:default_branch] = repo_info[:default_branch]
+    
     pkg_file[:name] = task[:registry_name]  if task.has_attribute?(:registry_name) # if task has prod_key then use it - dont trust user's unvalidated bower.json
     pkg_file[:name] = repo_info[:name]      if pkg_file[:name].to_s.strip.empty?
     pkg_file[:name] = repo_info[:full_name] if pkg_file[:name].to_s.strip.empty?
+
     prod_key        = make_prod_key(task)
     product         = create_bower_package(prod_key, pkg_file, repo_info, token)
     if product.nil?
@@ -99,17 +102,23 @@ class BowerProjectsCrawler < Bower
 
   def self.create_or_update_product(prod_key, pkg_info, token, language = nil)
     language = Product::A_LANGUAGE_JAVASCRIPT if language.nil?
-    prod     = Product.find_or_create_by( prod_key: prod_key, language: language )
-    prod.update_attributes!(
-      language:      language,
-      prod_type:     Project::A_TYPE_BOWER,
-      name:          pkg_info[:name].to_s,
-      name_downcase: pkg_info[:name].to_s.downcase,
-      description:   pkg_info[:description].to_s
-    )
-    set_version(prod, pkg_info, token)
-    prod.save!
-    prod
+    product  = Product.fetch_bower pkg_info[:name].to_s
+
+    if product.nil? 
+      product = Product.new({ :prod_key => prod_key, :prod_type => Project::A_TYPE_BOWER })
+    end
+
+    product.language      = language
+    product.name          = pkg_info[:name].to_s    
+    product.name_downcase = pkg_info[:name].to_s.downcase
+    product.description   = pkg_info[:description].to_s
+    
+    product.version = pkg_info[:version]
+
+    set_version(product, pkg_info, token)
+
+    product.save
+    product
   rescue => e
     logger.error e.message
     logger.error e.backtrace.join("\n")
@@ -117,14 +126,15 @@ class BowerProjectsCrawler < Bower
   end
 
 
-  def self.set_version prod, pkg_info, token
-    tags = Github.repo_tags(pkg_info[:repo_fullname], token)
-    version_exist_in_file = pkg_info.has_key?(:version) && !pkg_info[:version].to_s.strip.empty?
-    no_tags_released = tags.nil? || tags.empty?
-    if version_exist_in_file && no_tags_released
-      prod.version = pkg_info[:version]
+  def self.set_version product, pkg_info, token
+    return product if !product.version.to_s.empty? && !product.version.to_s.eql?('0.0.0+NA')
+      
+    if pkg_info[:version].to_s.empty? 
+      product.version = pkg_info[:default_branch].to_s
+    else 
+      product.version = pkg_info[:version]
     end
-    prod
+    product
   end
 
 
