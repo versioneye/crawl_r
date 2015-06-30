@@ -20,8 +20,8 @@ class CrawlerUtils
 
 
   def self.remove_version_prefix version_number
-    if version_number && version_number.match(/v[0-9]+\..*/)
-      version_number.gsub!('v', '')
+    if version_number && version_number.match(/\Av[0-9]+\..*/)
+      version_number.gsub!(/\Av/, '')
     end
     if version_number && version_number.match(/r[0-9]+\..*/)
       version_number.gsub!('r', '')
