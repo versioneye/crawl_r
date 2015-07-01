@@ -16,13 +16,12 @@ class BowerProjectsCrawler < Bower
     end
 
     if repo_response.body.to_s.empty?
-      logger.error "Did not get any repo info for #{task[:repo_fullname]} - got: #{repo_response.code}"
+      logger.error "Did not get any repo info for #{task[:repo_fullname]}. Response code: #{repo_response.code}"
       return false 
     end
 
-    repo_info = repo_response.body
-    if repo_info.nil? || repo_response.code != 200
-      logger.error "crawl_projects | cant read information for #{task[:repo_fullname]}."
+    if repo_response.code != 200 && repo_response.code != 201 
+      logger.error "crawl_projects | cant read information for #{task[:repo_fullname]} - response body: #{repo_info}. Response code: #{repo_response.code}"
       return false
     end
 
