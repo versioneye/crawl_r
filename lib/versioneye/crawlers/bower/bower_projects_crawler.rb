@@ -6,22 +6,22 @@ class BowerProjectsCrawler < Bower
     repo_response = Github.repo_info(task[:repo_fullname], token, true, task[:crawled_at])
 
     if repo_response.nil? or repo_response.is_a?(Boolean)
-      logger.error "crawl_projects | Did not get repo_info for #{task[:repo_fullname]}"
+      logger.error "ERROR: crawl_projects | Did not get repo_info for #{task[:repo_fullname]}"
       return false 
     end
 
     if repo_response.code == 304
-      logger.debug "crawl_projects | no changes for #{task[:repo_fullname]}, since #{task[:crawled_at]}"
+      logger.debug "ERROR: crawl_projects | no changes for #{task[:repo_fullname]}, since #{task[:crawled_at]}"
       return false 
     end
 
     if repo_response.body.to_s.empty?
-      logger.error "Did not get any repo info for #{task[:repo_fullname]}. Response code: #{repo_response.code}"
+      logger.error "ERROR: Did not get any repo info for #{task[:repo_fullname]}. Response code: #{repo_response.code}"
       return false 
     end
 
     if repo_response.code != 200 && repo_response.code != 201 
-      logger.error "crawl_projects | cant read information for #{task[:repo_fullname]} - response body: #{repo_info}. Response code: #{repo_response.code}"
+      logger.error "ERROR: crawl_projects | cant read information for #{task[:repo_fullname]} - response body: #{repo_info}. Response code: #{repo_response.code}"
       return false
     end
 
@@ -29,7 +29,7 @@ class BowerProjectsCrawler < Bower
     repo_info[:repo_fullname] = task[:repo_fullname]
     product = add_bower_package(task, repo_info,  token, skipKnownVersions)
     if product.nil?
-      logger.error "crawl_projects | cant add bower package for #{task[:repo_fullname]}."
+      logger.error "ERROR: crawl_projects | cant add bower package for #{task[:repo_fullname]}."
       return false
     end
 
@@ -44,7 +44,7 @@ class BowerProjectsCrawler < Bower
     logger.info "#-- reading #{task[:repo_fullname]} from url: #{task[:url]} branch: #{repo_info[:default_branch]}"
     pkg_file = self.read_project_file_from_github(task, token, repo_info[:default_branch])
     if pkg_file.nil?
-      logger.error "add_bower_package | Didnt get any project file for #{task[:repo_fullname]}"
+      logger.error "ERROR: add_bower_package | Didnt get any project file for #{task[:repo_fullname]}"
       return nil
     end
 
@@ -58,14 +58,14 @@ class BowerProjectsCrawler < Bower
     prod_key        = make_prod_key(task)
     product         = create_bower_package(prod_key, pkg_file, repo_info, token, skipKnownVersions)
     if product.nil?
-      logger.error "add_bower_package | cant create_or_find product for #{task[:repo_fullname]}"
+      logger.error "ERROR: add_bower_package | cant create_or_find product for #{task[:repo_fullname]}"
       return nil
     end
 
     product.save
     product
   rescue => e
-    logger.error "add_bower_package | cant save product for #{repo_info} - #{e.message}"
+    logger.error "ERROR: add_bower_package | cant save product for #{repo_info} - #{e.message}"
     if product && product.errors
       logger.error "#{product.errors.full_messages.to_sentence}"
     end
