@@ -206,7 +206,9 @@ class BowerProjectsCrawler < Bower
 
   def self.get_language name, language = nil 
     language = Product::A_LANGUAGE_JAVASCRIPT if language.nil?
-    if name.to_s.downcase.eql?('angular') || name.to_s.downcase.eql?('angularjs')
+    if name.to_s.downcase.eql?('angular') || 
+       name.to_s.downcase.eql?('angularjs') || 
+       name.to_s.downcase.eql?('hytechne')
       language = Product::A_LANGUAGE_JAVASCRIPT 
     end
     language
