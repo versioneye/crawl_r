@@ -118,7 +118,7 @@ class BowerProjectsCrawler < Bower
 
 
   def self.create_or_update_product(prod_key, pkg_info, token, language = nil)
-    language = Product::A_LANGUAGE_JAVASCRIPT if language.nil?
+    language = get_language pkg_info[:name].to_s, language
     product  = Product.fetch_bower pkg_info[:name].to_s
 
     if product.nil? 
@@ -201,6 +201,13 @@ class BowerProjectsCrawler < Bower
   def self.to_version_task(task, prod_key)
     task.prod_key = prod_key
     task 
+  end
+
+
+  def self.get_language name, language = nil 
+    language = Product::A_LANGUAGE_JAVASCRIPT if language.nil?
+    language = Product::A_LANGUAGE_JAVASCRIPT if name.to_s.downcase.eql?('angular')
+    language
   end
 
 
