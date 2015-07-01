@@ -89,6 +89,11 @@ class BowerProjectsCrawler < Bower
 
     prod.version = version
     prod.version = pkg_info[:default_branch].to_s if version.empty?
+
+    if skip_version?( prod.version )
+      return prod 
+    end
+
     prod.add_version( prod.version )
     prod.save 
 
