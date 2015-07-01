@@ -79,6 +79,23 @@ class BowerProjectsCrawler < Bower
   def self.create_bower_package(prod_key, pkg_info, repo_info, token)
     prod = create_or_update_product(prod_key, pkg_info, token, repo_info[:language])
 
+    version = pkg_info[:version].to_s
+
+    # Version exist already! 
+    return prod if !version.empty? &&  prod.version_by_number(version) 
+    # No version set in the bower.json on default branch, but product has already a version. 
+    # That's the case if the repo has tags. Then the versions are from the tags. 
+    return prod if  version.empty? && !prod.version.to_s.empty? && !prod.version.to_s.eql?('0.0.0+NA') && !prod.versions.empty?
+
+    prod.version = version
+    prod.version = pkg_info[:default_branch].to_s if version.empty?
+    prod.add_version( prod.version )
+    prod.save 
+
+    CrawlerUtils.create_newest prod, prod.version, logger
+    CrawlerUtils.create_notifications prod, prod.version, logger
+    logger.info " -- Added version `#{prod.prod_key}` : #{tag_name} "
+
     Versionlink.create_project_link prod[:language], prod[:prod_key], "https://github.com/#{repo_info[:repo_fullname]}", "SCM"
     Versionlink.create_project_link prod[:language], prod[:prod_key], pkg_info[:homepage], "Homepage"
 
@@ -112,29 +129,13 @@ class BowerProjectsCrawler < Bower
     product.name          = pkg_info[:name].to_s    
     product.name_downcase = pkg_info[:name].to_s.downcase
     product.description   = pkg_info[:description].to_s
-    
-    product.version = pkg_info[:version]
-
-    set_version(product, pkg_info, token)
-
-    product.save
+    product.save    
+  
     product
   rescue => e
     logger.error e.message
     logger.error e.backtrace.join("\n")
     nil
-  end
-
-
-  def self.set_version product, pkg_info, token
-    return product if !product.version.to_s.empty? && !product.version.to_s.eql?('0.0.0+NA')
-      
-    if pkg_info[:version].to_s.empty? 
-      product.version = pkg_info[:default_branch].to_s
-    else 
-      product.version = pkg_info[:version]
-    end
-    product
   end
 
 
