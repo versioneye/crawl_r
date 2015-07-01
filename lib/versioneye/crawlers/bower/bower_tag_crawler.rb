@@ -38,6 +38,10 @@ class BowerTagCrawler < Bower
     find_or_create_licenses( product, pkg_info, repo_name, sha, token )
 
     true 
+  rescue => e 
+    logger.error e.message 
+    logger.error e.backtrace.join("\n")
+    false 
   end
 
 
