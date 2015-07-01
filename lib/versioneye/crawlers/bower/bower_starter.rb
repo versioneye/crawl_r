@@ -34,7 +34,7 @@ class BowerStarter < Bower
 
 
   def self.register_package name, url, token, skipKnownVersions = true   
-    repo_info = url_to_repo_info( url )    
+    repo_info = url_to_repo_info( url )
     return nil if repo_info.nil? || repo_info.empty?
   
     repo_info[:registry_name] = name

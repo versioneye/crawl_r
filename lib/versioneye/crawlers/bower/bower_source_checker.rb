@@ -14,8 +14,12 @@ class BowerSourceChecker < Bower
       logger.info "#{task[:task]} | #{task[:repo_fullname]} has moved to #{response['location']}"
       repo_info = url_to_repo_info(response['location'])
       registry_name = task[:registry_name]
-      task = to_existence_task(repo_info) # Create new task with new url and try again with new url
-      task.registry_name = registry_name
+      new_task = to_existence_task(repo_info) # Create new task with new url and try again with new url
+      task.repo_fullname = new_task.repo_fullname
+      task.repo_owner    = new_task.repo_owner
+      task.repo_name     = new_task.repo_name
+      task.url           = new_task.url 
+      task.re_crawl      = true 
       return check_repo_existence(task, token)
     elsif response_code == 304
       logger.info "No changes for `#{task[:repo_fullname]}` since last crawling `#{read_task[:crawled_at]}`. Going to skip."
