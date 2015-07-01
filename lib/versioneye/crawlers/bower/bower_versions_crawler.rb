@@ -94,7 +94,7 @@ class BowerVersionsCrawler < Bower
     if add_new_version(product, tag_name, tag, token) 
       CrawlerUtils.create_newest product, tag_name, logger
       CrawlerUtils.create_notifications product, tag_name, logger
-      logger.info " -- Added version `#{product.prod_key}` : #{tag_name} "
+      logger.info " -- `#{product.prod_key}` has new version #{tag_name} "
       create_version_archive(product, tag_name, tag[:zipball_url]) if tag.has_key?(:zipball_url)
     end
 
