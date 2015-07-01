@@ -1,7 +1,7 @@
 class BowerProjectsCrawler < Bower 
 
   
-  def self.process_project task, token 
+  def self.process_project task, token, skipKnownVersions = true 
     check_request_limit(token)
     repo_response = Github.repo_info(task[:repo_fullname], token, true, task[:crawled_at])
 
@@ -28,7 +28,7 @@ class BowerProjectsCrawler < Bower
 
     repo_info = JSON.parse(repo_response.body, symbolize_names: true)
     repo_info[:repo_fullname] = task[:repo_fullname]
-    product = add_bower_package(task, repo_info,  token)
+    product = add_bower_package(task, repo_info,  token, skipKnownVersions)
     if product.nil?
       logger.error "crawl_projects | cant add bower package for #{task[:repo_fullname]}."
       return false
@@ -41,7 +41,7 @@ class BowerProjectsCrawler < Bower
   end
 
 
-  def self.add_bower_package(task, repo_info, token)
+  def self.add_bower_package(task, repo_info, token, skipKnownVersions = true)
     logger.info "#-- reading #{task[:repo_fullname]} from url: #{task[:url]} branch: #{repo_info[:default_branch]}"
     pkg_file = self.read_project_file_from_github(task, token, repo_info[:default_branch])
     if pkg_file.nil?
@@ -57,7 +57,7 @@ class BowerProjectsCrawler < Bower
     pkg_file[:name] = repo_info[:full_name] if pkg_file[:name].to_s.strip.empty?
 
     prod_key        = make_prod_key(task)
-    product         = create_bower_package(prod_key, pkg_file, repo_info, token)
+    product         = create_bower_package(prod_key, pkg_file, repo_info, token, skipKnownVersions)
     if product.nil?
       logger.error "add_bower_package | cant create_or_find product for #{task[:repo_fullname]}"
       return nil
@@ -76,8 +76,8 @@ class BowerProjectsCrawler < Bower
 
 
   # Saves product and save sub/related docs
-  def self.create_bower_package(prod_key, pkg_info, repo_info, token)
-    prod = create_or_update_product(prod_key, pkg_info, token, repo_info[:language])
+  def self.create_bower_package(prod_key, pkg_info, repo_info, token, skipKnownVersions = true)
+    prod = create_or_update_product(prod_key, pkg_info, token, repo_info[:language], skipKnownVersions)
 
     version = pkg_info[:version].to_s
 
@@ -117,14 +117,17 @@ class BowerProjectsCrawler < Bower
   end
 
 
-  def self.create_or_update_product(prod_key, pkg_info, token, language = nil)
+  def self.create_or_update_product(prod_key, pkg_info, token, language = nil, skipKnownVersions = true)
     language = get_language pkg_info[:name].to_s, language
     product  = Product.fetch_bower pkg_info[:name].to_s
 
     if product.nil? 
       product = Product.new({ :prod_key => prod_key, :prod_type => Project::A_TYPE_BOWER })
     end
-
+    
+    if !product.language.eql?(language)
+      skipKnownVersions = false 
+    end 
     product.language      = language
     product.name          = pkg_info[:name].to_s    
     product.name_downcase = pkg_info[:name].to_s.downcase

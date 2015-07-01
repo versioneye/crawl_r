@@ -42,7 +42,7 @@ class BowerStarter < Bower
     resp = BowerSourceChecker.check_repo_existence task, token 
     return if resp == false 
     
-    resp = BowerProjectsCrawler.process_project task, token 
+    resp = BowerProjectsCrawler.process_project task, token, skipKnownVersions 
     return if resp == false 
 
     BowerVersionsCrawler.crawl_versions task, token, skipKnownVersions
