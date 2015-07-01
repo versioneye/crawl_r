@@ -94,7 +94,7 @@ class BowerProjectsCrawler < Bower
 
     CrawlerUtils.create_newest prod, prod.version, logger
     CrawlerUtils.create_notifications prod, prod.version, logger
-    logger.info " -- Added version `#{prod.prod_key}` : #{tag_name} "
+    logger.info " -- Added version `#{prod.prod_key}` : #{version} "
 
     Versionlink.create_project_link prod[:language], prod[:prod_key], "https://github.com/#{repo_info[:repo_fullname]}", "SCM"
     Versionlink.create_project_link prod[:language], prod[:prod_key], pkg_info[:homepage], "Homepage"
