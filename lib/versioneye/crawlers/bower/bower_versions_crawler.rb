@@ -125,7 +125,10 @@ class BowerVersionsCrawler < Bower
     end
     archive = Versionarchive.new({:language => prod[:language], :prod_key => prod[:prod_key],
       :version_id => version, :name => name, :link => url})
-    Versionarchive.create_if_not_exist_by_name( archive )
+    Versionarchive.create_archive_if_not_exist( archive )
+  rescue => e 
+    logger.error e.message
+    logger.error e.backtrace.join("\n")
   end
 
 
