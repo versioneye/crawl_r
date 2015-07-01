@@ -334,4 +334,16 @@ class Bower < Versioneye::Crawl
   end
 
 
+  def self.skip_version?( version )
+    if version.match(/(-build)+.*(sha\.)+/xi) || 
+       version.match(/(-beta)+.*(nightly-)+/xi) || 
+       version.match(/.+(-master-)\S{7}/xi) || 
+       version.eql?("2010.07.06dev") || tag_name.eql?("v2010.07.06dev")
+      logger.error "-- Skip build tags! Specially for AngularJS!"
+      return true 
+    end
+    false 
+  end
+
+
 end
