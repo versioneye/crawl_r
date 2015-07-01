@@ -40,6 +40,7 @@ class Bower < Versioneye::Crawl
       rate_limits(val)
       break if rate_limits
       
+      logger.info "sleep for #{A_SLEEP_TIME}"
       sleep A_SLEEP_TIME
     end
   end
@@ -78,6 +79,13 @@ class Bower < Versioneye::Crawl
     logger.info "#-- Remaining requests: #{remaining}"
 
     rate_limits
+  end
+
+
+  def self.fetch_rate_limit!(token)
+    rl = github_rate_limit( token ) # Ask rate limit from API
+    rate_limits( rl )
+    check_request_limit( token )
   end
 
 
