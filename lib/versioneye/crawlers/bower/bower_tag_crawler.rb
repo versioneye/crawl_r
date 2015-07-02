@@ -65,7 +65,7 @@ class BowerTagCrawler < Bower
     project_files = Github.project_files_from_branch(repo_name, token, sha)
     if project_files.nil? || project_files.empty? 
       logger.error "Didnt get any supported project file for #{repo_name} on the tag sha: `#{sha}`"
-      return
+      return nil 
     end
 
     bower_files = project_files.keep_if do |file|
@@ -75,7 +75,15 @@ class BowerTagCrawler < Bower
     logger.info "-- Found #{bower_files.count} bower files for #{repo_name} #{tag}"
 
     bower_files.each do |pf| 
-      if pf[:path].to_s.eql?('bower.json')
+      if pf[:path].to_s.eql?('bower.json') 
+        return pf 
+      end
+    end
+
+    bower_files.each do |pf| 
+      if pf[:path].to_s.eql?('package.json') || 
+         pf[:path].to_s.eql?('component.json') || 
+         pf[:path].to_s.eql?('module.json') 
         return pf 
       end
     end
