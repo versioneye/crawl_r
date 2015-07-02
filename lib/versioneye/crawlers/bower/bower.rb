@@ -18,74 +18,26 @@ class Bower < Versioneye::Crawl
   end
 
   
-  @@rate_limits = nil
-
-  
-  def self.rate_limits(val = nil)
-    @@rate_limits = val if val
-    @@rate_limits
-  end
-
-  
-  def self.github_rate_limit(token)
-    OctokitApi.client(token).rate_limit
-  end
-
-  
-  def self.ensure_ratelimit_existence token 
-    10.times do |i|
-      break if rate_limits
-
-      val = github_rate_limit(token) # Ask rate limit from API
-      rate_limits(val)
-      break if rate_limits
-      
-      logger.info "sleep for #{A_SLEEP_TIME}"
-      sleep A_SLEEP_TIME
-    end
-  end
-
-  
   def self.check_request_limit(token)
-    ensure_ratelimit_existence token 
-
-    if rate_limits.nil?
-      logger.error "Get no rate_limits from Github API - smt very bad is going on."
-      sleep A_SLEEP_TIME
-      return
-    end
-
-    rate_limits[:remaining] -= 1 
-    remaining = rate_limits[:remaining].to_i 
-    if remaining < A_MINIMUM_RATE_LIMIT
-      @@rate_limits = nil 
-      ensure_ratelimit_existence token 
-    end
-
-    remaining = rate_limits[:remaining].to_i 
-    time_left = (rate_limits[:resets_in] - Time.now.to_i) / 60 #in minutes
-    time_left += 1 # add additional minute for rounding errors and warming up
-    time_left = 1 if time_left.to_i < 0 
+    rate_limits = OctokitApi.client(token).rate_limit
+    remaining   = rate_limits[:remaining].to_i 
     if remaining.to_i < A_MINIMUM_RATE_LIMIT.to_i 
       logger.info "Remaining requests #{remaining}"
+
+      time_left = (rate_limits[:resets_in] - Time.now.to_i) / 60 #in minutes
+      time_left += 1 # add additional minute for rounding errors and warming up
+      time_left = 1 if time_left.to_i < 0 
+      
       logger.info "Going to stop crawling for next #{time_left} minutes"
       sleep time_left.minutes
+      
       logger.info "Waking up and going to continue crawling."
-      @@rate_limits = nil 
-      ensure_ratelimit_existence token 
     end
 
     remaining = rate_limits[:remaining]
     logger.info "#-- Remaining requests: #{remaining}"
 
     rate_limits
-  end
-
-
-  def self.fetch_rate_limit!(token)
-    rl = github_rate_limit( token ) # Ask rate limit from API
-    rate_limits( rl )
-    check_request_limit( token )
   end
 
 

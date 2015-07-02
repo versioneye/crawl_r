@@ -130,15 +130,17 @@ class BowerVersionsCrawler < Bower
 
   # Add latest version for dependencies missing prod_version
   def self.update_product_dependencies(product, version_label)
-    logger.info "update_product_dependencies for #{product.prod_key} version: #{version_label}"
     deps_without_version = Dependency.where(
       language: product.language,
       prod_type: Project::A_TYPE_BOWER, 
       prod_key: product[:prod_key], 
       prod_version: nil)
-    deps_without_version.each do |dep|
-      dep[:prod_version] = product[:version]
-      dep.save
+    if deps_without_version && !deps_without_version.empty?
+      logger.info "update_product_dependencies for #{product.prod_key} version: #{version_label}"
+      deps_without_version.each do |dep|
+        dep[:prod_version] = product[:version]
+        dep.save
+      end  
     end
   end
 

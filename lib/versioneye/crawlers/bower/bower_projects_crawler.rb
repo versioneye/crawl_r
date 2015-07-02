@@ -2,30 +2,30 @@ class BowerProjectsCrawler < Bower
 
   
   def self.process_project task, token, skipKnownVersions = true 
-    fetch_rate_limit!( token )
+    check_request_limit( token )
     repo_response = Github.repo_info(task[:repo_fullname], token, true, task[:crawled_at])
 
     if repo_response.nil? or repo_response.is_a?(Boolean)
       logger.error "ERROR in process_project(..) | Did not get repo_response for #{task[:repo_fullname]}"
-      fetch_rate_limit!( token )
+      check_request_limit( token )
       return false 
     end
 
     if repo_response.code == 304
       logger.debug "ERROR in process_project(..) | no changes for #{task[:repo_fullname]}, since #{task[:crawled_at]}"
-      fetch_rate_limit!( token )
+      check_request_limit( token )
       return false 
     end
 
     if repo_response.body.to_s.empty?
       logger.error "ERROR: Response body is empty for #{task[:repo_fullname]}. Response code: #{repo_response.code}"
-      fetch_rate_limit!( token )
+      check_request_limit( token )
       return false 
     end
 
     if repo_response.code != 200 && repo_response.code != 201 
       logger.error "ERROR in process_project(..) | cant read information for #{task[:repo_fullname]} - response body: #{repo_response.body} - response code: #{repo_response.code}"
-      fetch_rate_limit!( token )
+      check_request_limit( token )
       return false
     end
 
@@ -34,6 +34,7 @@ class BowerProjectsCrawler < Bower
     product = add_bower_package(task, repo_info,  token, skipKnownVersions)
     if product.nil?
       logger.error "ERROR in process_project(..) | cant add bower package for #{task[:repo_fullname]}."
+      check_request_limit( token )
       return false
     end
 
