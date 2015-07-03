@@ -8,6 +8,14 @@ describe LicenseCrawler do
 
   describe 'process_github_master' do
 
+    it "finds Widen Commercial License Agreement" do
+      License.count.should == 0
+      product = ProductFactory.create_new
+      LicenseCrawler.process_github_master('FineUploader/fine-uploader', product).should be_truthy
+      License.count.should == 1
+      License.first.name.should eq('Widen Commercial License Agreement')
+    end
+
     it "finds PHP License 3.01" do
       License.count.should == 0
       product = ProductFactory.create_new

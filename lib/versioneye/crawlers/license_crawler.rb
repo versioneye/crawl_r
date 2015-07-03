@@ -99,6 +99,13 @@ class LicenseCrawler < Versioneye::Crawl
     content = prepare_content content
     return nil if content.to_s.strip.empty?
 
+
+    if is_widen_commercial_license?( content )
+      logger.info " -- Widen Commercial License Agreement at #{raw_url} --- "
+      find_or_create( product, 'Widen Commercial License Agreement', raw_url, version )
+      return 'Widen Commercial License Agreement'
+    end
+
     if is_new_bsd?( content )
       logger.info " -- New BSD License found at #{raw_url} --- "
       find_or_create( product, 'New BSD', raw_url, version )
@@ -225,6 +232,17 @@ class LicenseCrawler < Versioneye::Crawl
       logger.info "DELETE #{link.to_s}"
       link.remove
       false
+    end
+
+
+
+    def self.is_widen_commercial_license? content 
+      return false if content.match(/Widen\s+Commercial\s+License\s+Agreement/i).nil?
+      return false if content.match(/Widen\s+Enterprises/i).nil?
+      return false if content.match(/Widen\s+hereby\s+grants/i).nil?
+      return false if content.match(/from\s+Widen/i).nil?
+      
+      return true 
     end
 
 
