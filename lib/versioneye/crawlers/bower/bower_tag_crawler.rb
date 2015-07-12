@@ -16,6 +16,8 @@ class BowerTagCrawler < Bower
       return false
     end
 
+    logger.info "-- Process #{bower_info[:url]} in tag #{tag_name}"
+
     bowerjson_content = fetch_file_content(repo_name, bower_info[:url], token)
     if bowerjson_content.nil? || bowerjson_content.empty? 
       logger.debug "bowerjson_content is nil"
@@ -68,19 +70,14 @@ class BowerTagCrawler < Bower
       return nil 
     end
 
-    bower_files = project_files.keep_if do |file|
-      ProjectService.type_by_filename(file[:path]) == Project::A_TYPE_BOWER
+    bower_files = []
+    project_files.each do |file|
+      bower_files << file if ProjectService.type_by_filename(file[:path]) == Project::A_TYPE_BOWER
     end
 
-    logger.info "-- Found #{bower_files.count} bower files for #{repo_name} #{tag}"
+    return bower_files.first if !bower_files.empty? 
 
-    bower_files.each do |pf| 
-      if pf[:path].to_s.eql?('bower.json') 
-        return pf 
-      end
-    end
-
-    bower_files.each do |pf| 
+    project_files.each do |pf| 
       if pf[:path].to_s.eql?('package.json') || 
          pf[:path].to_s.eql?('component.json') || 
          pf[:path].to_s.eql?('module.json') 
@@ -88,7 +85,7 @@ class BowerTagCrawler < Bower
       end
     end
 
-    bower_files.first
+    project_files.first
   end
 
 
