@@ -4,7 +4,7 @@ class LicenseCrawler < Versioneye::Crawl
   A_SOURCE_GMB = 'GMB' # GitHub Master Branch
   A_SOURCE_G   = 'GITHUB' # GitHub Master Branch
 
-  LICENSE_FILES = ['LICENSE.md', 'LICENSE.txt', 'LICENSE', 'LICENCE', 'MIT-LICENSE', 'license.md', 'licence.md', 'README.md']
+  LICENSE_FILES = ['LICENSE.md', 'LICENSE.txt', 'LICENSE', 'LICENCE', 'MIT-LICENSE', 'license.md', 'licence.md', 'UNLICENSE.md', 'README.md']
 
 
   def self.logger
