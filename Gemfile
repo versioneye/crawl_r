@@ -6,7 +6,7 @@ gem 'bundler'            , '~> 1.10.3'
 gem 'versioneye-core'    , :git => 'git@github.com:versioneye/versioneye-core.git', :tag => 'v7.19.4'
 # gem 'versioneye-core'    , :path => "~/workspace/versioneye/versioneye-core"
 
-gem 'rufus-scheduler', '3.1.2'
+gem 'rufus-scheduler', '3.1.3'
 
 group :development do
   gem "shoulda"  , ">= 0"
