@@ -160,7 +160,7 @@ class Bower < Versioneye::Crawl
       return nil
     end
 
-    prod_version = fetch_version_for_dep(prod, pkg_info) # TODO refactor it, give as param.
+    prod_version = fetch_version_for_dep(prod, pkg_info) 
     pkg_info[key].each_pair do |prod_name, version|
       next if prod_name.to_s.strip.empty?
       dep = create_dependency(prod, prod_version, prod_name, version, scope)
@@ -182,7 +182,7 @@ class Bower < Versioneye::Crawl
   end
 
   def self.create_dependency(prod, prod_version, dep_name, dep_version, scope = Dependency::A_SCOPE_REQUIRE)
-    dep_prod = Product.fetch_bower(dep_name)
+    dep_prod = Product.fetch_bower( dep_name )
     dep_prod_key = nil
     dep_prod_key = dep_prod.prod_key if dep_prod
     dependency = Dependency.find_or_create_by(
@@ -190,16 +190,14 @@ class Bower < Versioneye::Crawl
       language: prod[:language],
       prod_key: prod[:prod_key].to_s,
       prod_version: prod_version,
+
       dep_prod_key: dep_prod_key,
-      name: dep_name
-    )
-    dependency.update_attributes!({
-      dep_prod_key: dep_prod_key,
-      name: dep_name,
-      version: dep_version, # TODO: It can be that the version is in the bower.json is a git tag / path
+      version: dep_version, 
       scope: scope
-    })
+    )
+    dependency.name = dep_name
     dependency.update_known
+    dependency.save 
     dependency
   rescue => e
     logger.error "Error: Cant save dependency `#{dep_name}` with version `#{dep_version}` for #{prod[:prod_key]}. -- #{e.message}"

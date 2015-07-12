@@ -33,7 +33,7 @@ class BowerStarter < Bower
   end
 
 
-  def self.register_package name, url, token, skipKnownVersions = true   
+  def self.register_package name, url, token, skipKnownVersions = true
     repo_info = url_to_repo_info( url )
     return nil if repo_info.nil? || repo_info.empty?
   
@@ -52,4 +52,6 @@ class BowerStarter < Bower
     nil 
   end
 
+
 end
+

@@ -23,10 +23,11 @@ class BowerSourceChecker < Bower
       return check_repo_existence(task, token)
     elsif response_code == 304
       logger.info "No changes for `#{task[:repo_fullname]}` since last crawling `#{read_task[:crawled_at]}`. Going to skip."
-      task.update_attributes({url_exists: true, re_crawl: false})
+      task.url_exists = true 
+      task.re_crawl = false 
       return true
     elsif response_code == 404
-      logger.error "check_repo_existence| 404 for #{task[:repo_fullname]} on `#{task[:url]}`"
+      logger.error "check_repo_existence | 404 - file not found - for #{task[:repo_fullname]} on `#{task[:url]}`"
       return false 
     elsif response_code >= 500
       logger.error "check_repo_existence | Sadly Github is down; cant access #{task[:url]}"

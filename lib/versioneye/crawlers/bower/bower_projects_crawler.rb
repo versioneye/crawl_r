@@ -38,7 +38,6 @@ class BowerProjectsCrawler < Bower
       return false
     end
 
-    task.update_attributes({crawled_at: DateTime.now})
     to_version_task(task, product[:prod_key]) # add new version task when everything went oK
     
     true
@@ -61,7 +60,7 @@ class BowerProjectsCrawler < Bower
     pkg_file[:name] = repo_info[:full_name] if pkg_file[:name].to_s.strip.empty?
 
     prod_key        = make_prod_key(task)
-    product         = create_bower_package(prod_key, pkg_file, repo_info, token, skipKnownVersions)
+    product         = create_bower_package( prod_key, pkg_file, repo_info, token, skipKnownVersions )
     if product.nil?
       logger.error "ERROR: add_bower_package | cant create_or_find product for #{task[:repo_fullname]}"
       return nil
@@ -87,6 +86,7 @@ class BowerProjectsCrawler < Bower
 
     # Version exist already! 
     return prod if !version.empty? &&  prod.version_by_number(version) 
+    
     # No version set in the bower.json on default branch, but product has already a version. 
     # That's the case if the repo has tags. Then the versions are from the tags. 
     return prod if  version.empty? && !prod.version.to_s.empty? && !prod.version.to_s.eql?('0.0.0+NA') && !prod.versions.empty?
@@ -109,6 +109,7 @@ class BowerProjectsCrawler < Bower
     Versionlink.create_project_link prod[:language], prod[:prod_key], pkg_info[:homepage], "Homepage"
 
     create_dependencies( prod, pkg_info, :dependencies,     Dependency::A_SCOPE_REQUIRE )
+    create_dependencies( prod, pkg_info, :test,             Dependency::A_SCOPE_TEST )
     create_dependencies( prod, pkg_info, :dev_dependencies, Dependency::A_SCOPE_DEVELOPMENT )
     
     if pkg_info.has_key?(:license)

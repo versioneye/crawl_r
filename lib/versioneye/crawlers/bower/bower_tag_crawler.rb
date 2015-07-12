@@ -35,6 +35,7 @@ class BowerTagCrawler < Bower
     pkg_info = to_pkg_info(task[:owner], task[:repo], bower_info[:url], bower_json)
 
     create_dependencies(product, pkg_info, :dependencies,     Dependency::A_SCOPE_REQUIRE)
+    create_dependencies(product, pkg_info, :test,             Dependency::A_SCOPE_TEST )
     create_dependencies(product, pkg_info, :dev_dependencies, Dependency::A_SCOPE_DEVELOPMENT)
 
     find_or_create_licenses( product, pkg_info, repo_name, sha, token )
