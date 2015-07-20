@@ -57,6 +57,9 @@ class PackagistCrawler < Versioneye::Crawl
     version_number = String.new(version[0])
     version_obj = version[1]
 
+    # TODO just temporal.
+    ComposerUtils.create_keywords product, version_obj
+
     version_number.gsub!(/^v/, '') if version_number.to_s.match(/^v[0-9]+\..*/)
     db_version  = product.version_by_number version_number
     if db_version.nil?
@@ -122,6 +125,7 @@ class PackagistCrawler < Versioneye::Crawl
     ComposerUtils.create_developers version_obj['authors'], product, version_number
     ComposerUtils.create_archive product, version_number, version_obj
     ComposerUtils.create_dependencies product, version_number, version_obj
+    ComposerUtils.create_keywords product, version_obj 
   rescue => e
     self.logger.error "ERROR in create_new_version Message:   #{e.message}"
     self.logger.error e.backtrace.join("\n")
