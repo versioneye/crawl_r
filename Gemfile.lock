@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:versioneye/versioneye-core.git
-  revision: aca93c7f72fbd1aec4a778694b37f97f503554b8
-  tag: v7.22.0
+  revision: 9579a7f6c908fcf10231a8a48f9e4efc7afa8b89
+  tag: v7.22.5
   specs:
-    versioneye-core (7.22.0)
+    versioneye-core (7.22.5)
       actionmailer (~> 4.2.2)
       aws-sdk (~> 2.1.3)
       bundler (~> 1.10.4)
@@ -70,7 +70,7 @@ GEM
       jmespath (~> 1.0)
     aws-sdk-resources (2.1.7)
       aws-sdk-core (= 2.1.7)
-    bson (3.1.2)
+    bson (3.2.0)
     builder (3.2.2)
     bunny (1.7.0)
       amq-protocol (>= 1.9.2)
