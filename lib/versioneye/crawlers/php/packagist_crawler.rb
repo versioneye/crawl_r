@@ -57,9 +57,6 @@ class PackagistCrawler < Versioneye::Crawl
     version_number = String.new(version[0])
     version_obj = version[1]
 
-    # TODO just temporal.
-    ComposerUtils.create_keywords product, version_obj
-
     version_number.gsub!(/^v/, '') if version_number.to_s.match(/^v[0-9]+\..*/)
     db_version  = product.version_by_number version_number
     if db_version.nil?
