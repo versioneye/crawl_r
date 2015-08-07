@@ -47,7 +47,8 @@ class PackagistCrawler < Versioneye::Crawl
       # self.process_version version, product
 
       version_number = String.new(version[0])
-      ComposerUtils.create_developers version['authors'], product, version_number
+      version_obj = version[1]
+      ComposerUtils.create_developers version_obj['authors'], product, version_number
 
     end
     ProductService.update_version_data( product )
