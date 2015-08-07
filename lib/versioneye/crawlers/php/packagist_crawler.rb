@@ -6,14 +6,14 @@ class PackagistCrawler < Versioneye::Crawl
   end
 
 
-  def self.crawl serial = false 
+  def self.crawl serial = false
     start_time = Time.now
     packages = PackagistCrawler.get_first_level_list
     packages.each do |name|
-      if serial == true 
-        PackagistCrawler.crawle_package( name ) 
-      else 
-        PackagistCrawlProducer.new( name ) # Let the rabbit do the work! 
+      if serial == true
+        PackagistCrawler.crawle_package( name )
+      else
+        PackagistCrawlProducer.new( name ) # Let the rabbit do the work!
       end
     end
     duration = Time.now - start_time
@@ -44,7 +44,11 @@ class PackagistCrawler < Versioneye::Crawl
     PackagistCrawler.update_packagist_link product, package_name
 
     versions.each do |version|
-      self.process_version version, product
+      # self.process_version version, product
+
+      version_number = String.new(version[0])
+      ComposerUtils.create_developers version['authors'], product, version_number
+
     end
     ProductService.update_version_data( product )
   rescue => e
@@ -58,10 +62,10 @@ class PackagistCrawler < Versioneye::Crawl
     version_obj = version[1]
 
     version_number.gsub!(/^v/, '') if version_number.to_s.match(/^v[0-9]+\..*/)
-    db_version  = product.version_by_number version_number
+    db_version = product.version_by_number version_number
     if db_version.nil?
-      if !version_number.eql?('dev-master') && has_tag_variants?(product, version_number, version_obj) == false 
-        return nil 
+      if !version_number.eql?('dev-master') && has_tag_variants?(product, version_number, version_obj) == false
+        return nil
       end
 
       PackagistCrawler.create_new_version( product, version_number, version_obj )
@@ -116,13 +120,13 @@ class PackagistCrawler < Versioneye::Crawl
     CrawlerUtils.create_newest product, version_number, logger
     CrawlerUtils.create_notifications product, version_number, logger
 
-    create_links product, version_number, version_obj  
+    create_links product, version_number, version_obj
 
     ComposerUtils.create_license( product, version_number, version_obj )
     ComposerUtils.create_developers version_obj['authors'], product, version_number
     ComposerUtils.create_archive product, version_number, version_obj
     ComposerUtils.create_dependencies product, version_number, version_obj
-    ComposerUtils.create_keywords product, version_obj 
+    ComposerUtils.create_keywords product, version_obj
   rescue => e
     self.logger.error "ERROR in create_new_version Message:   #{e.message}"
     self.logger.error e.backtrace.join("\n")
@@ -132,58 +136,58 @@ class PackagistCrawler < Versioneye::Crawl
   def self.create_links product, version_number, version_obj
     Versionlink.create_versionlink product.language, product.prod_key, version_number, version_obj['homepage'], "Homepage"
 
-    source = version_obj['source']['url']  
+    source = version_obj['source']['url']
     source = source.gsub(".git", "") if source.match(/\.git$/)
     Versionlink.create_versionlink product.language, product.prod_key, version_number, source, "Source"
   rescue => e
     self.logger.error "ERROR in create_links Message: #{e.message}"
-    self.logger.error e.backtrace.join("\n")  
+    self.logger.error e.backtrace.join("\n")
   end
 
 
   def self.has_tag_variants? product, version_number, version_obj
     tag = has_tag? product, version_number, version_obj
-    return true if tag == true 
+    return true if tag == true
 
     if version_number.to_s.match(/^v/)
-      version_number.gsub!(/^v/, '') 
-    else 
+      version_number.gsub!(/^v/, '')
+    else
       version_number = "v#{version_number}"
     end
     tag = has_tag? product, version_number, version_obj
-    return true if tag == true 
-    
+    return true if tag == true
+
     if version_number.match(/\.0\.0$/)
       version_number.gsub!(/\.0\.0$/, "")
-      tag = has_tag?(product, version_number, version_obj) 
-      return true if tag == true 
+      tag = has_tag?(product, version_number, version_obj)
+      return true if tag == true
     end
 
     if version_number.match(/\.0$/)
       version_number.gsub!(/\.0$/, "")
       tag = has_tag? product, version_number, version_obj
-      return true if tag == true 
+      return true if tag == true
     end
-    
+
     return tag
   end
 
 
   def self.has_tag? product, version_number, version_obj
-    source = version_obj['source']['url']  
+    source = version_obj['source']['url']
     source = source.gsub(".git", "") if source.match(/\.git$/)
     return true if !source.match(/github\.com/)
 
     raw_url = "#{source}/releases/tag/#{version_number}"
 
     resp = HttpService.fetch_response raw_url
-    return false if resp.nil? 
+    return false if resp.nil?
     return true  if resp.code.to_i == 200
-    return false 
-  rescue => e 
+    return false
+  rescue => e
     self.logger.error e.message
     self.logger.error e.backtrace.join("\n")
-    false 
+    false
   end
 
 
@@ -202,12 +206,12 @@ class PackagistCrawler < Versioneye::Crawl
 
     raw_url = "https://github.com/#{product.prod_key}"
     resp = HttpService.fetch_response raw_url
-    if resp.code.to_i == 200 
-      raw_url = "https://github.com/#{product.prod_key}/releases/tag/#{version_string}"  
-    else 
+    if resp.code.to_i == 200
+      raw_url = "https://github.com/#{product.prod_key}/releases/tag/#{version_string}"
+    else
       uri = github_link.link.gsub(/http.+github\.com\//i, "")
       uri_sp = uri.split("/")
-      raw_url = "https://github.com/#{uri_sp[0]}/#{uri_sp[1]}/releases/tag/#{version_string}"  
+      raw_url = "https://github.com/#{uri_sp[0]}/#{uri_sp[1]}/releases/tag/#{version_string}"
     end
 
     resp = HttpService.fetch_response raw_url
@@ -220,9 +224,9 @@ class PackagistCrawler < Versioneye::Crawl
 
   def self.date_from released_string
     DateTime.parse(released_string)
-  rescue => e 
+  rescue => e
     logger.error e.message
-    nil 
+    nil
   end
 
 end
