@@ -32,7 +32,7 @@ class CocoapodsCrawler < Versioneye::Crawl
     p "crawl_primary ..."
     cocoa_git = Settings.instance.cocoapods_spec_git
     cocoa_url = Settings.instance.cocoapods_spec_url
-    cocoa_dir = Settings.instance.cocoapods_spec_dir 
+    cocoa_dir = Settings.instance.cocoapods_spec_dir
     if cocoa_git.to_s.empty? || cocoa_dir.to_s.empty?
       p 'either cocoa_git or cocoa_dir not registered'
     else

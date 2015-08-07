@@ -83,17 +83,17 @@ class ComposerUtils
   end
 
 
-  def self.create_keywords product, version_obj 
+  def self.create_keywords product, version_obj
     keywords = version_obj['keywords']
-    return nil if keywords.nil? || keywords.empty? 
+    return nil if keywords.nil? || keywords.empty?
 
-    keywords.each do |keyword| 
+    keywords.each do |keyword|
       product.add_tag keyword
-    end 
-    product.save 
-  rescue => e 
+    end
+    product.save
+  rescue => e
     self.logger.error "ERROR in create_keywords Message: #{e.message}"
-    self.logger.error e.backtrace.join("\n")  
+    self.logger.error e.backtrace.join("\n")
   end
 
 
