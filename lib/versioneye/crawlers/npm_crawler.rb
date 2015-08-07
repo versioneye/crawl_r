@@ -162,7 +162,7 @@ class NpmCrawler < Versioneye::Crawl
   def self.create_author product, version_number, author, contributor = false
     return nil if author.nil? || author.empty?
 
-    author_name     = author['name']
+    author_name     = author['name'].to_s.gsub("https://github.com/", "")
     author_email    = author['email']
     author_homepage = author['homepage']
     author_role     = author['role']
