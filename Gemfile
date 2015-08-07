@@ -3,7 +3,7 @@ source "http://rubygems.org"
 gem 'log4r'              , '~> 1.1.0'
 gem 'bundler'            , '~> 1.10.3'
 
-gem 'versioneye-core'    , :git => 'git@github.com:versioneye/versioneye-core.git', :tag => 'v7.22.5'
+gem 'versioneye-core'    , :git => 'git@github.com:versioneye/versioneye-core.git', :tag => 'v7.22.10'
 # gem 'versioneye-core'    , :path => "~/workspace/versioneye/versioneye-core"
 
 gem 'rufus-scheduler', '3.1.3'
