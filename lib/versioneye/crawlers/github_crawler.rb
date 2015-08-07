@@ -62,7 +62,7 @@ class GithubCrawler < Versioneye::Crawl
   end
 
   def self.create_archive repository, tag, product, version_number
-    link = "https://api.github.com/repos/#{repository.full_name}/tarball/#{tag.name}"
+    link = "https://github.com/#{repository.full_name}/archive/#{tag.name}.tar.gz"
     name = "#{repository.full_name}_#{tag.name}.tar.gz"
     archive = Versionarchive.new({language: product.language, prod_key: product.prod_key, version_id: version_number, link: link, name: name})
     Versionarchive.create_archive_if_not_exist archive
