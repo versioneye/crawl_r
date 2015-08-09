@@ -44,12 +44,7 @@ class PackagistCrawler < Versioneye::Crawl
     PackagistCrawler.update_packagist_link product, package_name
 
     versions.each do |version|
-      # self.process_version version, product
-
-      version_number = String.new(version[0])
-      version_obj = version[1]
-      ComposerUtils.create_developers version_obj['authors'], product, version_number
-
+      self.process_version version, product
     end
     ProductService.update_version_data( product )
   rescue => e
