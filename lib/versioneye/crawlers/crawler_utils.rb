@@ -26,11 +26,14 @@ class CrawlerUtils
     if version_number && version_number.match(/r[0-9]+\..*/)
       version_number.gsub!('r', '')
     end
-    if version_number && version_number.match(/php\-[0-9]+\..*/)
+    if version_number && version_number.match(/php\-[0-9]+\..*/i)
       version_number.gsub!('php-', '')
     end
-    if version_number && version_number.match(/PHP\_[0-9]+\..*/)
+    if version_number && version_number.match(/PHP\_[0-9]+\..*/i)
       version_number.gsub!('PHP_', '')
+    end
+    if version_number && version_number.match(/nw\-[0-9]+\..*/i)
+      version_number.gsub!('nw-', '')
     end
     version_number
   end
