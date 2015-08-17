@@ -3,19 +3,19 @@ class CrawlerUtils
 
   def self.create_newest( product, version_number, logger = nil )
     NewestService.create_newest( product, version_number, logger )
-  rescue => e 
+  rescue => e
     logger.error "ERROR in create_notifications - Message: #{e.message}"
     logger.error e.backtrace.join("\n")
-    nil 
+    nil
   end
 
 
   def self.create_notifications(product, version_number, logger = nil)
     NewestService.create_notifications(product, version_number, logger)
-  rescue => e 
+  rescue => e
     logger.error "ERROR in create_notifications - Message: #{e.message}"
     logger.error e.backtrace.join("\n")
-    nil 
+    nil
   end
 
 
