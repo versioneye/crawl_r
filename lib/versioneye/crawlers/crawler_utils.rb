@@ -35,6 +35,9 @@ class CrawlerUtils
     if version_number && version_number.match(/nw\-[0-9]+\..*/i)
       version_number.gsub!('nw-', '')
     end
+    if version_number && version_number.match(/nw\-v[0-9]+\..*/i)
+      version_number.gsub!('nw-v', '')
+    end
     version_number
   end
 
