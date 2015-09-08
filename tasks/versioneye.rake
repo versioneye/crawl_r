@@ -42,7 +42,7 @@ namespace :versioneye do
     env = Settings.instance.environment
 
 
-    # Crawl it once a hour. A crawl takes ~ 1 minutes! 
+    # Crawl it once a hour. A crawl takes ~ 1 minutes!
     value = '20 * * * *'
     if !value.to_s.empty?
       scheduler.cron value do
@@ -50,7 +50,7 @@ namespace :versioneye do
       end
     end
 
-    # Crawl it once a hour. A crawl takes ~ 3 minutes! 
+    # Crawl it once a hour. A crawl takes ~ 3 minutes!
     value = '22 * * * *'
     if !value.to_s.empty?
       scheduler.cron value do
@@ -58,7 +58,7 @@ namespace :versioneye do
       end
     end
 
-    # Crawl it once a hour. A crawl takes ~ 3 minutes! 
+    # Crawl it once a hour. A crawl takes ~ 3 minutes!
     value = '25 * * * *'
     if !value.to_s.empty?
       scheduler.cron value do
@@ -66,7 +66,7 @@ namespace :versioneye do
       end
     end
 
-    # Crawl it once a hour. A crawl takes ~ 1 minute! 
+    # Crawl it once a hour. A crawl takes ~ 1 minute!
     value = '29 * * * *'
     if !value.to_s.empty?
       scheduler.cron value do
@@ -74,7 +74,7 @@ namespace :versioneye do
       end
     end
 
-    # Crawl it once a hour. A crawl takes ~ 3 minutes! 
+    # Crawl it once a hour. A crawl takes ~ 3 minutes!
     value = '30 * * * *'
     if !value.to_s.empty?
       scheduler.cron value do
@@ -82,7 +82,7 @@ namespace :versioneye do
       end
     end
 
-    # Crawl it once a hour. A crawl takes ~ 1 minutes! 
+    # Crawl it once a hour. A crawl takes ~ 1 minutes!
     value = '35 * * * *'
     if !value.to_s.empty?
       scheduler.cron value do
@@ -91,7 +91,7 @@ namespace :versioneye do
     end
 
 
-    # Crawl it once a day. A crawl takes ~ 20 minutes! 
+    # Crawl it once a day. A crawl takes ~ 20 minutes!
     value = GlobalSetting.get(env, 'SCHEDULE_CRAWL_COCOAPODS')
     value = '1 0 * * *' if value.to_s.empty?
     if !value.to_s.empty?
@@ -99,7 +99,7 @@ namespace :versioneye do
         CommonCrawlProducer.new "cocoa_pods_1"
       end
     end
-    
+
     # This crawl takes almost 7 hours
     value = '0 1 * * *'
     if !value.to_s.empty?
@@ -128,7 +128,7 @@ namespace :versioneye do
         BiicodeCrawlProducer.new "::biicode::"
       end
     end
-    
+
     scheduler.join
     while 1 == 1
       p "keep alive rake task"
@@ -150,7 +150,7 @@ namespace :versioneye do
   task :crawl_security_sensiolabs do
     puts "START SecuritySensiolabsCrawler"
     RubyCrawl.new
-    SecuritySensiolabsCrawler.crawl 
+    SecuritySensiolabsCrawler.crawl
     puts "---"
   end
 
@@ -240,7 +240,7 @@ namespace :versioneye do
   task :crawl_bower do
     puts "START to crawle Bower.io repository"
     RubyCrawl.new
-    BowerStarter.crawl 
+    BowerStarter.crawl
     puts "---"
   end
 
