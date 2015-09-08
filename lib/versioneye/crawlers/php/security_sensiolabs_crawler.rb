@@ -118,6 +118,7 @@ class SecuritySensiolabsCrawler
       end
     end
 
+    self.logger.info "Create new SecurityVulnerability for #{Product::A_LANGUAGE_PHP}:#{prod_key} - #{link_names.first}"
     SecurityVulnerability.new(:language => Product::A_LANGUAGE_PHP, :prod_key => prod_key, :summary => link_names.first )
   end
 
