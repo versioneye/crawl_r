@@ -1,30 +1,30 @@
 class NpmCrawler < Versioneye::Crawl
 
-  
-  A_NPM_REGISTRY_INDEX = 'https://skimdb.npmjs.com/registry/_all_docs' 
 
-  
+  A_NPM_REGISTRY_INDEX = 'https://skimdb.npmjs.com/registry/_all_docs'
+
+
   def self.logger
     ActiveSupport::Logger.new('log/npm.log')
   end
 
 
-  def self.crawl serial = false 
+  def self.crawl serial = false
     packages = get_first_level_list
     packages.each do |package|
-      name = package['key'] if package.is_a? Hash 
-      name = package if !package.is_a? Hash 
+      name = package['key'] if package.is_a? Hash
+      name = package if !package.is_a? Hash
       next if name.match(/\A\@\w*\/\w*/)
 
-      if serial == true 
+      if serial == true
         crawle_package name
-      else 
-        NpmCrawlProducer.new( name ) # Let the rabbit do the work! 
+      else
+        NpmCrawlProducer.new( name ) # Let the rabbit do the work!
       end
     end
   end
 
-  
+
   def self.get_first_level_list
     packages = get_first_level_list_from_registry
     if packages.nil? || packages.empty? || packages.count < 50
@@ -172,7 +172,7 @@ class NpmCrawler < Versioneye::Crawl
     developer = Developer.new({:language => Product::A_LANGUAGE_NODEJS,
       :prod_key => product.prod_key, :version => version_number,
       :name => author_name, :email => author_email,
-      :homepage => author_homepage, :role => author_role, 
+      :homepage => author_homepage, :role => author_role,
       :contributor => contributor})
     developer.save
   end
@@ -181,8 +181,8 @@ class NpmCrawler < Versioneye::Crawl
   def self.create_contributors product, version_number, contributors
     return nil if contributors.nil? || contributors.empty?
 
-    contributors.each do |contributor| 
-      create_author product, version_number, contributor, true 
+    contributors.each do |contributor|
+      create_author product, version_number, contributor, true
     end
   end
 
@@ -211,7 +211,7 @@ class NpmCrawler < Versioneye::Crawl
     check_single_license product, version_number, version_obj
     check_licenses product, version_number, version_obj
     check_license_on_github( product, version_number )
-  rescue => e 
+  rescue => e
     self.logger.error "ERROR in create_license Message: #{e.message}"
     self.logger.error e.backtrace.join("\n")
   end
@@ -221,12 +221,12 @@ class NpmCrawler < Versioneye::Crawl
     product.version = version_number
     return if !product.licenses.empty?
 
-    repo_names = github_repo_names product 
+    repo_names = github_repo_names product
     repo_names.each do |repo|
       logger.info "crawl license info from GitHub master branch for repo #{repo}"
       LicenseCrawler.process_github( repo, "master", product, version_number )
     end
-  end 
+  end
 
 
   def self.check_single_license( product, version_number, version_obj )
@@ -239,12 +239,12 @@ class NpmCrawler < Versioneye::Crawl
       license_type = license_value["type"]
       license_url  = license_value["url"]
       create_single_license( product, version_number, license_type, license_url )
-    elsif license_value.is_a? Array 
+    elsif license_value.is_a? Array
       create_licenses( product, version_number, license_value )
     end
   end
 
-  
+
   def self.check_licenses( product, version_number, version_obj )
     licenses = version_obj['licenses']
     return nil if licenses.nil? || licenses.empty?
@@ -260,7 +260,7 @@ class NpmCrawler < Versioneye::Crawl
     end
   end
 
-  
+
   def self.create_licenses( product, version_number, licenses )
     licenses.each do |licence|
       if licence.is_a?(String)
@@ -273,7 +273,7 @@ class NpmCrawler < Versioneye::Crawl
     end
   end
 
-  
+
   def self.create_single_license( product, version_number, license_name, license_url = nil )
     license = License.find_or_create( product.language, product.prod_key, version_number, license_name, license_url )
     self.logger.info " -- find_or_create license - #{license.to_s}"
@@ -335,7 +335,7 @@ class NpmCrawler < Versioneye::Crawl
     nil
   end
 
-  
+
   def self.repository_for version_obj
     version_obj['repository']['url']
   rescue => e
@@ -343,7 +343,7 @@ class NpmCrawler < Versioneye::Crawl
     nil
   end
 
-  
+
   def self.homepage_for version_obj
     hp = version_obj['homepage']
     if hp.is_a? Array
@@ -366,18 +366,18 @@ class NpmCrawler < Versioneye::Crawl
   end
 
 
-  private 
+  private
 
 
-    def self.github_repo_names product 
+    def self.github_repo_names product
       matcher = "github.com\/([\w\.\-]+\/[\w\.\-]+)"
       names = []
-      product.http_version_links_combined.each do |link| 
+      product.http_version_links_combined.each do |link|
         matches = link.link.match( /github.com\/([\w\.\-]+\/[\w\.\-]+)/ )
         names << matches[1] if matches && matches[1]
       end
       names
-    rescue => e 
+    rescue => e
       logger.error e.message
       []
     end
