@@ -130,7 +130,7 @@ class GithubCrawler < Versioneye::Crawl
   end
 
   def self.substitude_name name
-    if name && (name.eql?('php-src') || name.eql?('php/php-src')) 
+    if name && (name.eql?('php-src') || name.eql?('php/php-src'))
       return 'php'
     end
     name
