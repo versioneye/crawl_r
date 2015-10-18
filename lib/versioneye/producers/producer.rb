@@ -1,4 +1,4 @@
-class Producer 
+class Producer
 
   require 'bunny'
 

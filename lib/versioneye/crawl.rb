@@ -25,7 +25,6 @@ module Versioneye
     require './lib/versioneye/crawlers/php/zendframework_crawler'
     require './lib/versioneye/crawlers/php/branch_cleaner'
     require './lib/versioneye/crawlers/php/composer_utils'
-    require './lib/versioneye/crawlers/php/security_sensiolabs_crawler'
 
     require './lib/versioneye/crawlers/bower/bower'
     require './lib/versioneye/crawlers/bower/bower_source_checker'
@@ -49,7 +48,7 @@ module Versioneye
     require './lib/versioneye/workers/npm_crawl_worker'
     require './lib/versioneye/workers/satis_crawl_worker'
     require './lib/versioneye/workers/bower_crawl_worker'
-    
+
     def self.log
       Versioneye::Log.instance.log
     end

@@ -82,14 +82,6 @@ namespace :versioneye do
       end
     end
 
-    # Crawl it once a hour. A crawl takes ~ 1 minutes!
-    value = '35 * * * *'
-    if !value.to_s.empty?
-      scheduler.cron value do
-        CommonCrawlProducer.new "::security_sensiolabs::"
-      end
-    end
-
 
     # Crawl it once a day. A crawl takes ~ 20 minutes!
     value = GlobalSetting.get(env, 'SCHEDULE_CRAWL_COCOAPODS')
@@ -143,14 +135,6 @@ namespace :versioneye do
     puts "START to crawle Packagist repository"
     RubyCrawl.new
     PackagistCrawler.crawl
-    puts "---"
-  end
-
-  desc "Start SecuritySensiolabsCrawler"
-  task :crawl_security_sensiolabs do
-    puts "START SecuritySensiolabsCrawler"
-    RubyCrawl.new
-    SecuritySensiolabsCrawler.crawl
     puts "---"
   end
 

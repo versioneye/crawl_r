@@ -14,8 +14,8 @@ class CommonCrawlWorker < Worker
     begin
       queue.subscribe(:ack => true, :block => true) do |delivery_info, properties, message|
         log_msg = " [x] Received #{message}"
-        puts log_msg 
-        log.info log_msg 
+        puts log_msg
+        log.info log_msg
 
         process_work message
 
@@ -40,16 +40,14 @@ class CommonCrawlWorker < Worker
       crawler  = SatisCrawler.new base_url, "Satis Page"
       crawler.crawl
     elsif message.eql?('::github::')
-      GithubCrawler.crawl 
-    elsif message.eql?('::security_sensiolabs::')
-      SecuritySensiolabsCrawler.crawl 
+      GithubCrawler.crawl
     end
 
     log_msg = "Job done for #{message}"
-    p log_msg 
-    log.info log_msg 
+    p log_msg
+    log.info log_msg
   rescue => e
-    p e.message 
+    p e.message
     p e.backtrace.join("\n")
     log.error e.message
     log.error e.backtrace.join("\n")
