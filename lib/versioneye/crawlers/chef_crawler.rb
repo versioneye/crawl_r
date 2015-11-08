@@ -12,7 +12,7 @@ class ChefCrawler < Versioneye::Crawl
   end
 
 
-  def self.crawl serial = false
+  def self.crawl
     start = 0
     while 1 == 1
       resp = JSON.parse HTTParty.get( A_CHEF_REGISTRY_INDEX ).response.body
@@ -38,12 +38,11 @@ class ChefCrawler < Versioneye::Crawl
     Versionlink.create_project_link product.language, product.prod_key, package['issues_url'], 'Issues'
 
     if !package['maintainer'].to_s.empty?
-      developer = Developer.find_or_create_by(
+      Developer.find_or_create_by(
         :language => product.language,
         :prod_key => product.prod_key,
         :developer => package['maintainer'],
         :name => package['maintainer'])
-      developer.save
     end
 
     package['versions'].each do |version_link|
@@ -59,6 +58,8 @@ class ChefCrawler < Versioneye::Crawl
 
   def self.handle_version product, version_link
     package = JSON.parse HTTParty.get( version_link ).response.body
+    return if product.version_by_number(package['version'])
+
     product.add_version package['version']
     product.version = package['version'] if product.version.to_s.empty? || product.version.eql?('0.0.0+NA')
 
