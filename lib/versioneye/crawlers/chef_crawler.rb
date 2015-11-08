@@ -62,6 +62,10 @@ class ChefCrawler < Versioneye::Crawl
 
     product.add_version package['version']
     product.version = package['version'] if product.version.to_s.empty? || product.version.eql?('0.0.0+NA')
+    product.save
+
+    CrawlerUtils.create_newest( product, package['version'], self.logger )
+    CrawlerUtils.create_notifications( product, version_number, self.logger )
 
     License.find_or_create product.language, product.prod_key, package['version'], package['license']
 
