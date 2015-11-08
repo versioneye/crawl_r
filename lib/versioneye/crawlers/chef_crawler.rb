@@ -66,7 +66,7 @@ class ChefCrawler < Versioneye::Crawl
     product.save
 
     CrawlerUtils.create_newest( product, package['version'], self.logger )
-    CrawlerUtils.create_notifications( product, version_number, self.logger )
+    CrawlerUtils.create_notifications( product, package['version'], self.logger )
 
     License.find_or_create product.language, product.prod_key, package['version'], package['license']
 
