@@ -4,10 +4,8 @@ class ChefCrawler < Versioneye::Crawl
 # https://supermarket.chef.io/api/v1/cookbooks?start=10
 # https://supermarket.chef.io/api/v1/cookbooks/bash-cve-2014-6271
 # https://supermarket.chef.io/api/v1/cookbooks/bash-cve-2014-6271/versions/0.1.1
-# https://supermarket.chef.io/api/v1/cookbooks/aegir2/versions/0.1.9
 
   A_CHEF_REGISTRY_INDEX = 'https://supermarket.chef.io/api/v1/cookbooks'
-
 
   def self.logger
     ActiveSupport::Logger.new('log/chef.log')
@@ -15,28 +13,17 @@ class ChefCrawler < Versioneye::Crawl
 
 
   def self.crawl serial = false
-    packages = get_first_level_list
-    packages.each do |name|
-      crawl_package name
-    end
-  end
-
-
-  def self.get_first_level_list
-    cookbooks = []
     start = 0
     while 1 == 1
       resp = JSON.parse HTTParty.get( A_CHEF_REGISTRY_INDEX ).response.body
       break if resp['items'].empty?
-      break if start > 20
 
       resp['items'].each do |item|
-        cookbooks << item['cookbook_name']
+        crawl_package item['cookbook_name']
       end
       start += 10
-      p start
+      logger.info "API start point: #{start}"
     end
-    cookbooks
   end
 
 
@@ -44,17 +31,12 @@ class ChefCrawler < Versioneye::Crawl
     logger.info "crawl: #{name}"
     url = "#{A_CHEF_REGISTRY_INDEX}/#{name}"
     package = JSON.parse HTTParty.get( url ).response.body
-    product = Product.find_or_create_by(:language => Product::A_LANGUAGE_CHEF, :prod_key => name.downcase )
-    product.prod_type = Project::A_TYPE_CHEF
-    product.name = name
-    product.name_downcase = name.downcase
-    product.description = package['description']
-    product.downloads   = package['metrics']['downloads']['total']
-    product.add_tag( package['category'] )
+    product = find_and_update_product_by name, package
 
     Versionlink.create_project_link product.language, product.prod_key, package['external_url'], 'URL'
     Versionlink.create_project_link product.language, product.prod_key, package['source_url'], 'Source'
     Versionlink.create_project_link product.language, product.prod_key, package['issues_url'], 'Issues'
+
     if !package['maintainer'].to_s.empty?
       developer = Developer.find_or_create_by(
         :language => product.language,
@@ -110,5 +92,20 @@ class ChefCrawler < Versioneye::Crawl
     self.logger.error "ERROR in handle_version: #{e.message}"
     self.logger.error e.backtrace.join("\n")
   end
+
+
+  private
+
+
+    def self.find_and_update_product_by name, package
+      product = Product.find_or_create_by(:language => Product::A_LANGUAGE_CHEF, :prod_key => name.downcase )
+      product.prod_type = Project::A_TYPE_CHEF
+      product.name = name
+      product.name_downcase = name.downcase
+      product.description = package['description']
+      product.downloads   = package['metrics']['downloads']['total']
+      product.add_tag( package['category'] )
+      product
+    end
 
 end
