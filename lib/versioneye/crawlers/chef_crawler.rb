@@ -15,7 +15,8 @@ class ChefCrawler < Versioneye::Crawl
   def self.crawl
     start = 0
     while 1 == 1
-      resp = JSON.parse HTTParty.get( A_CHEF_REGISTRY_INDEX ).response.body
+      url = "#{A_CHEF_REGISTRY_INDEX}?start=#{start}"
+      resp = JSON.parse HTTParty.get( url ).response.body
       break if resp['items'].empty?
 
       resp['items'].each do |item|
