@@ -1,29 +1,29 @@
-class BowerProjectsCrawler < Bower 
+class BowerProjectsCrawler < Bower
 
-  
-  def self.process_project task, token, skipKnownVersions = true 
+
+  def self.process_project task, token, skipKnownVersions = true
     check_request_limit( token )
     repo_response = Github.repo_info(task[:repo_fullname], token, true, task[:crawled_at])
 
     if repo_response.nil? or repo_response.is_a?(Boolean)
       logger.error "ERROR in process_project(..) | Did not get repo_response for #{task[:repo_fullname]}"
       check_request_limit( token )
-      return false 
+      return false
     end
 
     if repo_response.code == 304
       logger.debug "ERROR in process_project(..) | no changes for #{task[:repo_fullname]}, since #{task[:crawled_at]}"
       check_request_limit( token )
-      return false 
+      return false
     end
 
     if repo_response.body.to_s.empty?
       logger.error "ERROR: Response body is empty for #{task[:repo_fullname]}. Response code: #{repo_response.code}"
       check_request_limit( token )
-      return false 
+      return false
     end
 
-    if repo_response.code != 200 && repo_response.code != 201 
+    if repo_response.code != 200 && repo_response.code != 201
       logger.error "ERROR in process_project(..) | cant read information for #{task[:repo_fullname]} - response body: #{repo_response.body} - response code: #{repo_response.code}"
       check_request_limit( token )
       return false
@@ -39,7 +39,7 @@ class BowerProjectsCrawler < Bower
     end
 
     to_version_task(task, product[:prod_key]) # add new version task when everything went oK
-    
+
     true
   end
 
@@ -54,7 +54,7 @@ class BowerProjectsCrawler < Bower
 
     pkg_file[:repo_fullname]  = repo_info[:repo_fullname]
     pkg_file[:default_branch] = repo_info[:default_branch]
-    
+
     pkg_file[:name] = task[:registry_name]  if task.has_attribute?(:registry_name) # if task has prod_key then use it - dont trust user's unvalidated bower.json
     pkg_file[:name] = repo_info[:name]      if pkg_file[:name].to_s.strip.empty?
     pkg_file[:name] = repo_info[:full_name] if pkg_file[:name].to_s.strip.empty?
@@ -84,22 +84,22 @@ class BowerProjectsCrawler < Bower
 
     version = pkg_info[:version].to_s
 
-    # Version exist already! 
-    return prod if !version.empty? &&  prod.version_by_number(version) 
-    
-    # No version set in the bower.json on default branch, but product has already a version. 
-    # That's the case if the repo has tags. Then the versions are from the tags. 
+    # Version exist already!
+    return prod if !version.empty? &&  prod.version_by_number(version)
+
+    # No version set in the bower.json on default branch, but product has already a version.
+    # That's the case if the repo has tags. Then the versions are from the tags.
     return prod if  version.empty? && !prod.version.to_s.empty? && !prod.version.to_s.eql?('0.0.0+NA') && !prod.versions.empty?
 
     prod.version = version
     prod.version = pkg_info[:default_branch].to_s if version.empty?
 
     if skip_version?( prod.version )
-      return prod 
+      return prod
     end
 
     prod.add_version( prod.version )
-    prod.save 
+    prod.save
 
     CrawlerUtils.create_newest prod, prod.version, logger
     CrawlerUtils.create_notifications prod, prod.version, logger
@@ -111,12 +111,12 @@ class BowerProjectsCrawler < Bower
     create_dependencies( prod, pkg_info, :dependencies,     Dependency::A_SCOPE_REQUIRE )
     create_dependencies( prod, pkg_info, :test,             Dependency::A_SCOPE_TEST )
     create_dependencies( prod, pkg_info, :dev_dependencies, Dependency::A_SCOPE_DEVELOPMENT )
-    
+
     if pkg_info.has_key?(:license)
       version_number = fetch_version_for_dep(prod, pkg_info)
       License.find_or_create( prod.language, prod.prod_key, version_number, pkg_info[:license], nil )
     elsif pkg_info.has_key?(:licenses)
-      pkg_info[:licenses].to_a.each { |lic| create_or_update_license( prod, lic ) }  
+      pkg_info[:licenses].to_a.each { |lic| create_or_update_license( prod, lic ) }
     end
 
     prod
@@ -131,19 +131,19 @@ class BowerProjectsCrawler < Bower
     language = get_language pkg_info[:name].to_s, language
     product  = Product.fetch_bower pkg_info[:name].to_s
 
-    if product.nil? 
+    if product.nil?
       product = Product.new({ :prod_key => prod_key, :prod_type => Project::A_TYPE_BOWER })
     end
-    
+
     if !product.language.eql?(language)
-      skipKnownVersions = false 
-    end 
+      skipKnownVersions = false
+    end
     product.language      = language
-    product.name          = pkg_info[:name].to_s    
+    product.name          = pkg_info[:name].to_s
     product.name_downcase = pkg_info[:name].to_s.downcase
     product.description   = pkg_info[:description].to_s
-    product.save    
-  
+    product.save
+
     product
   rescue => e
     logger.error e.message
@@ -213,20 +213,20 @@ class BowerProjectsCrawler < Bower
 
   def self.to_version_task(task, prod_key)
     task.prod_key = prod_key
-    task 
+    task
   end
 
 
-  def self.get_language name, language = nil 
+  def self.get_language name, language = nil
     language = Product::A_LANGUAGE_JAVASCRIPT if language.nil?
-    if name.to_s.downcase.eql?('angular') || 
-       name.to_s.downcase.eql?('angularjs') || 
-       name.to_s.downcase.eql?('jquery') || 
+    if name.to_s.downcase.eql?('angular') ||
+       name.to_s.downcase.eql?('angularjs') ||
+       name.to_s.downcase.eql?('jquery') ||
        name.to_s.downcase.eql?('hytechne')
-      language = Product::A_LANGUAGE_JAVASCRIPT 
+      language = Product::A_LANGUAGE_JAVASCRIPT
     end
     language
   end
 
 
-end 
+end

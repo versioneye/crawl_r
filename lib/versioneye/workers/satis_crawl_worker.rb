@@ -29,20 +29,20 @@ class SatisCrawlWorker < Worker
 
   def process_work package_name
     return nil if package_name.to_s.empty?
-    
+
     if package_name.eql?('::tiki::')
       TikiCrawler.crawl
     elsif package_name.eql?('::firegento::')
-      FiregentoCrawler.crawl 
+      FiregentoCrawler.crawl
     elsif package_name.eql?('::magento::')
-      MagentoCrawler.crawl 
+      MagentoCrawler.crawl
     elsif package_name.eql?('::zendframework::')
-      ZendframeworkCrawler.crawl 
+      ZendframeworkCrawler.crawl
     end
-    
+
     log.info "Crawl done for #{package_name}"
   rescue => e
-    p e.message 
+    p e.message
     p e.backtrace.join("\n")
     log.error e.message
     log.error e.backtrace.join("\n")
