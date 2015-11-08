@@ -46,7 +46,7 @@ namespace :versioneye do
     value = '20 * * * *'
     if !value.to_s.empty?
       scheduler.cron value do
-        SatisCrawlProducer.new "::tiki::"
+        SatisCrawlProducer.new '::tiki::'
       end
     end
 
@@ -54,7 +54,7 @@ namespace :versioneye do
     value = '22 * * * *'
     if !value.to_s.empty?
       scheduler.cron value do
-        SatisCrawlProducer.new "::firegento::"
+        SatisCrawlProducer.new '::firegento::'
       end
     end
 
@@ -62,7 +62,7 @@ namespace :versioneye do
     value = '25 * * * *'
     if !value.to_s.empty?
       scheduler.cron value do
-        SatisCrawlProducer.new "::magento::"
+        SatisCrawlProducer.new '::magento::'
       end
     end
 
@@ -70,7 +70,7 @@ namespace :versioneye do
     value = '29 * * * *'
     if !value.to_s.empty?
       scheduler.cron value do
-        SatisCrawlProducer.new "::zendframework::"
+        SatisCrawlProducer.new '::zendframework::'
       end
     end
 
@@ -78,7 +78,7 @@ namespace :versioneye do
     value = '30 * * * *'
     if !value.to_s.empty?
       scheduler.cron value do
-        CommonCrawlProducer.new "::github::"
+        CommonCrawlProducer.new '::github::'
       end
     end
 
@@ -96,28 +96,35 @@ namespace :versioneye do
     value = '0 1 * * *'
     if !value.to_s.empty?
       scheduler.cron value do
-        NpmCrawlProducer.new "::npm::"
+        NpmCrawlProducer.new '::npm::'
       end
     end
 
     value = '11 2 * * *'
     if !value.to_s.empty?
       scheduler.cron value do
-        BowerCrawlProducer.new "::bower::"
+        BowerCrawlProducer.new '::bower::'
       end
     end
 
     value = '0 3 * * *'
     if !value.to_s.empty?
       scheduler.cron value do
-        PackagistCrawlProducer.new "::packagist::"
+        PackagistCrawlProducer.new '::packagist::'
       end
     end
 
     value = '1 4 * * *'
     if !value.to_s.empty?
       scheduler.cron value do
-        BiicodeCrawlProducer.new "::biicode::"
+        BiicodeCrawlProducer.new '::biicode::'
+      end
+    end
+
+    value = '1 5 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        CommonCrawlProducer.new '::chef::'
       end
     end
 

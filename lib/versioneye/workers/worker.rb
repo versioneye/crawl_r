@@ -1,4 +1,4 @@
-class Worker 
+class Worker
 
   require 'bunny'
 

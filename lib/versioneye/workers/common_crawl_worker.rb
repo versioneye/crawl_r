@@ -13,13 +13,10 @@ class CommonCrawlWorker < Worker
 
     begin
       queue.subscribe(:ack => true, :block => true) do |delivery_info, properties, message|
-        log_msg = " [x] Received #{message}"
-        puts log_msg
-        log.info log_msg
-
+        multi_log " [x] Received #{message}"
         process_work message
-
         channel.ack(delivery_info.delivery_tag)
+        multi_log "Job done for #{message}"
       end
     rescue => e
       log.error e.message
@@ -41,17 +38,22 @@ class CommonCrawlWorker < Worker
       crawler.crawl
     elsif message.eql?('::github::')
       GithubCrawler.crawl
+    elsif message.eql?('::chef::')
+      ChefCrawler.crawl
     end
-
-    log_msg = "Job done for #{message}"
-    p log_msg
-    log.info log_msg
   rescue => e
-    p e.message
-    p e.backtrace.join("\n")
     log.error e.message
     log.error e.backtrace.join("\n")
   end
+
+
+  private
+
+
+    def multi_log log_msg
+      puts log_msg
+      log.info log_msg
+    end
 
 
 end
