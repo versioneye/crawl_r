@@ -130,6 +130,14 @@ namespace :versioneye do
 
   # ***** Crawler Tasks *****
 
+  desc "crawl Chef"
+  task :crawl_chef do
+    puts "START to crawle Chef repository"
+    RubyCrawl.new
+    ChefCrawler.crawl
+    puts "---"
+  end
+
   desc "crawl Packagist"
   task :crawl_packagist do
     puts "START to crawle Packagist repository"
