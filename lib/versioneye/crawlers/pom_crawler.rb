@@ -68,6 +68,9 @@ class PomCrawler < NpmCrawler
         license.save
       end
     end
+  rescue => e
+    logger.error e.message
+    logger.error e.backtrace.join("\n")
   end
 
 
@@ -85,23 +88,31 @@ class PomCrawler < NpmCrawler
 
   def self.process_deps project, product
     project.projectdependencies.each do |proj_dep|
-      dep = Dependency.find_or_create_by(
-        :language     => project.language,
-        :prod_key     => product.prod_key,
-        :prod_version => project.version,
-        :dep_prod_key => proj_dep.prod_key,
-        :version      => proj_dep.version_label,
-        :scope        => proj_dep.scope
-      )
-      dep.name            = proj_dep.name
-      dep.group_id        = proj_dep.group_id,
-      dep.artifact_id     = proj_dep.artifact_id,
-      dep.current_version = proj_dep.version_current
-      dep.parsed_version  = proj_dep.version_requested
-      dep.known           = proj_dep.known?
-      dep.outdated        = proj_dep.outdated
-      dep.save
+      process_dep project, product, proj_dep
     end
+  end
+
+
+  def self.process_dep project, product, proj_dep
+    dep = Dependency.find_or_create_by(
+      :language     => project.language,
+      :prod_key     => product.prod_key,
+      :prod_version => project.version,
+      :dep_prod_key => proj_dep.prod_key,
+      :version      => proj_dep.version_label,
+      :scope        => proj_dep.scope
+    )
+    dep.name            = proj_dep.name
+    dep.group_id        = proj_dep.group_id,
+    dep.artifact_id     = proj_dep.artifact_id,
+    dep.current_version = proj_dep.version_current
+    dep.parsed_version  = proj_dep.version_requested
+    dep.known           = proj_dep.known?
+    dep.outdated        = proj_dep.outdated
+    dep.save
+  rescue => e
+    logger.error e.message
+    logger.error e.backtrace.join("\n")
   end
 
 
