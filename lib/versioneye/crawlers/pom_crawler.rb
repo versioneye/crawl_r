@@ -10,7 +10,7 @@ class PomCrawler < NpmCrawler
     i = 0
     all_pom_files( pom_dir ) do |filepath|
       i += 1
-      # p "Parse pom file ##{i}: #{filepath}"
+      p "Parse pom file ##{i}: #{filepath}"
       parse_pom filepath
     end
   end
@@ -82,7 +82,9 @@ class PomCrawler < NpmCrawler
     product.description_manual = "See http://developer.android.com/sdk/index.html"
     product.version          = project.version     if !product.version.to_s.empty?
     product.add_version project.version
-    product.save
+    saved = product.save
+    p "#{product.prod_key} - #{saved}"
+    saved
   end
 
 
