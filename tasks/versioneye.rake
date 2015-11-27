@@ -210,6 +210,14 @@ namespace :versioneye do
     puts "---"
   end
 
+  desc "crawl Poms"
+  task :crawl_poms do
+    puts "START to crawle Poms"
+    RubyCrawl.new
+    PomCrawler.crawl
+    puts "---"
+  end
+
   desc "crawl GitHub"
   task :crawl_github do
     puts "START to crawle GitHub repository"
