@@ -75,15 +75,16 @@ class PomCrawler < NpmCrawler
 
 
   def self.update_product project, product
+    product.prod_type        = project.project_type
     product.prod_key         = "#{product.group_id}/#{product.artifact_id}"
     product.group_id_orig    = project.group_id
     product.artifact_id_orig = project.artifact_id
+    product.name             = project.artifact_id
     product.description      = project.description if !product.description.to_s.empty?
     product.description_manual = "See http://developer.android.com/sdk/index.html"
     product.version          = project.version     if !product.version.to_s.empty?
     product.add_version project.version
     saved = product.save
-    p "#{product.prod_key} - #{saved}"
     saved
   end
 
