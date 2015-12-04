@@ -39,7 +39,7 @@ class NpmCrawler < Versioneye::Crawl
   def self.get_first_level_list_from_registry
     self.logger.info 'Start fetching first level list'
     packages = JSON.parse HTTParty.get( A_NPM_REGISTRY_INDEX ).response.body
-    self.logger.info ' -- done.'
+    self.logger.info ' -- fetched NPM registry index.'
     packages['rows']
   rescue => e
     self.logger.error "ERROR in get_first_level_list: #{e.message}"
@@ -379,6 +379,7 @@ class NpmCrawler < Versioneye::Crawl
       names
     rescue => e
       logger.error e.message
+      logger.error e.backtrace.join("\n")
       []
     end
 
