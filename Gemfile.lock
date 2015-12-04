@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:versioneye/versioneye-core.git
-  revision: 91536d49c23264b902f4c68159c52532e98123a2
-  tag: v7.34.3
+  revision: 33549f8322833a34c9174618914522b7ded8ab4d
+  tag: v8.2.0
   specs:
-    versioneye-core (7.34.3)
+    versioneye-core (8.2.0)
       actionmailer (~> 4.2.2)
       aws-sdk (~> 2.2.0)
       bundler (~> 1.10.6)
@@ -65,12 +65,12 @@ GEM
     addressable (2.3.8)
     amq-protocol (2.0.0)
     ansi (1.5.0)
-    aws-sdk (2.2.3)
-      aws-sdk-resources (= 2.2.3)
-    aws-sdk-core (2.2.3)
+    aws-sdk (2.2.4)
+      aws-sdk-resources (= 2.2.4)
+    aws-sdk-core (2.2.4)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.2.3)
-      aws-sdk-core (= 2.2.3)
+    aws-sdk-resources (2.2.4)
+      aws-sdk-core (= 2.2.4)
     bson (3.2.6)
     builder (3.2.2)
     bunny (2.2.1)
@@ -86,7 +86,7 @@ GEM
       fuzzy_match (~> 2.0.4)
       nap (~> 1.0)
     connection_pool (2.2.0)
-    crack (0.4.2)
+    crack (0.4.3)
       safe_yaml (~> 1.0.0)
     dalli (2.7.4)
     database_cleaner (1.5.1)
@@ -145,7 +145,7 @@ GEM
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     mime-types (2.99)
-    mini_portile (0.6.2)
+    mini_portile2 (2.0.0)
     minitest (5.8.3)
     mongoid (4.0.2)
       activemodel (~> 4.0)
@@ -163,8 +163,8 @@ GEM
     naturalsorter (3.0.11)
     net-ldap (0.12.1)
     netrc (0.11.0)
-    nokogiri (1.6.6.4)
-      mini_portile (~> 0.6.0)
+    nokogiri (1.6.7)
+      mini_portile2 (~> 2.0.0.rc2)
     oauth (0.4.7)
     oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
