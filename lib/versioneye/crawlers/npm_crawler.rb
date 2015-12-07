@@ -101,6 +101,11 @@ class NpmCrawler < Versioneye::Crawl
     versions.each do |version|
       version_number = CrawlerUtils.remove_version_prefix String.new(version[0])
       version_obj    = version[1]
+      if version_obj.nil?
+        logger.error "version_obj is nil for #{name}:#{version_number}"
+        next
+      end
+
       db_version     = product.version_by_number version_number
       next if db_version
 

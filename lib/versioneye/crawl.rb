@@ -5,6 +5,7 @@ module Versioneye
 
     require './lib/versioneye/crawlers/spdx_crawler'
     require './lib/versioneye/crawlers/biicode_crawler'
+    require './lib/versioneye/crawlers/coreos_crawler'
     require './lib/versioneye/crawlers/cocoapods_crawler'
     require './lib/versioneye/crawlers/cocoapods_podspec_parser'
     require './lib/versioneye/crawlers/crawler_utils'
