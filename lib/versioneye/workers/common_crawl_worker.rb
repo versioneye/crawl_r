@@ -40,6 +40,8 @@ class CommonCrawlWorker < Worker
       GithubCrawler.crawl
     elsif message.eql?('::chef::')
       ChefCrawler.crawl
+    elsif message.eql?('::coreos::')
+      CoreosCrawler.crawl
     end
   rescue => e
     log.error e.message

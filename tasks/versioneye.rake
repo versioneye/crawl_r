@@ -82,6 +82,14 @@ namespace :versioneye do
       end
     end
 
+    # Crawl it once a hour. A crawl takes ~ 1 minute!
+    value = '33 * * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        CommonCrawlProducer.new '::coreos::'
+      end
+    end
+
 
     # Crawl it once a day. A crawl takes ~ 20 minutes!
     value = GlobalSetting.get(env, 'SCHEDULE_CRAWL_COCOAPODS')
