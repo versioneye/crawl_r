@@ -3,10 +3,10 @@ source "http://rubygems.org"
 gem 'log4r'              , '~> 1.1.0'
 gem 'bundler'            , '~> 1.10.6'
 
-gem 'versioneye-core'    , :git => 'git@github.com:versioneye/versioneye-core.git', :tag => 'v8.2.1'
+gem 'versioneye-core'    , :git => 'git@github.com:versioneye/versioneye-core.git', :tag => 'v8.2.5'
 # gem 'versioneye-core'    , :path => "~/workspace/versioneye/versioneye-core"
 
-gem 'rufus-scheduler', '3.1.9'
+gem 'rufus-scheduler', '3.1.10'
 
 group :development do
   gem "shoulda"  , ">= 0"

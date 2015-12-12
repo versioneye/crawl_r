@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:versioneye/versioneye-core.git
-  revision: 07562fb38bd80b2b6aad54889bb764c2a72aaea8
-  tag: v8.2.1
+  revision: 9c29bb0688505c3f737326a5b2455461debbf02c
+  tag: v8.2.5
   specs:
-    versioneye-core (8.2.1)
+    versioneye-core (8.2.5)
       actionmailer (~> 4.2.2)
       aws-sdk (~> 2.2.0)
       bundler (~> 1.10.6)
@@ -65,12 +65,12 @@ GEM
     addressable (2.3.8)
     amq-protocol (2.0.0)
     ansi (1.5.0)
-    aws-sdk (2.2.4)
-      aws-sdk-resources (= 2.2.4)
-    aws-sdk-core (2.2.4)
+    aws-sdk (2.2.5)
+      aws-sdk-resources (= 2.2.5)
+    aws-sdk-core (2.2.5)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.2.4)
-      aws-sdk-core (= 2.2.4)
+    aws-sdk-resources (2.2.5)
+      aws-sdk-core (= 2.2.5)
     bson (3.2.6)
     builder (3.2.2)
     bunny (2.2.1)
@@ -212,7 +212,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
-    rufus-scheduler (3.1.9)
+    rufus-scheduler (3.1.10)
     safe_yaml (1.0.4)
     sawyer (0.6.0)
       addressable (~> 2.3.5)
@@ -272,7 +272,7 @@ DEPENDENCIES
   log4r (~> 1.1.0)
   rdoc (~> 4.2.0)
   rspec (~> 3.4.0)
-  rufus-scheduler (= 3.1.9)
+  rufus-scheduler (= 3.1.10)
   shoulda
   simplecov (~> 0.10.0)
   vcr (~> 2.9.2)
