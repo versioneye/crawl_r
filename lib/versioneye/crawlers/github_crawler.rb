@@ -2,9 +2,11 @@ class GithubCrawler < Versioneye::Crawl
 
   include HTTParty
 
+
   def self.logger
     ActiveSupport::Logger.new('log/github.log')
   end
+
 
   def self.crawl
     crawl = self.crawle_object
@@ -19,9 +21,11 @@ class GithubCrawler < Versioneye::Crawl
     return nil
   end
 
+
   def self.get_first_level_list
     ProductResource.where(:resource_type => 'GitHub')
   end
+
 
   def self.crawle_package name, crawl = nil, resource = nil
     logger.info "crawl github package #{name}"
@@ -50,6 +54,7 @@ class GithubCrawler < Versioneye::Crawl
     nil
   end
 
+
   def self.create_version repository, tag, product, version_number
     version = Version.new({version: version_number})
     set_release_date version, repository, tag
@@ -61,12 +66,14 @@ class GithubCrawler < Versioneye::Crawl
     CrawlerUtils.create_notifications( product, version_number, logger )
   end
 
+
   def self.create_archive repository, tag, product, version_number
     link = "https://github.com/#{repository.full_name}/archive/#{tag.name}.tar.gz"
     name = "#{repository.full_name}_#{tag.name}.tar.gz"
     archive = Versionarchive.new({language: product.language, prod_key: product.prod_key, version_id: version_number, link: link, name: name})
     Versionarchive.create_archive_if_not_exist archive
   end
+
 
   def self.update_resource resource, product
     if resource && resource.crawled == false
@@ -76,6 +83,7 @@ class GithubCrawler < Versioneye::Crawl
       resource.save
     end
   end
+
 
   def self.set_release_date version, repository, tag
     date_string = GithubVersionCrawler.fetch_commit_date( repository.full_name, tag.commit.sha )
@@ -89,6 +97,7 @@ class GithubCrawler < Versioneye::Crawl
     self.logger.error e.backtrace.join("\n")
     nil
   end
+
 
   def self.parse_version_number tag
     version_number = tag.name
@@ -107,10 +116,12 @@ class GithubCrawler < Versioneye::Crawl
     version_number
   end
 
+
   def self.create_or_update_github_link product, repository
     link = "https://github.com/#{repository.full_name}"
     Versionlink.create_project_link( product.language, product.prod_key, link, 'GitHub' )
   end
+
 
   def self.fetch_product repository, force_fullname = false
     return nil if repository.nil?
@@ -129,12 +140,14 @@ class GithubCrawler < Versioneye::Crawl
     Product.new({:prod_type => Project::A_TYPE_GITHUB, :language => language, :prod_key => repo_name})
   end
 
+
   def self.substitude_name name
     if name && (name.eql?('php-src') || name.eql?('php/php-src'))
       return 'php'
     end
     name
   end
+
 
   def self.substitute_language repository
     language = repository.language
@@ -143,12 +156,14 @@ class GithubCrawler < Versioneye::Crawl
     language
   end
 
+
   def self.update_product product, repository
     product.name          = repository.name
     product.name_downcase = repository.name.downcase
     product.description   = repository.description
     product.save
   end
+
 
   def self.crawle_object
     crawl = Crawle.new(crawler_name: 'GithubCrawler', crawler_version: '0.1.0')
@@ -158,5 +173,6 @@ class GithubCrawler < Versioneye::Crawl
     crawl.save
     crawl
   end
+
 
 end
