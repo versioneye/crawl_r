@@ -41,6 +41,9 @@ class CrawlerUtils
     if version_number && version_number.match(/release\-v[0-9]+\..*/i)
       version_number.gsub!('release-', '')
     end
+    if version_number && version_number.match(/release\-[0-9]+\..*/i)
+      version_number.gsub!('release-', '')
+    end
     version_number
   end
 
