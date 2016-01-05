@@ -29,16 +29,16 @@ class PackagistCrawlWorker < Worker
 
   def process_work package_name
     return nil if package_name.to_s.empty?
-    
+
     if package_name.eql?('::packagist::')
-      PackagistCrawler.crawl 
-    else 
+      PackagistCrawler.crawl
+    else
       PackagistCrawler.crawle_package package_name
     end
-    
+
     log.info "Crawl done for #{package_name}"
   rescue => e
-    p e.message 
+    p e.message
     p e.backtrace.join("\n")
     log.error e.message
     log.error e.backtrace.join("\n")
