@@ -43,8 +43,8 @@ class PackagistSourceCrawler < PackagistCrawler
       version_number.gsub!('v', '')
     end
 
-    result = create_links product, version_number, version_obj  
-    if result == true 
+    result = create_links product, version_number, version_obj
+    if result == true
       self.logger.info "New source link created for #{product.prod_key} : #{version_number}"
     end
   end

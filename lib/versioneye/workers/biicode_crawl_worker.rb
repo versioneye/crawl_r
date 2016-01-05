@@ -29,7 +29,7 @@ class BiicodeCrawlWorker < Worker
 
 
   def process_work package_name
-    BiicodeCrawler.crawl 
+    BiicodeCrawler.crawl
   rescue => e
     log.error e.message
     log.error e.backtrace.join("\n")

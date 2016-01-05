@@ -8,7 +8,7 @@ class ChefCrawler < Versioneye::Crawl
   A_CHEF_REGISTRY_INDEX = 'https://supermarket.chef.io/api/v1/cookbooks'
 
   def self.logger
-    ActiveSupport::Logger.new('log/chef.log')
+    ActiveSupport::Logger.new('log/chef.log', 10, 2048000)
   end
 
 

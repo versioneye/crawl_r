@@ -2,7 +2,7 @@ class PomCrawler < NpmCrawler
 
 
   def self.logger
-    ActiveSupport::Logger.new('log/poms.log')
+    ActiveSupport::Logger.new('log/poms.log', 10, 2048000)
   end
 
 

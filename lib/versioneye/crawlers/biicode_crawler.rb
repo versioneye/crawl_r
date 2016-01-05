@@ -2,7 +2,7 @@ class BiicodeCrawler < Versioneye::Crawl
 
 
   def self.logger
-    ActiveSupport::Logger.new('log/biicode.log')
+    ActiveSupport::Logger.new('log/biicode.log', 10, 2048000)
   end
 
 

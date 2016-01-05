@@ -5,7 +5,7 @@ class CoreosCrawler < Versioneye::Crawl
 
 
   def self.logger
-    ActiveSupport::Logger.new('log/coreos.log')
+    ActiveSupport::Logger.new('log/coreos.log', 10, 2048000)
   end
 
 

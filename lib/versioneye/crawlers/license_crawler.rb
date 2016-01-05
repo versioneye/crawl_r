@@ -8,7 +8,7 @@ class LicenseCrawler < Versioneye::Crawl
 
 
   def self.logger
-    ActiveSupport::Logger.new('log/license.log')
+    ActiveSupport::Logger.new('log/license.log', 10, 2048000)
   end
 
 
@@ -43,7 +43,7 @@ class LicenseCrawler < Versioneye::Crawl
   end
 
 
-  def self.process link, product, version = nil 
+  def self.process link, product, version = nil
     repo_name = link.link
     repo_name = repo_name.gsub(/\?.*/i, "")
     repo_name = repo_name.gsub(/http.+github\.com\//i, "")
@@ -60,17 +60,17 @@ class LicenseCrawler < Versioneye::Crawl
   end
 
 
-  def self.process_github_master repo_name, product, version = nil 
-    process_github( repo_name, 'master', product, nil ) 
+  def self.process_github_master repo_name, product, version = nil
+    process_github( repo_name, 'master', product, nil )
   end
 
 
   def self.process_github( repo_name, branch = "master", product = nil, version = nil )
-    return nil if repo_name.to_s.empty? 
+    return nil if repo_name.to_s.empty?
     return nil if product.nil?
 
     LICENSE_FILES.each do |lf|
-      raw_url = "https://raw.githubusercontent.com/#{repo_name}/#{branch}/#{lf}".gsub("\n", "").gsub("\t", "").strip 
+      raw_url = "https://raw.githubusercontent.com/#{repo_name}/#{branch}/#{lf}".gsub("\n", "").gsub("\t", "").strip
       raw_url = URI.encode raw_url
       license_found = process_url( raw_url, product, version )
       return true if license_found
@@ -79,7 +79,7 @@ class LicenseCrawler < Versioneye::Crawl
   end
 
 
-  def self.process_url raw_url, product, version = nil 
+  def self.process_url raw_url, product, version = nil
     resp = HttpService.fetch_response raw_url
     return false if resp.code.to_i != 200
 
@@ -93,7 +93,7 @@ class LicenseCrawler < Versioneye::Crawl
   end
 
 
-  def self.recognize_license content, raw_url, product, version = nil 
+  def self.recognize_license content, raw_url, product, version = nil
     return nil if content.to_s.strip.empty?
 
     content = prepare_content content
@@ -197,7 +197,7 @@ class LicenseCrawler < Versioneye::Crawl
   private
 
 
-    def self.find_or_create product, name, url, version = nil 
+    def self.find_or_create product, name, url, version = nil
       License.find_or_create_by({:language => product.language, :prod_key => product.prod_key,
         :version => version, :name => name, :url => url, :source => A_SOURCE_G })
     end
@@ -236,18 +236,18 @@ class LicenseCrawler < Versioneye::Crawl
 
 
 
-    def self.is_widen_commercial_license? content 
+    def self.is_widen_commercial_license? content
       return false if content.match(/Widen\s+Commercial\s+License\s+Agreement/i).nil?
       return false if content.match(/Widen\s+Enterprises/i).nil?
       return false if content.match(/Widen\s+hereby\s+grants/i).nil?
       return false if content.match(/from\s+Widen/i).nil?
-      
-      return true 
+
+      return true
     end
 
 
 
-    def self.is_php_301? content 
+    def self.is_php_301? content
       return false if content.match(/The PHP License, version 3\.01/i).nil?
       return false if content.match(/Redistribution and use in source and binary forms/i).nil?
       return false if content.match(/with or without/i).nil?
@@ -255,7 +255,7 @@ class LicenseCrawler < Versioneye::Crawl
       return false if content.match(/The name "PHP" must not be used to endorse or promote products/i).nil?
       return false if content.match(/written permission, please contact group@php.net/i).nil?
 
-      return true 
+      return true
     end
 
 

@@ -2,7 +2,7 @@ class PackagistCrawler < Versioneye::Crawl
 
 
   def self.logger
-    ActiveSupport::Logger.new('log/packagist.log')
+    ActiveSupport::Logger.new('log/packagist.log', 10, 2048000)
   end
 
 

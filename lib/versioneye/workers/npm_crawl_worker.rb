@@ -31,12 +31,12 @@ class NpmCrawlWorker < Worker
     return nil if package_name.to_s.empty?
 
     if package_name.eql?('::npm::')
-      NpmCrawler.crawl 
-    else 
+      NpmCrawler.crawl
+    else
       NpmCrawler.crawle_package package_name
     end
   rescue => e
-    p e.message 
+    p e.message
     p e.backtrace.join("\n")
     log.error e.message
     log.error e.backtrace.join("\n")

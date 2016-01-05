@@ -4,7 +4,7 @@ class GithubCrawler < Versioneye::Crawl
 
 
   def self.logger
-    ActiveSupport::Logger.new('log/github.log')
+    ActiveSupport::Logger.new('log/github.log', 10, 2048000)
   end
 
 

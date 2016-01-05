@@ -2,7 +2,7 @@ class CocoapodsCrawler < Versioneye::Crawl
 
 
   def logger
-    ActiveSupport::Logger.new('log/cocoapods.log')
+    ActiveSupport::Logger.new('log/cocoapods.log', 10, 2048000)
   end
 
 

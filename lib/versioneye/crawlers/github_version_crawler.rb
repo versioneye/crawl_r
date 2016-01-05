@@ -2,12 +2,12 @@ class GithubVersionCrawler < Versioneye::Crawl
 
   include HTTParty
 
-  
+
   def self.logger
-    ActiveSupport::Logger.new('log/github_version_crawler.log')
+    ActiveSupport::Logger.new('log/github_version_crawler.log', 10, 2048000)
   end
 
-  
+
   # Crawle Release dates for Objective-C packages
   def self.crawl(language = Product::A_LANGUAGE_OBJECTIVEC, empty_release_dates = true, desc = true )
     products(language, empty_release_dates, desc).each do |product|
@@ -15,7 +15,7 @@ class GithubVersionCrawler < Versioneye::Crawl
     end
   end
 
-  
+
   def self.products( language, empty_release_dates, desc = true )
     products = Mongoid::Criteria.new(Product)
     if empty_release_dates
@@ -46,8 +46,8 @@ class GithubVersionCrawler < Versioneye::Crawl
   end
 
 
-  def self.git_repo_src product 
-    product.repositories.each do |repo| 
+  def self.git_repo_src product
+    product.repositories.each do |repo|
       return repo.src if /#{Settings.instance.github_base_url}\/(.+)\/(.+)\.git/.match repo.src
     end
     return nil
@@ -66,15 +66,15 @@ class GithubVersionCrawler < Versioneye::Crawl
       logger.info "update #{product.name} v #{version} was released at #{version.released_at}"
     end
     remaining = OctokitApi.client.ratelimit.remaining
-    if remaining < 60 
-      logger.info "Remaining API requests: #{remaining} - Going to sleep for a while!" 
+    if remaining < 60
+      logger.info "Remaining API requests: #{remaining} - Going to sleep for a while!"
       sleep 60 # sleep a minute!
-    else 
+    else
       logger.info "check version dates for #{product.prod_key} - Remaining API requests: #{remaining}"
     end
   end
 
-  
+
   def self.version_hash github_versions, version_string
     version_hash = github_versions[version_string]
     if version_hash.nil? || version_hash.empty?
@@ -108,13 +108,13 @@ class GithubVersionCrawler < Versioneye::Crawl
     nil
   end
 
-  
+
   def self.process_tag(versions, tag, owner_repo )
     v_name      = tag.name
     sha         = tag.commit.sha
     date_string = fetch_commit_date( owner_repo, sha )
     return nil if date_string.to_s.empty?
-    
+
     date_time   = DateTime.parse date_string
     versions[v_name] = {
       :sha             => sha,
@@ -127,7 +127,7 @@ class GithubVersionCrawler < Versioneye::Crawl
     nil
   end
 
-  
+
   def self.fetch_commit_date( owner_repo, sha )
     return nil unless owner_repo
     api = OctokitApi.client
@@ -139,7 +139,7 @@ class GithubVersionCrawler < Versioneye::Crawl
     nil
   end
 
-  
+
   def self.tags_for_repo( owner_repo )
     return nil unless owner_repo
     repo = repo_data owner_repo
@@ -151,14 +151,14 @@ class GithubVersionCrawler < Versioneye::Crawl
     nil
   end
 
-  
+
   def self.repo_data owner_repo
     api  = OctokitApi.client
     root = api.root
     root.rels[:repository].get(:uri => owner_repo).data
   end
 
-  
+
   def self.parse_github_url (git_url)
     match = /#{Settings.instance.github_base_url}\/(.+)\/(.+)\.git/.match git_url
     owner_repo = {:owner => $1, :repo => $2}
