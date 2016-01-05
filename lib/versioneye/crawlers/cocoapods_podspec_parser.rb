@@ -8,7 +8,10 @@ require 'cocoapods-core'
 class CocoapodsPodspecParser
 
   def logger
-    ActiveSupport::Logger.new('log/cocoapods.log', 10, 2048000)
+    if !defined?(@@log) || @@log.nil?
+      @@log = Versioneye::DynLog.new("log/cocoapods.log", 10).log
+    end
+    @@log
   end
 
   # the same for all products

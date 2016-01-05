@@ -5,7 +5,10 @@ class SatisCrawler < Versioneye::Crawl
   # https://getcomposer.org/doc/articles/handling-private-packages-with-satis.md
 
   def logger
-    ActiveSupport::Logger.new('log/satis.log', 10, 2048000)
+    if !defined?(@@log) || @@log.nil?
+      @@log = Versioneye::DynLog.new("log/satis.log", 10).log
+    end
+    @@log
   end
 
 

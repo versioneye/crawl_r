@@ -1,7 +1,10 @@
 class MagentoCrawler < SatisCrawler
 
   def logger
-    ActiveSupport::Logger.new('log/magento.log', 10, 2048000)
+    if !defined?(@@log) || @@log.nil?
+      @@log = Versioneye::DynLog.new("log/magento.log", 10).log
+    end
+    @@log
   end
 
   A_BASE_URL  = 'http://packages.magento.com/'

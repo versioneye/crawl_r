@@ -1,5 +1,3 @@
-require 'log4r'
-require 'log4r/configurator'
 require 'mongoid'
 require 'httparty'
 
@@ -17,7 +15,7 @@ class RubyCrawl
   end
 
   def init_logger
-    Log4r::Configurator.load_xml_file('config/log4r.xml')
+    Versioneye::Log.instance.log
   end
 
   def init_mongodb

@@ -2,7 +2,10 @@ class PackagistCrawler < Versioneye::Crawl
 
 
   def self.logger
-    ActiveSupport::Logger.new('log/packagist.log', 10, 2048000)
+    if !defined?(@@log) || @@log.nil?
+      @@log = Versioneye::DynLog.new("log/packagist.log", 10).log
+    end
+    @@log
   end
 
 
