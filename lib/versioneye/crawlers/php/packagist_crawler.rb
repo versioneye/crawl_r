@@ -8,7 +8,9 @@ class PackagistCrawler < Versioneye::Crawl
 
   def self.crawl serial = false
     start_time = Time.now
+    self.logger.info(" *** start crawl (serial = #{serial}) at #{start_time} *** ")
     packages = PackagistCrawler.get_first_level_list
+    self.logger.info(" *** found #{packages.count} packages to crawl *** ")
     packages.each do |name|
       if serial == true
         PackagistCrawler.crawle_package( name )
@@ -23,6 +25,7 @@ class PackagistCrawler < Versioneye::Crawl
 
 
   def self.get_first_level_list
+    self.logger.info(" *** get_first_level_list *** ")
     body = JSON.parse HTTParty.get('http://packagist.org/packages/list.json' ).response.body
     body['packageNames']
   end
