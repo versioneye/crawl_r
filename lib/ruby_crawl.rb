@@ -9,6 +9,7 @@ class RubyCrawl
 
   def initialize
     puts "initialize ruby_crawl"
+    VersioneyeCore.new
     init_logger
     init_mongodb
     init_settings
