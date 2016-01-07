@@ -2,7 +2,7 @@ source "http://rubygems.org"
 
 gem 'bundler'            , '~> 1.11.0'
 
-gem 'versioneye-core'    , :git => 'git@github.com:versioneye/versioneye-core.git', :tag => 'v8.4.0'
+gem 'versioneye-core'    , :git => 'git@github.com:versioneye/versioneye-core.git', :tag => 'v8.4.1'
 # gem 'versioneye-core'    , :path => "~/workspace/versioneye/versioneye-core"
 
 gem 'rufus-scheduler', '3.1.10'
