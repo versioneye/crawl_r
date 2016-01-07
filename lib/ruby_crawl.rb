@@ -24,6 +24,7 @@ class RubyCrawl
   end
 
   def init_settings
+    Settings.instance.load_settings
     Settings.instance.reload_from_db GlobalSetting.new
   end
 
