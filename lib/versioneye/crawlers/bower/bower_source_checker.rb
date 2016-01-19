@@ -1,6 +1,6 @@
-class BowerSourceChecker < Bower 
+class BowerSourceChecker < Bower
 
-  
+
   def self.check_repo_existence(task, token)
     repo_url = "https://github.com/#{task[:repo_fullname]}"
     response = http_head(repo_url)
@@ -18,30 +18,30 @@ class BowerSourceChecker < Bower
       task.repo_fullname = new_task.repo_fullname
       task.repo_owner    = new_task.repo_owner
       task.repo_name     = new_task.repo_name
-      task.url           = new_task.url 
-      task.re_crawl      = true 
+      task.url           = new_task.url
+      task.re_crawl      = true
       return check_repo_existence(task, token)
     elsif response_code == 304
       logger.info "No changes for `#{task[:repo_fullname]}` since last crawling `#{read_task[:crawled_at]}`. Going to skip."
-      task.url_exists = true 
-      task.re_crawl = false 
+      task.url_exists = true
+      task.re_crawl = false
       return true
     elsif response_code == 404
       logger.error "check_repo_existence | 404 - file not found - for #{task[:repo_fullname]} on `#{task[:url]}`"
-      return false 
+      return false
     elsif response_code >= 500
       logger.error "check_repo_existence | Sadly Github is down; cant access #{task[:url]}"
-      return false 
+      return false
     end
-    false 
+    false
   end
 
 
   def self.to_read_task(task, url)
     task.task = A_TASK_READ_PROJECT
-    task.url_exists = true 
-    task.url = url 
-    task 
+    task.url_exists = true
+    task.url = url
+    task
   end
 
 

@@ -1,11 +1,11 @@
-class BowerTagCrawler < Bower 
+class BowerTagCrawler < Bower
 
-  
-  def self.crawl_tag_deep task, token 
+
+  def self.crawl_tag_deep task, token
     tag_name    = task[:tag_name]
     cleaned_tag = CrawlerUtils.remove_version_prefix( tag_name.to_s )
     product     = Product.fetch_bower(task[:registry_name])
-    
+
     commit_info = task[:data].deep_symbolize_keys
     sha         = commit_info[:sha]
     repo_name   = task[:repo_fullname]
@@ -19,7 +19,7 @@ class BowerTagCrawler < Bower
     logger.info "-- Process #{bower_info[:url]} in tag #{tag_name}"
 
     bowerjson_content = fetch_file_content(repo_name, bower_info[:url], token)
-    if bowerjson_content.nil? || bowerjson_content.empty? 
+    if bowerjson_content.nil? || bowerjson_content.empty?
       logger.debug "bowerjson_content is nil"
       return false
     end
@@ -40,11 +40,11 @@ class BowerTagCrawler < Bower
 
     find_or_create_licenses( product, pkg_info, repo_name, sha, token )
 
-    true 
-  rescue => e 
-    logger.error e.message 
+    true
+  rescue => e
+    logger.error e.message
     logger.error e.backtrace.join("\n")
-    false 
+    false
   end
 
 
@@ -56,19 +56,19 @@ class BowerTagCrawler < Bower
       logger.error "fetch_commit_tree | cant read commit information on #{commit_url}"
     end
     data
-  rescue => e 
-    logger.error e.message 
+  rescue => e
+    logger.error e.message
     logger.error e.backtrace.join("\n")
-    nil 
+    nil
   end
 
 
   def self.fetch_bowerjson_info_by_sha(repo_name, sha, token, tag = nil)
     check_request_limit(token)
     project_files = Github.project_files_from_branch(repo_name, token, sha)
-    if project_files.nil? || project_files.empty? 
+    if project_files.nil? || project_files.empty?
       logger.error "Didnt get any supported project file for #{repo_name} on the tag sha: `#{sha}`"
-      return nil 
+      return nil
     end
 
     bower_files = []
@@ -76,13 +76,13 @@ class BowerTagCrawler < Bower
       bower_files << file if ProjectService.type_by_filename(file[:path]) == Project::A_TYPE_BOWER
     end
 
-    return bower_files.first if !bower_files.empty? 
+    return bower_files.first if !bower_files.empty?
 
-    project_files.each do |pf| 
-      if pf[:path].to_s.eql?('package.json') || 
-         pf[:path].to_s.eql?('component.json') || 
-         pf[:path].to_s.eql?('module.json') 
-        return pf 
+    project_files.each do |pf|
+      if pf[:path].to_s.eql?('package.json') ||
+         pf[:path].to_s.eql?('component.json') ||
+         pf[:path].to_s.eql?('module.json')
+        return pf
       end
     end
 
@@ -94,8 +94,8 @@ class BowerTagCrawler < Bower
     JSON.parse doc, symbolize_names: true
   rescue => e
     logger.error "cant parse doc: #{doc} \n #{e.message}"
-    nil 
+    nil
   end
 
 
-end 
+end
