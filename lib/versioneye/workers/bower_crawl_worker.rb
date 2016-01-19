@@ -30,7 +30,15 @@ class BowerCrawlWorker < Worker
   def process_work package_name
     return nil if package_name.to_s.empty?
 
-    user = User.find_by_email "reiz@versioneye.com"
+    user = nil
+    random = Random.new
+    ri = random.rand(2000)
+    if ri.to_i > 1000
+      user = User.find_by_email "reiz@versioneye.com"
+    else
+      user = User.find_by_email "robert@versioneye.com"
+    end
+
     token = user.github_token
 
     if package_name.eql?('::bower::')
