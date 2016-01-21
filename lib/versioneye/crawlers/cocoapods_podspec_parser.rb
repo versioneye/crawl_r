@@ -249,7 +249,7 @@ class CocoapodsPodspecParser
       language: language,
       prod_key: prod_key,
       version_id: version,
-      link: "#{base_url}/blob/master/#{name}/#{version}/#{name}.podspec",
+      link: "#{base_url}/blob/master/Specs/#{name}/#{version}/#{name}.podspec.json",
       name: "#{name}.podspec",
     })
     Versionarchive.create_archive_if_not_exist( archive )
