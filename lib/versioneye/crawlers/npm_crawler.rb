@@ -147,7 +147,7 @@ class NpmCrawler < Versioneye::Crawl
 
 
   def self.init_product prod_key
-    product = Product.find_by_lang_key( Product::A_LANGUAGE_NODEJS, prod_key )
+    product = Product.where( :language => Product::A_LANGUAGE_NODEJS, :prod_key => prod_key )
     return product if product
 
     Product.new({:prod_key => prod_key, :reindex => true})
