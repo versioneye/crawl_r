@@ -92,7 +92,7 @@ class NpmCrawler < Versioneye::Crawl
     versions  = prod_json['versions']
     return nil if versions.nil? || versions.empty?
 
-    prod_key  = prod_json['_id'].to_s.downcase
+    prod_key  = prod_json['_id'].to_s
     time      = prod_json['time']
 
     product = init_product prod_key
@@ -156,7 +156,8 @@ class NpmCrawler < Versioneye::Crawl
 
   def self.update_product product, package
     name                  = package['name']
-    product.prod_key      = package['_id'].to_s.downcase
+    product.prod_key      = package['_id'].to_s
+    product.prod_key_dc   = package['_id'].to_s.downcase
     product.name          = name
     product.name_downcase = name.downcase
     product.description   = package['description']
