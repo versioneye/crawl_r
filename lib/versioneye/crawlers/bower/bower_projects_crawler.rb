@@ -81,6 +81,10 @@ class BowerProjectsCrawler < Bower
   # Saves product and save sub/related docs
   def self.create_bower_package(prod_key, pkg_info, repo_info, token, skipKnownVersions = true)
     prod = create_or_update_product(prod_key, pkg_info, token, repo_info[:language], skipKnownVersions)
+    if prod.nil?
+      logger.error "prod is nil after 'create_or_update_product(#{prod_key}, #{pkg_info}, token, #{repo_info[:language]}, #{skipKnownVersions})'"
+      return nil
+    end
 
     version = pkg_info[:version].to_s
 
@@ -130,6 +134,7 @@ class BowerProjectsCrawler < Bower
   def self.create_or_update_product(prod_key, pkg_info, token, language = nil, skipKnownVersions = true)
     language = get_language pkg_info[:name].to_s, language
     product  = Product.fetch_bower pkg_info[:name].to_s
+    product  = Product.fetch_product( language, prod_key ) if product.nil?
 
     if product.nil?
       product = Product.new({ :prod_key => prod_key, :prod_type => Project::A_TYPE_BOWER })
@@ -138,6 +143,7 @@ class BowerProjectsCrawler < Bower
     if !product.language.eql?(language)
       skipKnownVersions = false
     end
+    product.prod_type     = Project::A_TYPE_BOWER
     product.language      = language
     product.name          = pkg_info[:name].to_s
     product.name_downcase = pkg_info[:name].to_s.downcase
