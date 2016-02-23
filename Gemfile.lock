@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:versioneye/versioneye-core.git
-  revision: 0bbbc469b53872d6f35fb74331ac91646163dafe
-  tag: v8.7.11
+  revision: db568a417b615accad8068ee500df72671e052da
+  tag: v8.9.6
   specs:
-    versioneye-core (8.7.11)
+    versioneye-core (8.9.6)
       actionmailer (= 4.2.5)
       aws-sdk (~> 2.2.0)
       bundler (~> 1.11.0)
@@ -18,12 +18,12 @@ GIT
       naturalsorter (~> 3.0.13)
       net-ldap (~> 0.14.0)
       nokogiri (~> 1.6.7.1)
-      oauth (~> 0.4.7)
+      oauth (~> 0.5.0)
       octokit (~> 4.2.0)
       pdfkit (~> 0.8.0)
       persistent_httparty (~> 0.1.0)
       semverly (~> 1.0.0)
-      stripe (~> 1.35.1)
+      stripe (~> 1.36.0)
       tire (~> 0.6.2)
       will_paginate_mongoid (= 2.0.1)
       wkhtmltopdf-binary (~> 0.9.9.1)
@@ -65,13 +65,13 @@ GEM
     addressable (2.3.8)
     amq-protocol (2.0.1)
     ansi (1.5.0)
-    aws-sdk (2.2.16)
-      aws-sdk-resources (= 2.2.16)
-    aws-sdk-core (2.2.16)
+    aws-sdk (2.2.18)
+      aws-sdk-resources (= 2.2.18)
+    aws-sdk-core (2.2.18)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.2.16)
-      aws-sdk-core (= 2.2.16)
-    bson (4.0.1)
+    aws-sdk-resources (2.2.18)
+      aws-sdk-core (= 2.2.18)
+    bson (4.0.2)
     builder (3.2.2)
     bunny (2.2.2)
       amq-protocol (>= 2.0.1)
@@ -88,7 +88,7 @@ GEM
       nap (~> 1.0)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
-    dalli (2.7.5)
+    dalli (2.7.6)
     database_cleaner (1.5.1)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
@@ -145,13 +145,13 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
-    mime-types (2.99)
+    mime-types (2.99.1)
     mini_portile2 (2.0.0)
     minitest (5.8.4)
     mixlib-log (1.6.0)
-    mongo (2.2.2)
+    mongo (2.2.3)
       bson (~> 4.0)
-    mongoid (5.1.0)
+    mongoid (5.1.1)
       activemodel (~> 4.0)
       mongo (~> 2.1)
       origin (~> 2.2)
@@ -165,7 +165,7 @@ GEM
     netrc (0.11.0)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
-    oauth (0.4.7)
+    oauth (0.5.0)
     oauth2 (1.1.0)
       faraday (>= 0.8, < 0.10)
       jwt (~> 1.0, < 1.5.2)
@@ -203,7 +203,7 @@ GEM
       rspec-core (~> 3.4.0)
       rspec-expectations (~> 3.4.0)
       rspec-mocks (~> 3.4.0)
-    rspec-core (3.4.2)
+    rspec-core (3.4.3)
       rspec-support (~> 3.4.0)
     rspec-expectations (3.4.0)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -229,7 +229,7 @@ GEM
       json (~> 1.8)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.0)
-    stripe (1.35.1)
+    stripe (1.36.0)
       json (~> 1.8.1)
       rest-client (~> 1.4)
     thread_safe (0.3.5)
@@ -247,7 +247,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.2)
     vcr (3.0.1)
-    webmock (1.22.6)
+    webmock (1.24.1)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
@@ -276,7 +276,7 @@ DEPENDENCIES
   simplecov (~> 0.11.2)
   vcr (~> 3.0.1)
   versioneye-core!
-  webmock (~> 1.22.3)
+  webmock (~> 1.24.0)
 
 BUNDLED WITH
    1.11.2
