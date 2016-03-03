@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:versioneye/versioneye-core.git
-  revision: 624fef883285aa8617ded988e8eb80dcf0e96ea5
-  tag: v8.9.13
+  revision: 9a3b837f052b82956616421ff887e87503bacf80
+  tag: v8.11.0
   specs:
-    versioneye-core (8.9.13)
+    versioneye-core (8.11.0)
       actionmailer (~> 4.2.5.1)
       aws-sdk (~> 2.2.0)
       bundler (~> 1.11.0)
@@ -247,7 +247,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.2)
     vcr (3.0.1)
-    webmock (1.24.1)
+    webmock (1.24.2)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff

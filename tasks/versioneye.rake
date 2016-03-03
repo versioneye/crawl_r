@@ -136,6 +136,13 @@ namespace :versioneye do
       end
     end
 
+    value = '20 5 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        CommonCrawlProducer.new '::phpeye::'
+      end
+    end
+
     scheduler.join
     while 1 == 1
       p "keep alive rake task"

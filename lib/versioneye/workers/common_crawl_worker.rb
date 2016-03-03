@@ -42,6 +42,8 @@ class CommonCrawlWorker < Worker
       ChefCrawler.crawl
     elsif message.eql?('::coreos::')
       CoreosCrawler.crawl
+    elsif message.eql?('::phpeye::')
+      PhpeyeCrawler.crawl
     end
   rescue => e
     log.error e.message
