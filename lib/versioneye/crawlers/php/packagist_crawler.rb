@@ -53,6 +53,7 @@ class PackagistCrawler < Versioneye::Crawl
       self.process_version version, product
     end
     ProductService.update_version_data( product )
+    PhpeyeCrawler.crawle_package product
   rescue => e
     self.logger.error "ERROR in crawle_package Message:   #{e.message}"
     self.logger.error e.backtrace.join("\n")
