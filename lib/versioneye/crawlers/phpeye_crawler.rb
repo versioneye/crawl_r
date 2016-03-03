@@ -49,9 +49,11 @@ class PhpeyeCrawler < Versioneye::Crawl
         value = version_obj['travis']['runtime_status'][key]
         supported_runtimes << key if value.to_i == 3
       end
-      version.tested_runtimes = supported_runtimes.join(', ')
-      version.save
-      logger.info " - update runtime info for - #{product.prod_key}:#{version_number} - #{version.tested_runtimes}"
+      if !supported_runtimes.empty?
+        version.tested_runtimes = supported_runtimes.join(', ')
+        version.save
+        logger.info " - update runtime info for - #{product.prod_key}:#{version_number} - #{version.tested_runtimes}"
+      end
     end
   rescue => e
     self.logger.error "ERROR in crawle_package(#{name}) Message: #{e.message}"
