@@ -47,7 +47,9 @@ class PhpeyeCrawler < Versioneye::Crawl
       supported_runtimes = []
       version_obj['travis']['runtime_status'].keys.each do |key|
         value = version_obj['travis']['runtime_status'][key]
-        supported_runtimes << key if value.to_i == 3
+        if value.to_i == 3
+          supported_runtimes << key.gsub("hhvm", "HHVM").gsub("php71", "PHP 7.1").gsub("php70", "PHP 7.0").gsub("php56", "PHP 5.6").gsub("php55", "PHP 5.5").gsub("php54", "PHP 5.4").gsub("php53", "PHP 5.3").gsub("php52", "PHP 5.2")
+        end
       end
       if !supported_runtimes.empty?
         version.tested_runtimes = supported_runtimes.join(', ')
