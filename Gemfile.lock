@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:versioneye/versioneye-core.git
-  revision: 9a3b837f052b82956616421ff887e87503bacf80
-  tag: v8.11.0
+  revision: 951f16df223a4c378155d59ab8cee9991e7aeafc
+  tag: v8.11.1
   specs:
-    versioneye-core (8.11.0)
+    versioneye-core (8.11.1)
       actionmailer (~> 4.2.5.1)
       aws-sdk (~> 2.2.0)
       bundler (~> 1.11.0)
@@ -276,7 +276,7 @@ DEPENDENCIES
   simplecov (~> 0.11.2)
   vcr (~> 3.0.1)
   versioneye-core!
-  webmock (~> 1.24.0)
+  webmock (~> 1.24.2)
 
 BUNDLED WITH
    1.11.2
