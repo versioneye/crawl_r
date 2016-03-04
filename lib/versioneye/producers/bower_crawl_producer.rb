@@ -9,9 +9,7 @@ class BowerCrawlProducer < Producer
 
     queue.publish(msg, :persistent => true)
 
-    log_msg = " [x] Sent #{msg}"
-    puts log_msg
-    log.info log_msg
+    multi_log " [x] BowerCrawlProducer sent #{msg}"
 
     connection.close
   rescue => e

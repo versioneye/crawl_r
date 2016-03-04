@@ -5,6 +5,7 @@ class SatisCrawlWorker < Worker
     connection = get_connection
     connection.start
     channel = connection.create_channel
+    channel.prefetch(1)
     queue   = channel.queue("satis_crawl", :durable => true)
 
     multi_log " [*] SatisCrawlWorker waiting for messages in #{queue.name}. To exit press CTRL+C"
@@ -39,8 +40,6 @@ class SatisCrawlWorker < Worker
 
     log.info "Crawl done for #{package_name}"
   rescue => e
-    p e.message
-    p e.backtrace.join("\n")
     log.error e.message
     log.error e.backtrace.join("\n")
   end

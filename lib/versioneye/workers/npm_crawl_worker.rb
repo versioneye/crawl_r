@@ -5,6 +5,7 @@ class NpmCrawlWorker < Worker
     connection = get_connection
     connection.start
     channel = connection.create_channel
+    channel.prefetch(1)
     queue   = channel.queue("npm_crawl", :durable => true)
 
     multi_log " [*] NpmCrawlWorker waiting for messages in #{queue.name}. To exit press CTRL+C"
@@ -33,8 +34,6 @@ class NpmCrawlWorker < Worker
       NpmCrawler.crawle_package package_name
     end
   rescue => e
-    p e.message
-    p e.backtrace.join("\n")
     log.error e.message
     log.error e.backtrace.join("\n")
   end

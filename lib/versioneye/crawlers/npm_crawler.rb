@@ -76,7 +76,7 @@ class NpmCrawler < Versioneye::Crawl
 
 
   def self.get_known_packages
-    self.logger.info 'get_known_packages'
+    self.logger.info 'NpmCrawler.get_known_packages'
     packages = Array.new
     products = Product.where(:language => Product::A_LANGUAGE_NODEJS)
     products.each do |product|
@@ -87,7 +87,7 @@ class NpmCrawler < Versioneye::Crawl
 
 
   def self.crawle_package name
-    self.logger.info "crawl #{name}"
+    self.logger.info "NpmCrawler.crawl #{name}"
     prod_json = JSON.parse HTTParty.get("http://registry.npmjs.org/#{name}").response.body
     versions  = prod_json['versions']
     return nil if versions.nil? || versions.empty?
