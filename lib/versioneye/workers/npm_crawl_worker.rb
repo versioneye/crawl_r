@@ -7,17 +7,14 @@ class NpmCrawlWorker < Worker
     channel = connection.create_channel
     queue   = channel.queue("npm_crawl", :durable => true)
 
-    log_msg = " [*] Waiting for messages in #{queue.name}. To exit press CTRL+C"
-    puts log_msg
-    log.info log_msg
+    multi_log " [*] NpmCrawlWorker waiting for messages in #{queue.name}. To exit press CTRL+C"
 
     begin
       queue.subscribe(:ack => true, :block => true) do |delivery_info, properties, message|
-        puts " [x] Received #{message}"
-
+        multi_log " [x] NpmCrawlWorker received #{message}"
         process_work message
-
         channel.ack(delivery_info.delivery_tag)
+        multi_log " [x] NpmCrawlWorker job done #{message}"
       end
     rescue => e
       log.error e.message

@@ -22,6 +22,11 @@ class Worker
     Versioneye::Cache.instance.mc
   end
 
+  def multi_log msg
+    puts msg
+    log.info msg
+  end
+
   private
 
     def reload_settings
