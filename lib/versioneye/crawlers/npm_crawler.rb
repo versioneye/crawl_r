@@ -31,9 +31,7 @@ class NpmCrawler < Versioneye::Crawl
   def self.get_first_level_list
     packages = get_first_level_list_from_registry
     if packages.nil? || packages.empty? || packages.count < 50
-      known_packages  = get_known_packages
-      newest_packages = get_first_level_list_from_html
-      packages        = (known_packages + newest_packages).uniq
+      packages  = get_known_packages
     end
     packages
   end
@@ -48,30 +46,6 @@ class NpmCrawler < Versioneye::Crawl
     self.logger.error "ERROR in get_first_level_list: #{e.message}"
     self.logger.error e.backtrace.join("\n")
     nil
-  end
-
-
-  def self.get_first_level_list_from_html
-    self.logger.info 'Start fetching first level list from HTML'
-    packages = Array.new
-    20.times.each do |page|
-      packages.concat( fetch_names_from( page ) )
-    end
-    packages
-  end
-
-
-  def self.fetch_names_from page
-    packages = Array.new
-    doc = Nokogiri::HTML( open("https://npmjs.org/browse/updated/#{page}/") )
-    doc.xpath("//div[@id=\"package\"]/div[@class=\"row\"]/p/a").each do |link|
-      packages << link.content
-    end
-    packages
-  rescue => e
-    self.logger.error "ERROR in fetch_names_from page: #{e.message}"
-    self.logger.error e.backtrace.join("\n")
-    Array.new
   end
 
 
