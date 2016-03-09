@@ -12,8 +12,8 @@ class NpmCrawler < Versioneye::Crawl
   end
 
 
-  def self.crawl serial = false
-    packages = get_first_level_list
+  def self.crawl serial = false, packages = nil
+    packages = get_first_level_list if packages.nil?
     packages.each do |package|
       name = package['key'] if package.is_a? Hash
       name = package if !package.is_a? Hash
