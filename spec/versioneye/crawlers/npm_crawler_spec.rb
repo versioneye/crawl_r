@@ -24,4 +24,20 @@ describe NpmCrawler do
     end
   end
 
+  describe 'get_known_packages' do
+    it 'returns the list of existing npm packages from db' do
+      Product.delete_all
+      request = ProductFactory.create_for_npm 'request', '1.0.0'
+      expect( request.save ).to be_truthy
+      chai = ProductFactory.create_for_npm 'chai', '1.0.0'
+      expect( chai.save ).to be_truthy
+      expect( Product.count ).to eq(2)
+
+      packages = NpmCrawler.get_known_packages
+      expect( packages ).to_not be_empty
+      expect( packages.first ).to eq('request')
+      expect( packages.last ).to eq('chai')
+    end
+  end
+
 end

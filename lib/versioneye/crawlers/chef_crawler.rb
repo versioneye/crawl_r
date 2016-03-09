@@ -15,7 +15,7 @@ class ChefCrawler < Versioneye::Crawl
   end
 
 
-  def self.crawl
+  def self.crawl early_exit = false
     start = 0
     while 1 == 1
       url = "#{A_CHEF_REGISTRY_INDEX}?start=#{start}"
@@ -27,6 +27,7 @@ class ChefCrawler < Versioneye::Crawl
       end
       start += 10
       logger.info "API start point: #{start}"
+      break if early_exit
     end
   end
 
