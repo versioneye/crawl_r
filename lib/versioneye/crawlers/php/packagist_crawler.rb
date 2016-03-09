@@ -9,10 +9,10 @@ class PackagistCrawler < Versioneye::Crawl
   end
 
 
-  def self.crawl serial = false
+  def self.crawl serial = false, packages = nil
     start_time = Time.now
     self.logger.info(" *** start crawl (serial = #{serial}) at #{start_time} *** ")
-    packages = PackagistCrawler.get_first_level_list
+    packages = PackagistCrawler.get_first_level_list if packages.nil?
     self.logger.info(" *** found #{packages.count} packages to crawl *** ")
     packages.each do |name|
       if serial == true

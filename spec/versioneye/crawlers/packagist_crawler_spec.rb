@@ -65,6 +65,21 @@ describe PackagistCrawler do
       Product.count.should eq(1)
       product = Product.first
       product.versions.count.should > 39
+      expect( product.dependencies.count > 1 ).to be_truthy
+    end
+  end
+
+  describe 'crawl' do
+    it 'crawles all packages' do
+      Product.delete_all
+      Versionlink.delete_all
+      Product.count.should eq(0)
+      PackagistCrawler.crawl true, ["zguillez/slim_mobile_detect"]
+      Product.count.should eq(1)
+      product = Product.first
+      expect( product.prod_key ).to eq('zguillez/slim_mobile_detect')
+      expect( product.versions.count > 5 ).to be_truthy
+      expect( product.dependencies.count > 0 ).to be_truthy
     end
   end
 
