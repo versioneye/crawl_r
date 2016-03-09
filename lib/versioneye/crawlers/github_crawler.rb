@@ -102,24 +102,6 @@ class GithubCrawler < Versioneye::Crawl
   end
 
 
-  def self.parse_version_number tag
-    version_number = tag.name
-    if version_number && version_number.match(/v[0-9]+\..*/)
-      version_number.gsub!('v', '')
-    end
-    if version_number && version_number.match(/r[0-9]+\..*/)
-      version_number.gsub!('r', '')
-    end
-    if version_number && version_number.match(/php\-[0-9]+\..*/)
-      version_number.gsub!('php-', '')
-    end
-    if version_number && version_number.match(/PHP\_[0-9]+\..*/)
-      version_number.gsub!('PHP_', '')
-    end
-    version_number
-  end
-
-
   def self.create_or_update_github_link product, repository
     link = "https://github.com/#{repository.full_name}"
     Versionlink.create_project_link( product.language, product.prod_key, link, 'GitHub' )
