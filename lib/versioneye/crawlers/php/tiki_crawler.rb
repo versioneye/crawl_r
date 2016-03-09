@@ -11,9 +11,9 @@ class TikiCrawler < SatisCrawler
   A_LINK_NAME = 'Tiki Page'
 
 
-  def self.crawl
+  def self.crawl packages = nil, early_exit = false
     crawler = TikiCrawler.new A_BASE_URL, A_LINK_NAME
-    crawler.crawl
+    crawler.crawl packages, early_exit
   end
 
 

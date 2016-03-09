@@ -28,7 +28,7 @@ Mongoid.logger.level = Logger::ERROR
 
 RSpec.configure do |config|
 
-  VersioneyeCore.new
+  RubyCrawl.new
 
   config.before(:each) do
     DatabaseCleaner.clean

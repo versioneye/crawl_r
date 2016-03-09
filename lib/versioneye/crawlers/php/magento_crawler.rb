@@ -11,9 +11,9 @@ class MagentoCrawler < SatisCrawler
   A_LINK_NAME = 'Magento Page'
 
 
-  def self.crawl
+  def self.crawl packages = nil, early_exit = false
     crawler = MagentoCrawler.new A_BASE_URL, A_LINK_NAME
-    crawler.crawl
+    crawler.crawl packages, early_exit
   end
 
 
