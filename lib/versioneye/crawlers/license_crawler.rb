@@ -37,8 +37,8 @@ class LicenseCrawler < Versioneye::Crawl
       next if licenses && !licenses.empty?
 
       # This step is temporary for the init crawl
-      # licenses = product.licenses true
-      # next if licenses && !licenses.empty?
+      licenses = product.licenses true
+      next if licenses && !licenses.empty?
 
       process link, product
     end
