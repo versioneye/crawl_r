@@ -57,6 +57,7 @@ describe PackagistCrawler do
 
   describe 'crawl cakephp' do
     it 'crawles cakephp and skips all branches' do
+      Product.delete_all
       Versionlink.find_or_create_by(:language => "PHP",
         :prod_key => "cakephp/cakephp", :name => "GitHub", :link => "https://github.com/cakephp/cakephp" )
       Product.count.should eq(0)

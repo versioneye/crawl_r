@@ -25,15 +25,18 @@ require 'versioneye/domain_factories/user_factory'
 
 Mongoid.load!("config/mongoid.yml", :test)
 Mongoid.logger.level = Logger::ERROR
-Moped.logger.level   = Logger::ERROR
 
 RSpec.configure do |config|
 
   VersioneyeCore.new
 
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :truncation
-    DatabaseCleaner.orm = "mongoid"
+  config.before(:each) do
+    DatabaseCleaner.clean
+    FakeWeb.clean_registry
+    models = Mongoid.models
+    models.each do |model|
+      model.all.each(&:delete)
+    end
   end
 
   config.before(:each) do

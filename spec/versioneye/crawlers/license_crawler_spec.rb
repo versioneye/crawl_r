@@ -146,7 +146,9 @@ describe LicenseCrawler do
     it "finds AGPL-3" do
       License.count.should == 0
       product = ProductFactory.create_new
-      LicenseCrawler.process_github_master('brighterplanet/fuel_purchase', product).should be_truthy
+      link = Versionlink.new(:link => 'https://github.com/brighterplanet/fuel_purchase', :language => product.language, :prod_key => product.prod_key)
+      expect( link.save ).to be_truthy
+      LicenseCrawler.crawl
       License.count.should == 1
       License.first.name.should eq('AGPL-3.0')
     end
@@ -154,7 +156,9 @@ describe LicenseCrawler do
     it "finds LGPL-3" do
       License.count.should == 0
       product = ProductFactory.create_new
-      LicenseCrawler.process_github_master('spox/actionpool', product).should be_truthy
+      link = Versionlink.new(:link => 'https://github.com/spox/actionpool', :language => product.language, :prod_key => product.prod_key)
+      expect( link.save ).to be_truthy
+      LicenseCrawler.crawl product.language
       License.count.should == 1
       License.first.name.should eq('LGPL-3.0')
     end
@@ -187,13 +191,6 @@ describe LicenseCrawler do
       License.count.should == 0
       product = ProductFactory.create_new
       LicenseCrawler.process_github_master('ronalchn/ajax_pagination', product).should be_truthy
-      License.count.should == 1
-      License.first.name.should eq('MPL-2.0')
-    end
-    it "finds Mozilla Public License Version 2.0" do
-      License.count.should == 0
-      product = ProductFactory.create_new
-      LicenseCrawler.process_github_master('rosace/rosace', product).should be_truthy
       License.count.should == 1
       License.first.name.should eq('MPL-2.0')
     end
@@ -257,7 +254,7 @@ describe LicenseCrawler do
       product = ProductFactory.create_new
       LicenseCrawler.process_github_master('ecomfe/zrender', product).should be_truthy
       License.count.should == 1
-      License.first.name.should eq('New BSD')
+      License.first.name.should eq('BSD 2-clause')
     end
 
     it "finds BSD 2-clause" do
