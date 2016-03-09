@@ -20,11 +20,12 @@ class SatisCrawler < Versioneye::Crawl
   end
 
 
-  def crawl
+  def crawl packages = nil, early_exit = false
     start_time = Time.now
-    packages = get_first_level_list
+    packages = get_first_level_list if packages.nil?
     packages.each do |package|
       crawle_package package
+      break if early_exit
     end
     duration = Time.now - start_time
     logger.info(" *** This crawl took #{duration} *** ")
