@@ -1,6 +1,6 @@
 class Bower < Versioneye::Crawl
 
-  A_MINIMUM_RATE_LIMIT = 50
+  A_MINIMUM_RATE_LIMIT = 10
   A_MAX_RETRY = 12 # 12x10 ~> after that worker'll starve to death
   A_SLEEP_TIME = 20
   A_TASK_CHECK_EXISTENCE = "bower_crawler/check_existence"
@@ -25,7 +25,7 @@ class Bower < Versioneye::Crawl
     rate_limits = OctokitApi.client(token).rate_limit
     remaining   = rate_limits[:remaining].to_i
     if remaining.to_i < A_MINIMUM_RATE_LIMIT.to_i
-      logger.info "Remaining requests #{remaining}"
+      logger.info "Remaining requests #{remaining} for token: #{token}"
 
       logger.info "Going to stop crawling for next 2 minutes"
       sleep 120
