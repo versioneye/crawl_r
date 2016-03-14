@@ -25,7 +25,7 @@ class Bower < Versioneye::Crawl
     rate_limits = OctokitApi.client(token).rate_limit
     remaining   = rate_limits[:remaining].to_i
     if remaining.to_i < A_MINIMUM_RATE_LIMIT.to_i
-      logger.info "Remaining requests #{remaining} for token: #{token}"
+      logger.info "Remaining requests for token #{token}: #{remaining}"
 
       logger.info "Going to stop crawling for next 2 minutes"
       sleep 120
