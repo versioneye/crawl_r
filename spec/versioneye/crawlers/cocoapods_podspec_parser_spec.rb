@@ -21,7 +21,7 @@ describe CocoapodsPodspecParser do
 
         podspec = './spec/fixtures/files/podspec/Reachability.podspec'
         product = CocoapodsPodspecParser.new.parse_file( podspec )
-        product.should_not be_nil
+        expect( product ).to_not be_nil
         product.language.should eq 'Objective-C'
         product.prod_key.should eq 'reachability'
         product.name.should eq 'Reachability'
@@ -47,7 +47,7 @@ describe CocoapodsPodspecParser do
         parser  = CocoapodsPodspecParser.new
         product = parser.parse_file( podspec )
 
-        product.should_not be_nil
+        expect( product ).to_not be_nil
         product.language.should eq 'Objective-C'
         product.prod_key.should eq 'aerogear-push'
         product.name.should eq 'AeroGear-Push'
