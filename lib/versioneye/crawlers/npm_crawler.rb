@@ -143,7 +143,7 @@ class NpmCrawler < Versioneye::Crawl
 
 
   def self.create_author product, version_number, author, contributor = false
-    return nil if author.nil? || author.empty?
+    return nil if author.nil? || author.to_s.strip.empty?
 
     author_name     = author['name'].to_s.gsub("https://github.com/", "")
     author_email    = author['email']
@@ -162,20 +162,32 @@ class NpmCrawler < Versioneye::Crawl
 
 
   def self.create_contributors product, version_number, contributors
-    return nil if contributors.nil? || contributors.empty?
+    return nil if contributors.nil? || contributors.to_s.strip.empty?
 
-    contributors.each do |contributor|
-      create_author product, version_number, contributor, true
+    if contributors.kind_of? Array
+      contributors.each do |contributor|
+        create_author product, version_number, contributor, true
+      end
+    elsif contributors.kind_of? String
+      create_author product, version_number, contributors, true
     end
+  rescue => e
+    self.logger.error "ERROR in create_contributors Message: #{e.message}"
+    self.logger.error e.backtrace.join("\n")
   end
 
 
   def self.create_maintainers product, version_number, maintainers
-    return nil if maintainers.nil? || maintainers.empty?
+    return nil if maintainers.nil? || maintainers.to_s.strip.empty?
 
-    maintainers.each do |author|
-      create_author product, version_number, author
+    if maintainers.kind_of? Array
+      maintainers.each do |author|
+        create_author product, version_number, author
+      end
     end
+  rescue => e
+    self.logger.error "ERROR in create_maintainers Message: #{e.message}"
+    self.logger.error e.backtrace.join("\n")
   end
 
 
