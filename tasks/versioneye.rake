@@ -59,12 +59,15 @@ namespace :versioneye do
     end
 
     # Crawl it once a hour. A crawl takes ~ 3 minutes!
-    value = '25 * * * *'
-    if !value.to_s.empty?
-      scheduler.cron value do
-        SatisCrawlProducer.new '::magento::'
-      end
-    end
+    #
+    # Comment out temp. because Magento repo was moved.
+    #
+    # value = '25 * * * *'
+    # if !value.to_s.empty?
+    #   scheduler.cron value do
+    #     SatisCrawlProducer.new '::magento::'
+    #   end
+    # end
 
     # Crawl it once a hour. A crawl takes ~ 1 minute!
     value = '29 * * * *'
