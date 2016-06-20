@@ -2,7 +2,7 @@ source "http://rubygems.org"
 
 gem 'bundler'            , '~> 1.12.0'
 
-gem 'versioneye-core'    , :git => 'https://github.com/versioneye/versioneye-core.git', :tag => 'v8.23.12'
+gem 'versioneye-core'    , :git => 'https://github.com/versioneye/versioneye-core.git', :tag => 'v8.24.0'
 # gem 'versioneye-core'    , :path => "~/workspace/versioneye/versioneye-core"
 
 gem 'rufus-scheduler', '3.2.1'
@@ -21,6 +21,6 @@ group :test do
   gem 'factory_girl'    , '~> 4.7.0'
   gem 'capybara'        , '~> 2.7.1'
   gem 'vcr'             , '~> 3.0.1',  :require => false
-  gem 'webmock'         , '~> 2.0.3', :require => false
+  gem 'webmock'         , '~> 2.1.0', :require => false
   gem 'fakeweb'         , '~> 1.3.0'
 end
