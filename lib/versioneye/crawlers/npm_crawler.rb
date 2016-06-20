@@ -97,6 +97,7 @@ class NpmCrawler < Versioneye::Crawl
 
   def self.create_new_version product, version_number, version_obj, time
     version_db = Version.new({:version => version_number})
+    version_db.prefer_global = true if version_obj['preferGlobal'].to_s.eql?("true")
     parse_release_date( version_db, time )
     product.versions.push version_db
     product.reindex = true
