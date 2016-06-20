@@ -137,6 +137,9 @@ class NpmCrawler < Versioneye::Crawl
     product.name_downcase = name.downcase
     product.description   = package['description']
     product.tags          = package['keywords']
+    if !package['dist-tags'].to_s.empty? && !package['dist-tags']['latest'].to_s.empty?
+      product.dist_tags_latest = package['dist-tags']['latest']
+    end
     product.prod_type     = Project::A_TYPE_NPM
     product.language      = Product::A_LANGUAGE_NODEJS
     product.save
