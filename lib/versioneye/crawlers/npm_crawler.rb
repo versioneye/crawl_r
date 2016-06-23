@@ -86,6 +86,11 @@ class NpmCrawler < Versioneye::Crawl
       db_version     = product.version_by_number version_number
       next if db_version
 
+      if version[0].to_s.match(/.+-nightly\..+/i)
+        logger.info "skip nightly version #{version[0]} for #{name}"
+        next
+      end
+
       create_new_version product, version_number, version_obj, time
     end
     ProductService.update_version_data( product )
