@@ -29,7 +29,7 @@ class PackagistCrawler < Versioneye::Crawl
 
   def self.get_first_level_list
     self.logger.info(" *** get_first_level_list *** ")
-    body = JSON.parse HTTParty.get('http://packagist.org/packages/list.json' ).response.body
+    body = JSON.parse HTTParty.get('https://packagist.org/packages/list.json' ).response.body
     body['packageNames']
   end
 
@@ -38,7 +38,7 @@ class PackagistCrawler < Versioneye::Crawl
     self.logger.info "crawl #{name}"
     return nil if name.to_s.empty?
 
-    resource     = "http://packagist.org/packages/#{name}.json"
+    resource     = "https://packagist.org/packages/#{name}.json"
     pack         = JSON.parse HTTParty.get( resource ).response.body
     package      = pack['package']
     package_name = package['name']
@@ -105,7 +105,7 @@ class PackagistCrawler < Versioneye::Crawl
 
 
   def self.update_packagist_link product, package_name
-    packagist_page = "http://packagist.org/packages/#{package_name}"
+    packagist_page = "https://packagist.org/packages/#{package_name}"
     Versionlink.create_project_link( Product::A_LANGUAGE_PHP, product.prod_key, packagist_page, 'Packagist Page' )
   end
 
