@@ -1,6 +1,9 @@
 class PackagistCrawler < Versioneye::Crawl
 
 
+  A_USER_AGENT = "https://www.versioneye.com"
+
+
   def self.logger
     if !defined?(@@log) || @@log.nil?
       @@log = Versioneye::DynLog.new("log/packagist.log", 10).log
@@ -29,7 +32,7 @@ class PackagistCrawler < Versioneye::Crawl
 
   def self.get_first_level_list
     self.logger.info(" *** get_first_level_list *** ")
-    body = JSON.parse HTTParty.get('https://packagist.org/packages/list.json' ).response.body
+    body = JSON.parse HTTParty.get('https://packagist.org/packages/list.json', headers: {"User-Agent" => A_USER_AGENT}).response.body
     body['packageNames']
   end
 
@@ -39,7 +42,7 @@ class PackagistCrawler < Versioneye::Crawl
     return nil if name.to_s.empty?
 
     resource     = "https://packagist.org/packages/#{name}.json"
-    pack         = JSON.parse HTTParty.get( resource ).response.body
+    pack         = JSON.parse HTTParty.get( resource, headers: {"User-Agent" => A_USER_AGENT} ).response.body
     package      = pack['package']
     package_name = package['name']
     versions     = package['versions']
