@@ -43,11 +43,14 @@ class NugetCrawler < Versioneye::Crawl
     end
 
     pages = if date_txt.to_s.empty?
+              logger.info "NugetCrawler: going to crawl all the catalogs."
               catalog[:items]
             else
+              logger.info "NugetCrawler: goint to crawl only #{date_txt} catalogs"
               catalog[:items].keep_if {|x| is_same_date(date_txt, x[:commitTimeStamp])}
             end
     crawl_catalog_pages(pages)
+    logger.info "NugetCrawler: done."
   end
 
 
@@ -57,11 +60,7 @@ class NugetCrawler < Versioneye::Crawl
       return
     end
 
-    item_list.each_with_index do |the_page, i|
-      crawl_catalog_page(the_page)
-      break if i > 1
-    end
-
+    item_list.to_a.each { |the_page| crawl_catalog_page(the_page) }
   end
 
   def self.crawl_catalog_page(the_page)
@@ -78,15 +77,7 @@ class NugetCrawler < Versioneye::Crawl
       return
     end
 
-    crawled = 0
-    page_items[:items].each_with_index do |the_package|
-      crawl_package(the_package)
-      crawled += 1
-      break if crawled == 1
-    end
-    if crawled != page_items[:count]
-      logger.error "crawl_catalog_page: failed to read all the packages - #{crawled}/#{page_items[:count]}"
-    end
+    page_items[:items].to_a.each {|the_package| crawl_package(the_package) }
   end
 
   def self.crawl_package(the_package)
@@ -107,6 +98,11 @@ class NugetCrawler < Versioneye::Crawl
   def self.save_product_info(product_doc)
     version_number = product_doc[:version]
     product = upsert_product product_doc
+    unless product
+      logger.error "save_product_info: failed to save #{product_doc}"
+      return
+    end
+    
     create_new_version(product, product_doc)
     create_dependencies(product, product_doc, version_number)
     create_download(product, version_number)
@@ -129,14 +125,14 @@ class NugetCrawler < Versioneye::Crawl
       prod_key: doc[:id]
     ).first
 
-    product = if product.nil?
-                Product.new({
-                  language: A_LANGUAGE_CSHARP,
-                  prod_type: A_TYPE_NUGET,
-                  prod_key: doc[:id],
-                  reindex: true
-                })
-              end
+    unless product
+      product = Product.new({
+        language: A_LANGUAGE_CSHARP,
+        prod_type: A_TYPE_NUGET,
+        prod_key: doc[:id],
+        reindex: true
+      })
+    end
 
     product.update({
       prod_key_dc: doc[:id].to_s.downcase,
