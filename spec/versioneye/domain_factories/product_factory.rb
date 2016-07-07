@@ -128,6 +128,4 @@ class ProductFactory
 
     product
   end
-
-
 end

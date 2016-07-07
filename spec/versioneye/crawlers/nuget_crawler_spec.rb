@@ -162,7 +162,6 @@ describe NugetCrawler do
       expect( Product.count ).to eq(1)
       product = Product.first
 
-      p "#-- product: ", product
       expect(product.prod_key).to eq('Adam.JSGenerator')
       expect(product.language).to eq('CSharp')
       expect(product.prod_type).to eq('Nuget')
@@ -171,6 +170,43 @@ describe NugetCrawler do
       expect(product.dependencies.count).to eq(0)
       expect(License.count).to eq(1)
     end
+
+    it "crawls all the catalogs products and saves dependencies" do
+      Product.delete_all
+      expect( License.count ).to eq(0)
+      expect( Product.count ).to eq(0)
+
+      FakeWeb.register_uri(:get, catalog_url, body: catalog_json)
+      FakeWeb.register_uri(:get, page0_url, body: page0_json)
+      FakeWeb.register_uri(:get, page1_url, body: page1_json)
+      FakeWeb.register_uri(:get, prod0_url, body: prod0_json)
+      FakeWeb.register_uri(:get, prod1_url, body: prod1_json)
+
+      NugetCrawler.crawl
+
+      expect(License.count).to eq(2)
+      expect( Product.count ).to eq(2)
+      product = Product.first
+
+      expect(product.prod_key).to eq('Adam.JSGenerator')
+      expect(product.language).to eq('CSharp')
+      expect(product.prod_type).to eq('Nuget')
+      expect(product.versions.count).to eq(1)
+      expect(product.versions.first.version).to eq("1.1.0")
+      expect(product.dependencies.count).to eq(0)
+
+      prod2 = Product.where(language: 'CSharp', prod_key: 'structuremap').first
+      expect(prod2.prod_key).to eq('structuremap')
+      expect(prod2.prod_type).to eq('Nuget')
+      expect(prod2.language).to eq('CSharp')
+      expect(prod2.versions.count).to eq(1)
+      expect(prod2.versions.first.version).to eq("2.6.2")
+      expect(prod2.all_dependencies('2.6.2').count).to eq(1)
+      expect(prod2.all_dependencies('2.6.2').first.dep_prod_key).to eq('Microsoft.CSharp')
+
+    end
+
+
   end
 
 

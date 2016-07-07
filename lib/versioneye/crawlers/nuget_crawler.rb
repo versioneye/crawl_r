@@ -166,11 +166,13 @@ class NugetCrawler < Versioneye::Crawl
     product
   end
 
+  #product = initialized Product model, product_doc = product data from NugetAPI
   def self.create_dependencies(product, product_doc, version_number)
     return if product_doc[:dependencyGroups].nil?
 
-    product[:dependencyGroups].each do |dep_group|
-      dep_group[:dependencies].each do |dep|
+    product_doc[:dependencyGroups].each do |dep_group|
+      #saves dependencies from target grouping
+      dep_group[:dependencies].to_a.each do |dep|
         create_dependency(product, version_number, dep, dep_group[:targetFramework])
       end
     end
@@ -178,9 +180,10 @@ class NugetCrawler < Versioneye::Crawl
 
   def self.create_dependency(product, version_number, dep, target = "")
     dep_db = Dependency.find_by(
-      A_LANGUAGE_CSHARP, product.prod_key, version_number, dep[:id], dep[:range], dep_id
+      A_LANGUAGE_CSHARP, product.prod_key, version_number, dep[:id], dep[:range], dep[:id]
     )
-    return if dep_db
+
+    return dep_db unless dep_db.nil?
 
     #TODO: what do to do with targetFramework?
     dep_db = Dependency.new({
@@ -196,10 +199,9 @@ class NugetCrawler < Versioneye::Crawl
     })
 
     dep_db.save
-    dep_db.update_known #TODO: requires changes for Nuget versions
+    dep_db.update_known 
     
     logger.info "#-- create a new Nuget dependency: #{dep_db}"
-
     dep_db
   end
 
