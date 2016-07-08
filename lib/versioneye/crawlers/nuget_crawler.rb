@@ -26,7 +26,6 @@ class NugetCrawler < Versioneye::Crawl
 
   def self.parse_date_string(dt_txt)
     DateTime.parse dt_txt
-
   rescue
     logger.error "Failed to parse datetime from string: #{dt_txt}"
     return nil
@@ -41,8 +40,8 @@ class NugetCrawler < Versioneye::Crawl
     dt1.strftime('%Y-%m-%d') == dt2.strftime('%Y-%m-%d')
   end
 
-  #crawls all the items if date_txt is nil
-  #otherwise will only crawl catalogs published on the date_txt
+  # crawls all the items if date_txt is nil
+  # otherwise will only crawl catalogs published on the date_txt
   # date_txt format: YYYY-mm-dd or any other format supported by DateTime.parse
   def self.crawl(date_txt = nil)
     catalog = self.fetch_json("#{A_NUGET_URL}#{A_CATALOG_PATH}")
@@ -103,7 +102,7 @@ class NugetCrawler < Versioneye::Crawl
 
     save_product_info doc
   end
-  
+
   def self.save_product_info(product_doc)
     version_number = product_doc[:version]
     product = upsert_product product_doc
@@ -111,17 +110,18 @@ class NugetCrawler < Versioneye::Crawl
       logger.error "save_product_info: failed to save #{product_doc}"
       return
     end
-    
-    create_new_version(product, product_doc)
-    create_dependencies(product, product_doc, version_number)
-    create_download(product, version_number)
-    create_versionlinks(product, product_doc, version_number)
-    create_license(product, product_doc[:licenseUrl], version_number)
-    create_authors(product, product_doc[:authors], version_number)
 
-    logger.info "-- New Nuget Package: #{product.prod_key} : #{version_number} "
-    CrawlerUtils.create_newest( product, version_number, logger )
-    CrawlerUtils.create_notifications( product, version_number, logger )
+    if create_new_version(product, product_doc)
+      create_dependencies(product, product_doc, version_number)
+      create_download(product, version_number)
+      create_versionlinks(product, product_doc, version_number)
+      create_license(product, product_doc[:licenseUrl], version_number)
+      create_authors(product, product_doc[:authors], version_number)
+
+      logger.info "-- New Nuget Package: #{product.prod_key} : #{version_number} "
+      CrawlerUtils.create_newest( product, version_number, logger )
+      CrawlerUtils.create_notifications( product, version_number, logger )
+    end
 
     product
   end
@@ -154,18 +154,24 @@ class NugetCrawler < Versioneye::Crawl
     product.save
     product
   end
-  
-  #saves new product version
-  def self.create_new_version(product, product_doc)
-    release_dt = parse_date_string product_doc[:published]
 
+  # saves new product version and returns true if version is new
+  # returns false if the version exist already in the db.
+  def self.create_new_version(product, product_doc)
+    version_number = product_doc[:version]
+    db_version = product.version_by_number version_number
+    if db_version # exist then skip this version
+      return false
+    end
+
+    release_dt = parse_date_string product_doc[:published]
     version_db = Version.new({
       version: product_doc[:version],
       released_at: release_dt,
       released_string: product_doc[:published],
       status: (product_doc[:isPreRelease] ? "prerelease" : "stable" )
     })
-  
+
     case product_doc[:packageHashAlgorithm]
     when /sha512/i
       version_db[:sha512] = product_doc[:packageHash]
@@ -175,7 +181,7 @@ class NugetCrawler < Versioneye::Crawl
 
     product.versions.push version_db
     product.reindex = true
-    product
+    product.save
   end
 
   #product = initialized Product model, product_doc = product data from NugetAPI
@@ -210,8 +216,8 @@ class NugetCrawler < Versioneye::Crawl
     })
 
     dep_db.save
-    dep_db.update_known 
-    
+    dep_db.update_known
+
     logger.info "#-- create a new Nuget dependency: #{dep_db}"
     dep_db
   end
@@ -230,7 +236,7 @@ class NugetCrawler < Versioneye::Crawl
   def self.create_versionlinks(product, product_doc, version_number)
     repo_link = "#{A_PACKAGE_URL}/#{product.prod_key}"
     Versionlink.create_versionlink(
-      product.language, product.prod_key, version_number, repo_link, 'Repository' 
+      product.language, product.prod_key, version_number, repo_link, 'Repository'
     )
 
     if product_doc[:projectUrl]
