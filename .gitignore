@@ -49,5 +49,5 @@ pkg
 #*.rbc
 
 log/*.log
-
+Gemfile.lock
 scripts/set_vars_for_dev_reiz.sh
