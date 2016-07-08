@@ -1,13 +1,12 @@
 class NugetCrawler < Versioneye::Crawl
 
-  A_NUGET_URL="https://api.nuget.org/v3"
-  A_CATALOG_PATH="/catalog0/index.json"
-  A_DOWNLOAD_URL="https://www.nuget.org/api/v2/package"
-  A_PACKAGE_URL = "https://www.nuget.org/packages"
-  A_PROFILE_URL = "https://www.nuget.org/profiles"
-
-  A_LANGUAGE_CSHARP="CSharp" #todo: replace with Product::A_LANGUAGE_CSHARP
-  A_TYPE_NUGET="Nuget" #todo: replace with Project::A_TYPE_NUGET
+  A_NUGET_URL       = "https://api.nuget.org/v3"
+  A_CATALOG_PATH    = "/catalog0/index.json"
+  A_DOWNLOAD_URL    = "https://www.nuget.org/api/v2/package"
+  A_PACKAGE_URL     = "https://www.nuget.org/packages"
+  A_PROFILE_URL     = "https://www.nuget.org/profiles"
+  A_LANGUAGE_CSHARP = Product::A_LANGUAGE_CSHARP
+  A_TYPE_NUGET      = Project::A_TYPE_NUGET
 
   def self.logger
     if !defined?(@@log) || @@log.nil?
@@ -25,9 +24,18 @@ class NugetCrawler < Versioneye::Crawl
     JSON.parse(res.body, {symbolize_names: true})
   end
 
+  def self.parse_date_string(dt_txt)
+    DateTime.parse dt_txt
+
+  rescue
+    logger.error "Failed to parse datetime from string: #{dt_txt}"
+  end
+
   def self.is_same_date(dt_txt1, dt_txt2)
-    dt1 = DateTime.parse dt_txt1
-    dt2 = DateTime.parse dt_txt2
+    return false if dt_txt1.to_s.empty? or dt_txt2.to_s.empty
+    dt1 = parse_date_string dt_txt1
+    dt2 = parse_date_string dt_txt2
+    return if dt1.nil? or dt2.nil?
 
     dt1.strftime('%Y-%m-%d') == dt2.strftime('%Y-%m-%d')
   end
@@ -148,7 +156,8 @@ class NugetCrawler < Versioneye::Crawl
   
   #saves new product version
   def self.create_new_version(product, product_doc)
-    release_dt = Date.parse product_doc[:published]
+    release_dt = parse_date_string product_doc[:published]
+
     version_db = Version.new({
       version: product_doc[:version],
       sha256: product_doc[:packageHash],
