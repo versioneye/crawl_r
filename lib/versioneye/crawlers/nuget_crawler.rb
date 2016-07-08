@@ -32,7 +32,7 @@ class NugetCrawler < Versioneye::Crawl
   end
 
   def self.is_same_date(dt_txt1, dt_txt2)
-    return false if dt_txt1.to_s.empty? or dt_txt2.to_s.empty
+    return false if dt_txt1.to_s.empty? or dt_txt2.to_s.empty?
     dt1 = parse_date_string dt_txt1
     dt2 = parse_date_string dt_txt2
     return if dt1.nil? or dt2.nil?
@@ -160,11 +160,17 @@ class NugetCrawler < Versioneye::Crawl
 
     version_db = Version.new({
       version: product_doc[:version],
-      sha256: product_doc[:packageHash],
       released_at: release_dt,
       released_string: product_doc[:published],
       status: (product_doc[:isPreRelease] ? "prerelease" : "stable" )
     })
+  
+    case product_doc[:packageHashAlgorithm]
+    when /sha512/i
+      version_db[:sha512] = product_doc[:packageHash]
+    when /sha256/i
+      version_db[:sha256] = product_doc[:packageHash]
+    end
 
     product.versions.push version_db
     product.reindex = true
@@ -190,7 +196,6 @@ class NugetCrawler < Versioneye::Crawl
 
     return dep_db unless dep_db.nil?
 
-    #TODO: what do to do with targetFramework?
     dep_db = Dependency.new({
       name: dep[:id],
       version: dep[:range],
@@ -199,8 +204,8 @@ class NugetCrawler < Versioneye::Crawl
       prod_version: version_number,
       scope: Dependency::A_SCOPE_COMPILE,
       prod_type: A_TYPE_NUGET,
-      language: A_LANGUAGE_CSHARP
-      #group_id: target #TODO: should targetFramework saved as groupID?
+      language: A_LANGUAGE_CSHARP,
+      targetFramework: target
     })
 
     dep_db.save
@@ -248,10 +253,10 @@ class NugetCrawler < Versioneye::Crawl
     return if authors_csv.to_s.empty?
 
     authors = authors_csv.split(',')
-    authors.each {|author_name| create_author(product, author_name, version_number) }
+    authors.each {|author_name| create_author(product, version_number, author_name) }
   end
 
-  def self.create_author(product, author_name, version_number)
+  def self.create_author(product, version_number, author_name)
     return if author_name.to_s.empty?
 
     devs = Developer.find_by(
