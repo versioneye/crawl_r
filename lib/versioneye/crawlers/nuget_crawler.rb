@@ -35,7 +35,7 @@ class NugetCrawler < Versioneye::Crawl
     return false if dt_txt1.to_s.empty? or dt_txt2.to_s.empty?
     dt1 = parse_date_string dt_txt1
     dt2 = parse_date_string dt_txt2
-    return if dt1.nil? or dt2.nil?
+    return false if dt1.nil? or dt2.nil?
 
     dt1.strftime('%Y-%m-%d') == dt2.strftime('%Y-%m-%d')
   end
