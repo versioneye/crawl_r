@@ -245,9 +245,16 @@ class NugetCrawler < Versioneye::Crawl
   def self.create_license(product, license_url, version_number)
     return if license_url.nil?
 
-    License.find_or_create(
-      product.language, product.prod_key, version_number, product.name, license_url
+    license = License.find_or_create_by(
+      name: "Nuget Unknown",
+      language: product.language,
+      prod_key: product.prod_key,
+      version: version_number,
+      url: license_url
     )
+
+    license.save
+    license
   end
 
   def self.create_authors(product, authors_csv, version_number)
