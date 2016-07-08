@@ -29,6 +29,7 @@ class NugetCrawler < Versioneye::Crawl
 
   rescue
     logger.error "Failed to parse datetime from string: #{dt_txt}"
+    return nil
   end
 
   def self.is_same_date(dt_txt1, dt_txt2)
