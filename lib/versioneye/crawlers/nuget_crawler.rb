@@ -1,5 +1,6 @@
 class NugetCrawler < Versioneye::Crawl
 
+
   A_NUGET_URL       = "https://api.nuget.org/v3"
   A_CATALOG_PATH    = "/catalog0/index.json"
   A_DOWNLOAD_URL    = "https://www.nuget.org/api/v2/package"
@@ -8,12 +9,14 @@ class NugetCrawler < Versioneye::Crawl
   A_LANGUAGE_CSHARP = Product::A_LANGUAGE_CSHARP
   A_TYPE_NUGET      = Project::A_TYPE_NUGET
 
+
   def self.logger
     if !defined?(@@log) || @@log.nil?
       @@log = Versioneye::DynLog.new("log/nuget.log", 10).log
     end
     @@log
   end
+
 
   def self.fetch_json(url)
     res = HTTParty.get(url)
@@ -24,12 +27,14 @@ class NugetCrawler < Versioneye::Crawl
     JSON.parse(res.body, {symbolize_names: true})
   end
 
+
   def self.parse_date_string(dt_txt)
     DateTime.parse dt_txt
   rescue
     logger.error "Failed to parse datetime from string: #{dt_txt}"
     return nil
   end
+
 
   def self.is_same_date(dt_txt1, dt_txt2)
     return false if dt_txt1.to_s.empty? or dt_txt2.to_s.empty?
@@ -39,6 +44,7 @@ class NugetCrawler < Versioneye::Crawl
 
     dt1.strftime('%Y-%m-%d') == dt2.strftime('%Y-%m-%d')
   end
+
 
   # crawls all the items if date_txt is nil
   # otherwise will only crawl catalogs published on the date_txt
@@ -71,6 +77,7 @@ class NugetCrawler < Versioneye::Crawl
     item_list.to_a.each { |the_page| crawl_catalog_page(the_page) }
   end
 
+
   def self.crawl_catalog_page(the_page)
     if the_page.nil?
       self.logger.warn "crawl_catalog_page: no page document"
@@ -88,7 +95,8 @@ class NugetCrawler < Versioneye::Crawl
     page_items[:items].to_a.each {|the_package| crawl_package(the_package) }
   end
 
-  def self.crawl_package(the_package)
+
+  def self.crawl_package( the_package )
     if the_package.nil?
       logger.warn "crawl_package: the package document was empty."
       return
@@ -101,7 +109,12 @@ class NugetCrawler < Versioneye::Crawl
     end
 
     save_product_info doc
+  rescue => e
+    self.logger.error "ERROR in crawl_package: #{e.message}"
+    self.logger.error e.backtrace.join("\n")
+    nil
   end
+
 
   def self.save_product_info(product_doc)
     version_number = product_doc[:version]
@@ -125,6 +138,7 @@ class NugetCrawler < Versioneye::Crawl
 
     product
   end
+
 
   #creates a new document or updates existing one
   def self.upsert_product(doc)
@@ -155,6 +169,7 @@ class NugetCrawler < Versioneye::Crawl
     product
   end
 
+
   # saves new product version and returns true if version is new
   # returns false if the version exist already in the db.
   def self.create_new_version(product, product_doc)
@@ -184,6 +199,7 @@ class NugetCrawler < Versioneye::Crawl
     product.save
   end
 
+
   #product = initialized Product model, product_doc = product data from NugetAPI
   def self.create_dependencies(product, product_doc, version_number)
     return if product_doc[:dependencyGroups].nil?
@@ -195,6 +211,7 @@ class NugetCrawler < Versioneye::Crawl
       end
     end
   end
+
 
   def self.create_dependency(product, version_number, dep, target = "")
     dep_db = Dependency.find_by(
@@ -222,6 +239,7 @@ class NugetCrawler < Versioneye::Crawl
     dep_db
   end
 
+
   def self.create_download(product, version_number)
     archive_db = Versionarchive.new({
       language: product.language,
@@ -232,6 +250,7 @@ class NugetCrawler < Versioneye::Crawl
     })
     Versionarchive.create_if_not_exist_by_name(archive_db)
   end
+
 
   def self.create_versionlinks(product, product_doc, version_number)
     repo_link = "#{A_PACKAGE_URL}/#{product.prod_key}"
@@ -248,6 +267,7 @@ class NugetCrawler < Versioneye::Crawl
     product
   end
 
+
   def self.create_license(product, license_url, version_number)
     return if license_url.nil?
 
@@ -263,12 +283,14 @@ class NugetCrawler < Versioneye::Crawl
     license
   end
 
+
   def self.create_authors(product, authors_csv, version_number)
     return if authors_csv.to_s.empty?
 
     authors = authors_csv.split(',')
     authors.each {|author_name| create_author(product, version_number, author_name) }
   end
+
 
   def self.create_author(product, version_number, author_name)
     return if author_name.to_s.empty?
@@ -286,4 +308,5 @@ class NugetCrawler < Versioneye::Crawl
       role: 'author'
     }).save
   end
+
 end
