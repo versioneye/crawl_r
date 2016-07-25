@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/versioneye/versioneye-core.git
-  revision: 7ae762b1d1394a7e4e1ed5c8adec96038b1d1307
-  tag: v9.5.9
+  revision: bc9111978dbb13d566e59fb9655192ddb79ab29f
+  tag: v9.5.16
   specs:
-    versioneye-core (9.5.9)
+    versioneye-core (9.5.16)
       actionmailer (~> 4.2.6)
       aws-sdk (~> 2.4.0)
       bundler (~> 1.12.5)
@@ -84,7 +84,6 @@ GEM
       activesupport (>= 4.0.2)
       fuzzy_match (~> 2.0.4)
       nap (~> 1.0)
-    coderay (1.1.1)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     dalli (2.7.6)
@@ -142,14 +141,12 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
-    method_source (0.8.2)
     mime-types (2.99.2)
     mini_portile2 (2.1.0)
     minitest (5.9.0)
     mixlib-log (1.6.0)
-    mongo (2.2.6)
+    mongo (2.2.7)
       bson (~> 4.0)
-      pry
     mongoid (5.1.3)
       activemodel (~> 4.0)
       mongo (~> 2.1)
@@ -182,10 +179,6 @@ GEM
       httparty (~> 0.9)
       persistent_http (< 2)
     pkg-config (1.1.7)
-    pry (0.10.4)
-      coderay (~> 1.1.0)
-      method_source (~> 0.8.1)
-      slop (~> 3.4)
     rack (1.6.4)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -238,7 +231,6 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.0)
-    slop (3.6.0)
     stripe (1.48.0)
       rest-client (>= 1.4, < 3.0)
     thread_safe (0.3.5)
