@@ -129,7 +129,7 @@ namespace :versioneye do
     value = '1 4 * * *'
     if !value.to_s.empty?
       scheduler.cron value do
-        NugetProducer.new '::nuget::'
+        NugetCrawlProducer.new '::nuget::'
       end
     end
 
