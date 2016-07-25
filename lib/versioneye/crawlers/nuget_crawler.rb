@@ -70,7 +70,7 @@ class NugetCrawler < Versioneye::Crawl
               logger.info "NugetCrawler: going to crawl all the catalogs."
               catalog[:items]
             else
-              logger.info "NugetCrawler: goint to crawl only #{date_txt} catalogs"
+              logger.info "NugetCrawler: going to crawl only #{date_txt} catalogs"
               catalog[:items].keep_if {|x| is_same_date(date_txt, x[:commitTimeStamp])}
             end
     crawl_catalog_pages(pages)
