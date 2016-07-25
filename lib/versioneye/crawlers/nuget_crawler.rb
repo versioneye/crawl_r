@@ -18,7 +18,7 @@ class NugetCrawler < Versioneye::Crawl
   end
 
 
-  def self.fetch_json(url)
+  def self.fetch_json( url )
     res = HTTParty.get(url)
     if res.code != 200
       self.logger.error "Failed to fetch JSON doc from: #{url} - #{res}"
@@ -28,7 +28,7 @@ class NugetCrawler < Versioneye::Crawl
   end
 
 
-  def self.parse_date_string(dt_txt)
+  def self.parse_date_string( dt_txt )
     DateTime.parse dt_txt
   rescue
     logger.error "Failed to parse datetime from string: #{dt_txt}"
@@ -38,11 +38,21 @@ class NugetCrawler < Versioneye::Crawl
 
   def self.is_same_date(dt_txt1, dt_txt2)
     return false if dt_txt1.to_s.empty? or dt_txt2.to_s.empty?
+
     dt1 = parse_date_string dt_txt1
     dt2 = parse_date_string dt_txt2
     return false if dt1.nil? or dt2.nil?
 
     dt1.strftime('%Y-%m-%d') == dt2.strftime('%Y-%m-%d')
+  end
+
+
+  def self.crawl_last_x_days( x_days = 10 )
+    x_days.times.each do |xd|
+      today = DateTime.now
+      xday = today - xd
+      crawl( xday.strftime("%F") )
+    end
   end
 
 

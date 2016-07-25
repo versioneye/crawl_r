@@ -42,6 +42,7 @@ module Versioneye
     require './lib/versioneye/producers/npm_crawl_producer'
     require './lib/versioneye/producers/satis_crawl_producer'
     require './lib/versioneye/producers/bower_crawl_producer'
+    require './lib/versioneye/producers/nuget_crawl_producer'
 
     require './lib/versioneye/workers/worker'
     require './lib/versioneye/workers/common_crawl_worker'
@@ -49,6 +50,7 @@ module Versioneye
     require './lib/versioneye/workers/npm_crawl_worker'
     require './lib/versioneye/workers/satis_crawl_worker'
     require './lib/versioneye/workers/bower_crawl_worker'
+    require './lib/versioneye/workers/nuget_crawl_worker'
 
     def self.log
       Versioneye::Log.instance.log
