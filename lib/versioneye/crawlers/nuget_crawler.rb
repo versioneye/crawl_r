@@ -144,9 +144,39 @@ class NugetCrawler < Versioneye::Crawl
       logger.info "-- New Nuget Package: #{product.prod_key} : #{version_number} "
       CrawlerUtils.create_newest( product, version_number, logger )
       CrawlerUtils.create_notifications( product, version_number, logger )
+    else
+      update_release_date product, product_doc
     end
 
     product
+  end
+
+
+  def self.update_release_date product, product_doc
+    version_number = product_doc[:version]
+    db_version = product.version_by_number version_number
+
+    publish_date_label = nil
+    if product_doc[:listed] == true
+      publish_date_label = product_doc[:published] #when it was released publicly, has old values for unlisted ones
+    else
+      publish_date_label = product_doc[:created] #when it was submitted to Nuget registry
+    end
+
+    release_dt = parse_date_string(publish_date_label)
+    #even if listed package has very old release date, then fallback to created
+    if release_dt.nil? or release_dt.year < 2000
+      publish_date_label = product_doc[:created]
+      release_dt = parse_date_string( publish_date_label )
+    end
+
+    db_version.released_at = release_dt
+    db_version.released_string = publish_date_label
+    db_version.save
+    self.logger.info "Updated #{product.prod_key}:#{version_number} with release date #{publish_date_label}"
+  rescue => e
+    self.logger.error "ERROR in crawl_package: #{e.message}"
+    self.logger.error e.backtrace.join("\n")
   end
 
 
@@ -189,7 +219,7 @@ class NugetCrawler < Versioneye::Crawl
       log.info "create_new_version: version #{version_number} already exists for #{product[:prod_key]}"
       return false
     end
-    
+
     if product_doc[:listed] == true
       publish_date_label = product_doc[:published] #when it was released publicly, has old values for unlisted ones
     else
