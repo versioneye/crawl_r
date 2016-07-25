@@ -31,7 +31,7 @@ class NugetCrawler < Versioneye::Crawl
   def self.parse_date_string( dt_txt )
     DateTime.parse dt_txt
   rescue
-    logger.error "Failed to parse datetime from string: #{dt_txt}"
+    logger.error "Failed to parse datetime from string: `#{dt_txt}`"
     return nil
   end
 
@@ -186,14 +186,27 @@ class NugetCrawler < Versioneye::Crawl
     version_number = product_doc[:version]
     db_version = product.version_by_number version_number
     if db_version # exist then skip this version
+      log.info "create_new_version: version #{version_number} already exists for #{product[:prod_key]}"
       return false
     end
+    
+    if product_doc[:listed] == true
+      publish_date_label = product_doc[:published] #when it was released publicly, has old values for unlisted ones
+    else
+      publish_date_label = product_doc[:created] #when it was submitted to Nuget registry
+    end
 
-    release_dt = parse_date_string product_doc[:published]
+    release_dt = parse_date_string(publish_date_label)
+    #even if listed package has very old release date, then fallback to created
+    if release_dt.nil? or release_dt.year < 2000
+      publish_date_label = product_doc[:created]
+      release_dt = parse_date_string( publish_date_label )
+    end
+
     version_db = Version.new({
       version: product_doc[:version],
       released_at: release_dt,
-      released_string: product_doc[:published],
+      released_string: publish_date_label,
       status: (product_doc[:isPreRelease] ? "prerelease" : "stable" )
     })
 
