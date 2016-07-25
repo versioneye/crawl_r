@@ -14,8 +14,8 @@ group :development do
 end
 
 group :test do
-  gem 'simplecov'       , '~> 0.11.2'
-  gem 'rspec'           , '~> 3.4.0'
+  gem 'simplecov'       , '~> 0.12.0'
+  gem 'rspec'           , '~> 3.5.0'
   gem 'rspec_junit_formatter', '0.2.3'
   gem 'database_cleaner', '~> 1.5.1'
   gem 'factory_girl'    , '~> 4.7.0'
