@@ -8,6 +8,7 @@ gem 'versioneye-core'    , :git => 'https://github.com/versioneye/versioneye-cor
 gem 'rufus-scheduler', '3.2.1'
 
 # rubygems for text similarities
+gem 'narray', '0.6.1.2'
 gem 'tf-idf-similarity', '0.1.5'
 
 
