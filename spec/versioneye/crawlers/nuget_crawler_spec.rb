@@ -97,6 +97,7 @@ describe NugetCrawler do
       "description": "StructureMap is a Dependency Injection / Inversion of Control tool for .Net that can be used to improve the architectural qualities of an object oriented system by reducing the mechanical costs of good design techniques. StructureMap can enable looser coupling between classes and their dependencies, improve the testability of a class structure, and provide generic flexibility mechanisms. Used judiciously, StructureMap can greatly enhance the opportunities for code reuse by minimizing direct coupling between classes and configuration mechanisms.",
       "id": "structuremap",
       "isPrerelease": false,
+      "listed" : true,
       "language": "en-US",
       "lastEdited": "0001-01-01T00:00:00Z",
       "licenseUrl": "https://github.com/structuremap/structuremap/raw/master/LICENSE.TXT",
@@ -206,8 +207,5 @@ describe NugetCrawler do
 
     end
 
-
   end
-
-
 end

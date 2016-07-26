@@ -18,7 +18,7 @@ class NugetCrawler < Versioneye::Crawl
   end
 
 
-  def self.fetch_json(url)
+  def self.fetch_json( url )
     res = HTTParty.get(url)
     if res.code != 200
       self.logger.error "Failed to fetch JSON doc from: #{url} - #{res}"
@@ -28,21 +28,31 @@ class NugetCrawler < Versioneye::Crawl
   end
 
 
-  def self.parse_date_string(dt_txt)
+  def self.parse_date_string( dt_txt )
     DateTime.parse dt_txt
   rescue
-    logger.error "Failed to parse datetime from string: #{dt_txt}"
+    logger.error "Failed to parse datetime from string: `#{dt_txt}`"
     return nil
   end
 
 
   def self.is_same_date(dt_txt1, dt_txt2)
     return false if dt_txt1.to_s.empty? or dt_txt2.to_s.empty?
+
     dt1 = parse_date_string dt_txt1
     dt2 = parse_date_string dt_txt2
     return false if dt1.nil? or dt2.nil?
 
     dt1.strftime('%Y-%m-%d') == dt2.strftime('%Y-%m-%d')
+  end
+
+
+  def self.crawl_last_x_days( x_days = 10 )
+    x_days.times.each do |xd|
+      today = DateTime.now
+      xday = today - xd
+      crawl( xday.strftime("%F") )
+    end
   end
 
 
@@ -60,7 +70,7 @@ class NugetCrawler < Versioneye::Crawl
               logger.info "NugetCrawler: going to crawl all the catalogs."
               catalog[:items]
             else
-              logger.info "NugetCrawler: goint to crawl only #{date_txt} catalogs"
+              logger.info "NugetCrawler: going to crawl only #{date_txt} catalogs"
               catalog[:items].keep_if {|x| is_same_date(date_txt, x[:commitTimeStamp])}
             end
     crawl_catalog_pages(pages)
@@ -134,9 +144,39 @@ class NugetCrawler < Versioneye::Crawl
       logger.info "-- New Nuget Package: #{product.prod_key} : #{version_number} "
       CrawlerUtils.create_newest( product, version_number, logger )
       CrawlerUtils.create_notifications( product, version_number, logger )
+    else
+      update_release_date product, product_doc
     end
 
     product
+  end
+
+
+  def self.update_release_date product, product_doc
+    version_number = product_doc[:version]
+    db_version = product.version_by_number version_number
+
+    publish_date_label = nil
+    if product_doc[:listed] == true
+      publish_date_label = product_doc[:published] #when it was released publicly, has old values for unlisted ones
+    else
+      publish_date_label = product_doc[:created] #when it was submitted to Nuget registry
+    end
+
+    release_dt = parse_date_string(publish_date_label)
+    #even if listed package has very old release date, then fallback to created
+    if release_dt.nil? or release_dt.year < 2000
+      publish_date_label = product_doc[:created]
+      release_dt = parse_date_string( publish_date_label )
+    end
+
+    db_version.released_at = release_dt
+    db_version.released_string = publish_date_label
+    db_version.save
+    self.logger.info "Updated #{product.prod_key}:#{version_number} with release date #{publish_date_label}"
+  rescue => e
+    self.logger.error "ERROR in crawl_package: #{e.message}"
+    self.logger.error e.backtrace.join("\n")
   end
 
 
@@ -176,14 +216,27 @@ class NugetCrawler < Versioneye::Crawl
     version_number = product_doc[:version]
     db_version = product.version_by_number version_number
     if db_version # exist then skip this version
+      log.info "create_new_version: version #{version_number} already exists for #{product[:prod_key]}"
       return false
     end
 
-    release_dt = parse_date_string product_doc[:published]
+    if product_doc[:listed] == true
+      publish_date_label = product_doc[:published] #when it was released publicly, has old values for unlisted ones
+    else
+      publish_date_label = product_doc[:created] #when it was submitted to Nuget registry
+    end
+
+    release_dt = parse_date_string(publish_date_label)
+    #even if listed package has very old release date, then fallback to created
+    if release_dt.nil? or release_dt.year < 2000
+      publish_date_label = product_doc[:created]
+      release_dt = parse_date_string( publish_date_label )
+    end
+
     version_db = Version.new({
       version: product_doc[:version],
       released_at: release_dt,
-      released_string: product_doc[:published],
+      released_string: publish_date_label,
       status: (product_doc[:isPreRelease] ? "prerelease" : "stable" )
     })
 

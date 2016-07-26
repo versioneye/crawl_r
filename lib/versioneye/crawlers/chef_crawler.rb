@@ -63,7 +63,7 @@ class ChefCrawler < Versioneye::Crawl
 
   def self.handle_version product, version_link
     package = JSON.parse HTTParty.get( version_link ).response.body
-    return if product.version_by_number(package['version'])
+    return nil if product.version_by_number( package['version'] ) # return if version exist already in our database!
 
     product.add_version package['version']
     product.version = package['version'] if product.version.to_s.empty? || product.version.eql?('0.0.0+NA')

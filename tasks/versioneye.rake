@@ -125,13 +125,13 @@ namespace :versioneye do
       end
     end
 
-    # Comment out because currently NA
-    # value = '1 4 * * *'
-    # if !value.to_s.empty?
-    #   scheduler.cron value do
-    #     BiicodeCrawlProducer.new '::biicode::'
-    #   end
-    # end
+
+    value = '1 4 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        NugetCrawlProducer.new '::nuget::'
+      end
+    end
 
     value = '1 5 * * *'
     if !value.to_s.empty?
@@ -327,11 +327,11 @@ namespace :versioneye do
     puts "---"
   end
 
-  desc "Start BiicodeCrawlWorker"
-  task :biicode_crawl_worker do
-    puts "START BiicodeCrawlWorker"
+  desc "Start NugetCrawlWorker"
+  task :nuget_crawl_worker do
+    puts "START NugetCrawlWorker"
     RubyCrawl.new
-    BiicodeCrawlWorker.new.work
+    NugetCrawlWorker.new.work
     puts "---"
   end
 
