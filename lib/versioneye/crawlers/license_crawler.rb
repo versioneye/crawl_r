@@ -28,6 +28,7 @@ class LicenseCrawler < Versioneye::Crawl
   # all the OSS licenses on SPDX and uses best result as license ID
   def self.crawl_unidentified_urls(language)
     logger.info "crawl_unidentified_urls: initializing a LicenseMatcher."
+    #initialization of LicenseMatcher takes long time
     lic_matcher = LicenseMatcher.new A_LICENSE_CORPUS_PATH
     if lic_matcher.licenses.empty?
       logger.error "crawl_unidentified_urls: Found no corpus for licenseMatcher at #{A_LICENSE_CORPUS_PATH};"
@@ -39,7 +40,7 @@ class LicenseCrawler < Versioneye::Crawl
     licenses = License.where(language: language, spdx_identifier: nil)
     licenses.to_a.each do |lic_db|
       n += 1
-      updated_lic = crawl_license_file lic_db
+      updated_lic = crawl_license_file(lic_matcher, lic_db)
       failed += 1 if updated_lic.nil?
     end
 
@@ -47,7 +48,7 @@ class LicenseCrawler < Versioneye::Crawl
   end
 
   #ables to scale out different workers 
-  def crawl_license_file(lic_db)
+  def self.crawl_license_file(lic_matcher, lic_db)
     prod_id = "#{lic_db[:language]}/#{lic_db[:prod_key]}"
     url = lic_db[:url].to_s.strip
     if url.empty?
