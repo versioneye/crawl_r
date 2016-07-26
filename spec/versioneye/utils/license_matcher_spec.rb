@@ -31,6 +31,7 @@ describe LicenseMatcher do
   let(:mit_ooi){ File.read "#{spec_path}/mit_ooi.html" }
   let(:mit_bb){ File.read "#{spec_path}/mit_bb.html" }
   let(:mspl_ooi){ File.read "#{spec_path}/mspl_ooi.html" }
+  let(:cpol){File.read "#{spec_path}/cpol.html"}
 
   it "finds correct matches for html files" do
 
@@ -61,11 +62,15 @@ describe LicenseMatcher do
     expect( score ).to be > min_score
 
     expect( lic_matcher.match_html(mspl_ooi).first.first ).to eq('MS-PL')
+
+    spdx_id, score = lic_matcher.match_html(cpol).first
+    expect( spdx_id ).to eq('CPOL-1.02')
+    expect( score ).to be > min_score 
   end
 
   it "matches all the license files in the corpuse correctly" do
     lic_matcher.licenses.each do |lic_id|
-      next if lic_id == 'msl_dotnet'
+      next if lic_id == 'msl_dotnet' or lic_id == 'CPOL-1.02'
 
       lic_txt = File.read "#{corpus_path}/#{lic_id}"
 
@@ -76,7 +81,7 @@ describe LicenseMatcher do
     end
   end
 
-# COMMENT OUT WHILE DEVELOPING  
+# COMMENT OUT WHEN DEVELOPING  
 #  it "matches all the MIT urls as MIT license" do
 #    File.foreach("#{spec_path}/mit_urls.txt") do |mit_url|
 #      mit_url.to_s.gsub!(/\s+/, '')

@@ -44,7 +44,7 @@ class LicenseCrawler < Versioneye::Crawl
       failed += 1 if updated_lic.nil?
     end
 
-    logger.info "crawl_unidentified_urls: done! crawled #{n} licenses"
+    logger.info "crawl_unidentified_urls: done! crawled #{n} licenses, skipped: #{failed}"
   end
 
   #ables to scale out different workers 
@@ -87,16 +87,18 @@ class LicenseCrawler < Versioneye::Crawl
     spdx_id, score = best_match
     if url =~ /mit/i and spdx_id != 'MIT'
       logger.error "crawl_license_file: didnt detect MIT for #{prod_id}, #{matches}, #{url}"
-      spdx_id = 'MIT'
+      spdx_id, score = 'MIT', 1.0
     end
 
     #TODO: if these special cases gets bigger -> refactor own method or change solution
     case url
     when 'http://jquery.org/license'
-      spdx_id = 'MIT' #Jquery license page doesnt include any license text
+      spdx_id, score = 'MIT', 1.0 #Jquery license page doesnt include any license text
+    when 'https://www.mozilla.org/en-US/MPL/'
+      spdx_id, score = 'MPL-2.0', 1.0
     end
 
-    logger.debug "crawl_license_file: best match for #{prod_id} => #{best_match} #{url}"
+    logger.debug "crawl_license_file: best match for #{prod_id} => #{spdx_id}:#{score} #{url}"
     lic_db.update(
       spdx_identifier: spdx_id,
       name: spdx_id

@@ -60,11 +60,11 @@ class LicenseMatcher
     return [] if doc.nil?
 
     body_txt = doc.xpath(
-      '//p | //h1 | //h2 | //h3 | //h4 | //h5 | //h6 | //em | // strong | //i |//td | //pre'
+      '//p | //h1 | //h2 | //h3 | //h4 | //h5 | //h6 | //em | // strong | //i |//td |//li |//pre'
     ).text.to_s.strip
    
     if body_txt.empty?
-      logger.warn "match_html: document didnt pass noise filter, will use whole body content"
+      p "match_html: document didnt pass noise filter, will use whole body content"
       body_txt = doc.xpath('//body').text.to_s.strip
     end
 
@@ -89,7 +89,7 @@ class LicenseMatcher
   def safe_encode(txt)
     txt.to_s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
   rescue
-    logger.error "Failed to encode text:\n #{txt}"
+    p "Failed to encode text:\n #{txt}"
     return nil
   end
 end
