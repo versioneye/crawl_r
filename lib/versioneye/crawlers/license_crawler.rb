@@ -38,59 +38,64 @@ class LicenseCrawler < Versioneye::Crawl
     n = 1
     licenses = License.where(language: language, spdx_identifier: nil)
     licenses.to_a.each do |lic_db|
-      prod_id = "#{lic_db[:language]}/#{lic_db[:prod_key]}"
       n += 1
-
-      url = lic_db[:url].to_s.strip
-      if url.empty?
-        logger.warn "crawl_unidentified_urls: no url for #{prod_id}."
-        next
-      end
-
-      res = fetch url
-      if res.nil? or res.code != 200
-        logger.error "crawl_unidentified_urls: failed to read #{prod_id} data from: #{url} - #{res.try(:code)}"
-        lic_db.update(name: 'unknown')
-        next
-      end
-    
-      matches = case res.headers["content-type"]
-                when /text\/plain/i
-                  lic_matcher.match_text res.body
-                when /text\/html/i
-                  lic_matcher.match_html res.body
-                else
-                  logger.warn "crawl_unidentified_urls: unsupported content-type 
-                           #{res.headers['content-type']} - #{prod_id}, #{url}"
-                  []
-                end
-      
-      best_match = matches.to_a.first
-      if best_match.nil? or best_match.empty?
-        logger.warn "crawl_unidentified_urls: found no match for #{prod_id}, #{url}"
-        next
-      end
-
-      if best_match.last < A_MIN_SCORE_CONFIDENCE
-        logger.warn "crawl_unidentified_urls: #{prod_id} best match had too low score #{best_match}, #{url}"
-        next
-      end
-
-      spdx_id, score = best_match
-      #BUG: sometimes MIT licenses on open-source.org are mis-classified as MS-PL
-      if url =~ /mit/i and spdx_id != 'MIT'
-        logger.error "crawl_unidentified_urls: didnt detect MIT for #{prod_id}, #{matches}, #{url}"
-        spdx_id = 'MIT'
-      end
-      
-      logger.debug "crawl_unidentified_urls: best match for #{prod_id} => #{best_match} #{url}"
-      lic_db.update(
-        spdx_identifier: spdx_id,
-        name: spdx_id
-      )
+      crawl_license_file lic_db
     end
 
     logger.info "crawl_unidentified_urls: done! crawled #{n} licenses"
+  end
+
+  #ables to scale out different workers 
+  def crawl_license_file(lic_db)
+    prod_id = "#{lic_db[:language]}/#{lic_db[:prod_key]}"
+    url = lic_db[:url].to_s.strip
+    if url.empty?
+      logger.warn "crawl_license_file: no url for #{prod_id}."
+      next
+    end
+
+    res = fetch url
+    if res.nil? or res.code != 200
+      logger.error "crawl_license_file: failed to read #{prod_id} data from: #{url} - #{res.try(:code)}"
+      lic_db.update(name: 'unknown')
+      next
+    end
+  
+    matches = case res.headers["content-type"]
+              when /text\/plain/i
+                lic_matcher.match_text res.body
+              when /text\/html/i
+                lic_matcher.match_html res.body
+              else
+                logger.warn "crawl_license_file: unsupported content-type 
+                         #{res.headers['content-type']} - #{prod_id}, #{url}"
+                []
+              end
+    
+    best_match = matches.to_a.first
+    if best_match.nil? or best_match.empty?
+      logger.warn "crawl_license_file: found no match for #{prod_id}, #{url}"
+      next
+    end
+
+    if best_match.last < A_MIN_SCORE_CONFIDENCE
+      logger.warn "crawl_license_file: #{prod_id} best match had too low score #{best_match}, #{url}"
+      next
+    end
+
+    spdx_id, score = best_match
+    #BUG: sometimes MIT licenses on open-source.org are mis-classified as MS-PL
+    if url =~ /mit/i and spdx_id != 'MIT'
+      logger.error "crawl_license_file: didnt detect MIT for #{prod_id}, #{matches}, #{url}"
+      spdx_id = 'MIT'
+    end
+    
+    logger.debug "crawl_license_file: best match for #{prod_id} => #{best_match} #{url}"
+    lic_db.update(
+      spdx_identifier: spdx_id,
+      name: spdx_id
+    )
+
   end
 
 
