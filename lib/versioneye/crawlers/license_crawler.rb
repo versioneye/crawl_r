@@ -4,7 +4,7 @@ class LicenseCrawler < Versioneye::Crawl
   A_SOURCE_GMB = 'GMB' # GitHub Master Branch
   A_SOURCE_G   = 'GITHUB' # GitHub Master Branch
   A_LICENSE_CORPUS_PATH = 'data/licenses/texts/plain' #where to find license text for LicenseMatcher
-  A_MIN_SCORE_CONFIDENCE = 0.4
+  A_MIN_SCORE_CONFIDENCE = 0.5
 
   LICENSE_FILES = ['LICENSE.md', 'LICENSE.txt', 'LICENSE', 'LICENCE', 'MIT-LICENSE', 'license.md', 'licence.md', 'UNLICENSE.md', 'README.md']
 

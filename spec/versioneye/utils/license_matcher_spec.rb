@@ -19,7 +19,7 @@ describe LicenseMatcher do
     expect( lic_matcher.match_text(dotnet_txt).first.first ).to eq('msl_dotnet')
   end
 
-  let(:min_score){ 0.4 }
+  let(:min_score){ 0.5 }
   let(:spec_path){ 'spec/fixtures/files/licenses' }
   let(:mit_html){ File.read "#{spec_path}/mit.htm" }
   let(:apache_html){File.read "#{spec_path}/apache2.html" }
