@@ -18,8 +18,6 @@ describe LicenseMatcher do
     expect( lic_matcher.match_text(dotnet_txt).first.first ).to eq('msl_dotnet')
   end
 
-  #TODO: run test over all the corpus files
-
   let(:spec_path){ 'spec/fixtures/files/licenses' }
   let(:mit_html){ File.read "#{spec_path}/mit.htm" }
   let(:apache_html){File.read "#{spec_path}/apache2.html" }
@@ -40,6 +38,18 @@ describe LicenseMatcher do
     expect( lic_matcher.match_html(apache_aws).first.first ).to eq('Apache-2.0')
     expect( lic_matcher.match_html(apache_plex).first.first ).to eq('Apache-2.0')
     expect( lic_matcher.match_html(bsd_fparsec).first.first ).to eq('BSD-3')
+  end
 
+  it "matches all the license files in the corpuse correctly" do
+    lic_matcher.licenses.each do |lic_id|
+      next if lic_id == 'msl_dotnet'
+
+      lic_txt = File.read "#{corpus_path}/#{lic_id}"
+
+      res = lic_matcher.match_text(lic_txt)
+      p "#{lic_id} => #{res} "
+      expect(res).not_to be_nil
+      expect(res.first.first).to eq(lic_id)
+    end
   end
 end

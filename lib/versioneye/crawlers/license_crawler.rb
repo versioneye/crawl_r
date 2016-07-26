@@ -3,6 +3,8 @@ class LicenseCrawler < Versioneye::Crawl
 
   A_SOURCE_GMB = 'GMB' # GitHub Master Branch
   A_SOURCE_G   = 'GITHUB' # GitHub Master Branch
+  A_LICENSE_CORPUS_PATH = 'data/licenses/texts/plain' #where to find license text for LicenseMatcher
+  A_MIN_SCORE_CONFIDENCE = 0.4
 
   LICENSE_FILES = ['LICENSE.md', 'LICENSE.txt', 'LICENSE', 'LICENCE', 'MIT-LICENSE', 'license.md', 'licence.md', 'UNLICENSE.md', 'README.md']
 
@@ -12,6 +14,76 @@ class LicenseCrawler < Versioneye::Crawl
       @@log = Versioneye::DynLog.new("log/license.log", 10).log
     end
     @@log
+  end
+
+  def self.fetch url
+    HTTParty.get url
+  rescue
+    logger.error "failed to fetch data from #{url}"
+    nil
+  end
+
+
+  # it fetches license file from url and then tries to match it with
+  # all the OSS licenses on SPDX and uses best result as license ID
+  def self.crawl_unidentified_urls(language)
+    logger.info "crawl_unidentified_urls: initializing a LicenseMatcher."
+    lic_matcher = LicenseMatcher.new A_LICENSE_CORPUS_PATH
+    if lic_matcher.licenses.empty?
+      logger.error "crawl_unidentified_urls: Found no corpus for licenseMatcher at #{A_LICENSE_CORPUS_PATH};"
+      return
+    end
+
+    logger.info "crawl_unidentified_urls: starting crawling process."
+    n = 1
+    licenses = License.where(language: language, spdx_identifier: nil)
+    licenses.to_a.each do |lic_db|
+      prod_id = "#{lic_db[:language]}/#{lic_db[:prod_key]}"
+      n += 1
+
+      url = lic_db[:url].to_s.strip
+      if url.empty?
+        logger.warn "crawl_unidentified_urls: no url for #{prod_id}."
+        next
+      end
+
+      res = fetch url
+      if res.nil? or res.code != 200
+        logger.error "crawl_unidentified_urls: failed to read #{prod_id} data from: #{url} - #{res.try(:code)}"
+        lic_db.update(name: 'unknown')
+        next
+      end
+    
+      matches = case res.headers["content-type"]
+                when /text\/plain/i
+                  lic_matcher.match_text res.body
+                when /text\/html/i
+                  lic_matcher.match_html res.body
+                else
+                  logger.warn "crawl_unidentified_urls: unsupported content-type 
+                           #{res.headers['content-type']} - #{prod_id}, #{url}"
+                  []
+                end
+      
+      best_match = matches.to_a.first
+      if best_match.nil? or best_match.empty?
+        logger.warn "crawl_unidentified_urls: found no match for #{prod_id}, #{url}"
+        next
+      end
+
+      if best_match.last < A_MIN_SCORE_CONFIDENCE
+        logger.warn "crawl_unidentified_urls: #{prod_id} best match had too low score #{best_match}, #{url}"
+        next
+      end
+
+      logger.debug "crawl_unidentified_urls: best match for #{prod_id} => #{best_match} #{url}"
+      lic_db.update(
+        spdx_identifier: best_match[0],
+        name: best_match[0]
+      )
+    end
+
+    logger.info "crawl_unidentified_urls: done! crawled #{n} licenses"
   end
 
 
