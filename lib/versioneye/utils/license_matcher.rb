@@ -7,13 +7,6 @@ class LicenseMatcher
   
   CUSTOM_CORPUS_FILES_PATH = 'data/custom_licenses' #where to look up non SPDX licenses
 
-  def self.logger
-    if !defined?(@@log) || @@log.nil?
-      @@log = Versioneye::DynLog.new("log/license.log", 10).log
-    end
-    @@log
-  end
-
   def initialize(files_path)
     spdx_ids, spdx_docs = read_corpus(files_path)
     custom_ids, custom_docs = read_corpus(CUSTOM_CORPUS_FILES_PATH)
@@ -31,8 +24,9 @@ class LicenseMatcher
       if txt
         acc << TfIdfSimilarity::Document.new(txt)
       else
-        logger.warn "read_corpus: failed to encode content of corpus #{files_path}/#{file_name}"
+        p "read_corpus: failed to encode content of corpus #{files_path}/#{file_name}"
       end
+
       acc
     end
 
@@ -65,11 +59,17 @@ class LicenseMatcher
     doc = Nokogiri.HTML(html_doc)
     return [] if doc.nil?
 
-    #TODO: how remove noise from HTML  
-    body_txt = doc.xpath('//body').text.to_s.strip
-    
+    body_txt = doc.xpath(
+      '//p | //h1 | //h2 | //h3 | //h4 | //h5 | //h6 | //em | // strong | //i |//td | //pre'
+    ).text.to_s.strip
+   
     if body_txt.empty?
-      logger.warn "match_html: didnt find enough text from html_doc: #{html_doc}"
+      logger.warn "match_html: document didnt pass noise filter, will use whole body content"
+      body_txt = doc.xpath('//body').text.to_s.strip
+    end
+
+    if body_txt.empty?
+      p "match_html: didnt find enough text from html_doc: #{html_doc}"
       return [] 
     end
 

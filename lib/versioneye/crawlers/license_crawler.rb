@@ -76,10 +76,17 @@ class LicenseCrawler < Versioneye::Crawl
         next
       end
 
+      spdx_id, score = best_match
+      #BUG: sometimes MIT licenses on open-source.org are mis-classified as MS-PL
+      if url =~ /mit/i and spdx_id != 'MIT'
+        logger.error "crawl_unidentified_urls: didnt detect MIT for #{prod_id}, #{matches}, #{url}"
+        spdx_id = 'MIT'
+      end
+      
       logger.debug "crawl_unidentified_urls: best match for #{prod_id} => #{best_match} #{url}"
       lic_db.update(
-        spdx_identifier: best_match[0],
-        name: best_match[0]
+        spdx_identifier: spdx_id,
+        name: spdx_id
       )
     end
 

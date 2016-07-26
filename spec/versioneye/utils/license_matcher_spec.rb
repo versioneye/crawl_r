@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'httparty'
 
 describe LicenseMatcher do
   let(:corpus_path){ 'data/licenses/texts/plain' }
@@ -18,6 +19,7 @@ describe LicenseMatcher do
     expect( lic_matcher.match_text(dotnet_txt).first.first ).to eq('msl_dotnet')
   end
 
+  let(:min_score){ 0.4 }
   let(:spec_path){ 'spec/fixtures/files/licenses' }
   let(:mit_html){ File.read "#{spec_path}/mit.htm" }
   let(:apache_html){File.read "#{spec_path}/apache2.html" }
@@ -26,6 +28,9 @@ describe LicenseMatcher do
   let(:apache_aws){File.read "#{spec_path}/apache_aws.html"}
   let(:apache_plex){ File.read "#{spec_path}/apache_plex.html"}
   let(:bsd_fparsec){ File.read "#{spec_path}/bsd_fparsec.html"}
+  let(:mit_ooi){ File.read "#{spec_path}/mit_ooi.html" }
+  let(:mit_bb){ File.read "#{spec_path}/mit_bb.html" }
+  let(:mspl_ooi){ File.read "#{spec_path}/mspl_ooi.html" }
 
   it "finds correct matches for html files" do
 
@@ -35,9 +40,27 @@ describe LicenseMatcher do
     expect( lic_matcher.match_html(bsd3_html).first.first ).to eq('BSD-4')
 
     #how it handles noisy pages
-    expect( lic_matcher.match_html(apache_aws).first.first ).to eq('Apache-2.0')
-    expect( lic_matcher.match_html(apache_plex).first.first ).to eq('Apache-2.0')
-    expect( lic_matcher.match_html(bsd_fparsec).first.first ).to eq('BSD-3')
+    spdx_id, score = lic_matcher.match_html(apache_aws).first
+    expect( spdx_id ).to eq('Apache-2.0')
+    expect( score ).to be > min_score
+
+    spdx_id, score = lic_matcher.match_html(apache_plex).first 
+    expect( spdx_id ).to eq('Apache-2.0')
+    expect( score ).to be > min_score
+
+    spdx_id, score = lic_matcher.match_html(bsd_fparsec).first
+    expect( spdx_id ).to eq('BSD-3')
+    expect( score ).to be > min_score
+
+    spdx_id, score = lic_matcher.match_html(mit_ooi).first 
+    expect( spdx_id ).to eq('MIT')
+    expect( score ).to be > min_score
+
+    spdx_id, score = lic_matcher.match_html(mit_bb).first
+    expect( spdx_id ).to eq('MIT')
+    expect( score ).to be > min_score
+
+    expect( lic_matcher.match_html(mspl_ooi).first.first ).to eq('MS-PL')
   end
 
   it "matches all the license files in the corpuse correctly" do
@@ -52,4 +75,17 @@ describe LicenseMatcher do
       expect(res.first.first).to eq(lic_id)
     end
   end
+
+# COMMENT OUT WHILE DEVELOPING  
+#  it "matches all the MIT urls as MIT license" do
+#    File.foreach("#{spec_path}/mit_urls.txt") do |mit_url|
+#      mit_url.to_s.gsub!(/\s+/, '')
+#      p "URL: #{mit_url}"
+#
+#      res = HTTParty.get(mit_url)
+#      expect( res.code ).to eq(200)
+#      expect(lic_matcher.match_text(res.body).first.first ).to eq('MIT')
+#    end
+#  end
+
 end
