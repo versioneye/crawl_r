@@ -60,7 +60,7 @@ class LicenseMatcher
     return [] if doc.nil?
 
     body_txt = doc.xpath(
-      '//p | //h1 | //h2 | //h3 | //h4 | //h5 | //h6 | //em | // strong |//td |//pre |//li[not(@class)]'
+      '//p | //h1 | //h2 | //h3 | //h4 | //h5 | //h6 | //em | // strong |//td |//pre |//li[not(@id) and not(@class)]'
     ).text.to_s.strip
    
     if body_txt.empty?
