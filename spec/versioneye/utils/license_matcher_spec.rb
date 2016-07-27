@@ -93,4 +93,33 @@ describe LicenseMatcher do
 #    end
 #  end
 
+  let(:aal_url){ "https://opensource.org/licenses/AAL"  }
+  let(:apache1){ "https://opensource.org/licenses/Apache-1.1" }
+  let(:apache2){ "https://www.apache.org/licenses/LICENSE-2.0" }
+  let(:bsd2){ "https://opensource.org/licenses/BSD-2-Clause" }
+  let(:bsd3){ "https://opensource.org/licenses/BSD-3-Clause" }
+	let(:gpl3){ "https://www.gnu.org/licenses/gpl-3.0.txt" }
+
+  it "build license url index from license.json file" do
+    url_doc = lic_matcher.read_json_file "#{spec_path}/licenses.json"
+    expect( url_doc ).not_to be_nil
+
+    url_index = lic_matcher.read_license_url_index url_doc
+    expect( url_index ).not_to be_nil
+    expect( url_index[aal_url] ).to eq('AAL')
+		expect( url_index[apache1] ).to eq('Apache-1.1')
+		expect( url_index[apache2] ).to eq('Apache-2.0')
+		expect( url_index[bsd2] ).to eq('BSD-2')
+		expect( url_index[bsd3] ).to eq('BSD-3')
+		expect( url_index[gpl3] ).to eq('GPL-3.0')
+  end
+
+	it "matches saved URL with SPDX url" do
+		expect( lic_matcher.match_url(aal_url).first ).to eq('AAL')
+		expect( lic_matcher.match_url(apache1).first ).to eq('Apache-1.1')
+		expect( lic_matcher.match_url(apache2).first ).to eq('Apache-2.0')
+		expect( lic_matcher.match_url(bsd2).first).to eq('BSD-2')
+		expect( lic_matcher.match_url(bsd3).first).to eq('BSD-3')
+		expect( lic_matcher.match_url(gpl3).first ).to eq('GPL-3.0')
+	end
 end

@@ -40,8 +40,25 @@ class LicenseCrawler < Versioneye::Crawl
     licenses = License.where(language: language, spdx_identifier: nil)
     licenses.to_a.each do |lic_db|
       n += 1
-      updated_lic = crawl_license_file(lic_matcher, lic_db)
-      failed += 1 if updated_lic.nil?
+			#first try to match by url without doing http request
+			spdx_id, score = lic_matcher.match_url(lic_db[:url])
+			if spdx_id.nil?
+				logger.info "crawl_unidentified_urls: going to fetch license text from #{lic_db[:url]}"
+	      spdx_id, score = crawl_license_file(lic_matcher, lic_db)
+			else
+				logger.info "crawl_unidentified_urls: found match by url - #{spdx_id}, #{lic_db[:url]}"
+			end
+
+			if spdx_id.nil?
+				logger.warn "crawl_unidentified_urls: detect no license for #{lic_db[:url]}"
+				failed += 1
+				next
+			end
+
+			lic_db.update(
+				spdx_identifier: spdx_id,
+				name: spdx_id
+			)
     end
 
     logger.info "crawl_unidentified_urls: done! crawled #{n} licenses, skipped: #{failed}"
@@ -53,14 +70,14 @@ class LicenseCrawler < Versioneye::Crawl
     url = lic_db[:url].to_s.strip
     if url.empty?
       logger.warn "crawl_license_file: no url for #{prod_id}."
-      return
+      return []
     end
 
     res = fetch url
     if res.nil? or res.code != 200
       logger.error "crawl_license_file: failed to read #{prod_id} data from: #{url} - #{res.try(:code)}"
       lic_db.update(name: 'unknown')
-      return
+      return []
     end
   
     matches = case res.headers["content-type"]
@@ -76,21 +93,17 @@ class LicenseCrawler < Versioneye::Crawl
     best_match = matches.to_a.first
     if best_match.nil? or best_match.empty?
       logger.warn "crawl_license_file: found no match for #{prod_id}, #{url}"
-      return
+      return []
     end
 
     if best_match.last < A_MIN_SCORE_CONFIDENCE
       logger.warn "crawl_license_file: #{prod_id} best match had too low score #{best_match}, #{url}"
-      return
+      return []
     end
 
     spdx_id, score = best_match
-    if url =~ /mit/i and spdx_id != 'MIT'
-      logger.error "crawl_license_file: didnt detect MIT for #{prod_id}, #{matches}, #{url}"
-      spdx_id, score = 'MIT', 1.0
-    end
 
-    #TODO: if these special cases gets bigger -> refactor own method or change solution
+    #TODO: if these special cases gets bigger -> refactor to License.match_url
     case url
     when 'http://jquery.org/license'
       spdx_id, score = 'MIT', 1.0 #Jquery license page doesnt include any license text
@@ -99,12 +112,7 @@ class LicenseCrawler < Versioneye::Crawl
     end
 
     logger.debug "crawl_license_file: best match for #{prod_id} => #{spdx_id}:#{score} #{url}"
-    lic_db.update(
-      spdx_identifier: spdx_id,
-      name: spdx_id
-    )
-
-    return lic_db
+    [spdx_id, score]
   end
 
 
