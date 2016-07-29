@@ -17,6 +17,7 @@ module Versioneye
     require './lib/versioneye/crawlers/pom_crawler'
     require './lib/versioneye/crawlers/phpeye_crawler'
     require './lib/versioneye/crawlers/nuget_crawler'
+    require './lib/versioneye/crawlers/godep_crawler'
 
     require './lib/versioneye/crawlers/php/packagist_crawler'
     require './lib/versioneye/crawlers/php/packagist_license_crawler'
