@@ -37,6 +37,9 @@ module Versioneye
     require './lib/versioneye/crawlers/bower/bower_tag_crawler'
     require './lib/versioneye/crawlers/bower/bower_starter'
 
+
+    require './lib/versioneye/utils/git_version_index'
+
     require './lib/versioneye/producers/producer'
     require './lib/versioneye/producers/common_crawl_producer'
     require './lib/versioneye/producers/packagist_crawl_producer'
