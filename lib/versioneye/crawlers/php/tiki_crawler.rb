@@ -7,7 +7,7 @@ class TikiCrawler < SatisCrawler
     @@log
   end
 
-  A_BASE_URL  = 'http://composer.tiki.org/'
+  A_BASE_URL  = 'http://composer.tiki.org'
   A_LINK_NAME = 'Tiki Page'
 
 
