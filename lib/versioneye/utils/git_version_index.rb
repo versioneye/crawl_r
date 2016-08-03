@@ -20,7 +20,7 @@ class GitVersionIndex
     first_sha = get_earliest_sha()
     latest_sha = get_latest_sha()
 
-    @tag_sha_idx = {'0.0' => first_sha}.merge get_tag_shas
+    @tag_sha_idx = {'0.0' => first_sha, 'head' => latest_sha}.merge get_tag_shas
     @sha_tag_idx = @tag_sha_idx.invert
 
     start_shas = [first_sha] + @tag_sha_idx.values
@@ -32,6 +32,9 @@ class GitVersionIndex
     commit_pairs.each do |start_sha, end_sha|
       version_label = @sha_tag_idx[start_sha]
       commits = get_commits_between_shas(start_sha, end_sha)
+
+      #remove end_sha from the commits as it's belongs to other version already
+      commits = commits.delete_if {|c| c[:sha] == end_sha }
 
       version_commits[version_label] = {
         label: version_label,
@@ -117,7 +120,7 @@ class GitVersionIndex
     {
       sha: full_sha,
       short_sha: short_sha,
-      epoch: epoch_to_datetime(unix_dt),
+      commited_at: epoch_to_datetime(unix_dt),
       message: commit_msg,
       parents: parent_shas.to_s.split(/\s+/)
      }
@@ -128,5 +131,29 @@ class GitVersionIndex
     Dir.chdir(@dir) do
       yield if block_given?
     end
+  end
+
+  #transforms commit tree into list of Version indexes
+  def to_versions
+    versions = []
+
+    @tree.each_pair do |label, dt|
+      semver = SemVer.parse label
+      dt[:commits].to_a.each do |c|
+        is_version_commit = ( dt[:start_sha] == c[:sha] )
+
+
+        versions << Version.new({
+          version: ( is_version_commit ? semver.to_s : "#{semver.to_s}+sha#{c[:sha]}" ),
+          tag: ( is_version_commit ? label : nil ),
+          status: ( is_version_commit ? "STABLE" : "PRERELEASE" ),
+          released_at: c[:commited_at],
+          sha1: c[:sha],
+          md5: c[:short_sha]
+        })
+      end
+    end
+    
+    versions
   end
 end
