@@ -38,6 +38,9 @@ class SatisCrawler < Versioneye::Crawl
     packages = body['packages']
     return packages if packages && !packages.empty?
 
+    packages = body['providers']
+    return packages.keys if packages && !packages.empty?
+
     sha1 = body['includes'].first.last['sha1']
     url = "#{@base_url}include/all$#{sha1}.json"
     body = JSON.parse HTTParty.get( url ).response.body
