@@ -1,10 +1,12 @@
-require 'pqueue'
+require 'timeout'
 
 class GodepCrawler < Versioneye::Crawl
 
   A_GODEP_REGISTRY_URL = 'http://go-search.org/api'
   A_TYPE_GODEP         = 'Godep'
   A_LANGUAGE_GO        = 'Go'
+  A_MAX_QUEUE_SIZE     = 100
+  A_MAX_WAIT_TIME      = 60
 
   def self.logger
     if !defined?(@@log) || @@log.nil?
@@ -14,7 +16,7 @@ class GodepCrawler < Versioneye::Crawl
   end
 
   def self.crawl_all
-    clone_queue = Queue.new #PQueue.new([]) {|x,y| x[:downloads] > y[:downloads]}
+    clone_queue = Queue.new
     save_queue = Queue.new
 
     all_pkgs = fetch_package_index
@@ -24,11 +26,14 @@ class GodepCrawler < Versioneye::Crawl
     end
 
     tasks = []
-    tasks << run_detail_worker(all_pkgs.take(100), clone_queue)
-    tasks << run_clone_worker(clone_queue, save_queue)
     tasks << run_persistor_worker(save_queue)
-
+    tasks << run_clone_worker(clone_queue, save_queue)
+    tasks << run_detail_worker(all_pkgs.take(5000), clone_queue)
+ 
     tasks.each {|t| t.join}
+    
+    log.info "crawl_all: done"
+    true
   end
 
   def self.run_detail_worker(pkg_queue, result_queue)
@@ -36,10 +41,16 @@ class GodepCrawler < Versioneye::Crawl
       pkg_queue.each do |pkg_id|
         logger.info "run_detail_worker: going to fetch meta-info for #{pkg_id}"
 
-        prod = crawl_package pkg_id
+        prod = Timeout::timeout(A_MAX_WAIT_TIME) { crawl_package(pkg_id) }
         if prod.nil?
           logger.error "crawl_packages: failed to read packages data for: #{pkg_id}"
           next
+        end
+
+        #force small break so cloner could catch it up
+        if result_queue.size > A_MAX_QUEUE_SIZE
+          logger.info "run_detail_worker: taking a little break;"
+          sleep(5) 
         end
 
         result_queue.push prod
@@ -53,6 +64,7 @@ class GodepCrawler < Versioneye::Crawl
   end
 
   def self.run_clone_worker(product_queue, result_queue)
+    Thread.abort_on_exception = true
     Thread.new do
       logger.info "run_clone_worker: listening"
       while ( the_prod = product_queue.pop) != :done
@@ -64,12 +76,18 @@ class GodepCrawler < Versioneye::Crawl
         pkg_id = the_prod[:prod_key]
         logger.info "run_clone_worker: going to clone #{pkg_id}"
         
-        versions = crawl_repo_commits(pkg_id)
+        versions = Timeout::timeout(A_MAX_WAIT_TIME) { crawl_repo_commits(pkg_id, the_prod[:group_id]) }
         if versions.nil?
           logger.error "crawl_all: failed to read commit logs for #{pkg_id}"
+          next
         end
 
-        the_prod.versions = versions
+        the_prod.versions = versions #NB: it replaces old versions;
+        latest = VersionService.newest_version(versions)
+        if latest
+          the_prod[:version] = latest.version
+        end
+        
         result_queue.push the_prod
         sleep(1)
       end
@@ -91,6 +109,7 @@ class GodepCrawler < Versioneye::Crawl
 
         pkg_id = the_prod[:prod_key]
         logger.info "run_persistor_worker: saving #{pkg_id}"
+        the_prod.save
       end
 
       logger.info "run_persistor_worker: done"
@@ -111,19 +130,25 @@ class GodepCrawler < Versioneye::Crawl
     create_dependencies(pkg_id, pkg_dt[:Imports], pkg_dt[:testImports])
     create_version_link(prod, pkg_dt[:projectURL])
 
+    prod.save
     prod
   end
 
-  def self.crawl_repo_commits(pkg_id)
-    res = clone_repo pkg_id
-    p "#-- clone res: #{res}"
-
+  #returns a list of Version objects from very first commit to latest
+  def self.crawl_repo_commits(pkg_id, pkg_url)
+    
+    res = clone_repo(pkg_id, pkg_url)
     if res.nil? or res == false
-      logger.error "crawl_repo_commits: cloning #{pkg_id} failed."
+      logger.error "crawl_repo_commits: failed to clone #{pkg_id} from #{pkg_url}"
       return []
     end
     
-    process_cloned_repo pkg_id
+    #raises excpetion if processing logs takes more than X seconds
+    process_cloned_repo(pkg_id) 
+  rescue Exception => e
+    logger.error "crawl_repo_commits: failed process #{pkg_id} repo"
+    logger.error e.backtrace.join('\n')
+    return nil
   end
 
 
@@ -135,23 +160,27 @@ class GodepCrawler < Versioneye::Crawl
     fetch_json "#{A_GODEP_REGISTRY_URL}?action=package&id=#{pkg_id}"
   end
 
-  def self.clone_repo(pkg_id)
-    system("git clone https://#{pkg_id}.git tmp/#{pkg_id}")
+  def self.clone_repo(pkg_id, pkg_url)
+    system("git clone #{pkg_url} tmp/#{pkg_id}")
   rescue => e
-    logger.error "failed to clone the repo: #{pkg_id}"
+    logger.error "failed to clone the repo: #{pkg_id} - #{pkg_url}"
     logger.error e.backtrace.join('\n')
     return nil
   end
 
   def self.init_product(pkg_id, pkg_dt)
-    Product.new({
+    prod = Product.where(language: A_LANGUAGE_GO, prod_type: A_TYPE_GODEP, prod_key: pkg_id).first
+    return prod if prod
+
+    Product.create({
       prod_key: pkg_id,
       name: pkg_dt[:name],
       name_downcase: pkg_dt[:name].to_s.downcase,
       prod_type: A_TYPE_GODEP,
       language: A_LANGUAGE_GO,
       downloads: (pkg_dt[:StarCount] + pkg_dt[:StaticRank] + 1), #TODO: add rank field for the Product model
-      description: pkg_dt[:Description]
+      description: pkg_dt[:Description],
+      group_id: pkg_dt[:ProjectURL] #one repo may include many GOdep packages ~ AWS stuff and used for passing urls to cloning process
     })
   end
 
@@ -164,7 +193,8 @@ class GodepCrawler < Versioneye::Crawl
   end
 
   def self.create_dependency(pkg_id, dep_id, the_scope)
-    #TODO: check doesnt it already exists?
+    dep = Dependency.where(prod_type: A_TYPE_GODEP, prod_key: pkg_id, dep_prod_key: dep_id).first
+    return dep if dep
 
     Dependency.create({
       prod_type: A_TYPE_GODEP,
@@ -178,16 +208,20 @@ class GodepCrawler < Versioneye::Crawl
   end
 
   def self.create_version_link(prod, url, name = "Repository")
-    Versionlink.create_versionlink prod.language, prod.prod_key, prod.version, url, name
+    link = Versionlink.where(language: A_LANGUAGE_GO, prod_type: A_TYPE_GODEP, name: name).first
+    return link if link
+
+    Versionlink.create_versionlink prod.language, prod.prod_key, nil, url, name
   end
 
   def self.process_cloned_repo(pkg_id)
-    logger.info "Processing repo logs for #{pkg_id}"
-    repo_idx = GitVersionIndex.new "tmp/#{pkg_id}"
+    logger.info "process_cloned_repo: reading repo logs for #{pkg_id}"
+    repo_idx = GitVersionIndex.new("tmp/#{pkg_id}")
     repo_idx.build       #builds version tree from commit logs
     repo_idx.to_versions #transforms version tree into list of Version models
   rescue
     logger.error "process_cloned_repo: Failed to build commit version index"
+    return nil
   ensure
     system("rm -rf tmp/#{pkg_id}")
   end

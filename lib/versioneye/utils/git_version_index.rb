@@ -4,11 +4,13 @@ require 'csv'
 class GitVersionIndex
   attr_reader :dir, :tree
 
-  def initialize(repo_path)
+  def initialize(repo_path, logger = nil)
     unless Dir.exist?(repo_path)
       raise "GitVersionIndex: Folder doesnt exist: `#{repo_path}`"
     end
 
+    @logger = logger
+    @logger ||= Versioneye::DynLog.new('log/godep.log', 10).log
     @dir = Dir.new repo_path
 
     @tree = {}
@@ -17,6 +19,8 @@ class GitVersionIndex
   end
 
   def build
+    @logger.info "git_version_index: building index"
+
     first_sha = get_earliest_sha()
     latest_sha = get_latest_sha()
 
@@ -78,13 +82,13 @@ class GitVersionIndex
       %x[git rev-list -n 1 #{tag_label}]
     end
 
-    res.to_s.gsub(/\n/, '')
+    res.to_s.split(/\n/).first
   end
 
   def get_earliest_sha
     res = exec_in_dir { %x[git rev-list --max-parents=0 HEAD] }
 
-    res.to_s.gsub(/\n/, '')
+    res.to_s.split(/\n/).first
   rescue
     return nil
   end
@@ -92,7 +96,7 @@ class GitVersionIndex
   def get_latest_sha
     res = exec_in_dir { %x[git rev-parse HEAD] }
 
-    res.to_s.gsub(/\n/, '')
+    res.to_s.split(/\n/).first
   rescue
     return nil
   end
@@ -108,8 +112,8 @@ class GitVersionIndex
     rows = CSV.parse(log_res, {force_quotes: true, skip_blanks: true, quote_char: "\u00bf" })
     rows.to_a.reduce([]) {|acc, r| acc << process_log_row(r); acc }
   rescue Exception => e 
-    p "failed to parse: ", log_res
-    p e.backtrace.inspect
+    @logger.error "failed to parse: ", log_res
+    @logger.error e.backtrace.join('\n')
 
     return nil
   end
@@ -138,22 +142,39 @@ class GitVersionIndex
     versions = []
 
     @tree.each_pair do |label, dt|
-      semver = SemVer.parse label
+      label = label.to_s.gsub(/\A[r|v]/i, '')
+      semver = SemVer.parse(label)
+      if semver.nil?
+        @logger.warn "to_versions: failed to parse label `#{label}` as semver"
+        semver = label
+      end
+
       dt[:commits].to_a.each do |c|
         is_version_commit = ( dt[:start_sha] == c[:sha] )
 
+        version = if semver
+                    prefer = true
+                    ( is_version_commit ? semver.to_s : "#{semver.to_s}+sha.#{c[:sha]}" )
+                  else
+                    prefer = false
+                    "#{label}+sha.#{c[:sha]}"
+                  end
 
         versions << Version.new({
-          version: ( is_version_commit ? semver.to_s : "#{semver.to_s}+sha#{c[:sha]}" ),
+          version: version,
           tag: ( is_version_commit ? label : nil ),
           status: ( is_version_commit ? "STABLE" : "PRERELEASE" ),
           released_at: c[:commited_at],
           sha1: c[:sha],
-          md5: c[:short_sha]
+          md5: c[:short_sha],
+          prefer_global: prefer
         })
       end
     end
-    
     versions
+  
+  rescue Exception => e
+    @logger.error e.backtrace.join('\n')
+    return nil
   end
 end
