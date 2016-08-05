@@ -15,18 +15,40 @@ class GodepCrawler < Versioneye::Crawl
     @@log
   end
 
+  #crawls all the packages got from go-search index
   def self.crawl_all
+    all_pkgs = fetch_package_index
+    if all_pkgs.to_a.empty?
+      logger.error "crawl_all: failed to retrieve packages for #{A_GODEP_REGISTRY_URL}"
+      return false
+    end
+
+    run all_pkgs
+    cleanup
+    log.info "crawl_all: done"
+    true
+  end
+
+  #crawls updates for a list of products
+  #use case: pull newest versions for a project dependencies
+  # package_ids = [Product.prod_key...]
+  def self.crawl_products(package_ids)
+    if package_ids.to_a.empty?
+      logger.error "crawl_products: the list of product_ids were empty"
+      return false
+    end
+
+    run package_ids
+    cleanup
+    log.info "crawl_products: done"
+    true
+  end
+
+  def self.run(package_ids)
     clone_queue   = Queue.new
     indexer_queue = Queue.new
     save_queue    = Queue.new
-    
-
-    all_pkgs = fetch_package_index
-    if all_pkgs.to_a.empty?
-      logger.error "crawl: failed to retrieve packages for #{A_GODEP_REGISTRY_URL}"
-      return
-    end
-
+ 
     tasks = []
     tasks << run_persistor_worker(save_queue)
     tasks << run_clone_worker(clone_queue, indexer_queue)
@@ -34,29 +56,27 @@ class GodepCrawler < Versioneye::Crawl
     tasks << run_clone_worker(clone_queue, indexer_queue)
 
     tasks << run_git_indexer(indexer_queue, save_queue)
-    tasks << run_detail_worker(all_pkgs.take(5000), clone_queue)
+    tasks << run_detail_worker(package_ids.to_a, clone_queue)
  
     tasks.each {|t| t.join}
     
-    log.info "crawl_all: done"
     true
   end
 
   def self.run_detail_worker(pkg_queue, result_queue)
     Thread.new do
       pkg_queue.each do |pkg_id|
-        logger.info "run_detail_worker: going to fetch meta-info for #{pkg_id}"
-
-        prod = Timeout::timeout(A_MAX_WAIT_TIME) { crawl_package(pkg_id) }
-        if prod.nil?
-          logger.error "crawl_packages: failed to read packages data for: #{pkg_id}"
-          next
-        end
-
         #force small break so cloner could catch it up
         if result_queue.size > A_MAX_QUEUE_SIZE
           logger.info "run_detail_worker: taking a little break;"
           sleep(5) 
+        end
+
+        logger.info "run_detail_worker: going to fetch meta-info for #{pkg_id}"
+        prod = Timeout::timeout(A_MAX_WAIT_TIME) { crawl_package(pkg_id) }
+        if prod.nil?
+          logger.error "crawl_packages: failed to read packages data for: #{pkg_id}"
+          next
         end
 
         result_queue.push prod
@@ -82,7 +102,7 @@ class GodepCrawler < Versioneye::Crawl
         logger.info "run_clone_worker: going to clone #{pkg_id}"
 
         result = Timeout::timeout(A_MAX_WAIT_TIME) { clone_repo(pkg_id, the_prod[:group_id]) }
-        if result == true
+        if result
           result_queue.push the_prod
         end
       end
@@ -180,14 +200,17 @@ class GodepCrawler < Versioneye::Crawl
 
   def self.process_cloned_repo(pkg_id)
     logger.info "process_cloned_repo: reading repo logs for #{pkg_id}"
+
     repo_idx = GitVersionIndex.new("tmp/#{pkg_id}")
     repo_idx.build       #builds version tree from commit logs
     repo_idx.to_versions #transforms version tree into list of Version models
-  rescue
+  rescue => e
     logger.error "process_cloned_repo: Failed to build commit version index"
+    logger.error e.backtrace.join('\n')
     return nil
   ensure
-    system("rm -rf tmp/#{pkg_id}")
+    res = system("rm -rf tmp/#{pkg_id}")
+    logger.info "process_cloned_repo: a #{pkg_id} repo deleted? #{res}"
   end
 
 
@@ -244,5 +267,9 @@ class GodepCrawler < Versioneye::Crawl
       return nil
     end
     JSON.parse(res.body, {symbolize_names: true})
+  end
+
+  def self.cleanup
+    system("rm -rf tmp/*")
   end
 end

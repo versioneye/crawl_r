@@ -24,34 +24,47 @@ class GitVersionIndex
     first_sha = get_earliest_sha()
     latest_sha = get_latest_sha()
 
-    @tag_sha_idx = {'0.0' => first_sha, 'head' => latest_sha}.merge get_tag_shas
+    tags = get_tags
+    tag_idx = tags.to_a.reduce({}) do |acc, tag_row|
+      acc[tag_row[0]] = tag_row[1]
+      acc
+    end
+
+    @tag_sha_idx = {'0.0' => first_sha, 'head' => latest_sha}.merge tag_idx
     @sha_tag_idx = @tag_sha_idx.invert
 
-    start_shas = [first_sha] + @tag_sha_idx.values
-    end_shas   = @tag_sha_idx.values + [latest_sha]
+    tag_shas = tags.map {|t| t[1]}
+    start_shas = [first_sha] + tag_shas
+    end_shas   = tag_shas + [latest_sha]
     commit_pairs = start_shas.zip end_shas
 
 
+    start_commits = []
     version_commits = {}
     commit_pairs.each do |start_sha, end_sha|
       version_label = @sha_tag_idx[start_sha]
       commits = get_commits_between_shas(start_sha, end_sha)
 
       #remove end_sha from the commits as it's belongs to other version already
-      commits = commits.delete_if {|c| c[:sha] == end_sha }
+      next_start_commits = commits.dup.keep_if {|c| c[:sha] == end_sha}
+      commits = commits.keep_if {|c| c[:sha] != end_sha }
+      
 
       version_commits[version_label] = {
         label: version_label,
         start_sha: start_sha, #beginning of tagged commit
-        end_sha: end_sha,      #beginning of next tag
-        commits: commits
+        end_sha: end_sha,      #beginning of next tag, not included in commits
+        commits: start_commits.to_a + commits
       }
+
+      start_commits = next_start_commits
     end
 
     @tree = version_commits
     @tree
   end
 
+  #TODO: reverse order so it would miss end and include beginning commit
   def get_commits_between_shas(start_sha, end_sha)
     res = exec_in_dir do
       %x[git log --oneline --format="%h,%H,%ct,\u00bf%s\u00bf,%P" --ancestry-path #{start_sha}..#{end_sha}]
@@ -61,28 +74,15 @@ class GitVersionIndex
     process_logs res
   end
 
-  def get_tag_shas
-    tags = get_tags
-    return if tags.nil?
+  def get_tags
+    the_cmd = 'git log --date-order --reverse --tags --simplify-by-decoration --pretty=format:"%ct|%d|%H"'
+    rows = exec_in_dir { %x[ #{the_cmd} ] }
 
-    tags.reduce({}) do |acc, tag_lbl|
-      acc[tag_lbl] = get_tag_sha tag_lbl
+    rows.to_s.split(/\n+/).to_a.reduce([]) do |acc, row|
+      tag_info = process_tag_line(row)
+      acc << tag_info unless tag_info.to_a.empty?
       acc
     end
-  end
-
-  def get_tags
-    rows = exec_in_dir { %x[git tag --list] }
-
-    rows.to_s.split(/\n+/)
-  end
-
-  def get_tag_sha(tag_label)
-    res = exec_in_dir do
-      %x[git rev-list -n 1 #{tag_label}]
-    end
-
-    res.to_s.split(/\n/).first
   end
 
   def get_earliest_sha
@@ -137,6 +137,15 @@ class GitVersionIndex
     end
   end
 
+  def process_tag_line(tag_line)
+    epoch, tag_txt, tag_sha = tag_line.to_s.split(/\|/)
+    return if tag_txt.to_s.empty? or tag_sha.to_s.empty?
+
+    m = tag_txt.match(/tag: (?<label>\w+.+?)[\,|\)]/i)
+    [m[:label], tag_sha.strip, epoch.to_i] if m and m[:label]
+  end
+
+
   #transforms commit tree into list of Version indexes
   def to_versions
     versions = []
@@ -150,7 +159,7 @@ class GitVersionIndex
       end
 
       dt[:commits].to_a.each do |c|
-        is_version_commit = ( dt[:start_sha] == c[:sha] )
+        is_version_commit = @sha_tag_idx.has_key?(  c[:sha] ) #if it's tagged commit, then it's stable release
 
         version = if semver
                     prefer = true
