@@ -7,6 +7,7 @@ class GodepCrawler < Versioneye::Crawl
   A_LANGUAGE_GO        = 'Go'
   A_MAX_QUEUE_SIZE     = 500
   A_MAX_WAIT_TIME      = 180
+  A_CLONERS_N          = 3
 
   def self.logger
     if !defined?(@@log) || @@log.nil?
@@ -23,7 +24,7 @@ class GodepCrawler < Versioneye::Crawl
       return false
     end
 
-    run all_pkgs
+    all_pkgs.to_a.each {|pkg_id| crawl_one(pkg_id) }
     cleanup
     log.info "crawl_all: done"
     true
@@ -32,138 +33,51 @@ class GodepCrawler < Versioneye::Crawl
   #crawls updates for a list of products
   #use case: pull newest versions for a project dependencies
   # package_ids = [Product.prod_key...]
-  def self.crawl_products(package_ids)
+  def self.crawl_by_product_ids(package_ids)
     if package_ids.to_a.empty?
       logger.error "crawl_products: the list of product_ids were empty"
       return false
     end
 
-    run package_ids
+    package_ids.to_a.each {|pkg_id| crawl_one(pkg_id) }
     cleanup
     log.info "crawl_products: done"
     true
   end
 
-  def self.run(package_ids)
-    clone_queue   = Queue.new
-    indexer_queue = Queue.new
-    save_queue    = Queue.new
- 
-    tasks = []
-    tasks << run_persistor_worker(save_queue)
-    tasks << run_clone_worker(clone_queue, indexer_queue)
-    tasks << run_clone_worker(clone_queue, indexer_queue)
-    tasks << run_clone_worker(clone_queue, indexer_queue)
+  def self.crawl_one(pkg_id)
+    # pull metadata from go-search.org
+    the_prod = Timeout::timeout(A_MAX_WAIT_TIME) { crawl_package(pkg_id) }
+    if the_prod.nil?
+      logger.error "crawl_packages: failed to read packages data for: #{pkg_id}"
+      return false
+    end
 
-    tasks << run_git_indexer(indexer_queue, save_queue)
-    tasks << run_detail_worker(package_ids.to_a, clone_queue)
- 
-    tasks.each {|t| t.join}
+    # clone the repo
+    res = Timeout::timeout(A_MAX_WAIT_TIME) { clone_repo(pkg_id, the_prod[:group_id]) }
+
+    # process cloned repo
+    versions = Timeout::timeout(A_MAX_WAIT_TIME) { process_cloned_repo(pkg_id) }
+    if versions.nil?
+      logger.error "crawl_all: failed to read commit logs for #{pkg_id}"
+      return false
+    end
+
+    the_prod.versions = versions #NB: it replaces old versions;
+    latest = VersionService.newest_version(versions)
+    if latest
+      the_prod[:version] = latest.version
+    end
     
-    true
-  end
-
-  def self.run_detail_worker(pkg_queue, result_queue)
-    Thread.new do
-      pkg_queue.each do |pkg_id|
-        #force small break so cloner could catch it up
-        if result_queue.size > A_MAX_QUEUE_SIZE
-          logger.info "run_detail_worker: taking a little break;"
-          sleep(5) 
-        end
-
-        logger.info "run_detail_worker: going to fetch meta-info for #{pkg_id}"
-        prod = Timeout::timeout(A_MAX_WAIT_TIME) { crawl_package(pkg_id) }
-        if prod.nil?
-          logger.error "crawl_packages: failed to read packages data for: #{pkg_id}"
-          next
-        end
-
-        result_queue.push prod
-        sleep(1)
-      end
-
-      logger.info "run_detail_worker: done"
-      result_queue.push :done
+    res = the_prod.save
+    if res == true
+     logger.info "run_persistor_worker: saved #{pkg_id}"      
+    else
+      logger.error "run_persistor_worker: failed to save #{pkg_id} - #{the_prod.errors.full_messages}"
     end
 
+    res
   end
-
-  def self.run_clone_worker(product_queue, result_queue)
-    Thread.new do
-      logger.info "run_clone_worker: listening"
-      while ( the_prod = product_queue.pop) != :done
-        if the_prod.nil?
-          sleep(1)
-          next
-        end
-
-        pkg_id = the_prod[:prod_key]
-        logger.info "run_clone_worker: going to clone #{pkg_id}"
-
-        result = Timeout::timeout(A_MAX_WAIT_TIME) { clone_repo(pkg_id, the_prod[:group_id]) }
-        if result
-          result_queue.push the_prod
-        end
-      end
-
-      logger.info "run_clone_worker: done"
-      result_queue.push :done
-    end
-  end
-
-  def self.run_git_indexer(product_queue, result_queue)
-    Thread.new do
-      logger.info "run_git_indexer: listening"
-      while (the_prod = product_queue.pop ) != :done
-        if the_prod.nil?
-          sleep 1
-          next
-        end
-
-        pkg_id = the_prod[:prod_key]
-        logger.info "run_git_indexer: indexing #{pkg_id}"
-
-        versions = Timeout::timeout(A_MAX_WAIT_TIME) { process_cloned_repo(pkg_id) }
-        if versions.nil?
-          logger.error "crawl_all: failed to read commit logs for #{pkg_id}"
-          next
-        end
-
-        the_prod.versions = versions #NB: it replaces old versions;
-        latest = VersionService.newest_version(versions)
-        if latest
-          the_prod[:version] = latest.version
-        end
-        
-        result_queue.push the_prod
-        sleep 1
-      end
-
-      logger.info "run_git_indexer: done"
-      result_queue.push :done
-    end
-  end
-
-  def self.run_persistor_worker(product_queue)
-    Thread.new do
-      logger.info "run_persistor_worker: listening"
-
-      while (the_prod = product_queue.pop) != :done
-        if the_prod.nil?
-          sleep(1)
-          next
-        end
-
-        pkg_id = the_prod[:prod_key]
-        logger.info "run_persistor_worker: saving #{pkg_id}"
-        the_prod.save
-      end
-
-      logger.info "run_persistor_worker: done"
-    end
-  end
-
 
   #fetches package details from go-search, 
   def self.crawl_package(pkg_id)
@@ -220,8 +134,8 @@ class GodepCrawler < Versioneye::Crawl
 
     Product.create({
       prod_key: pkg_id,
-      name: pkg_dt[:name],
-      name_downcase: pkg_dt[:name].to_s.downcase,
+      name: pkg_dt[:Name],
+      name_downcase: pkg_dt[:Name].to_s.downcase,
       prod_type: A_TYPE_GODEP,
       language: A_LANGUAGE_GO,
       downloads: (pkg_dt[:StarCount] + pkg_dt[:StaticRank] + 1), #TODO: add rank field for the Product model
@@ -242,7 +156,7 @@ class GodepCrawler < Versioneye::Crawl
     dep = Dependency.where(prod_type: A_TYPE_GODEP, prod_key: pkg_id, dep_prod_key: dep_id).first
     return dep if dep
 
-    Dependency.create({
+    dep = Dependency.create({
       prod_type: A_TYPE_GODEP,
       language: A_LANGUAGE_GO,
       prod_key: pkg_id,
@@ -251,6 +165,11 @@ class GodepCrawler < Versioneye::Crawl
       scope: the_scope,
       version: '*'
     })
+    
+    unless dep.errors.empty?
+      log.error "create_dependency: failed to save dependency #{dep_id} for #{pkg_id},\n #{dep.errors.full_messages}"
+    end
+    dep
   end
 
   def self.create_version_link(prod, url, name = "Repository")
