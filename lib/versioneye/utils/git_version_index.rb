@@ -39,35 +39,32 @@ class GitVersionIndex
     commit_pairs = start_shas.zip end_shas
 
 
-    start_commits = []
+    start_commit = nil
     version_commits = {}
     commit_pairs.each do |start_sha, end_sha|
       version_label = @sha_tag_idx[start_sha]
       commits = get_commits_between_shas(start_sha, end_sha)
 
-      #remove end_sha from the commits as it's belongs to other version already
-      next_start_commits = commits.dup.keep_if {|c| c[:sha] == end_sha}
-      commits = commits.keep_if {|c| c[:sha] != end_sha }
-      
+      #remove end_sha from the commits as it's belongs to the other version range and save it for next iteration
+      next_start_commit = commits.pop
 
       version_commits[version_label] = {
         label: version_label,
-        start_sha: start_sha, #beginning of tagged commit
+        start_sha: start_sha,  #beginning of tagged commit
         end_sha: end_sha,      #beginning of next tag, not included in commits
-        commits: start_commits.to_a + commits
+        commits: ( start_commit.nil? ? commits : [start_commit] + commits ) #attach start commit only if it exists
       }
 
-      start_commits = next_start_commits
+      start_commit = next_start_commit
     end
 
     @tree = version_commits
     @tree
   end
 
-  #TODO: reverse order so it would miss end and include beginning commit
   def get_commits_between_shas(start_sha, end_sha)
     res = exec_in_dir do
-      %x[git log --oneline --format="%h,%H,%ct,\u00bf%s\u00bf,%P" --ancestry-path #{start_sha}..#{end_sha}]
+      %x[git log --oneline --format="%h,%H,%ct,\u00bf%s\u00bf,%P" --ancestry-path --reverse #{start_sha}..#{end_sha}]
     end
     return if res.nil?
 
