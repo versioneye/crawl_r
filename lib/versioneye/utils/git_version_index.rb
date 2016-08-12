@@ -1,3 +1,4 @@
+require 'rugged'
 require 'csv'
 
 #builds version index from git logs
@@ -12,6 +13,7 @@ class GitVersionIndex
     @logger = logger
     @logger ||= Versioneye::DynLog.new('log/godep.log', 10).log
     @dir = Dir.new repo_path
+    @repo = Rugged::Repository.new(repo_path)
 
     @tree = {}
     @tag_sha_idx = {}
@@ -20,128 +22,115 @@ class GitVersionIndex
 
   def build
     @logger.info "git_version_index: building index"
-
-    first_sha = get_earliest_sha()
     latest_sha = get_latest_sha()
+    first_sha = get_earliest_sha(latest_sha)
 
-    tags = get_tags
-    tag_idx = tags.to_a.reduce({}) do |acc, tag_row|
-      acc[tag_row[0]] = tag_row[1]
-      acc
-    end
-
-    @tag_sha_idx = {'0.0' => first_sha, 'head' => latest_sha}.merge tag_idx
+    tag_idx = get_tags
+    @tag_sha_idx = {'0.0.0' => first_sha, 'head' => latest_sha}.merge tag_idx
     @sha_tag_idx = @tag_sha_idx.invert
 
-    tag_shas = tags.map {|t| t[1]}
-    start_shas = [first_sha] + tag_shas
-    end_shas   = tag_shas + [latest_sha]
-    commit_pairs = start_shas.zip end_shas
+    init_tree(@tag_sha_idx)
+    walk_commits( latest_sha ) # processes all the logs from the beginning to end
 
-
-    start_commit = nil
-    version_commits = {}
-    commit_pairs.each do |start_sha, end_sha|
-      version_label = @sha_tag_idx[start_sha]
-      commits = get_commits_between_shas(start_sha, end_sha)
-
-      #remove end_sha from the commits as it's belongs to the other version range and save it for next iteration
-      next_start_commit = commits.pop
-
-      version_commits[version_label] = {
-        label: version_label,
-        start_sha: start_sha,  #beginning of tagged commit
-        end_sha: end_sha,      #beginning of next tag, not included in commits
-        commits: ( start_commit.nil? ? commits : [start_commit] + commits ) #attach start commit only if it exists
-      }
-
-      start_commit = next_start_commit
-    end
-
-    @tree = version_commits
     @tree
   end
 
-  def get_commits_between_shas(start_sha, end_sha)
-    res = exec_in_dir do
-      %x[git log --oneline --format="%h,%H,%ct,\u00bf%s\u00bf,%P" --ancestry-path --reverse #{start_sha}..#{end_sha}]
+  def init_tree(tag_shas)
+    tag_shas.each_pair do |tag, sha|
+      @tree[tag] = {
+        label: tag,
+        start_sha: sha,
+        shas: Set.new([ sha ]), #used to check up tags
+        commits: [] #used to convert to Version models for a product/project
+      }
     end
-    return if res.nil?
 
-    process_logs res
+    @tree
+  end
+
+  #walks over commits and attach them parent tags' version
+  def walk_commits(start_sha, end_sha = nil)
+    walker = init_commit_walker(start_sha, end_sha)
+
+    walker.each do |commit_obj|
+      commit = process_commit_log(commit_obj)
+      commit_tag = find_latest_parent_tag(@tree, commit)
+      
+      #add tag into tag commit index 
+      if commit_tag
+        @tree[commit_tag][:shas] << commit[:sha]
+        @tree[commit_tag][:commits] << commit
+      end
+
+    end
+
+    @tree
+  end
+
+  def init_commit_walker(start_sha, end_sha)
+    walker = Rugged::Walker.new( @repo )
+    walker.sorting(Rugged::SORT_REVERSE | Rugged::SORT_REVERSE)
+    walker.push start_sha
+    walker.hide(end_sha) if end_sha
+
+    walker
+  end
+
+  def process_commit_log(commit_obj)
+    {
+      sha: commit_obj.oid,
+      commited_at: commit_obj.committer[:time],
+      message: commit_obj.message,
+      parents: commit_obj.parents
+    } 
+  end
+
+  #finds latest tag by it's parents
+  def find_latest_parent_tag(tag_tree, the_commit)
+    parent_tags = []
+
+    #find tags where the commit sha or its' parent shas belong
+    tag_tree.each_pair do |tag, tag_doc|
+      checkable_shas = [the_commit[:sha]] + the_commit[:parents].map(&:oid).to_a 
+      matching_shas = tag_doc[:shas].intersection(checkable_shas).size
+      parent_tags << tag if matching_shas > 0
+    end
+
+    if parent_tags.size == 1
+      parent_tags.first
+    elsif parent_tags.size >= 2
+      #if it's merge of branches, then take the maximum tag
+
+      Naturalsorter::Sorter.sort_version(parent_tags).last
+    else
+      @logger.warn "find_latest_parent_tag: found no matching tag for the sha #{the_commit[:sha]}"
+      nil
+    end
   end
 
   def get_tags
-    the_cmd = 'git log --date-order --reverse --tags --simplify-by-decoration --pretty=format:"%ct|%d|%H"'
-    rows = exec_in_dir { %x[ #{the_cmd} ] }
-
-    rows.to_s.split(/\n+/).to_a.reduce([]) do |acc, row|
-      tag_info = process_tag_line(row)
-      acc << tag_info unless tag_info.to_a.empty?
+    @repo.tags.reduce({}) do |acc, tag|
+      acc[tag.name] = tag.target.oid
       acc
     end
   end
 
-  def get_earliest_sha
-    res = exec_in_dir { %x[git rev-list --max-parents=0 HEAD] }
+  def get_earliest_sha(latest_sha)
+    walker = init_commit_walker(latest_sha, nil)
+    earliest = nil
+    walker.each do |c|
+      if c.parents.empty?
+        earliest = c.oid
+        break
+      end
+    end
 
-    res.to_s.split(/\n/).first
-  rescue
-    return nil
+    earliest
   end
 
   def get_latest_sha
-    res = exec_in_dir { %x[git rev-parse HEAD] }
-
-    res.to_s.split(/\n/).first
-  rescue
-    return nil
+    @repo.head.target.oid
   end
-
-  def epoch_to_datetime(the_epoch)
-    Time.at( the_epoch.to_i ).to_datetime
-  rescue
-    return nil
-  end
-
-  #transforms raw csv-lines to Commit document
-  def process_logs(log_res)
-    rows = CSV.parse(log_res, {force_quotes: true, skip_blanks: true, quote_char: "\u00bf" })
-    rows.to_a.reduce([]) {|acc, r| acc << process_log_row(r); acc }
-  rescue Exception => e 
-    @logger.error "failed to parse: ", log_res
-    @logger.error e.backtrace.join('\n')
-
-    return nil
-  end
-
-  def process_log_row(csv_row)
-    short_sha, full_sha, unix_dt, commit_msg, parent_shas = csv_row
-
-    {
-      sha: full_sha,
-      short_sha: short_sha,
-      commited_at: epoch_to_datetime(unix_dt),
-      message: commit_msg,
-      parents: parent_shas.to_s.split(/\s+/)
-     }
-  end
-
-  #executes block in the repo dir and goes after that back to $PWD
-  def exec_in_dir
-    Dir.chdir(@dir) do
-      yield if block_given?
-    end
-  end
-
-  def process_tag_line(tag_line)
-    epoch, tag_txt, tag_sha = tag_line.to_s.split(/\|/)
-    return if tag_txt.to_s.empty? or tag_sha.to_s.empty?
-
-    m = tag_txt.match(/tag: (?<label>\w+.+?)[\,|\)]/i)
-    [m[:label], tag_sha.strip, epoch.to_i] if m and m[:label]
-  end
-
 
   #transforms commit tree into list of Version indexes
   def to_versions
