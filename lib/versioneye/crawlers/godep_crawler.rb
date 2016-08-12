@@ -160,7 +160,7 @@ class GodepCrawler < Versioneye::Crawl
       prod_type: A_TYPE_GODEP,
       language: A_LANGUAGE_GO,
       prod_key: pkg_id,
-      prod_version: '*', #no idea until we process 
+      prod_version: '*', #no idea until we process  #TODO: update task to use latest version?
       dep_prod_key: dep_id,
       scope: the_scope,
       version: '*'

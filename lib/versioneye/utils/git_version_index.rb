@@ -69,7 +69,7 @@ class GitVersionIndex
 
   def init_commit_walker(start_sha, end_sha)
     walker = Rugged::Walker.new( @repo )
-    walker.sorting(Rugged::SORT_REVERSE | Rugged::SORT_REVERSE)
+    walker.sorting(Rugged::SORT_DATE | Rugged::SORT_REVERSE)
     walker.push start_sha
     walker.hide(end_sha) if end_sha
 
@@ -81,7 +81,7 @@ class GitVersionIndex
       sha: commit_obj.oid,
       commited_at: commit_obj.committer[:time],
       message: commit_obj.message,
-      parents: commit_obj.parents
+      parents: commit_obj.parents.map(&:oid)
     } 
   end
 
@@ -91,10 +91,17 @@ class GitVersionIndex
 
     #find tags where the commit sha or its' parent shas belong
     tag_tree.each_pair do |tag, tag_doc|
-      checkable_shas = [the_commit[:sha]] + the_commit[:parents].map(&:oid).to_a 
-      matching_shas = tag_doc[:shas].intersection(checkable_shas).size
-      parent_tags << tag if matching_shas > 0
+      checkable_shas = [the_commit[:sha]] + the_commit[:parents].to_a 
+      matching_shas = tag_doc[:shas].intersection(checkable_shas)
+      parent_tags << tag unless matching_shas.empty?
     end
+
+    if the_commit[:sha] == '4ee95f94628e192b42ac5190faa4768f1c7b31e7'
+      p "#-- cought special case for #{the_commit[:sha]}"
+      p "parents: ", the_commit[:parents].to_a
+      p "matchings tags:", parent_tags
+    end
+
 
     if parent_tags.size == 1
       parent_tags.first
