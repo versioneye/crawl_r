@@ -50,17 +50,21 @@ class GodepCrawler < Versioneye::Crawl
     # pull metadata from go-search.org
     the_prod = Timeout::timeout(A_MAX_WAIT_TIME) { crawl_package(pkg_id) }
     if the_prod.nil?
-      logger.error "crawl_packages: failed to read packages data for: #{pkg_id}"
+      logger.error "crawl_one: failed to read packages data for: #{pkg_id}"
       return false
     end
 
     # clone the repo
     res = Timeout::timeout(A_MAX_WAIT_TIME) { clone_repo(pkg_id, the_prod[:group_id]) }
+    if res.nil?
+      logger.error "crawl_one: failed to clone #{pkg_id} from #{the_prod[:group_id]}"
+      return false
+    end
 
     # process cloned repo
     versions = Timeout::timeout(A_MAX_WAIT_TIME) { process_cloned_repo(pkg_id) }
     if versions.nil?
-      logger.error "crawl_all: failed to read commit logs for #{pkg_id}"
+      logger.error "crawl_one: failed to read commit logs for #{pkg_id}"
       return false
     end
 
@@ -72,9 +76,9 @@ class GodepCrawler < Versioneye::Crawl
     
     res = the_prod.save
     if res == true
-     logger.info "run_persistor_worker: saved #{pkg_id}"      
+     logger.info "crawl_one: saved #{pkg_id}"      
     else
-      logger.error "run_persistor_worker: failed to save #{pkg_id} - #{the_prod.errors.full_messages}"
+      logger.error "crawl_one: failed to save #{pkg_id} - #{the_prod.errors.full_messages}"
     end
 
     res

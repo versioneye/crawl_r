@@ -4,6 +4,8 @@ require 'csv'
 #builds version index from git logs
 class GitVersionIndex
   attr_reader :dir, :tree
+  
+  A_DEFAULT_VERSION = '0.0.0'
 
   def initialize(repo_path, logger = nil)
     unless Dir.exist?(repo_path)
@@ -26,7 +28,7 @@ class GitVersionIndex
     first_sha = get_earliest_sha(latest_sha)
 
     tag_idx = get_tags
-    @tag_sha_idx = {'0.0.0' => first_sha, 'head' => latest_sha}.merge tag_idx
+    @tag_sha_idx = {A_DEFAULT_VERSION => first_sha, 'head' => latest_sha}.merge tag_idx
     @sha_tag_idx = @tag_sha_idx.invert
 
     init_tree(@tag_sha_idx)
@@ -96,13 +98,6 @@ class GitVersionIndex
       parent_tags << tag unless matching_shas.empty?
     end
 
-    if the_commit[:sha] == '4ee95f94628e192b42ac5190faa4768f1c7b31e7'
-      p "#-- cought special case for #{the_commit[:sha]}"
-      p "parents: ", the_commit[:parents].to_a
-      p "matchings tags:", parent_tags
-    end
-
-
     if parent_tags.size == 1
       parent_tags.first
     elsif parent_tags.size >= 2
@@ -110,8 +105,9 @@ class GitVersionIndex
 
       Naturalsorter::Sorter.sort_version(parent_tags).last
     else
+      #those commits are probably from untagged and never merged branches
       @logger.warn "find_latest_parent_tag: found no matching tag for the sha #{the_commit[:sha]}"
-      nil
+      A_DEFAULT_VERSION
     end
   end
 
