@@ -1,4 +1,5 @@
 require 'timeout'
+require 'rugged'
 
 class GodepCrawler < Versioneye::Crawl
 
@@ -87,7 +88,6 @@ class GodepCrawler < Versioneye::Crawl
       return
     end
 
-
     prod = init_product(pkg_id, pkg_dt)
     create_dependencies(pkg_id, pkg_dt[:Imports], pkg_dt[:testImports])
     create_version_link(prod, pkg_dt[:projectURL])
@@ -105,10 +105,11 @@ class GodepCrawler < Versioneye::Crawl
   end
 
   def self.clone_repo(pkg_id, pkg_url)
-    system("git clone #{pkg_url} tmp/#{pkg_id}")
+    Rugged::Repository.clone_at(pkg_url, "tmp/#{pkg_id}")
   rescue => e
     logger.error "failed to clone the repo: #{pkg_id} - #{pkg_url}"
     logger.error e.backtrace.join('\n')
+    system("rm -rf tmp/#{pkg_id}") #remove carbage it may have created
     return nil
   end
 
