@@ -53,6 +53,8 @@ module Versioneye
     require './lib/versioneye/workers/bower_crawl_worker'
     require './lib/versioneye/workers/nuget_crawl_worker'
 
+    require './lib/versioneye/utils/license_matcher'
+
     def self.log
       Versioneye::Log.instance.log
     end
