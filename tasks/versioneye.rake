@@ -58,6 +58,13 @@ namespace :versioneye do
       end
     end
 
+    value = '24 * * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        SatisCrawlProducer.new '::spryker::'
+      end
+    end
+
     # Crawl it once a hour. A crawl takes ~ 3 minutes!
     #
     # Comment out temp. because Magento repo was moved.

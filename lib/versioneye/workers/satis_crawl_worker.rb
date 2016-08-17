@@ -36,6 +36,8 @@ class SatisCrawlWorker < Worker
       MagentoCrawler.crawl
     elsif package_name.eql?('::zendframework::')
       ZendframeworkCrawler.crawl
+    elsif package_name.eql?('::spryker::')
+      SprykerCrawler.crawl
     end
 
     log.info "Crawl done for #{package_name}"
