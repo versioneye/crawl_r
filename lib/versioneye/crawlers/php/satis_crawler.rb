@@ -34,12 +34,17 @@ class SatisCrawler < Versioneye::Crawl
 
 
   def get_first_level_list
-    body = JSON.parse HTTParty.get("#{@base_url}/packages.json" ).response.body
+    url      = "#{@base_url}/packages.json"
+    response = HTTParty.get( url ).response
+    body     = JSON.parse response.body
     packages = body['packages']
     return packages if packages && !packages.empty?
 
+    packages = body['providers']
+    return packages.keys if packages && !packages.empty?
+
     sha1 = body['includes'].first.last['sha1']
-    url = "#{@base_url}include/all$#{sha1}.json"
+    url = "#{@base_url}/include/all$#{sha1}.json"
     body = JSON.parse HTTParty.get( url ).response.body
     body['packages']
   rescue => e

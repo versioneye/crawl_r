@@ -7,7 +7,7 @@ class FiregentoCrawler < SatisCrawler
     @@log
   end
 
-  A_BASE_URL  = 'http://packages.firegento.com/'
+  A_BASE_URL  = 'http://packages.firegento.com'
   A_LINK_NAME = 'Firegento Page'
 
 

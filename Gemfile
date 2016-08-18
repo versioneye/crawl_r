@@ -2,12 +2,17 @@ source "http://rubygems.org"
 
 gem 'bundler'            , '~> 1.12.0'
 
-gem 'versioneye-core'    , :git => 'https://github.com/versioneye/versioneye-core.git', :tag => 'v9.5.24'
+gem 'versioneye-core'    , :git => 'https://github.com/versioneye/versioneye-core.git', :tag => 'v9.7.14'
 # gem 'versioneye-core'    , :path => "~/workspace/versioneye/versioneye-core"
 
 gem 'rugged', '0.24.0'
 
 gem 'rufus-scheduler', '3.2.1'
+
+# rubygems for text similarities
+gem 'narray', '0.6.1.2'
+gem 'tf-idf-similarity', '0.1.5'
+
 
 group :development do
   gem "shoulda"  , ">= 0"

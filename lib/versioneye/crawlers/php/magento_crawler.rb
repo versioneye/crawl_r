@@ -7,7 +7,7 @@ class MagentoCrawler < SatisCrawler
     @@log
   end
 
-  A_BASE_URL  = 'http://packages.magento.com/'
+  A_BASE_URL  = 'http://packages.magento.com'
   A_LINK_NAME = 'Magento Page'
 
 
