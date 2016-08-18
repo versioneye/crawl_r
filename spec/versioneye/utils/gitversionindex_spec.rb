@@ -64,6 +64,22 @@ describe GitVersionIndex do
       end
     end
 
+    context "get_license_files_from_sha" do
+      it "returns correct file and oid for the sha" do
+        res = idx.build
+        expect(res).not_to be_nil
+        commit_sha = '72652287dc55c15025e9fec7db7bd00906864395'
+
+        files = idx.get_license_files_from_sha(commit_sha)
+        expect(files).not_to be_nil
+        expect(files.size).to eq(1)
+        expect(files[0][:name]).to eq("LICENSE")
+        expect(files[0][:oid]).to eq('c1cf1a4793ac2bcae3e0c8bc48be037ef66c3727')
+        expect(files[0][:content].size).to eq(1065)
+      end
+
+    end
+
     context "to_versions" do
       it "transforms version commit tree into list of Version objects" do
         idx.build

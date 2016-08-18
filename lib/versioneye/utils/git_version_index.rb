@@ -50,6 +50,34 @@ class GitVersionIndex
     @tree
   end
 
+  # read licenses from commit
+  def get_license_files_from_sha(commit_sha)
+    repo_idx = @repo.index
+    tree = @repo.lookup(commit_sha).tree
+    return if tree.nil?
+    
+    repo_idx.read_tree(tree)
+    #filter out license files
+    file_names = tree.to_a.reduce([]) do |acc, f|
+      acc << f if ( f[:name] =~ /\Alicense/i )
+      acc
+    end
+
+    #read content
+    file_names.reduce([]) do |acc, f|
+      blob = @repo.lookup f[:oid]
+      if blob
+        acc << {
+          name: f[:name],
+          oid: f[:oid],
+          content: blob.content
+        }
+      end
+
+      acc
+    end
+  end
+
   #walks over commits and attach them parent tags' version
   def walk_commits(start_sha, end_sha = nil)
     walker = init_commit_walker(start_sha, end_sha)

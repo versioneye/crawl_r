@@ -28,11 +28,10 @@ class GodepCrawler < Versioneye::Crawl
     end
 
     all_pkgs.to_a.each {|pkg_id| crawl_one(pkg_id) }
-    cleanup
     logger.info "crawl_all: done"
     true
   ensure
-    clean_up
+    cleanup
   end
 
   #crawls updates for a list of products
@@ -46,13 +45,11 @@ class GodepCrawler < Versioneye::Crawl
 
     @@license_matcher = LicenseMatcher.new 'data/licenses/texts/plain'
 
-
     package_ids.to_a.each {|pkg_id| crawl_one(pkg_id) }
-    cleanup
     logger.info "crawl_products: done"
     true
   ensure
-    clean_up
+    cleanup
   end
 
   def self.crawl_one(pkg_id)
@@ -87,7 +84,7 @@ class GodepCrawler < Versioneye::Crawl
     end
     
     #read license data from the repo
-    create_licenses_from_repo(the_prod, repo_idx.dir)
+    add_version_licenses(the_prod, repo_idx)
  
     res = the_prod.save
     if res == true
@@ -150,29 +147,31 @@ class GodepCrawler < Versioneye::Crawl
     return nil
   end
 
-  def self.create_licenses_from_repo(the_prod, repo_dir)
-    return false if the_prod.nil? or repo_dir.nil?
+  def self.add_version_licenses(the_prod, repo_idx)
+    return false if the_prod.nil? or repo_idx.nil?
 
-    license_files = repo_dir.entries.keep_if {|f| f =~ /\Alicense/i }
-    return false if license_files.nil?
-
-    license_ids = license_files.reduce([]) do |acc, lic_filename|
-      lic_file_path = "#{repo_dir.path}/#{lic_filename}"
-      lic_file = File.read lic_file_path
-
-      license_candidates = @@license_matcher.match_text lic_file
-      acc << license_candidates.first[0] if license_candidates
-      acc
+    the_prod.versions.each do |version|
+      license_files = repo_idx.get_license_files_from_sha(version[:sha1])
+      license_ids = match_licenses(license_files)
+      license_ids.each {|spdx_id| create_single_license(version[:version], the_prod, spdx_id)}
     end
-    return false if license_ids.nil?
 
-    license_ids.each {|spdx_id| create_single_license(the_prod, spdx_id)}
     return true
   end
 
-  def self.create_single_license(the_prod, spdx_id)
-    lic = License.find_or_create(the_prod[:language], the_prod[:prod_key], the_prod[:version], spdx_id, the_prod[:group_id])
-    logger.debug "create_single_license: add #{spdx_id} license to the #{the_prod[:prod_key]}"
+  def self.match_licenses(license_files)
+    license_files.reduce([]) do |acc, commit_file|
+      license_candidates = @@license_matcher.match_text commit_file[:content]
+      acc << license_candidates.first[0] if license_candidates
+      acc
+    end
+  end
+
+  def self.create_single_license(version_label, the_prod, spdx_id)
+    version_label = the_prod[:version] if version_label.nil? or version_label == 'head'
+
+    lic = License.find_or_create(the_prod[:language], the_prod[:prod_key], version_label, spdx_id, the_prod[:group_id])
+    logger.debug "create_single_license: add #{spdx_id} license to the #{the_prod[:prod_key]}/#{version_label}"
     lic
   end
 
