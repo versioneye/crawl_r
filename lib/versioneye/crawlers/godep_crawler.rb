@@ -19,6 +19,8 @@ class GodepCrawler < Versioneye::Crawl
 
   #crawls all the packages got from go-search index
   def self.crawl_all
+    @@license_matcher = LicenseMatcher.new 'data/licenses/texts/plain'
+    
     all_pkgs = fetch_package_index
     if all_pkgs.to_a.empty?
       logger.error "crawl_all: failed to retrieve packages for #{A_GODEP_REGISTRY_URL}"
@@ -27,8 +29,10 @@ class GodepCrawler < Versioneye::Crawl
 
     all_pkgs.to_a.each {|pkg_id| crawl_one(pkg_id) }
     cleanup
-    log.info "crawl_all: done"
+    logger.info "crawl_all: done"
     true
+  ensure
+    clean_up
   end
 
   #crawls updates for a list of products
@@ -40,13 +44,19 @@ class GodepCrawler < Versioneye::Crawl
       return false
     end
 
+    @@license_matcher = LicenseMatcher.new 'data/licenses/texts/plain'
+
+
     package_ids.to_a.each {|pkg_id| crawl_one(pkg_id) }
     cleanup
-    log.info "crawl_products: done"
+    logger.info "crawl_products: done"
     true
+  ensure
+    clean_up
   end
 
   def self.crawl_one(pkg_id)
+
     # pull metadata from go-search.org
     the_prod = Timeout::timeout(A_MAX_WAIT_TIME) { crawl_package(pkg_id) }
     if the_prod.nil?
@@ -62,18 +72,23 @@ class GodepCrawler < Versioneye::Crawl
     end
 
     # process cloned repo
-    versions = Timeout::timeout(A_MAX_WAIT_TIME) { process_cloned_repo(pkg_id) }
+    repo_idx = GitVersionIndex.new("tmp/#{pkg_id}")
+    versions = Timeout::timeout(A_MAX_WAIT_TIME) { process_cloned_repo(repo_idx) }
     if versions.nil?
       logger.error "crawl_one: failed to read commit logs for #{pkg_id}"
       return false
     end
 
+    # process product versions and update the latest version
     the_prod.versions = versions #NB: it replaces old versions;
     latest = VersionService.newest_version(versions)
     if latest
       the_prod[:version] = latest.version
     end
     
+    #read license data from the repo
+    create_licenses_from_repo(the_prod, repo_idx.dir)
+ 
     res = the_prod.save
     if res == true
      logger.info "crawl_one: saved #{pkg_id}"      
@@ -82,6 +97,13 @@ class GodepCrawler < Versioneye::Crawl
     end
 
     res
+  rescue => e
+    logger.error "crawl_one: Failed to fetch and process repo #{pkg_id} - #{e.message.to_s}"
+    logger.error e.backtrace.join('\n')
+    return nil
+  ensure
+    res = system("rm -rf tmp/#{pkg_id}")
+    logger.info "crawl_one: a #{pkg_id} repo deleted? #{res}"
   end
 
   #fetches package details from go-search, 
@@ -112,26 +134,47 @@ class GodepCrawler < Versioneye::Crawl
     Rugged::Repository.clone_at(pkg_url, "tmp/#{pkg_id}")
   rescue => e
     logger.error "failed to clone the repo: #{pkg_id} - #{pkg_url}"
-    logger.error e.backtrace.join('\n')
+    logger.error e.backtrace.join("\n")
     system("rm -rf tmp/#{pkg_id}") #remove carbage it may have created
     return nil
   end
 
-  def self.process_cloned_repo(pkg_id)
-    logger.info "process_cloned_repo: reading repo logs for #{pkg_id}"
+  def self.process_cloned_repo(repo_idx)
+    logger.info "process_cloned_repo: reading repo logs from #{repo_idx.dir.path}"
 
-    repo_idx = GitVersionIndex.new("tmp/#{pkg_id}")
     repo_idx.build       #builds version tree from commit logs
     repo_idx.to_versions #transforms version tree into list of Version models
   rescue => e
     logger.error "process_cloned_repo: Failed to build commit version index"
     logger.error e.backtrace.join('\n')
     return nil
-  ensure
-    res = system("rm -rf tmp/#{pkg_id}")
-    logger.info "process_cloned_repo: a #{pkg_id} repo deleted? #{res}"
   end
 
+  def self.create_licenses_from_repo(the_prod, repo_dir)
+    return false if the_prod.nil? or repo_dir.nil?
+
+    license_files = repo_dir.entries.keep_if {|f| f =~ /\Alicense/i }
+    return false if license_files.nil?
+
+    license_ids = license_files.reduce([]) do |acc, lic_filename|
+      lic_file_path = "#{repo_dir.path}/#{lic_filename}"
+      lic_file = File.read lic_file_path
+
+      license_candidates = @@license_matcher.match_text lic_file
+      acc << license_candidates.first[0] if license_candidates
+      acc
+    end
+    return false if license_ids.nil?
+
+    license_ids.each {|spdx_id| create_single_license(the_prod, spdx_id)}
+    return true
+  end
+
+  def self.create_single_license(the_prod, spdx_id)
+    lic = License.find_or_create(the_prod[:language], the_prod[:prod_key], the_prod[:version], spdx_id, the_prod[:group_id])
+    logger.debug "create_single_license: add #{spdx_id} license to the #{the_prod[:prod_key]}"
+    lic
+  end
 
   def self.init_product(pkg_id, pkg_dt)
     prod = Product.where(language: A_LANGUAGE_GO, prod_type: A_TYPE_GODEP, prod_key: pkg_id).first
