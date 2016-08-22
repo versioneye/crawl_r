@@ -11,33 +11,57 @@ class CpanCrawler < Versioneye::Crawl
     @@log
   end
 
-  #fetches all the data 
-  def self.crawl_all
-    
-  end
-
 
   #iterates over paginated results
-  def self.scroll_over_releases
-    first_page = fetch_releases
-    scroll_id = first_page[:_scroll_id]
-
+  def self.crawl_all
     page_nr = 1
+    scroll_id = nil
+    
     while(page = fetch_releases(scroll_id)) != nil
-      res = page[:hits][:hits]
-      p "Got page: #{page_nr} - got #{res.size}"
-      page_nr += 1
+      log.debug "crawl_all: page.#{page_nr}, scrolling result: #{page}"
 
-      break if page_nr >= 10
+      scroll_id = page[:_scroll_id] if page_nr == 1
+      crawl_release_page(page)
+      page_nr += 1
+      break if page_nr >= 2
     end
+
+    log.debug "crawl_all: done"
+    return true
   ensure
     #remove scrolling session
     HTTParty.delete(
-      "#{A_API_URL}/v0/releases/_search",
+      "#{A_API_URL}/v0/release/_search",
       { body: "[#{scroll_id}]" }
     )
   end
 
+  #crawl release details for each item in the search results
+  def self.crawl_release_page(release_page)
+    return unless release_page.is_a?(Hash)
+    return unless release_page.has_key?(:hits)
+    return unless release_page[:hits].has_key?(:hits)
+
+    res = release_page[:hits][:hits]
+    res.each {|hit| crawl_release(hit[:fields][:author], hit[:fields][:name]) }
+  end
+
+  def self.crawl_release(author_id, release_id)
+    author_doc = fetch_author_details(author_id)
+    if author_doc.nil?
+      log.error "crawl_release: failed to fetch details for the author `#{author_id}`"
+      return
+    end
+
+    release_doc = fetch_release_details(author_id, release_id)
+    if release_doc.nil?
+      log.error "crawl_release: failed to fetch release info for #{author_id}/#{release_id}"
+      return
+    end
+
+    log.debug "crawl_release: saving #{author_id}/#{release_id}"
+    persist_release(author_doc, release_doc)
+  end
 
   def self.fetch_releases(scroll_id = nil)
     releases_url = "#{A_API_URL}/v0/release/_search"
@@ -70,32 +94,32 @@ class CpanCrawler < Versioneye::Crawl
 
     post_json(releases_url, {body: releases_query})
   end
-
-  def self.fetch_author(author_id)
+  
+  def self.fetch_author_details(author_id)
     author_url = "#{A_API_URL}/v0/author/#{author_id}"
     fetch_json author_url
   end
 
-  def self.fetch_release(author_id, release_id)
+  def self.fetch_release_details(author_id, release_id)
     release_url = "#{A_API_URL}/v0/release/#{author_id}/#{release_id}"
     fetch_json release_url
   end
 
-  def self.persists_release(release_doc)
+  def self.persist_release(author_doc, release_doc)
     #saves each module as own product
     prods = release_doc[:provides].reduce([]) do |acc, prod_key|
-      acc << upsert_product(release_doc, prod_key)
+      acc << upsert_product(author_doc, release_doc, prod_key)
       acc
     end
 
     prods
   end
 
-  def self.upsert_product(release_doc, prod_key)
+  def self.upsert_product(author_doc, release_doc, prod_key)
     prod = Product.find_or_initialize_by(language: A_LANGUAGE_PERL, prod_type: A_TYPE_CPAN, prod_key: prod_key)
 
     version_label = release_doc[:version].to_s.gsub(/\Av/i, '')
-    prod.merge({
+    prod.update({
       name: prod_key,
       group_id: release_doc[:distribution],
       parent_id: release_doc[:main_module],
@@ -106,22 +130,36 @@ class CpanCrawler < Versioneye::Crawl
 
     release_doc[:dependency].each {|dep_doc| upsert_dependency(dep_doc, prod_key, version_label)}
     release_doc[:resources].each do |title, url_doc|
-      upsert_version_links(prod, version_label, title, url_doc[:url])
+      url = if url_doc.is_a?(String)
+              url_doc
+            elsif url_doc.is_a?(Hash) and url_doc.has_key?(:web)
+              url_doc[:web]
+            elsif url_doc.is_a?(Hash) and url_doc.has_key(:url)
+              url_doc[:url]
+            else
+              nil
+            end
+
+      upsert_version_link(prod, version_label, title, url)
     end
     upsert_version_download(prod, version_label, release_doc)
     upsert_version_license(prod, version_label, release_doc)
-	
+
+    if author_doc
+      upsert_author(prod, version_label, author_doc)
+    end
+
 		if release_doc.has_key?(:metadata)
-			upsert_version_contributors(release_doc[:metadata][:x_contributors])
+			upsert_contributors(prod, version_label, release_doc[:metadata][:x_contributors])
 		end
 
     prod
   end
 
-	def self.upsert_version_contributors(contributors)
+	def self.upsert_contributors(prod, version_label, contributors)
 		return if contributors.nil?
 
-		contributors.each do |contributor_line|
+		contributors.reduce([]) do |acc, contributor_line|
 			tkns = contributor_line.to_s.gsub(/\<|\>/, '').split(/\s+/)
 			next if tkns.empty?
 
@@ -129,24 +167,28 @@ class CpanCrawler < Versioneye::Crawl
 					email: [tkns.pop],
 					asciiname: tkns.join(' ')
 			}
-			persist_author(author_doc, 'contributor')
+
+			contrib = upsert_author(prod, version_label, author_doc, 'contributor')
+      acc << contrib if contrib
+      acc
 		end
 	end
 
-  def self.persist_author(author_doc, version_label, role = 'author')
+  def self.upsert_author(prod, version_label, author_doc, role = 'author')
     email = author_doc[:email].first
 		author = Developer.find_or_initialize_by(
 			language: A_LANGUAGE_PERL,
-			prod_type: A_TYPE_CPAN,
+			prod_key: prod[:prod_key],
 			version: version_label,
 			email: email
 		)
 		
 		role.to_s.downcase!
-    author.merge({
+    website = (author_doc.has_key?(:website) ? author_doc[:website].first : nil)
+    author.update({
 			organization: author_doc[:pauseid],
       name: author_doc[:asciiname],
-      homepage: author_doc[:website].first,
+      homepage: website,
       role: role,
 			contributor: (role == 'contributor')
     })
@@ -167,10 +209,8 @@ class CpanCrawler < Versioneye::Crawl
 
     dep_version = dep_doc[:version].to_s.gsub(/\Av/i, '')
     dep_scope   = match_dependency_scope(dep_doc[:phase])
-    dep.merge({
-      version: dep_version,
-      scope: dep_scope
-    })
+    dep[:version] = dep_version
+    dep[:scope]   = dep_scope
 
     dep.save
     dep.update_known
@@ -178,6 +218,8 @@ class CpanCrawler < Versioneye::Crawl
   end
 
   def self.upsert_version_link(prod, version_label, title, url)
+    return if url.to_s.empty?
+
     Versionlink.find_or_create_by(
       language: prod.language,
       prod_key: prod.prod_key,
@@ -199,12 +241,14 @@ class CpanCrawler < Versioneye::Crawl
 
   def self.upsert_version_license(prod, version_label, license_id)
     license_dt = match_license(license_id)
+    version_label = version_label.to_s.strip
+    version = (version_label.empty? ? prod[:version] : version_label)
 
     lic_db = License.find_or_create_by(
       language: A_LANGUAGE_PERL,
       prod_key: prod.prod_key,
-      version: version_label,
-      name: (license[:name] || license[:spdx_id])
+      version: version,
+      name: (license_dt[:name] || license_dt[:spdx_id])
     )
     lic_db[:url] = license_dt[:url]
     lic_db[:spdx_id] = license_dt[:spdx_id]
