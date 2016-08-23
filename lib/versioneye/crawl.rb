@@ -88,7 +88,7 @@ module Versioneye
     def self.post_json(url, options)
       res = HTTParty.post(url, options)
       if res.code > 205
-        logger.error "Failed to post data to the url: #{url}, #{res.code} - #{res.message}"
+        logger.error "Failed to post data to the url: #{url}, #{res.code} - #{res.message}\n#{options}"
         return
       end
   

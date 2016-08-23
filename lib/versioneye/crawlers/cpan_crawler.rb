@@ -21,7 +21,7 @@ class CpanCrawler < Versioneye::Crawl
     scroll_id = nil
     page = start_release_scroll(all, from_days_ago, to_days_ago)
 
-    while true
+    while page
       logger.debug "crawl_all: page.#{page_nr}"
 
       scroll_id = page[:_scroll_id] if page.has_key?(:_scroll_id)
@@ -68,23 +68,34 @@ class CpanCrawler < Versioneye::Crawl
       return
     end
 
+    module_id = to_module_name(release_doc[:distribution])
+    module_doc = fetch_module_details(module_id)
+    if module_doc.nil?
+      logger.warn "crawl_release: got no module info for #{module_id} - will fallback to release data."
+      module_doc = {
+        version: release_doc[:version],
+        description: release_doc[:abstract]
+      }
+    end
+
     logger.debug "crawl_release: saving #{author_id}/#{release_id}"
-    persist_release(author_doc, release_doc)
+    persist_release(author_doc, release_doc, module_doc)
   end
 
   def self.start_release_scroll(all, from_days_ago, to_days_ago)
     releases_url = "#{A_API_URL}/v0/release/_search?scroll=#{A_SCROLL_TTL}"
 
-    releases_query = {"query" => {"match_all" => {}},
-                      "filter" => {
-                        "and" => [
-                          {"term": { "authorized" => true }}
-                        ]
-                      },
-                      "fields"  => [ "author", "name"],
-                      "sort"    => [{ "date" => "asc" }],
-                      "size"    => 100
-                    }
+    releases_query = {
+      "query" => {"match_all" => {}},
+      "filter" => {
+        "and" => [
+          {"term" => { "authorized" => true }}
+        ]
+      },
+      "fields"  => [ "author", "name"],
+      "sort"    => [{ "date" => "asc" }],
+      "size"    => 100
+    }
 
     if all == false
       from = (from_days_ago.to_i > 0 ? "now-#{from_days_ago}d/d" : "now-1d/d")
@@ -110,16 +121,22 @@ class CpanCrawler < Versioneye::Crawl
     fetch_json release_url
   end
 
+  def self.fetch_module_details(module_id)
+    module_url = "#{A_API_URL}/v0/module/#{module_id}"
+    fetch_json module_url
+  end
+
+
   def self.fetch_release_scroll(scroll_id)
     scroll_url = "#{A_API_URL}/_search/scroll?scroll=#{A_SCROLL_TTL}&scroll_id=#{scroll_id}"
     fetch_json scroll_url
   end
 
-  def self.persist_release(author_doc, release_doc)
+  def self.persist_release(author_doc, release_doc, module_doc)
 
     #when package doesnt provide modules, then translate name to module name
     if release_doc[:provides].nil? or release_doc[:provides].empty?
-      default_module = release_doc[:distribution].to_s.gsub(/\-/, '::')
+      default_module = to_module_name( release_doc[:distribution] )
       logger.debug "persist_release: using default module name #{default_module}"
       modules = [default_module]
     elsif release_doc[:provides].is_a?(Hash)
@@ -130,30 +147,37 @@ class CpanCrawler < Versioneye::Crawl
 
     #saves each module as own product
     prods = modules.reduce([]) do |acc, prod_key|
-      acc << upsert_product(author_doc, release_doc, prod_key)
+      acc << upsert_product(author_doc, release_doc, module_doc, prod_key)
       acc
     end
 
     prods
   end
 
-  def self.upsert_product(author_doc, release_doc, prod_key)
+  def self.upsert_product(author_doc, release_doc, module_doc, prod_key)
     prod = Product.find_or_initialize_by(language: A_LANGUAGE_PERL, prod_type: A_TYPE_CPAN, prod_key: prod_key)
     logger.info "upsert_product: saving release data for #{prod.to_s}"
 
-    version_label = release_doc[:version].to_s.gsub(/\Av/i, '')
+    release_version_label = release_doc[:version].to_s.gsub(/\Av/i, '')
+    latest_version_label  = module_doc[:version].to_s.gsub(/\Av/i, '')
     artifact_id   = "#{release_doc[:author]}/#{release_doc[:name]}"
+    release_doc = if release_doc[:main_module]
+                    release_doc[:main_module]
+                  else
+                    to_module_name(release_doc[:distribution]) #use distribution name as parent id
+                  end
+                  
     prod.update({
       name: prod_key,
       group_id: release_doc[:author],       # MetaCPAN organizes packages under usernames
       parent_id: release_doc[:main_module], # refers to main modules
       artifact_id: artifact_id,             # ID to get data from releases API
-      version: version_label,
-			description: release_doc[:abstract]
+      version: latest_version_label,
+			description: module_doc[:description]
     })
     prod.save
 
-    upsert_version(prod, version_label, release_doc)
+    upsert_version(prod, release_version_label, release_doc)
 
     release_doc[:dependency].to_a.each {|dep_doc| upsert_dependency(dep_doc, prod_key, version_label)}
     release_doc[:resources].to_a.each do |title, url_doc|
@@ -167,17 +191,17 @@ class CpanCrawler < Versioneye::Crawl
               nil
             end
 
-      upsert_version_link(prod, version_label, title, url)
+      upsert_version_link(prod, release_version_label, title, url)
     end
-    upsert_version_download(prod, version_label, release_doc)
-    upsert_version_license(prod, version_label, release_doc)
+    upsert_version_download(prod, release_version_label, release_doc)
+    upsert_version_license(prod, release_version_label, release_doc)
 
     if author_doc
-      upsert_author(prod, version_label, author_doc)
+      upsert_author(prod, release_version_label, author_doc)
     end
 
 		if release_doc.has_key?(:metadata)
-			upsert_contributors(prod, version_label, release_doc[:metadata][:x_contributors])
+			upsert_contributors(prod, release_version_label, release_doc[:metadata][:x_contributors])
 		end
 
     prod
@@ -315,6 +339,11 @@ class CpanCrawler < Versioneye::Crawl
       scope_lbl
     end
   end
+
+  def self.to_module_name(dist_name)
+    dist_name.to_s.gsub(/\-/, '::')
+  end
+
 
 	#source: http://blogs.perl.org/users/kentnl_kent_fredric/2012/05/ensure-abstract-and-license-fields-in-your-meta.html
   def self.match_license(license_id)
