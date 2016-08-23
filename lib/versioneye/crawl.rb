@@ -93,7 +93,6 @@ module Versioneye
       end
   
       return if res.body.to_s.empty?
-
       JSON.parse(res.body, {symbolize_names: true})
     rescue => e
       logger.error "Failed to post data to #{url} - #{options}"

@@ -5,7 +5,7 @@ class CpanCrawler < Versioneye::Crawl
   A_TYPE_CPAN     = 'Cpan' #Project::A_TYPE_CPAN
 
   def self.logger
-    if !defined?(@@log) || @@log.nil?
+    if !defined?(@@log) || @@logger.nil?
       @@log = Versioneye::DynLog.new("log/cpan.log", 10).log
     end
     @@log
@@ -14,19 +14,21 @@ class CpanCrawler < Versioneye::Crawl
 
   #iterates over paginated results
   def self.crawl_all
+    logger.debug("crawl_all: starting ...")
+
     page_nr = 1
     scroll_id = nil
     
-    while(page = fetch_releases(scroll_id)) != nil
-      log.debug "crawl_all: page.#{page_nr}, scrolling result: #{page}"
+    while(page = fetch_releases(scroll_id))
+      logger.debug "crawl_all: page.#{page_nr}"
 
       scroll_id = page[:_scroll_id] if page_nr == 1
       crawl_release_page(page)
       page_nr += 1
-      break if page_nr >= 2
+      break if page_nr >= 10
     end
 
-    log.debug "crawl_all: done"
+    logger.debug "crawl_all: done"
     return true
   ensure
     #remove scrolling session
@@ -38,6 +40,7 @@ class CpanCrawler < Versioneye::Crawl
 
   #crawl release details for each item in the search results
   def self.crawl_release_page(release_page)
+    logger.debug "crawl_release_page: crawling items from release_page"
     return unless release_page.is_a?(Hash)
     return unless release_page.has_key?(:hits)
     return unless release_page[:hits].has_key?(:hits)
@@ -49,17 +52,17 @@ class CpanCrawler < Versioneye::Crawl
   def self.crawl_release(author_id, release_id)
     author_doc = fetch_author_details(author_id)
     if author_doc.nil?
-      log.error "crawl_release: failed to fetch details for the author `#{author_id}`"
+      logger.error "crawl_release: failed to fetch details for the author `#{author_id}`"
       return
     end
 
     release_doc = fetch_release_details(author_id, release_id)
     if release_doc.nil?
-      log.error "crawl_release: failed to fetch release info for #{author_id}/#{release_id}"
+      logger.error "crawl_release: failed to fetch release info for #{author_id}/#{release_id}"
       return
     end
 
-    log.debug "crawl_release: saving #{author_id}/#{release_id}"
+    logger.debug "crawl_release: saving #{author_id}/#{release_id}"
     persist_release(author_doc, release_doc)
   end
 
@@ -84,9 +87,7 @@ class CpanCrawler < Versioneye::Crawl
             }
           ]
         },
-        "fields": [
-          "author", "name", "distribution"
-        ],
+        "fields": [ "author", "name"],
         "sort" : [{ "date" : "asc" }],
         "size": 1000
       }
@@ -106,8 +107,20 @@ class CpanCrawler < Versioneye::Crawl
   end
 
   def self.persist_release(author_doc, release_doc)
+    
+    #when package doesnt provide modules, then translate name to module name
+    if release_doc[:provides].nil? or release_doc[:provides].empty?
+      default_module = release_doc[:distribution].to_s.gsub(/\-/, '::')
+      logger.debug "persist_release: using default module name #{default_module}"
+      modules = [default_module]
+    elsif release_doc[:provides].is_a?(Hash)
+      modules = release_doc[:provides].keys.map{|x| x.to_s}
+    else
+      modules = release_doc[:provides]
+    end
+    
     #saves each module as own product
-    prods = release_doc[:provides].reduce([]) do |acc, prod_key|
+    prods = modules.reduce([]) do |acc, prod_key|
       acc << upsert_product(author_doc, release_doc, prod_key)
       acc
     end
@@ -117,24 +130,29 @@ class CpanCrawler < Versioneye::Crawl
 
   def self.upsert_product(author_doc, release_doc, prod_key)
     prod = Product.find_or_initialize_by(language: A_LANGUAGE_PERL, prod_type: A_TYPE_CPAN, prod_key: prod_key)
+    logger.info "upsert_product: saving release data for #{prod.to_s}"
 
     version_label = release_doc[:version].to_s.gsub(/\Av/i, '')
+    artifact_id   = "#{release_doc[:author]}/#{release_doc[:name]}"
     prod.update({
       name: prod_key,
-      group_id: release_doc[:distribution],
-      parent_id: release_doc[:main_module],
+      group_id: release_doc[:author],       # MetaCPAN organizes packages under usernames
+      parent_id: release_doc[:main_module], # refers to main modules
+      artifact_id: artifact_id,             # ID to get data from releases API
       version: version_label,
 			description: release_doc[:abstract]
     })
     prod.save
 
-    release_doc[:dependency].each {|dep_doc| upsert_dependency(dep_doc, prod_key, version_label)}
-    release_doc[:resources].each do |title, url_doc|
+    upsert_version(prod, version_label, release_doc)
+
+    release_doc[:dependency].to_a.each {|dep_doc| upsert_dependency(dep_doc, prod_key, version_label)}
+    release_doc[:resources].to_a.each do |title, url_doc|
       url = if url_doc.is_a?(String)
               url_doc
             elsif url_doc.is_a?(Hash) and url_doc.has_key?(:web)
               url_doc[:web]
-            elsif url_doc.is_a?(Hash) and url_doc.has_key(:url)
+            elsif url_doc.is_a?(Hash) and url_doc.has_key?(:url)
               url_doc[:url]
             else
               nil
@@ -154,6 +172,26 @@ class CpanCrawler < Versioneye::Crawl
 		end
 
     prod
+  end
+
+  def self.upsert_version(prod, version_label, release_doc)
+    version_db = prod.versions.find_or_initialize_by(version: version_label)
+
+    release_date = safely_to_date(release_doc[:date])
+    version_db.update({
+      released_at: release_date,
+      released_string: release_doc[:date],
+      status: release_doc[:maturity]
+    })
+
+    version_db
+  end
+
+  def self.safely_to_date(date_txt)
+    DateTime.parse date_txt
+  rescue => e
+    logger.error "safely_to_date: failed to parse date string `#{date_txt}`\n#{e.message}"
+    nil
   end
 
 	def self.upsert_contributors(prod, version_label, contributors)
