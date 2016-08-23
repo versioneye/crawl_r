@@ -1,8 +1,9 @@
 class CpanCrawler < Versioneye::Crawl
-  
+
   A_API_URL       = 'http://api.metacpan.org'
   A_LANGUAGE_PERL = 'Perl' #Product::A_LANGUAGE_PERL
   A_TYPE_CPAN     = 'Cpan' #Project::A_TYPE_CPAN
+  A_SCROLL_TTL    = '2m'
 
   def self.logger
     if !defined?(@@log)
@@ -13,19 +14,24 @@ class CpanCrawler < Versioneye::Crawl
 
 
   #iterates over paginated results
-  def self.crawl_all
+  def self.crawl(all = true, from_days_ago = 2, to_days_ago = nil)
     logger.debug("crawl_all: starting ...")
 
     page_nr = 1
     scroll_id = nil
-    
-    while(page = fetch_releases(scroll_id))
+    page = start_release_scroll(all, from_days_ago, to_days_ago)
+
+    while true
       logger.debug "crawl_all: page.#{page_nr}"
 
-      scroll_id = page[:_scroll_id] if page_nr == 1
+      scroll_id = page[:_scroll_id] if page.has_key?(:_scroll_id)
+      logger.debug "crawl_all: new scroll_id `#{scroll_id}`"
+
       crawl_release_page(page)
       page_nr += 1
-      break if page_nr >= 10
+      break if page.is_a?(Hash) and page[:hits].empty?
+
+      page = fetch_release_scroll(scroll_id)
     end
 
     logger.debug "crawl_all: done"
@@ -66,36 +72,34 @@ class CpanCrawler < Versioneye::Crawl
     persist_release(author_doc, release_doc)
   end
 
-  def self.fetch_releases(scroll_id = nil)
-    releases_url = "#{A_API_URL}/v0/release/_search"
-    
-    if scroll_id
-      releases_url += "?scroll_id=#{scroll_id}"
-    else
-      releases_url += "?scroll=10m"
+  def self.start_release_scroll(all, from_days_ago, to_days_ago)
+    releases_url = "#{A_API_URL}/v0/release/_search?scroll=#{A_SCROLL_TTL}"
+
+    releases_query = {"query" => {"match_all" => {}},
+                      "filter" => {
+                        "and" => [
+                          {"term": { "authorized" => true }}
+                        ]
+                      },
+                      "fields"  => [ "author", "name"],
+                      "sort"    => [{ "date" => "asc" }],
+                      "size"    => 100
+                    }
+
+    if all == false
+      from = (from_days_ago.to_i > 0 ? "now-#{from_days_ago}d/d" : "now-1d/d")
+      to   = (to_days_ago.to_i > 0 ?  "now-#{to_days_ago}d/d" : "now/d")
+
+      releases_query["query"] = {
+        "range" => {"date" => {"gte" => from, "lt"  => to}}
+      }
+
     end
 
-    releases_query = <<-Q
-      {
-        "query": {
-          "match_all": {}
-        },
-        "filter": {
-          "and": [
-            {
-              "term": { "authorized": true }
-            }
-          ]
-        },
-        "fields": [ "author", "name"],
-        "sort" : [{ "date" : "asc" }],
-        "size": 1000
-      }
-    Q
-
-    post_json(releases_url, {body: releases_query})
+    query_json = JSON.dump(releases_query)
+    post_json(releases_url, {body: query_json})
   end
-  
+
   def self.fetch_author_details(author_id)
     author_url = "#{A_API_URL}/v0/author/#{author_id}"
     fetch_json author_url
@@ -106,8 +110,13 @@ class CpanCrawler < Versioneye::Crawl
     fetch_json release_url
   end
 
+  def self.fetch_release_scroll(scroll_id)
+    scroll_url = "#{A_API_URL}/_search/scroll?scroll=#{A_SCROLL_TTL}&scroll_id=#{scroll_id}"
+    fetch_json scroll_url
+  end
+
   def self.persist_release(author_doc, release_doc)
-    
+
     #when package doesnt provide modules, then translate name to module name
     if release_doc[:provides].nil? or release_doc[:provides].empty?
       default_module = release_doc[:distribution].to_s.gsub(/\-/, '::')
@@ -118,7 +127,7 @@ class CpanCrawler < Versioneye::Crawl
     else
       modules = release_doc[:provides]
     end
-    
+
     #saves each module as own product
     prods = modules.reduce([]) do |acc, prod_key|
       acc << upsert_product(author_doc, release_doc, prod_key)
@@ -220,7 +229,7 @@ class CpanCrawler < Versioneye::Crawl
 			version: version_label,
 			email: email
 		)
-		
+
 		role.to_s.downcase!
     website = (author_doc.has_key?(:website) ? author_doc[:website].first : nil)
     author.update({
@@ -274,7 +283,7 @@ class CpanCrawler < Versioneye::Crawl
       version_id: version_label,
       name: release_doc[:archive],
       link: release_doc[:download_url]
-    )    
+    )
   end
 
   def self.upsert_version_license(prod, version_label, license_id)
@@ -325,7 +334,7 @@ class CpanCrawler < Versioneye::Crawl
         spdx_id: 'Apache-1.1',
         url: 'https://opensource.org/licenses/Apache-1.1'
       }
-	
+
     when 'artistic', 'artistic_1'
       {
         spdx_id: 'Artistic-1.0',
@@ -347,11 +356,11 @@ class CpanCrawler < Versioneye::Crawl
 				url: 'https://creativecommons.org/publicdomain/zero/1.0/legalcode'
 			}
     when 'freebsd'
-  		{
-				spdx_id: 'BSD-2-Clause',
-				url: 'https://opensource.org/licenses/BSD-2-Clause'
-			}  
-		when 'gfdl_1_2' 
+      {
+        spdx_id: 'BSD-2-Clause',
+        url: 'https://opensource.org/licenses/BSD-2-Clause'
+      }
+		when 'gfdl_1_2'
       {
 				spdx_id: 'GFDL-1.1',
 				url: 'https://www.gnu.org/licenses/old-licenses/fdl-1.1.txt'
@@ -360,7 +369,7 @@ class CpanCrawler < Versioneye::Crawl
 			{
 				spdx_id: 'GFDL-1.3',
 				url: 'https://www.gnu.org/licenses/fdl-1.3.txt'
-			} 
+			}
     when 'gpl_1'
 			{
 				spdx_id: 'GPL-1.0',
@@ -370,7 +379,7 @@ class CpanCrawler < Versioneye::Crawl
 			{
 				spdx_id: 'GPL-2.0',
 				url: 'https://opensource.org/licenses/GPL-2.0'
-			} 
+			}
     when 'gpl', 'gpl_3'
 			{
 				spdx_id: 'GPL-3.0',
