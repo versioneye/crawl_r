@@ -27,6 +27,7 @@ module Versioneye
     require './lib/versioneye/crawlers/php/tiki_crawler'
     require './lib/versioneye/crawlers/php/spryker_crawler'
     require './lib/versioneye/crawlers/php/zendframework_crawler'
+    require './lib/versioneye/crawlers/php/wpackagist_crawler'
     require './lib/versioneye/crawlers/php/branch_cleaner'
     require './lib/versioneye/crawlers/php/composer_utils'
 

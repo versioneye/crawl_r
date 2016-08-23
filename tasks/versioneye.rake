@@ -84,6 +84,13 @@ namespace :versioneye do
       end
     end
 
+    value = '29 1 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        SatisCrawlProducer.new '::wpackagist::'
+      end
+    end
+
     # Crawl it once a hour. A crawl takes ~ 3 minutes!
     value = '30 * * * *'
     if !value.to_s.empty?
