@@ -5,7 +5,7 @@ class CpanCrawler < Versioneye::Crawl
   A_TYPE_CPAN     = 'Cpan' #Project::A_TYPE_CPAN
 
   def self.logger
-    if !defined?(@@log) || @@logger.nil?
+    if !defined?(@@log)
       @@log = Versioneye::DynLog.new("log/cpan.log", 10).log
     end
     @@log
