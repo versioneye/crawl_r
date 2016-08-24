@@ -1,3 +1,5 @@
+require 'timeout'
+
 module Versioneye
   class Crawl
 
@@ -73,12 +75,13 @@ module Versioneye
       Versioneye::Log.instance.log
     end
     
-    def self.fetch_json( url )
-      res = HTTParty.get(url)
+    def self.fetch_json( url, ttl = 5)
+      res = Timeout::timeout(ttl) { HTTParty.get(url) }
       if res.code != 200
         self.logger.error "Failed to fetch JSON doc from: #{url} - #{res}"
         return nil
       end
+
       JSON.parse(res.body, {symbolize_names: true})
     rescue => e
       logger.error "Failed to parse JSON response from #{url} - #{e.message.to_s}"
@@ -86,8 +89,8 @@ module Versioneye
       nil
     end
 
-    def self.post_json(url, options)
-      res = HTTParty.post(url, options)
+    def self.post_json(url, options, ttl = 5)
+      res = Timeout::timeout(ttl) { HTTParty.post(url, options) }
       if res.code > 205
         logger.error "Failed to post data to the url: #{url}, #{res.code} - #{res.message}\n#{options}"
         return
