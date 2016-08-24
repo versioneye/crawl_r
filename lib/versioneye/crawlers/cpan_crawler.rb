@@ -15,7 +15,7 @@ class CpanCrawler < Versioneye::Crawl
 
   #iterates over paginated results
   def self.crawl(all = true, from_days_ago = 2, to_days_ago = nil)
-    logger.debug("crawl_all: starting ...")
+    logger.debug("crawl: starting...")
 
     page_nr = 1
     scroll_id = nil
@@ -23,9 +23,14 @@ class CpanCrawler < Versioneye::Crawl
 
     while page
       logger.debug "crawl_all: page.#{page_nr}"
+      unless page.is_a?(Hash)
+        #quite when response was anything than Hashmap
+        log.error "crawl: got malformed response from first scroll request:\n #{page}"
+        break
+      end
 
       scroll_id = page[:_scroll_id] if page.has_key?(:_scroll_id)
-      logger.debug "crawl_all: new scroll_id `#{scroll_id}`"
+      logger.debug "crawl: new scroll_id `#{scroll_id}`"
 
       crawl_release_page(page)
       page_nr += 1
@@ -34,7 +39,7 @@ class CpanCrawler < Versioneye::Crawl
       page = fetch_release_scroll(scroll_id)
     end
 
-    logger.debug "crawl_all: done"
+    logger.debug "crawl: done"
     return true
   ensure
     #remove scrolling session
@@ -71,7 +76,7 @@ class CpanCrawler < Versioneye::Crawl
     module_id = to_module_name(release_doc[:distribution])
     module_doc = fetch_module_details(module_id)
     if module_doc.nil?
-      logger.warn "crawl_release: got no module info for #{module_id} - will fallback to release data."
+      logger.warn "crawl_release: no module #{module_id} for release #{author_id}/#{release_id} - will fallback to release data."
       module_doc = {
         version: release_doc[:version],
         description: release_doc[:abstract]
@@ -135,14 +140,14 @@ class CpanCrawler < Versioneye::Crawl
   def self.persist_release(author_doc, release_doc, module_doc)
 
     #when package doesnt provide modules, then translate name to module name
-    if release_doc[:provides].nil? or release_doc[:provides].empty?
+    if release_doc[:provides].is_a?(Array) and release_doc[:provides].size > 0 
+      modules = release_doc[:provides]
+    elsif release_doc[:provides].is_a?(Hash) and release_doc[:provides].keys.size > 0
+      modules = release_doc[:provides].keys.map{|x| x.to_s}
+    else
       default_module = to_module_name( release_doc[:distribution] )
       logger.debug "persist_release: using default module name #{default_module}"
       modules = [default_module]
-    elsif release_doc[:provides].is_a?(Hash)
-      modules = release_doc[:provides].keys.map{|x| x.to_s}
-    else
-      modules = release_doc[:provides]
     end
 
     #saves each module as own product
@@ -156,33 +161,38 @@ class CpanCrawler < Versioneye::Crawl
 
   def self.upsert_product(author_doc, release_doc, module_doc, prod_key)
     prod = Product.find_or_initialize_by(language: A_LANGUAGE_PERL, prod_type: A_TYPE_CPAN, prod_key: prod_key)
-    logger.info "upsert_product: saving release data for #{prod.to_s}"
 
     release_version_label = release_doc[:version].to_s.gsub(/\Av/i, '')
     latest_version_label  = module_doc[:version].to_s.gsub(/\Av/i, '')
-    artifact_id   = "#{release_doc[:author]}/#{release_doc[:name]}"
-    release_doc = if release_doc[:main_module]
+    artifact_id = "#{release_doc[:author]}/#{release_doc[:name]}"
+    parent_id   = if release_doc[:main_module]
                     release_doc[:main_module]
                   else
                     to_module_name(release_doc[:distribution]) #use distribution name as parent id
                   end
-                  
+      
     prod.update({
       name: prod_key,
       group_id: release_doc[:author],       # MetaCPAN organizes packages under usernames
-      parent_id: release_doc[:main_module], # refers to main modules
+      parent_id: parent_id,                 # refers to main modules
       artifact_id: artifact_id,             # ID to get data from releases API
       version: latest_version_label,
 			description: module_doc[:description]
     })
-    prod.save
+    if prod.save
+      logger.info "upsert_product: add new product #{prod.to_s}"
+    else
+      logger.warn "upsert_product: failed to save #{prod.to_s} - #{prod.errors.full_messages.to_s}"
+    end
 
     upsert_version(prod, release_version_label, release_doc)
 
-    release_doc[:dependency].to_a.each {|dep_doc| upsert_dependency(dep_doc, prod_key, version_label)}
+    release_doc[:dependency].to_a.each {|dep_doc| upsert_dependency(dep_doc, prod_key, release_version_label)}
     release_doc[:resources].to_a.each do |title, url_doc|
       url = if url_doc.is_a?(String)
               url_doc
+            elsif url_doc.is_a?(Array)
+              url_doc.first
             elsif url_doc.is_a?(Hash) and url_doc.has_key?(:web)
               url_doc[:web]
             elsif url_doc.is_a?(Hash) and url_doc.has_key?(:url)

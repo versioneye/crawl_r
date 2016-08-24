@@ -1,16 +1,19 @@
 require 'spec_helper'
 
 describe CpanCrawler do
-  let(:all_releases_url){ "#{CpanCrawler::A_API_URL}/v0/release/_search?scroll=10m" }
-  let(:all_releases_url2){ "#{CpanCrawler::A_API_URL}/v0/release/_search?scroll_id=abc123"}
+  let(:all_releases_url){ "#{CpanCrawler::A_API_URL}/v0/release/_search?scroll=2m" }
   let(:author_url){ "#{CpanCrawler::A_API_URL}/v0/author/VTI" }
   let(:release_url){ "#{CpanCrawler::A_API_URL}/v0/release/VTI/Routes-Tiny-0.16" }
-  let(:scroll_url){ "#{CpanCrawler::A_API_URL}/v0/release/_search" }
+  let(:module_url){ "#{CpanCrawler::A_API_URL}/v0/module/Routes::Tiny" }
+  let(:scroll_url){ "#{CpanCrawler::A_API_URL}/v0/release/_search?scroll=2m&scroll_id=abc123" }
+  let(:delete_scroll_url){ "#{CpanCrawler::A_API_URL}/v0/release/_search"  } 
 
   let(:release_json){ File.read("spec/fixtures/files/cpan/release.json") }
   let(:release_dt){ JSON.parse(release_json, {symbolize_names: true}) }
   let(:author_json){ File.read('spec/fixtures/files/cpan/author.json') }
   let(:author_dt){ JSON.parse(author_json, {symbolize_names: true}) }
+  let(:module_json){ File.read('spec/fixtures/files/cpan/module.json') }
+  let(:module_dt){ JSON.parse(module_json, {symbolize_names: true}) }
 
   let(:page1_json){
     %Q[
@@ -275,14 +278,14 @@ describe CpanCrawler do
     end
 
     it "saves a new product from release data" do
-      prod_db = CpanCrawler.upsert_product(nil, release_dt, product1[:prod_key])
+      prod_db = CpanCrawler.upsert_product(nil, release_dt, module_dt, product1[:prod_key])
 
       expect(prod_db).not_to be_nil
       expect(prod_db[:name]).to eq(product1[:name])
       expect(prod_db[:prod_key]).to eq(product1[:prod_key])
       expect(prod_db[:language]).to eq(product1[:language])
       expect(prod_db[:version]).to eq(product1[:version])
-      expect(prod_db[:group_id]).to eq(release_dt[:distribution])
+      expect(prod_db[:group_id]).to eq(release_dt[:author])
       expect(prod_db[:parent_id]).to eq(release_dt[:main_module])
       
     end
@@ -290,25 +293,24 @@ describe CpanCrawler do
 
   context "crawl_all" do
     before :each do
-      Product.delete_all
-
       FakeWeb.allow_net_connect = false
-      FakeWeb.register_uri(:post, all_releases_url,
-                           [{body: page1_json},
-                            {body: "[]"}])
-      FakeWeb.register_uri(:post, all_releases_url2, body: "[]")
+      FakeWeb.register_uri(:post, all_releases_url, {body: page1_json})
+      FakeWeb.register_uri(:get, scroll_url, body: "[]")
       FakeWeb.register_uri(:get, author_url, body: author_json)
       FakeWeb.register_uri(:get, release_url, body: release_json)
-      FakeWeb.register_uri(:delete, scroll_url, body: "[]")
+      FakeWeb.register_uri(:get, module_url, body: module_json)
+      FakeWeb.register_uri(:delete, delete_scroll_url, body: "[]")
     end
 
     after :each do
       FakeWeb.allow_net_connect = true
+      Product.delete_all
     end
 
     it "process first scroll, fetches 1st release, author details and saves correct results" do
-      res = CpanCrawler.crawl_all
+      res = CpanCrawler.crawl
       expect(res).to be_truthy
+      expect(Product.all.count).to eq(3)
 
       prod = Product.find_by(language: 'Perl', prod_key: 'Routes::Tiny')
       expect(prod).not_to be_nil
