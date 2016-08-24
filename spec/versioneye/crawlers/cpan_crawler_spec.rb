@@ -293,7 +293,7 @@ describe CpanCrawler do
 
   context "crawl_all" do
     before :each do
-      FakeWeb.allow_net_connect = false
+      FakeWeb.allow_net_connect = %r[^https?://localhost]
       FakeWeb.register_uri(:post, all_releases_url, {body: page1_json})
       FakeWeb.register_uri(:get, scroll_url, body: "[]")
       FakeWeb.register_uri(:get, author_url, body: author_json)

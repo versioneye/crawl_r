@@ -1,8 +1,8 @@
 class CpanCrawler < Versioneye::Crawl
 
   A_API_URL       = 'http://api.metacpan.org'
-  A_LANGUAGE_PERL = 'Perl' #Product::A_LANGUAGE_PERL
-  A_TYPE_CPAN     = 'Cpan' #Project::A_TYPE_CPAN
+  A_LANGUAGE_PERL = Product::A_LANGUAGE_PERL
+  A_TYPE_CPAN     = Project::A_TYPE_CPAN
   A_SCROLL_TTL    = '2m'
 
   def self.logger
