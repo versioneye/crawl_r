@@ -1,9 +1,9 @@
 class LicenseCrawler < Versioneye::Crawl
 
 
-  A_SOURCE_GMB = 'GMB' # GitHub Master Branch
+  A_SOURCE_GMB = 'GMB'    # GitHub Master Branch
   A_SOURCE_G   = 'GITHUB' # GitHub Master Branch
-  A_LICENSE_CORPUS_PATH = 'data/licenses/texts/plain' #where to find license text for LicenseMatcher
+  A_LICENSE_CORPUS_PATH  = 'data/licenses/texts/plain' # Where to find license text for LicenseMatcher
   A_MIN_SCORE_CONFIDENCE = 0.5
 
   LICENSE_FILES = ['LICENSE.md', 'LICENSE.txt', 'LICENSE', 'LICENCE', 'MIT-LICENSE', 'license.md', 'licence.md', 'UNLICENSE.md', 'README.md']
@@ -15,6 +15,7 @@ class LicenseCrawler < Versioneye::Crawl
     end
     @@log
   end
+
 
   def self.fetch url
     HTTParty.get url
@@ -64,7 +65,7 @@ class LicenseCrawler < Versioneye::Crawl
     logger.info "crawl_unidentified_urls: done! crawled #{n} licenses, skipped: #{failed}"
   end
 
-  #ables to scale out different workers 
+  #ables to scale out different workers
   def self.crawl_license_file(lic_matcher, lic_db)
     prod_id = "#{lic_db[:language]}/#{lic_db[:prod_key]}"
     url = lic_db[:url].to_s.strip
@@ -79,7 +80,7 @@ class LicenseCrawler < Versioneye::Crawl
       lic_db.update(name: 'unknown')
       return []
     end
-  
+
     matches = case res.headers["content-type"]
               when /text\/plain/i
                 lic_matcher.match_text res.body
@@ -89,7 +90,7 @@ class LicenseCrawler < Versioneye::Crawl
                 logger.warn "crawl_license_file: unsupported content-type #{res.headers['content-type']} - #{prod_id}, #{url}"
                 []
               end
-    
+
     best_match = matches.to_a.first
     if best_match.nil? or best_match.empty?
       logger.warn "crawl_license_file: found no match for #{prod_id}, #{url}"
