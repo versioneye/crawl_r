@@ -34,6 +34,7 @@ class LicenseMatcher
       score_map[license_id] = score.first
     end
 
+    @corpus.pop #remove comparable doc from corpus to not to increase the size of corpus
     top_matches(score_map, n)
   end
 

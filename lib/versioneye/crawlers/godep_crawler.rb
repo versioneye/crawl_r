@@ -1,5 +1,6 @@
 require 'timeout'
 require 'rugged'
+require 'time'
 
 class GodepCrawler < Versioneye::Crawl
 
@@ -151,9 +152,19 @@ class GodepCrawler < Versioneye::Crawl
     return false if the_prod.nil? or repo_idx.nil?
 
     the_prod.versions.each do |version|
+      t0 = (Time.now.to_f * 1000).to_i
       license_files = repo_idx.get_license_files_from_sha(version[:sha1])
+      t1 = (Time.now.to_f * 1000).to_i
+      logger.info "#--------------------------------------------------------|------------"
+      logger.info "add_version_licenses: get_license_files_from_sha took    |#{t1 - t0}ms"
+
       license_ids = match_licenses(license_files)
+      t2 = (Time.now.to_f * 1000).to_i
+      logger.info "add_version_licenses: match_licenses took                |#{t2 - t1}ms"  
+
       license_ids.each {|spdx_id| create_single_license(version[:version], the_prod, spdx_id)}
+      t3 = (Time.now.to_f * 1000).to_i
+      logger.info "add_version_licenses: creating a new license model took  |#{t3 - t2}ms"
     end
 
     return true
