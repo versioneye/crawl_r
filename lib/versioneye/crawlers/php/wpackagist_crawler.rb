@@ -27,6 +27,9 @@ class WpackagistCrawler < SatisCrawler
     response = HTTParty.get( url ).response
     body     = JSON.parse response.body
     body['provider-includes']
+  rescue => e
+    log.error "ERROR in WpackagistCrawler.fetch_provider_includes() - #{e.message}"
+    log.error e.backtrace.join("\n")
   end
 
 
@@ -39,6 +42,9 @@ class WpackagistCrawler < SatisCrawler
       sha = obj['sha256']
       process_packages key, sha
     end
+  rescue => e
+    log.error "ERROR in WpackagistCrawler.process_provider(#{pkey}) - #{e.message}"
+    log.error e.backtrace.join("\n")
   end
 
 
@@ -50,6 +56,9 @@ class WpackagistCrawler < SatisCrawler
     body['packages'].each do |package|
       crawler.crawle_package package
     end
+  rescue => e
+    log.error "ERROR in WpackagistCrawler.process_packages(#{key}, #{sha}) - #{e.message}"
+    log.error e.backtrace.join("\n")
   end
 
 
