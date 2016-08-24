@@ -38,6 +38,8 @@ class SatisCrawlWorker < Worker
       ZendframeworkCrawler.crawl
     elsif package_name.eql?('::spryker::')
       SprykerCrawler.crawl
+    elsif package_name.eql?('::wpackagist::')
+      WpackagistCrawler.crawl
     end
 
     log.info "Crawl done for #{package_name}"
