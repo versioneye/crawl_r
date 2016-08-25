@@ -4,12 +4,13 @@ require 'tf-idf-similarity'
 require 'json'
 
 class LicenseMatcher
-  attr_reader :corpus, :licenses, :url_index
+  attr_reader :corpus, :licenses, :model, :url_index
   
-  CUSTOM_CORPUS_FILES_PATH = 'data/custom_licenses' #where to look up non SPDX licenses
-  LICENSE_JSON_FILE='data/licenses.json'
+  DEFAULT_CORPUS_FILES_PATH = 'data/licenses/texts/plain'
+  CUSTOM_CORPUS_FILES_PATH  = 'data/custom_licenses' #where to look up non SPDX licenses
+  LICENSE_JSON_FILE         = 'data/licenses.json'
 
-  def initialize(files_path, license_json_file = LICENSE_JSON_FILE)
+  def initialize(files_path = DEFAULT_CORPUS_FILES_PATH, license_json_file = LICENSE_JSON_FILE)
     spdx_ids, spdx_docs = read_corpus(files_path)
     custom_ids, custom_docs = read_corpus(CUSTOM_CORPUS_FILES_PATH)
     @licenses = spdx_ids + custom_ids
@@ -17,25 +18,30 @@ class LicenseMatcher
     
     licenses_json_doc = read_json_file license_json_file
     @url_index = read_license_url_index(licenses_json_doc)
+    @model = TfIdfSimilarity::BM25Model.new(@corpus, :library => :narray)
   end
 
   def match_text(text, n = 3)
-    clean_text = safe_encode(text) 
-    text_doc = TfIdfSimilarity::Document.new(clean_text)
-    match_corpus = @corpus.push text_doc
+    clean_text = safe_encode(text)
+    test_doc   = TfIdfSimilarity::Document.new(clean_text, {:id => "test"})
 
-    model = TfIdfSimilarity::BM25Model.new(match_corpus, :library => :narray)
-    text_doc_id = model.document_index(text_doc)
-    results = get_row(model.similarity_matrix, text_doc_id)
+    mat1 = @model.instance_variable_get(:@matrix)
+    mat2 = doc_tfidf_matrix(test_doc)
 
-    score_map = {}
-    results.each_with_index do |score, i|
-      license_id = @licenses.fetch(i, 'doc')
-      score_map[license_id] = score.first
+    n_docs = @model.documents.size
+    dists = []
+    n_docs.times do |i|
+      dists << [i, cos_sim(mat1[i, true], mat2)]
     end
 
-    @corpus.pop #remove comparable doc from corpus to not to increase the size of corpus
-    top_matches(score_map, n)
+    top_matches = dists.sort {|a,b| b[1] <=> a[1]}.take(n)
+    
+    #translate doc numbers to id
+    top_matches.reduce([]) do |acc, doc_id_and_score|
+      doc_id, score = doc_id_and_score
+      acc << [ @model.documents[doc_id].id, score ] 
+      acc
+    end
   end
 
   def match_html(html_doc, n = 3)
@@ -80,6 +86,30 @@ class LicenseMatcher
   end
 
 #-- helpers
+  
+  # transforms document into TF-IDF matrix used for comparition
+  def doc_tfidf_matrix(doc)
+    arr = Array.new(@model.terms.size) do |i|
+      the_term = @model.terms[i]
+      if doc.term_count(the_term) > 0
+        #calc score only for words that exists in the test doc and the corpus of licenses
+        model.idf(the_term) * model.tf(doc, the_term)
+      else
+        0.0
+      end
+    end
+
+    NArray[*arr]
+  end
+
+  # calculates cosine similarity between 2 TF-IDF vector
+  def cos_sim(mat1, mat2)
+    length = (mat1 * mat2).sum
+    norm   = Math::sqrt((mat1 ** 2).sum) * Math::sqrt((mat2 ** 2).sum)
+
+    ( norm > 0 ? length / norm : 0.0)
+  end
+
 
   def read_json_file(file_path)
     JSON.parse(File.read(file_path), {symbolize_names: true})
@@ -91,9 +121,7 @@ class LicenseMatcher
   #reads license urls from the license.json and builds a map {url : spdx_id}
   def read_license_url_index(spdx_licenses)
     url_index = {}
-    
     spdx_licenses.each {|lic| url_index.merge! process_spdx_item(lic) }
-
     url_index
   end
 
@@ -116,7 +144,7 @@ class LicenseMatcher
       content = File.read("#{files_path}/#{file_name}")
       txt = safe_encode(content)
       if txt
-        acc << TfIdfSimilarity::Document.new(txt)
+        acc << TfIdfSimilarity::Document.new(txt, :id => file_name)
       else
         p "read_corpus: failed to encode content of corpus #{files_path}/#{file_name}"
       end
@@ -131,17 +159,7 @@ class LicenseMatcher
     Dir.entries(files_path).to_a.delete_if {|name| ( name == '.' or name == '..' or name =~ /\w+\.py/i or name =~ /.DS_Store/i )}
   end
 
-
   #returns top-N matching licenses with matching score 
-  def top_matches(score_map, n = 3)
-    score_map.sort_by {|lic, score| -score}.delete_if {|lic, score| lic == 'doc'}.take(n)
-  end
-
-  def get_row(sim_matrix, row_id)
-    last_col = sim_matrix.shape.last - 1
-    sim_matrix.slice(row_id, 0..last_col).to_a
-  end
-
   def safe_encode(txt)
     txt.to_s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
   rescue
