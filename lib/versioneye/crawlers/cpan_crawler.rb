@@ -140,7 +140,7 @@ class CpanCrawler < Versioneye::Crawl
   def self.persist_release(author_doc, release_doc, module_doc)
 
     #when package doesnt provide modules, then translate name to module name
-    if release_doc[:provides].is_a?(Array) and release_doc[:provides].size > 0 
+    if release_doc[:provides].is_a?(Array) and release_doc[:provides].size > 0
       modules = release_doc[:provides]
     elsif release_doc[:provides].is_a?(Hash) and release_doc[:provides].keys.size > 0
       modules = release_doc[:provides].keys.map{|x| x.to_s}
@@ -170,7 +170,7 @@ class CpanCrawler < Versioneye::Crawl
                   else
                     to_module_name(release_doc[:distribution]) #use distribution name as parent id
                   end
-      
+
     prod.update({
       name: prod_key,
       group_id: release_doc[:author],       # MetaCPAN organizes packages under usernames
