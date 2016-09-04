@@ -1,3 +1,5 @@
+require 'timeout'
+
 module Versioneye
   class Crawl
 
@@ -17,6 +19,7 @@ module Versioneye
     require './lib/versioneye/crawlers/pom_crawler'
     require './lib/versioneye/crawlers/phpeye_crawler'
     require './lib/versioneye/crawlers/nuget_crawler'
+    require './lib/versioneye/crawlers/cpan_crawler'
 
     require './lib/versioneye/crawlers/php/packagist_crawler'
     require './lib/versioneye/crawlers/php/packagist_license_crawler'
@@ -71,6 +74,35 @@ module Versioneye
     def logger
       Versioneye::Log.instance.log
     end
+    
+    def self.fetch_json( url, ttl = 5)
+      res = Timeout::timeout(ttl) { HTTParty.get(url) }
+      if res.code != 200
+        self.logger.error "Failed to fetch JSON doc from: #{url} - #{res}"
+        return nil
+      end
 
+      JSON.parse(res.body, {symbolize_names: true})
+    rescue => e
+      logger.error "Failed to parse JSON response from #{url} - #{e.message.to_s}"
+      logger.error e.backtrace.join('\n')
+      nil
+    end
+
+    def self.post_json(url, options, ttl = 5)
+      res = Timeout::timeout(ttl) { HTTParty.post(url, options) }
+      if res.code > 205
+        logger.error "Failed to post data to the url: #{url}, #{res.code} - #{res.message}\n#{options}"
+        return
+      end
+  
+      return if res.body.to_s.empty?
+      JSON.parse(res.body, {symbolize_names: true})
+    rescue => e
+      logger.error "Failed to post data to #{url} - #{options}"
+      logger.error e.message.to_s
+      logger.error e.backtrace.join('\n')
+      nil
+    end
   end
 end
