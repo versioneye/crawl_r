@@ -48,6 +48,6 @@ pkg
 # For rubinius:
 #*.rbc
 
-log/*.log
+log/*
 scripts/set_vars_for_dev_reiz.sh
 tmp/*

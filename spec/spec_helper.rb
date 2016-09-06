@@ -31,8 +31,9 @@ RSpec.configure do |config|
   RubyCrawl.new
 
   config.before(:each) do
-    DatabaseCleaner.clean
     FakeWeb.clean_registry
+
+    DatabaseCleaner.clean
     models = Mongoid.models
     models.each do |model|
       model.all.each(&:delete)
@@ -40,8 +41,8 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    DatabaseCleaner.clean
     FakeWeb.clean_registry
+    DatabaseCleaner.clean
   end
 
   #include FactoryGirl into test DSL

@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'httparty'
 
 describe LicenseMatcher do
+  
   let(:corpus_path){ 'data/licenses/texts/plain' }
   let(:lic_matcher){ LicenseMatcher.new(corpus_path) }
   let(:mit_txt){ File.read("#{corpus_path}/MIT") }
@@ -9,6 +10,16 @@ describe LicenseMatcher do
   let(:lgpl_txt){ File.read("#{corpus_path}/LGPL-2.0") }
   let(:bsd3_txt){ File.read("#{corpus_path}/BSD-3") }
   let(:dotnet_txt){ File.read('data/custom_licenses/msl_dotnet') }
+
+  before do
+    FakeWeb.allow_net_connect = %r[^https?://localhost]
+  end
+
+  it "calculates correct COS similarity" do
+    mat1 = NArray[*[2, 1, 0, 2, 0, 1, 1, 1]]
+    mat2 = NArray[*[2, 1, 1, 1, 1, 0, 1, 1]]
+    expect(lic_matcher.cos_sim(mat1, mat2)).to be_between(0.82,0.83).inclusive
+  end
 
   it "finds correct matches for text files" do
     expect( lic_matcher.match_text(mit_txt).first.first ).to eq("MIT")
