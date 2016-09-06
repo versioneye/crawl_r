@@ -5,10 +5,11 @@ class ComposerUtils
     return if version_obj.nil? or version_obj.empty?
 
     licenses = if version_obj.is_a?(Hash) 
-                 split_licenses(version_obj.fetch('license', 'unknown')).to_a
+                 CrawlerUtils.split_licenses(version_obj.fetch('license', 'unknown')).to_a
                else
-                 split_licenses(version_obj) #if it was plain string
+                 CrawlerUtils.split_licenses(version_obj) #if it was plain string
                end
+
 
     licenses.each do |license_name|
       License.find_or_create_by(
@@ -17,19 +18,6 @@ class ComposerUtils
         :version => version_number,
         :name => license_name.to_s.strip
       )
-    end
-  end
-
-  #splits dual-licensed license string to separate licenses
-  def self.split_licenses(licenses_obj)
-    if licenses_obj.is_a?(Array)
-      licenses_obj.map(&:strip)
-    elsif licenses_obj.is_a?(String) and licenses_obj.first == '(' and licenses_obj.last == ')'
-      licenses_obj.gsub(/\(|\)/, '').gsub(/\s+or\s+/i, ',').split(',').to_a
-    elsif licenses_obj.is_a?(String)
-      [licenses_obj]
-    else
-      [] #happens only if spec of composer.json has been changed
     end
   end
 

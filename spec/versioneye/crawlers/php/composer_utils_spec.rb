@@ -5,28 +5,6 @@ describe ComposerUtils do
     WebMock.enable! 
   end
 
-
-  context "split_license" do
-    it "returns list of licenseNames without surrounding spaces" do
-      res = ComposerUtils.split_licenses(['MIT', '  GPL     '])
-      expect(res[0]).to eq('MIT')
-      expect(res[1]).to eq('GPL')
-    end
-
-    it "returns list of licenses after splitting string with ORs" do
-      res = ComposerUtils.split_licenses('(LGPL-2.1 or GPL-3.0+)')
-      expect(res).not_to be_nil
-      expect(res[0]).to eq('LGPL-2.1')
-      expect(res[1]).to eq('GPL-3.0+')
-    end
-
-    it "returns list of single license if it was plain string" do
-      res = ComposerUtils.split_licenses('MIT')
-      expect(res).not_to be_nil
-      expect(res[0]).to eq('MIT')
-    end
-  end
-
   let(:product1){
     Product.new(
       name: 'PhpMock',
