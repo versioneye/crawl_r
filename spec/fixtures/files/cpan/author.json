@@ -1,0 +1,53 @@
+{
+   "name" : "Вячеслав Тихановский",
+   "pauseid" : "VTI",
+   "updated" : "2015-07-31T17:08:17",
+   "user" : "1nHdPu_MRzmkjJU-NXpstw",
+   "gravatar_url" : "https://secure.gravatar.com/avatar/b03e2e03fea48f3aee2be87fcc4201a0?s=130&d=http%3A%2F%2Fwww.gravatar.com%2Favatar%2Fb03e2e03fea48f3aee2be87fcc4201a0%3Fs%3D130%26d%3Didenticon",
+   "email" : [
+      "vti@cpan.org"
+   ],
+   "asciiname" : "Viacheslav Tykhanovskyi",
+   "dir" : "id/V/VT/VTI",
+   "country" : "ua",
+   "website" : [
+      "http://showmetheco.de/"
+   ],
+   "profile" : [
+      {
+         "id" : "vti",
+         "name" : "coderwall"
+      },
+      {
+         "id" : "vti",
+         "name" : "github"
+      },
+      {
+         "id" : "VTI",
+         "name" : "github-meets-cpan"
+      },
+      {
+         "id" : "vtivti",
+         "name" : "twitter"
+      },
+      {
+         "id" : "vti",
+         "name" : "gittip"
+      }
+   ],
+   "city" : "Kiev",
+   "donation" : [
+      {
+         "id" : "viacheslav.t+es@gmail.com",
+         "name" : "paypal"
+      },
+      {
+         "id" : "",
+         "name" : "wishlist"
+      },
+      {
+         "name" : "flattr",
+         "id" : ""
+      }
+   ]
+}
