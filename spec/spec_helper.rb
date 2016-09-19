@@ -40,7 +40,7 @@ RSpec.configure do |config|
     end
   end
 
-  config.after(:each) do
+  config.before(:each) do
     DatabaseCleaner.clean
     FakeWeb.clean_registry
     FakeWeb.allow_net_connect = true
