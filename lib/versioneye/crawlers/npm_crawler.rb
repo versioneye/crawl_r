@@ -212,7 +212,6 @@ class NpmCrawler < Versioneye::Crawl
 
 
   def self.create_license( product, version_number, version_obj )
-    check_single_license product, version_number, version_obj
     check_licenses product, version_number, version_obj
     check_license_on_github( product, version_number )
   rescue => e
@@ -233,37 +232,24 @@ class NpmCrawler < Versioneye::Crawl
   end
 
 
-  def self.check_single_license( product, version_number, version_obj )
-    license_value = version_obj['license']
-    return nil if license_value.to_s.empty?
+  def self.check_licenses( product, version_number, version_obj )
+    license_value = ( version_obj['license'] || version_obj['licenses'] )
+    return nil if license_value.nil? or license_value.empty?
 
-    if license_value.is_a? String
-      create_single_license( product, version_number, license_value )
-    elsif license_value.is_a? Hash
+    logger.info "check_licenses: #{product.prod_key}/#{version_number} - #{license_value}"
+    if license_value.is_a? Hash
       license_type = license_value["type"]
       license_url  = license_value["url"]
       create_single_license( product, version_number, license_type, license_url )
-    elsif license_value.is_a? Array
+
+    elsif license_value.is_a?(Array) and license_value.first.is_a?(Hash)
       create_licenses( product, version_number, license_value )
-    end
-  end
 
-
-  def self.check_licenses( product, version_number, version_obj )
-    licenses = version_obj['licenses']
-    return nil if licenses.nil? || licenses.empty?
-
-    if licenses.is_a?( String )
-      create_single_license( product, version_number, licenses )
-    elsif licenses.is_a?( Hash )
-      license_name = licenses["type"]
-      license_url  = licenses["url"]
-      create_single_license( product, version_number, license_name, license_url )
-    elsif licenses.is_a?( Array )
+    else 
+      licenses = CrawlerUtils.split_licenses(license_value)
       create_licenses( product, version_number, licenses )
     end
   end
-
 
   def self.create_licenses( product, version_number, licenses )
     licenses.each do |licence|
@@ -280,7 +266,7 @@ class NpmCrawler < Versioneye::Crawl
 
   def self.create_single_license( product, version_number, license_name, license_url = nil )
     license = License.find_or_create( product.language, product.prod_key, version_number, license_name, license_url )
-    self.logger.info " -- find_or_create license - #{license.to_s}"
+    logger.info "create_single_license: find_or_create license - #{license.to_s}"
   end
 
 

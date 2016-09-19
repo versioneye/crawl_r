@@ -2,16 +2,24 @@ class ComposerUtils
 
 
   def self.create_license( product, version_number, version_obj )
-    license = version_obj['license']
-    return nil if license.nil? || license.empty?
+    return if version_obj.nil? or version_obj.empty?
 
-    license.each do |license_name|
-      License.find_or_create_by :language => product.language,
-        :prod_key => product.prod_key, :version => version_number,
-        :name => license_name
+    licenses = if version_obj.is_a?(Hash) 
+                 CrawlerUtils.split_licenses(version_obj.fetch('license', 'unknown')).to_a
+               else
+                 CrawlerUtils.split_licenses(version_obj) #if it was plain string
+               end
+
+
+    licenses.each do |license_name|
+      License.find_or_create_by(
+        :language => product.language,
+        :prod_key => product.prod_key,
+        :version => version_number,
+        :name => license_name.to_s.strip
+      )
     end
   end
-
 
   def self.create_developers authors, product, version_number
     return nil if authors.nil? || authors.empty?

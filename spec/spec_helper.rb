@@ -33,15 +33,18 @@ RSpec.configure do |config|
   config.before(:each) do
     DatabaseCleaner.clean
     FakeWeb.clean_registry
+
     models = Mongoid.models
     models.each do |model|
       model.all.each(&:delete)
     end
   end
 
-  config.before(:each) do
+  config.after(:each) do
     DatabaseCleaner.clean
     FakeWeb.clean_registry
+    FakeWeb.allow_net_connect = true
+    WebMock.enable!
   end
 
   #include FactoryGirl into test DSL
