@@ -1,9 +1,9 @@
 source "http://rubygems.org"
 
-gem 'versioneye-core'    , :git => 'https://github.com/versioneye/versioneye-core.git', :tag => 'v10.1.2'
+gem 'versioneye-core'    , :git => 'https://github.com/versioneye/versioneye-core.git', :tag => 'v10.3.15'
 # gem 'versioneye-core'    , :path => "~/workspace/versioneye/versioneye-core"
 
-gem 'rufus-scheduler', '3.2.1'
+gem 'rufus-scheduler', '3.2.2'
 
 # rubygems for text similarities
 gem 'narray', '0.6.1.2'
@@ -22,7 +22,7 @@ group :test do
   gem 'rspec_junit_formatter', '0.2.3'
   gem 'database_cleaner', '~> 1.5.1'
   gem 'factory_girl'    , '~> 4.7.0'
-  gem 'capybara'        , '~> 2.7.1'
+  gem 'capybara'        , '~> 2.10.1'
   gem 'vcr'             , '~> 3.0.1',  :require => false
   gem 'webmock'         , '~> 2.1.0', :require => false
   gem 'fakeweb'         , '~> 1.3.0'
