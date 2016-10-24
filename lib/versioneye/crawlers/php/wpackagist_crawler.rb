@@ -42,14 +42,15 @@ class WpackagistCrawler < SatisCrawler
 
   def self.process_provider pkey
     url = "https://wpackagist.org/#{pkey}"
+    logger.info "process_provider for #{url}"
     response = HTTParty.get( url ).response
     body     = JSON.parse response.body
     keys     = body['providers'].keys
-    logger.info "Found #{keys.count} keys for #{url}"
+    logger.info "Found #{keys.count} provider keys for #{url}"
     keys.each do |key|
       obj = body['providers'][key]
       sha = obj['sha256']
-      process_packages key, sha
+      process_packages key, sha, pkey
     end
   rescue => e
     logger.error "ERROR in WpackagistCrawler.process_provider(#{pkey}) - #{e.message}"
@@ -57,7 +58,7 @@ class WpackagistCrawler < SatisCrawler
   end
 
 
-  def self.process_packages key, sha
+  def self.process_packages key, sha, pkey = nil
     url = "https://wpackagist.org/p/#{key}$#{sha}.json"
     response = HTTParty.get( url ).response
     body     = JSON.parse response.body
@@ -68,7 +69,7 @@ class WpackagistCrawler < SatisCrawler
       crawler.crawle_package package
     end
   rescue => e
-    logger.error "ERROR in WpackagistCrawler.process_packages(#{key}, #{sha}) - #{e.message}"
+    logger.error "ERROR in WpackagistCrawler.process_packages(#{key}, #{sha}, #{pkey}) - #{e.message}"
     logger.error e.backtrace.join("\n")
   end
 
