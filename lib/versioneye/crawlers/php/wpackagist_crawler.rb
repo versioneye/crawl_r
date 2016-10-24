@@ -37,7 +37,9 @@ class WpackagistCrawler < SatisCrawler
     url = "https://wpackagist.org/#{pkey}"
     response = HTTParty.get( url ).response
     body     = JSON.parse response.body
-    body['providers'].keys.each do |key|
+    keys     = body['providers'].keys
+    log.info "Found #{keys.count} keys for #{url}"
+    keys.each do |key|
       obj = body['providers'][key]
       sha = obj['sha256']
       process_packages key, sha
@@ -53,6 +55,8 @@ class WpackagistCrawler < SatisCrawler
     response = HTTParty.get( url ).response
     body     = JSON.parse response.body
     crawler  = WpackagistCrawler.new A_BASE_URL, A_LINK_NAME
+    packages = body['packages']
+    log.info "Found #{packages.count} packages for #{url}"
     body['packages'].each do |package|
       crawler.crawle_package package
     end
