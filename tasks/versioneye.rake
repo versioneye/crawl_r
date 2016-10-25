@@ -147,7 +147,28 @@ namespace :versioneye do
       end
     end
 
-    value = '29 11 * * *'
+    value = '1 6 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        SatisCrawlProducer.new '::wpackagist::'
+      end
+    end
+
+    value = '1 11 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        SatisCrawlProducer.new '::wpackagist::'
+      end
+    end
+
+    value = '1 17 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        SatisCrawlProducer.new '::wpackagist::'
+      end
+    end
+
+    value = '40 23 * * *'
     if !value.to_s.empty?
       scheduler.cron value do
         SatisCrawlProducer.new '::wpackagist::'
