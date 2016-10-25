@@ -118,13 +118,6 @@ namespace :versioneye do
       end
     end
 
-    value = '29 1 * * *'
-    if !value.to_s.empty?
-      scheduler.cron value do
-        SatisCrawlProducer.new '::wpackagist::'
-      end
-    end
-
     value = '11 2 * * *'
     if !value.to_s.empty?
       scheduler.cron value do
@@ -151,6 +144,13 @@ namespace :versioneye do
     if !value.to_s.empty?
       scheduler.cron value do
         CommonCrawlProducer.new '::chef::'
+      end
+    end
+
+    value = '29 11 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        SatisCrawlProducer.new '::wpackagist::'
       end
     end
 
