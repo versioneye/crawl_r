@@ -18,9 +18,13 @@ class WpackagistCrawler < SatisCrawler
   A_LINK_NAME = 'WordPress Packagist'
 
 
-  def self.crawl packages = nil, early_exit = false
+  def self.crawl packages = nil, weekly_only = true
     provider_includes = fetch_provider_includes
     provider_includes.keys.each do |key|
+      if weekly_only && key.match("this-week").nil?
+        logger.info "skip #{key} because we check weekly_only."
+        next
+      end
       obj     = provider_includes[key]
       sha256  = obj['sha256']
       new_key = key.gsub("%hash%", sha256)
