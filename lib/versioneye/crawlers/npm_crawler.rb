@@ -28,6 +28,13 @@ class NpmCrawler < Versioneye::Crawl
   end
 
 
+  def self.crawl_scoped
+    Projectdependency.where(:language => "Node.JS", :name => /@/).distinct(:name).each do |name|
+      NpmCrawler.crawle_package name.gsub("/", "%2f")
+    end
+  end
+
+
   def self.get_first_level_list
     packages = get_first_level_list_from_registry
     if packages.nil? || packages.empty? || packages.count < 50

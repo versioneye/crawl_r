@@ -118,6 +118,13 @@ namespace :versioneye do
       end
     end
 
+    value = '1 1 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        NpmCrawlProducer.new '::crawl_scoped::'
+      end
+    end
+
     value = '11 2 * * *'
     if !value.to_s.empty?
       scheduler.cron value do
