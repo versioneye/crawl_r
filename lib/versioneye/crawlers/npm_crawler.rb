@@ -252,7 +252,7 @@ class NpmCrawler < Versioneye::Crawl
     elsif license_value.is_a?(Array) and license_value.first.is_a?(Hash)
       create_licenses( product, version_number, license_value )
 
-    else 
+    else
       licenses = CrawlerUtils.split_licenses(license_value)
       create_licenses( product, version_number, licenses )
     end
