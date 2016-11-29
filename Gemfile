@@ -1,9 +1,9 @@
 source "http://rubygems.org"
 
-gem 'versioneye-core'    , :git => 'https://github.com/versioneye/versioneye-core.git', :tag => 'v10.3.23'
+gem 'versioneye-core'    , :git => 'https://github.com/versioneye/versioneye-core.git', :tag => 'v10.6.5'
 # gem 'versioneye-core'    , :path => "~/workspace/versioneye/versioneye-core"
 
-gem 'rufus-scheduler', '3.2.2'
+gem 'rufus-scheduler', '3.3.0'
 
 # rubygems for text similarities
 gem 'narray', '0.6.1.2'
@@ -12,8 +12,8 @@ gem 'tf-idf-similarity', '0.1.5'
 
 group :development do
   gem "shoulda"  , ">= 0"
-  gem "rdoc"     , "~> 4.2.0"
-  gem "jeweler"  , "~> 2.1.1"
+  gem "rdoc"     , "~> 5.0.0"
+  gem "jeweler"  , "~> 2.2.1"
 end
 
 group :test do
