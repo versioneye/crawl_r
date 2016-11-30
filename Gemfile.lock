@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/versioneye/versioneye-core.git
-  revision: 89a77d00a9b61712ad22adb55276ea68df031dda
-  tag: v10.6.5
+  revision: 88a8db59c790e3d845916195a9c5e1d64838aa43
+  tag: v10.6.7
   specs:
-    versioneye-core (10.6.5)
+    versioneye-core (10.6.7)
       actionmailer (~> 5.0.0.1)
       aws-sdk (~> 2.6.19)
       bundler (~> 1.13.0)
@@ -63,13 +63,13 @@ GEM
       public_suffix (~> 2.0, >= 2.0.2)
     amq-protocol (2.0.1)
     ansi (1.5.0)
-    aws-sdk (2.6.28)
-      aws-sdk-resources (= 2.6.28)
-    aws-sdk-core (2.6.28)
+    aws-sdk (2.6.29)
+      aws-sdk-resources (= 2.6.29)
+    aws-sdk-core (2.6.29)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.6.28)
-      aws-sdk-core (= 2.6.28)
+    aws-sdk-resources (2.6.29)
+      aws-sdk-core (= 2.6.29)
     aws-sigv4 (1.0.0)
     bson (4.2.0)
     builder (3.2.2)
@@ -232,7 +232,7 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.0)
-    stripe (1.57.0)
+    stripe (1.57.1)
       rest-client (>= 1.4, < 4.0)
     tf-idf-similarity (0.1.5)
       unicode_utils (~> 1.4)

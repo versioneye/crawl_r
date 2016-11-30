@@ -4,7 +4,7 @@ class ComposerUtils
   def self.create_license( product, version_number, version_obj )
     return if version_obj.nil? or version_obj.empty?
 
-    licenses = if version_obj.is_a?(Hash) 
+    licenses = if version_obj.is_a?(Hash)
                  CrawlerUtils.split_licenses(version_obj.fetch('license', 'unknown')).to_a
                else
                  CrawlerUtils.split_licenses(version_obj) #if it was plain string
@@ -77,12 +77,12 @@ class ComposerUtils
       if require_version.strip.eql?("self.version")
         require_version = version_number
       end
-      dep_prod_key = require_name
-      dep = Dependency.find_by( Product::A_LANGUAGE_PHP, product.prod_key, version_number, require_name, require_version, dep_prod_key )
+
+      dep = Dependency.where( :language => Product::A_LANGUAGE_PHP, :prod_key => product.prod_key, :prod_version => version_number, :dep_prod_key => require_name, :version => require_version, :scope => scope).first
       next if dep
 
       dependency = Dependency.new({:name => require_name, :version => require_version,
-        :dep_prod_key => dep_prod_key, :prod_key => product.prod_key,
+        :dep_prod_key => require_name, :prod_key => product.prod_key,
         :prod_version => version_number, :scope => scope, :prod_type => Project::A_TYPE_COMPOSER,
         :language => Product::A_LANGUAGE_PHP })
       dependency.save
