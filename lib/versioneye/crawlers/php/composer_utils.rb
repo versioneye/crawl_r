@@ -78,8 +78,12 @@ class ComposerUtils
         require_version = version_number
       end
 
-      dep = Dependency.where( :language => Product::A_LANGUAGE_PHP, :prod_key => product.prod_key, :prod_version => version_number, :dep_prod_key => require_name, :version => require_version, :scope => scope).first
-      next if dep
+      next if Dependency.where(:language => Product::A_LANGUAGE_PHP,
+                               :prod_key => product.prod_key,
+                               :prod_version => version_number,
+                               :dep_prod_key => require_name,
+                               :version => require_version,
+                               :scope => scope ).count > 0
 
       dependency = Dependency.new({:name => require_name, :version => require_version,
         :dep_prod_key => require_name, :prod_key => product.prod_key,
