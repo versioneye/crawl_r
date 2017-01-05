@@ -4,11 +4,113 @@ require 'tf-idf-similarity'
 require 'json'
 
 class LicenseMatcher
-  attr_reader :corpus, :licenses, :model, :url_index
+  attr_reader :corpus, :licenses, :model, :url_index, :rules, :spdx_ids, :custom_ids
 
   DEFAULT_CORPUS_FILES_PATH = 'data/licenses/texts/plain'
   CUSTOM_CORPUS_FILES_PATH  = 'data/custom_licenses' #where to look up non SPDX licenses
   LICENSE_JSON_FILE         = 'data/licenses.json'
+
+  def get_rules
+    #NB: order matters for AGPL and GPL
+    {
+      "AGPL-1.0"      => [
+                          /\bAGPL\b/i,
+                          /\bAffero\s+General\s+Public\s+License\s+[v]?1\b/i,
+                          /\bAFFERO\s+GENERAL\s+PUBLIC\b/i
+                         ],
+      "AGPL-3.0"      => [
+                          /\bAGPL[-|v]?3/i,
+                          /\bGNU\s+Affero\s+General\s+Public\s+License\s+[v]?3/i
+                         ],
+      "GPL-1.0"       => [/\bGPL[-|v]?1\b/i, /\bGPL[-|v]?1\.0\b/i],
+      "GPL-2.0"       => [/\bGNU\s+GPL\sv2/i, /\bGPL[v|-]?2\b/i, /\bGPL\s+[v]?2\b/i ],
+      "GPL-3.0"       => [
+                          /\bGPL[-|v]?3\b/i, /\bGPL\s+3/i, /\bGNU\s+GPL\b/i,
+                          /\b[\(]?GPL[\)]?\b/i
+                         ],
+      "MIT"           => [/\bMIT\b/i],
+      "AAL"           => [/\bAAL\b/i],
+      "AFL-1.1"       => [/\bAFL[-|v]?1\b/i, /\bafl[-|v]?1\.1\b/i],
+      "AFL-1.2"       => [/\bAFL[-|v]?1\.2\b/i],
+      "AFL-2.0"       => [/\bAFL[-|v]?2\b/i, /\bafl[-|v]?2\.1\b/i],
+      "AFL-2.1"       => [/\bAFL[-|v]?2\.1\b/i],
+      "AFL-3.0"       => [/\bAFL[-|v]?3/i],
+      "Apache-1.0"    => [/\bAPACHE[-|v]?1\b/, /\bAPACHE[-|v]?1.0\b/],
+      "Apache-1.1"    => [/\bAPACHE[-|v]?1\.1\b/i],
+      "Apache-2.0"    => [
+                          /\bAPACHE[-|v]?2/i, /\bAPACHE\b/i, /\bAPACHE\s+2\.0\b/i,
+                          /\bAPL\s+2\.0\b/i, /\bAPL[\.|-|v]?2\b/i
+                         ],
+      "APL-1.0"       => [/\bapl[-|v]?1\b/i, /\bapl[-|v]?1\.0\b/i],
+      "APSL-1.0"      => [/\bapsl[-|v]?1\b/i, /\bapsl[-|v]?1\.0\b/i],
+      "APSL-1.1"      => [/\bapsl[-|v]?1\.1\b/i],
+      "APSL-1.2"      => [/\bapsl[-|v]?1\.1\b/i],
+      "APSL-2.0"      => [/\bapsl[-|v]?1\.1\b/i],
+      "Artistic-1.0"  => [/\bartistic[-|v]?1\b/i, /\bartistic[-|v]?1\.0/i],
+      "Artistic-2.0"  => [/\bartistic[-|v]?2\b/i, /\bartistic[-|v]?2\.0\b/i],
+      "BSD-2-Clause"  => [/\bBSD[-|v]?2/i],
+      "BSD-3-Clause"  => [/\bBSD[-|v]?3/i],
+      "BSD-4-Clause"  => [/\bBSD[-|v]?4/i, /\bBSD\b/i, /\bBSD\s+LICENSE\b/i],
+      "BSL-1.0"       => [/\bbsl[-|v]?1\b/i, /\bBSL[-|v]?1\.0\b/i],
+      "CDDL-1.0"      => [/\bCDDL[-|v]?1\b/i, /\bCDDL[-|v]?1\.0\b/i],
+      "CPL-1.0"       => [/\bCPL[-|v]?1\b/i, /\bCPL[-|v]?1\.0\b/i],
+      "ECL-1.0"       => [/\bECL[-|v]?1\b/i, /\bECL[-|v]?1\.0\b/i],
+      "ECL-2.0"       => [/\bECL[-|v]?2\b/i, /\bECL[-|v]?2\.0\b/i],
+      "EFL-1.0"       => [/\bEFL[-|v]?1\b/i, /\bEFL[-|v]?1\.0\b/i],
+      "EFL-2.0"       => [/\bEFL[-|v]?2\b/i, /\bEFL[-|v]?2\.0\b/i],
+      "ISC"           => [/\bISC\s+LICENSE\b/i, /\b[\(]ISCL[\)]\b/i, /\bISC\b/i],
+      "LGPL-2.0"      => [/\bLGPL[-|v]?2\b/i, /\bLGPL[-|v]?2\.0\b/i],
+      "LGPL-2.1"      => [/\bLGPL[-|v]?2\.1\b/i],
+      "LGPL-3.0"      => [/\bLGPL[-|v]?3\b/i, /\bLGPL[-|v]?3\.0\b/i,
+                          /\b[\(]?LGPL[\)]?/i,
+                          /\bLESSER\s+GENERAL\s+PUBLIC\s+License\s+[v]?3\b/i
+                         ],
+      "MPL-1.0"       => [/\bMPL[-|v]?1\b/i, /\bMPL[-|v]?1\.0\b/i],
+      "MPL-1.1"       => [/\bMPL[-|v]?1\.1\b/i],
+      "MPL-2.0"       => [
+                          /\bMPL[-|v]?2\b/i, /\bMPL[-|v]?2\.0\b/i,
+                          /\bMOZILLA\s+PUBLIC\s+LICENSE\s+2\.0\b/i,
+                          /\b[\(]?MPL\s+2\.0[\)]?\b/i, /\b[\(]?MPL[\)]?\b/i
+                         ],
+      "MS-PL"         => [/\bMS-PL\b/i],
+      "MS-RL"         => [/\bMS-RL\b/i],
+      "NGPL"          => [/\bNGPL\b/i],
+      "OSL-1.0"       => [/\bOSL[-|v]?1\b/i, /\b\OSL[-|v]?1\.0\b/i],
+      "OSL-2.0"       => [/\bOSL[-|v]?2\b/i, /\bOSL[-|v]2\.0?\b/i],
+      "OSL-2.1"       => [/\bOSL[-|v]?2\.1\b/i],
+      "OSL-3.0"       => [/\bOSL[-|v]?3/i, /\bOSL[-|v]?3\.0\b/i],
+      "Python-2.0"    => [/\bPython[-|v]?2\b/i, /\bPython[-|v]?2\.0\b/i],
+      "RPL-1.1"       => [/\bRPL[-|v]?1\b/i, /\bRPL[-|v]?1\.1\b/i],
+      "RPL-1.5"       => [/\bRPL[-|v]?1\.5\b/i],
+      "Sleepycat"     => [/\bSleepyCat\b/i],
+      "W3C"           => [/\bW3C\b/i],
+      "Beerware"      => [/\bBEERWARE\b/i],
+      "CC-BY-1.0"     => [/\bCC?BY?1\b/i, /\bCC?BY?1\.0\b/i],
+      "CC-BY-2.0"     => [/\bCC?BY?2\b/i, /\bCC?BY?2\.0\b/i],
+      "CC-BY-2.5"     => [/\bCC?BY?2\.5\b/i],
+      "CC-BY-3.0"     => [/\bCC?BY?3\b/i, /\bCC?BY?3\.0\b/i, /\bCC\s+BY\s+3\.0\b/],
+      "CC-BY-4.0"     => [/\bCC?BY?4\b/i, /\bCC?BY?4\.0\b/i],
+      "OpenSSL"       => [/\bOPENSSL\b/i],
+      "Unlicense"     => [/\bUNLICENSE\b/i],
+      "WTFPL"         => [/\bWTFPL\b/i],
+      "X11"           => [/\bX11\b/i],
+      "ZPL-1.1"       => [/\bZPL[-|v]?1\b/i, /\bZPL[-|v]?1\.1\b/i],
+      "ZPL-2.1"       => [
+                          /\bZPL[-|v]?2\b/i, /\bZPL[-|v]?2\.1\b/i,
+                          /\bZPL\s+2\.1\b/i, /\bZOPE\s+PUBLIC\s+LICENSE\b/i
+                         ]
+    }
+  end
+
+  def get_rule_ids
+    ids = {}
+    @rules.keys.each do |the_key|
+      the_id = the_key.to_s.downcase.strip
+      ids[the_id] = the_key
+    end
+
+    ids
+  end
 
   def log
     Versioneye::Log.instance.log
@@ -17,12 +119,17 @@ class LicenseMatcher
   def initialize(files_path = DEFAULT_CORPUS_FILES_PATH, license_json_file = LICENSE_JSON_FILE)
     spdx_ids, spdx_docs = read_corpus(files_path)
     custom_ids, custom_docs = read_corpus(CUSTOM_CORPUS_FILES_PATH)
+
     @licenses = spdx_ids + custom_ids
+    @spdx_ids = spdx_ids
+    @custom_ids = custom_ids
     @corpus = spdx_docs + custom_docs
 
     licenses_json_doc = read_json_file license_json_file
     @url_index = read_license_url_index(licenses_json_doc)
     @model = TfIdfSimilarity::BM25Model.new(@corpus, :library => :narray)
+    @rules = get_rules
+    true
   end
 
   def match_text(text, n = 3)
@@ -54,7 +161,7 @@ class LicenseMatcher
 
     body_txt = doc.xpath(
       '//p | //h1 | //h2 | //h3 | //h4 | //h5 | //h6 | //em | // strong |//td |//pre
-			|//li[not(@id) and not(@class) and not(a)]'
+      |//li[not(@id) and not(@class) and not(a)]'
     ).text.to_s.strip
 
     if body_txt.empty?
@@ -72,22 +179,48 @@ class LicenseMatcher
 
   #matches License.url with urls in Licenses.json and returns tuple [spdx_id, score]
   def match_url(the_url)
-		the_url = the_url.to_s.strip
-		spdx_id = nil
+    the_url = the_url.to_s.strip
+    spdx_id = nil
     @url_index.each do |lic_url, lic_id|
- 			lic_url = lic_url.to_s.strip.gsub(/https?:\/\//i, '').gsub(/www\./, '') #normalizes urls in the file
-   		matcher = Regexp.new("^https?:\/\/(www\.)?#{lic_url}.*$", Regexp::IGNORECASE)
+      lic_url = lic_url.to_s.strip.gsub(/https?:\/\//i, '').gsub(/www\./, '') #normalizes urls in the file
+      matcher = Regexp.new("^https?:\/\/(www\.)?#{lic_url}.*$", Regexp::IGNORECASE)
 
-			if matcher.match(the_url)
-				spdx_id = lic_id
-				break
-			end
-		end
+      if matcher.match(the_url)
+        spdx_id = lic_id
+        break
+      end
+    end
 
-		return [] if spdx_id.nil?
+    return [] if spdx_id.nil?
 
     [spdx_id, 1.0]
   end
+
+  # finds matching regex rules in the license name
+  # ps: not very efficient, but good enough to handle special cases;
+  # @args:
+  #   text - string, a name of license,
+  #   early_exit  - boolean, default: true, will only return first match
+  # @returns:
+  #   [[spdx_id, confidence]]
+  def match_rules(text, early_exit = true)
+    matches = []
+    text_ = text.to_s.strip
+
+    @rules.each do |spdx_id, rules|
+      if matches_any_rule?(rules, text_)
+        matches << [spdx_id, 1.0]
+        break if early_exit
+      end
+    end
+
+    matches
+  end
+
+  def matches_any_rule?(rules, license_name)
+    rules.any? {|rule| rule.match(license_name.to_s) }
+  end
+
 
 #-- helpers
 

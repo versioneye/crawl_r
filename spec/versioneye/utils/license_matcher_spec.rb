@@ -69,7 +69,7 @@ describe LicenseMatcher do
   end
 
   it "matches all the license files in the corpuse correctly" do
-    lic_matcher.licenses.each do |lic_id|
+    lic_matcher.spdx_ids.each do |lic_id|
       next if lic_id == 'msl_dotnet' or lic_id == 'CPOL-1.02'
 
       lic_txt = File.read "#{corpus_path}/#{lic_id}"
@@ -122,4 +122,5 @@ describe LicenseMatcher do
 		expect( lic_matcher.match_url(bsd3).first).to eq('BSD-3')
 		expect( lic_matcher.match_url(gpl3).first ).to eq('GPL-3.0')
 	end
+
 end

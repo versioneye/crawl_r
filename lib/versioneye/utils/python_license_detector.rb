@@ -14,7 +14,7 @@ class PythonLicenseDetector
   #@args:
   # min_chars - int,will ignore smaller license names than this value
   # min_confidence - float(0 - 1.0), will ignore matches which has lower matching score
-  def initialize(min_chars = 70, min_confidence = 0.9)
+  def initialize(min_chars = 100, min_confidence = 0.9)
     @matcher =  LicenseMatcher.new
     @min_chars = min_chars
     @min_confidence = min_confidence
@@ -32,7 +32,6 @@ class PythonLicenseDetector
     n, detected, ignored, unknown = [0, 0, 0, 0]
     licenses.each do |lic|
       spdx_id, score = detect(lic.name)
-
       if spdx_id and score >= 0
         log.info "PythonLicenseDetector.run: #{lic.to_s} => #{spdx_id}"
         lic.update(spdx_id: spdx_id) if update == true
@@ -62,15 +61,23 @@ class PythonLicenseDetector
   #returns:
   # spdx_id - String | nil, returns a spdx_id of best matching license only if higher than min_confidence
   def detect(license_name)
-    return [license_name, -1] if license_name.size < @min_chars
+    lic_txt = license_name.to_s.downcase.strip
+    rule_ids = @matcher.get_rule_ids
 
-    results = @matcher.match_text(license_name)
-    return [nil, -1] if results.to_a.empty?
+    results = if rule_ids.has_key?(lic_txt)
+                [[rule_ids[lic_txt], 1.0]] #stop if lic txt is already spdx_ids
+              elsif lic_txt.size < @min_chars
+                @matcher.match_rules(license_name) 
+              else
+                @matcher.match_text(license_name)
+              end
+
+    return [nil, -1] if results.empty?
 
     spdx_id, confidence = results.first
-    log.info "PythonLicenseDetector.detect: best match #{spdx_id}: #{confidence} for #{license_name[0..@min_chars]}"
-
     if confidence and confidence >= @min_confidence
+      log.info "PythonLicenseDetector.detect: best match #{spdx_id}: #{confidence} for #{license_name[0..@min_chars]}"
+
       results.first
     else
       [nil, -1]
