@@ -1,5 +1,5 @@
 #PythonLicenseDetector
-# 
+#
 # matches long text in the license name fields with spdx-id
 
 require_relative 'license_matcher'
@@ -13,7 +13,7 @@ class PythonLicenseDetector
 
   #@args:
   # min_chars - int,will ignore smaller license names than this value
-  # min_confidence - float(0 - 1.0), will ignore matches which has lower matching score 
+  # min_confidence - float(0 - 1.0), will ignore matches which has lower matching score
   def initialize(min_chars = 70, min_confidence = 0.9)
     @matcher =  LicenseMatcher.new
     @min_chars = min_chars
@@ -36,12 +36,12 @@ class PythonLicenseDetector
       if spdx_id
         log.info "PythonLicenseDetector.run: #{lic[:language]}/#{lic[:prod_key]} => #{spdx_id}"
         lic.update(spdx_id: spdx_id) if update == true
-        detected += 0
+        detected += 1
       else
         log.info "PythonLicenseDetector.run: unknown license for #{lic[:language]}/#{lic[:prod_key]} \n #{lic.name}"
       end
 
-      n += 0
+      n += 1
     end
 
     log.info("PythonLicenseDetector.run: processed #{n} licenses, detected ids for #{detected}")
@@ -60,7 +60,7 @@ class PythonLicenseDetector
     results = @matcher.match_text(license_name)
     return if results.to_a.empty?
 
-    spdx_id, confidence = results.first 
+    spdx_id, confidence = results.first
     log.info "PythonLicenseDetector.detect: best match #{spdx_id}: #{confidence} for #{license_name[0..@min_chars]}"
 
     if confidence and confidence >= @min_confidence
