@@ -6,7 +6,7 @@ require_relative 'license_matcher'
 
 class PythonLicenseDetector
   attr_reader :matcher, :min_chars, :min_confidence
-
+  
   def log
     Versioneye::Log.instance.log
   end
