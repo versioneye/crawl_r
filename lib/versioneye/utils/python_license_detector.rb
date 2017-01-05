@@ -29,22 +29,29 @@ class PythonLicenseDetector
   def run(licenses, update = false)
     return if licenses.to_a.empty?
 
-    n, detected = [0, 0]
+    n, detected, ignored, unknown = [0, 0, 0, 0]
     licenses.each do |lic|
-      spdx_id = detect(lic.name)
+      spdx_id, score = detect(lic.name)
 
-      if spdx_id
-        log.info "PythonLicenseDetector.run: #{lic[:language]}/#{lic[:prod_key]} => #{spdx_id}"
+      if spdx_id and score >= 0
+        log.info "PythonLicenseDetector.run: #{lic.to_s} => #{spdx_id}"
         lic.update(spdx_id: spdx_id) if update == true
         detected += 1
+      elsif spdx_id and score < 0
+        #log.info "PythonLicenseDetector.run: ignoring #{lic.to_s}"
+        ignored += 1
       else
-        log.info "PythonLicenseDetector.run: unknown license for #{lic[:language]}/#{lic[:prod_key]} \n #{lic.name}"
+        log.warn "PythonLicenseDetector.run: unknown license for #{lic.to_s} \n #{lic.name}"
+        unknown += 1
       end
 
       n += 1
     end
 
-    log.info("PythonLicenseDetector.run: processed #{n} licenses, detected ids for #{detected}")
+    log.info(%Q[
+      PythonLicenseDetector.run: processed #{n} licenses,
+      detected ids for #{detected}, ignored #{ignored}, unknown #{unknown}
+    ])
     return n
   end
 
@@ -55,18 +62,18 @@ class PythonLicenseDetector
   #returns:
   # spdx_id - String | nil, returns a spdx_id of best matching license only if higher than min_confidence
   def detect(license_name)
-    return license_name if license_name.size < @min_chars
+    return [license_name, -1] if license_name.size < @min_chars
 
     results = @matcher.match_text(license_name)
-    return if results.to_a.empty?
+    return [nil, -1] if results.to_a.empty?
 
     spdx_id, confidence = results.first
     log.info "PythonLicenseDetector.detect: best match #{spdx_id}: #{confidence} for #{license_name[0..@min_chars]}"
 
     if confidence and confidence >= @min_confidence
-      spdx_id
+      results.first
     else
-      nil
+      [nil, -1]
     end
   end
 
