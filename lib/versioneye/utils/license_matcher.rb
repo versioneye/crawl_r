@@ -6,10 +6,15 @@ require 'json'
 class LicenseMatcher
   attr_reader :corpus, :licenses, :url_index
   
+  DEFAULT_CORPUS_FILES_PATH= 'data/licenses/texts/plain'
   CUSTOM_CORPUS_FILES_PATH = 'data/custom_licenses' #where to look up non SPDX licenses
   LICENSE_JSON_FILE='data/licenses.json'
 
-  def initialize(files_path, license_json_file = LICENSE_JSON_FILE)
+  def initialize(files_path = DEFAULT_CORPUS_FILES_PATH, license_json_file = LICENSE_JSON_FILE)
+    if files_path.to_s.empty?
+      raise "files_path argument cant be empty"
+    end
+
     spdx_ids, spdx_docs = read_corpus(files_path)
     custom_ids, custom_docs = read_corpus(CUSTOM_CORPUS_FILES_PATH)
     @licenses = spdx_ids + custom_ids
