@@ -14,7 +14,7 @@ class PythonLicenseDetector
   #@args:
   # min_chars - int,will ignore smaller license names than this value
   # min_confidence - float(0 - 1.0), will ignore matches which has lower matching score
-  def initialize(min_chars = 100, min_confidence = 0.9)
+  def initialize(min_chars = 150, min_confidence = 0.9)
     @matcher =  LicenseMatcher.new
     @min_chars = min_chars
     @min_confidence = min_confidence
@@ -62,8 +62,9 @@ class PythonLicenseDetector
   # spdx_id - String | nil, returns a spdx_id of best matching license only if higher than min_confidence
   def detect(license_name)
     lic_txt = license_name.to_s.downcase.strip
+    return [lic_txt, -1] if lic_txt.size < 3
+    
     rule_ids = @matcher.get_rule_ids
-
     results = if rule_ids.has_key?(lic_txt)
                 [[rule_ids[lic_txt], 1.0]] #stop if lic txt is already spdx_ids
               elsif lic_txt.size < @min_chars
@@ -80,7 +81,7 @@ class PythonLicenseDetector
 
       results.first
     else
-      [nil, -1]
+      [spdx_id, -1]
     end
   end
 
