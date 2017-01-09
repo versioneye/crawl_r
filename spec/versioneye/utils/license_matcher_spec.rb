@@ -3,12 +3,15 @@ require 'httparty'
 
 describe LicenseMatcher do
   let(:corpus_path){ 'data/spdx_licenses/plain' }
+  let(:spec_path){ 'spec/fixtures/files/licenses' }
+
   let(:lic_matcher){ LicenseMatcher.new(corpus_path) }
   let(:mit_txt){ File.read("#{corpus_path}/MIT") }
   let(:pg_txt){ File.read("#{corpus_path}/PostgreSQL") }
   let(:lgpl_txt){ File.read("#{corpus_path}/LGPL-2.0") }
   let(:bsd3_txt){ File.read("#{corpus_path}/BSD-3") }
   let(:dotnet_txt){ File.read('data/custom_licenses/msl_dotnet') }
+  let(:mit_issue11){ File.read("#{spec_path}/mit_issue11.txt")}   
 
   it "finds correct matches for text files" do
     expect( lic_matcher.match_text(mit_txt).first.first ).to eq("MIT")
@@ -19,8 +22,16 @@ describe LicenseMatcher do
     expect( lic_matcher.match_text(dotnet_txt).first.first ).to eq('msl_dotnet')
   end
 
+  it "matches MIT license so it could fix the issue#11" do
+    res = lic_matcher.match_text(mit_issue11)
+    expect( res.size ).to eq(3)
+    
+    spdx_id, score = res.first
+    expect( spdx_id ).to eq("MIT")
+    expect( score ).to be > 0.9
+  end
+
   let(:min_score){ 0.5 }
-  let(:spec_path){ 'spec/fixtures/files/licenses' }
   let(:mit_html){ File.read "#{spec_path}/mit.htm" }
   let(:apache_html){File.read "#{spec_path}/apache2.html" }
   let(:dotnet_html){ File.read "#{spec_path}/ms.htm" }

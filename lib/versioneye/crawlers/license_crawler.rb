@@ -3,7 +3,6 @@ class LicenseCrawler < Versioneye::Crawl
 
   A_SOURCE_GMB = 'GMB'    # GitHub Master Branch
   A_SOURCE_G   = 'GITHUB' # GitHub Master Branch
-  A_LICENSE_CORPUS_PATH  = 'data/licenses/texts/plain' # Where to find license text for LicenseMatcher
   A_MIN_SCORE_CONFIDENCE = 0.5
 
   LICENSE_FILES = ['LICENSE.md', 'LICENSE.txt', 'LICENSE', 'LICENCE', 'MIT-LICENSE', 'license.md', 'licence.md', 'UNLICENSE.md', 'README.md']
@@ -30,9 +29,10 @@ class LicenseCrawler < Versioneye::Crawl
   def self.crawl_unidentified_urls(language)
     logger.info "crawl_unidentified_urls: initializing a LicenseMatcher."
     #initialization of LicenseMatcher takes long time
-    lic_matcher = LicenseMatcher.new A_LICENSE_CORPUS_PATH
+    lic_matcher = LicenseMatcher.new
+
     if lic_matcher.licenses.empty?
-      logger.error "crawl_unidentified_urls: Found no corpus for licenseMatcher at #{A_LICENSE_CORPUS_PATH};"
+      logger.error "crawl_unidentified_urls: failed to initialize LicenseMatcher"
       return
     end
 
@@ -65,7 +65,13 @@ class LicenseCrawler < Versioneye::Crawl
     logger.info "crawl_unidentified_urls: done! crawled #{n} licenses, skipped: #{failed}"
   end
 
-  #ables to scale out different workers
+  # fetches license file by url and uses LicenseMatcher to match the body of licence text
+  # to detect matching SPDX_ID;
+  # arguments:
+  #   lic_matcher - a LicenseMatcher instance
+  #   lic_db - a instance of License model
+  # returns:
+  #  [spdx_id, confidence] - a tuple with the best match, iff confidence > MIN_SCORE_CONFIDENCE
   def self.crawl_license_file(lic_matcher, lic_db)
     prod_id = "#{lic_db[:language]}/#{lic_db[:prod_key]}"
     url = lic_db[:url].to_s.strip
