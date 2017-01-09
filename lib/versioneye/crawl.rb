@@ -58,6 +58,7 @@ module Versioneye
     require './lib/versioneye/workers/nuget_crawl_worker'
 
     require './lib/versioneye/utils/license_matcher'
+    require './lib/versioneye/utils/python_license_detector'
 
     def self.log
       Versioneye::Log.instance.log
