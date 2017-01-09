@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'httparty'
 
 describe LicenseMatcher do
-  let(:corpus_path){ 'data/licenses/plain' }
+  let(:corpus_path){ 'data/spdx_licenses/plain' }
   let(:lic_matcher){ LicenseMatcher.new(corpus_path) }
   let(:mit_txt){ File.read("#{corpus_path}/MIT") }
   let(:pg_txt){ File.read("#{corpus_path}/PostgreSQL") }
