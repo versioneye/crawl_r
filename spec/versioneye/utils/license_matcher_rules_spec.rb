@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe LicenseMatcher do
   let(:lic_matcher){ LicenseMatcher.new }
-  let(:corpus_path){ 'data/licenses/texts/plain' }
 
   describe "match_rules" do
     it "matches noisy MIT license names" do

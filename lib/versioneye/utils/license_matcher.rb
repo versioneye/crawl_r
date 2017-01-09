@@ -6,9 +6,9 @@ require 'json'
 class LicenseMatcher
   attr_reader :corpus, :licenses, :model, :url_index, :rules, :spdx_ids, :custom_ids
 
-  DEFAULT_CORPUS_FILES_PATH = 'data/licenses/texts/plain'
+  DEFAULT_CORPUS_FILES_PATH = 'data/licenses/plain'
   CUSTOM_CORPUS_FILES_PATH  = 'data/custom_licenses' #where to look up non SPDX licenses
-  LICENSE_JSON_FILE         = 'data/licenses.json'
+  LICENSE_JSON_FILE         = 'data/licenses/licenses.json'
 
   def get_rule_ids
     ids = {}
