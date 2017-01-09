@@ -92,18 +92,6 @@ describe LicenseMatcher do
     end
   end
 
-# COMMENT OUT WHEN DEVELOPING  
-#  it "matches all the MIT urls as MIT license" do
-#    File.foreach("#{spec_path}/mit_urls.txt") do |mit_url|
-#      mit_url.to_s.gsub!(/\s+/, '')
-#      p "URL: #{mit_url}"
-#
-#      res = HTTParty.get(mit_url)
-#      expect( res.code ).to eq(200)
-#      expect(lic_matcher.match_text(res.body).first.first ).to eq('MIT')
-#    end
-#  end
-
   let(:aal_url){ "https://opensource.org/licenses/AAL"  }
   let(:apache1){ "https://opensource.org/licenses/Apache-1.1" }
   let(:apache2){ "https://www.apache.org/licenses/LICENSE-2.0" }

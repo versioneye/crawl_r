@@ -249,13 +249,13 @@ class LicenseMatcher
       "AGPL-1.0"      => [
                           /\bAGPL\b/i, /\bAGPL[_|-|v]?2\b/i,
                           /\bAffero\s+General\s+Public\s+License\s+[v]?1\b/i,
-                          /\bAFFERO\s+GENERAL\s+PUBLIC\b/i
-                         ],
+                          ],
       "AGPL-3.0"      => [
                           /\bAGPL[-|v]?3/i, /\bAPGLv?3\b/i,
                           /\bGNU\s+Affero\s+General\s+Public\s+License\s+[v]?3/i,
                           /\bAFFERO\sGNU\sPUBLIC\sLICENSE\sv3\b/i,
                           /\bGnu\sAffero\sPublic\sLicense\sv3+?\b/i,
+                          /\bAFFERO GENERAL PUBLIC\b/,
                           /^AFFERO$/i
                          ],
       "Apache-1.0"    => [/\bAPACHE[-|v]?1\b/, /\bAPACHE[-|v]?1.0\b/],
@@ -429,7 +429,7 @@ class LicenseMatcher
                           /^http:\/\/www\.gnu\.org\/copyleft\/lesser.html$/i
                          ],
       "MirOS"         => [/\bMirOS\b/i],
-      "MIT"           => [/\bMIT\b/i, /\bEXPAT\b/i, /^MIT./i],
+      "MIT"           => [/\bMIT\s+LICEN[S|C]E\b/i, /\bMIT\b/i, /\bEXPAT\b/i, /^MIT./i],
       "MPL-1.0"       => [/\bMPL[-|v]?1\b/i, /\bMPL[-|v]?1\.0\b/i],
       "MPL-1.1"       => [/\bMPL[-|v]?1\.1\b/i],
       "MPL-2.0"       => [

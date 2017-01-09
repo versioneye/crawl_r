@@ -41,15 +41,21 @@ describe PythonLicenseDetector do
   let(:mit_txt){ File.read('spec/fixtures/files/licenses/mit.txt') }
 
   describe "detecting standard spdx license texts" do
-    it "detects MIT license" do
+    it "detects MIT license by license text" do
       spdx_id, score = detector.detect(mit_txt)
       expect(spdx_id).to eq('MIT')
       expect(score).to be > 0.9
     end
 
-    it "ignores short terms" do
-      spdx_id, score = detector.detect('MIT2')
-      expect(spdx_id).to eq('MIT2')
+    it "detects MIT with rule" do
+     spdx_id, score = detector.detect('RELEASED UNDER MIT LICENSE')
+     expect(spdx_id).to eq('MIT')
+     expect(score).to be > 0.99
+    end
+
+    it "ignores popular non-sense" do
+      spdx_id, score = detector.detect('GNU')
+      expect(spdx_id).to eq('GNU')
       expect(score).to eq(-1)
     end
   end
