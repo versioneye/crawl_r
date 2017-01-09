@@ -45,6 +45,7 @@ RSpec.configure do |config|
     FakeWeb.clean_registry
     FakeWeb.allow_net_connect = true
     WebMock.enable!
+    WebMock.allow_net_connect!
   end
 
   #include FactoryGirl into test DSL

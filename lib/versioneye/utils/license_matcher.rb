@@ -115,8 +115,8 @@ class LicenseMatcher
     matches = []
     text_ = text.to_s.strip
     ignore_rules = get_ignore_rules()
-    
-    #if text is in ignore list, then return same text, but negative score as it's spam 
+
+    #if text is in ignore list, then return same text, but negative score as it's spam
     return [text_, -1] if matches_any_rule?(ignore_rules, text_)
 
     @rules.each do |spdx_id, rules|
@@ -348,7 +348,7 @@ class LicenseMatcher
                           /\bCOMMON\sDEVELOPMENT\sAND\sDISTRIBUTION\sLICENSE\b/i
                          ],
       "CECILL-B"      => [/\bCECILL[_|-|\s+]B\b/, /\bCECILLB\b/i],
-      "CECILL-C"      => [/\bCECILL[_|-|\s+]C\b/, /\bCECILLC\b/i],  
+      "CECILL-C"      => [/\bCECILL[_|-|\s+]C\b/, /\bCECILLC\b/i],
       "CECILL-1.0"    => [
                           /\bCECILL[_|-|\s]?1\.0\b/i, /^CECILL$/i,
                           /\bCECILL\s+v?1\.2\b/i,
@@ -358,7 +358,7 @@ class LicenseMatcher
       "CECILL-2.1"    => [
                           /\bCECILL[-|_|\s]?2\.1\b/i, /\bCECILL[\s|_|-]?v?2\b/i,
                           /\bCECILL\sVERSION\s2\.1\b/i
-                         ], 
+                         ],
       "CPL-1.0"       => [
                             /\bCPL[-|v]?1\b/i, /\bCPL[-|v]?1\.0\b/i,
                             /\bCommon\s+Public\s+License\b/i, /^CPL$/i
@@ -465,7 +465,7 @@ class LicenseMatcher
                           /\bRPL[-|v]?1\.5\b/i, /^RPL$/,
                           /\bhttps?:\/\/www\.opensource\.org\/licenses\/rpl\.php\b/i
                          ],
-      "QPL-1.0"       => [/\bQPL[_|-|\s]?1\.0\b/i, 
+      "QPL-1.0"       => [/\bQPL[_|-|\s]?1\.0\b/i,
                           /\bQT\sPublic\sLicen[c|s]e\b/i,
                           /\bPyQ\sGeneral\sLicense\b/i],
       "Sleepycat"     => [/\bSleepyCat\b/i],
@@ -492,5 +492,5 @@ class LicenseMatcher
       "zlib-acknowledgement" => [/\bZLIB\/LIBPNG\b/i]
     }
   end
- 
+
 end

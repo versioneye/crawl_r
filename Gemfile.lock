@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/versioneye/versioneye-core.git
-  revision: ebacbfd136f0952a0cff3cc24541166d2fedc10f
-  tag: v11.0.8
+  revision: ca7a4b4184b200075774a3f1abb04e7a8a1d4aee
+  tag: v11.1.1
   specs:
-    versioneye-core (11.0.8)
+    versioneye-core (11.1.1)
       actionmailer (~> 5.0.1)
       aws-sdk (~> 2.6.19)
       bundler (~> 1.13.0)
@@ -14,9 +14,9 @@ GIT
       gemnasium-parser (~> 0.1.9)
       httparty (~> 0.14.0)
       mongoid (~> 6.0.0)
-      naturalsorter (~> 3.0.14)
+      naturalsorter (~> 3.0.15)
       net-ldap (~> 0.15.0)
-      nokogiri (~> 1.6.8)
+      nokogiri (~> 1.6.0)
       oauth (~> 0.5.0)
       octokit (~> 4.6.0)
       pdfkit (~> 0.8.2)
@@ -63,13 +63,13 @@ GEM
       public_suffix (~> 2.0, >= 2.0.2)
     amq-protocol (2.0.1)
     ansi (1.5.0)
-    aws-sdk (2.6.42)
-      aws-sdk-resources (= 2.6.42)
-    aws-sdk-core (2.6.42)
+    aws-sdk (2.6.44)
+      aws-sdk-resources (= 2.6.44)
+    aws-sdk-core (2.6.44)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.6.42)
-      aws-sdk-core (= 2.6.42)
+    aws-sdk-resources (2.6.44)
+      aws-sdk-core (= 2.6.44)
     aws-sigv4 (1.0.0)
     bson (4.2.1)
     builder (3.2.2)
@@ -161,7 +161,7 @@ GEM
     multipart-post (2.0.0)
     nap (1.1.0)
     narray (0.6.1.2)
-    naturalsorter (3.0.14)
+    naturalsorter (3.0.15)
     net-ldap (0.15.0)
     netrc (0.11.0)
     nokogiri (1.6.8.1)
@@ -182,7 +182,7 @@ GEM
       httparty (~> 0.9)
       persistent_http (< 2)
     psych (2.2.2)
-    public_suffix (2.0.4)
+    public_suffix (2.0.5)
     rack (2.0.1)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -252,7 +252,7 @@ GEM
     unf_ext (0.0.7.2)
     unicode_utils (1.4.0)
     vcr (3.0.3)
-    webmock (2.3.1)
+    webmock (2.3.2)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
