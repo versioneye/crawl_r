@@ -237,34 +237,37 @@ class LicenseMatcher
 
   def get_rules
     {
-      "AAL"           => [/\bAAL\b/i, /\bAttribution\s+Assurance\s+License\b/i],
-      "AFL-1.1"       => [/\bAFL[-|v]?1\b/i, /\bafl[-|v]?1\.1\b/i],
+      "AAL"           => [/^AAL$/i, /\bAAL\s+License\b/i,
+                          /\bAttribution\s+Assurance\s+License\b/i],
+      "AFL-1.1"       => [/\bAFL[-|v]?1[^\.]\b/i, /\bafl[-|v]?1\.1\b/i],
       "AFL-1.2"       => [/\bAFL[-|v]?1\.2\b/i],
-      "AFL-2.0"       => [/\bAFL[-|v]?2\b/i, /\bafl[-|v]?2\.1\b/i],
+      "AFL-2.0"       => [/\bAFL[-|v]?2[^\.]\b/i, /\bAFL[-|v]?2\.0\b/i],
       "AFL-2.1"       => [/\bAFL[-|v]?2\.1\b/i],
       "AFL-3.0"       => [
                           /\bAFL[-|v]?3/i, /\bAcademic\s+Free\s+License\b/i, /^AFL$/i,
                           /\bhttps?:\/\/opensource\.org\/licenses\/academic\.php\b/i
                           ],
       "AGPL-1.0"      => [
-                          /\bAGPL\b/i, /\bAGPL[_|-|v]?2\b/i,
+                          /\bAGPL\z/i, /\bAGPL[-|v|_|\s]?1\.0\b/i,
+                          /\bAGPL[-|v|_|\s]1\b/i , /\bAGPL[_|-|v]?2\b/i,
                           /\bAffero\s+General\s+Public\s+License\s+[v]?1\b/i,
                           ],
       "AGPL-3.0"      => [
-                          /\bAGPL[-|v]?3/i, /\bAPGLv?3\b/i,
+                          /\bAGPL[-|_|\s]?3\.0\b/i, /\bAGPL[-|v|_]?3/i,
+                          /\bAPGLv?3\b/i, #some packages has typos
                           /\bGNU\s+Affero\s+General\s+Public\s+License\s+[v]?3/i,
                           /\bAFFERO\sGNU\sPUBLIC\sLICENSE\sv3\b/i,
                           /\bGnu\sAffero\sPublic\sLicense\sv3+?\b/i,
                           /\bAFFERO GENERAL PUBLIC\b/,
                           /^AFFERO$/i
                          ],
-      "Apache-1.0"    => [/\bAPACHE[-|v]?1\b/, /\bAPACHE[-|v]?1.0\b/],
-      "Apache-1.1"    => [/\bAPACHE[-|v]?1\.1\b/i],
+      "Apache-1.0"    => [/\bAPACHE[-|_|\s]?v?1[^\.]\b/i, /\bAPACHE[-|\s]?v?1\.0\b/i],
+      "Apache-1.1"    => [/\bAPACHE[-|_|\s]?v?1\.1\b/i],
       "Apache-2.0"    => [
                           /\bAPACHE[-|v]?2/i, /\bAPACHE\s+2\.0\b/i,
                           /\bAPL\s+2\.0\b/i, /\bAPL[\.|-|v]?2\b/i, /\bASL\s+2\.0\b/i,
                           /\bASL[-|v|\s]?2\b/i, /\bAPACHE\s+LICENSE\s+VERSION\s+2\.0\b/i,
-                          /\bALv2\b/i, /\bASF[-|\s]?2\.0\b/i, /\bAPACHE\b/i, /^ASL$/i,
+                          /\bALv2\b/i, /\bASF[-|\s]?2\.0\b/i, /\bAPACHE[^-v_\s]\b/i, /^ASL$/i,
                           /\bASL\s+v?\.2\.0\b/i
                          ],
       "APL-1.0"       => [/\bapl[-|v]?1\b/i, /\bapl[-|v]?1\.0\b/i, /^APL$/i],
