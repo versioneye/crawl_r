@@ -133,6 +133,54 @@ describe LicenseMatcher do
       expect(lic_matcher.match_rules('PerlArtistic')[0][0]).to eq('Artistic-1.0-Perl')
     end
 
+    it "matches BeerWare" do
+      expect(lic_matcher.match_rules('beerWare')[0][0]).to eq('Beerware')
+      expect(lic_matcher.match_rules('Rel as Beer-Ware lic')[0][0]).to eq('Beerware')
+      expect(lic_matcher.match_rules('BEER License')[0][0]).to eq('Beerware')
+      expect(lic_matcher.match_rules('BEER')[0][0]).to eq('Beerware')
+    end
+
+    it "matches to BSD-2" do
+      expect(lic_matcher.match_rules('BSD2')[0][0]).to eq('BSD-2-Clause')
+      expect(lic_matcher.match_rules('BSD-2')[0][0]).to eq('BSD-2-Clause')
+      expect(lic_matcher.match_rules('Uses BSD v2 lic')[0][0]).to eq('BSD-2-Clause')
+
+      expect(lic_matcher.match_rules('FreeBSD')[0][0]).to eq('BSD-2-Clause')
+    end
+
+    it "matches to BSD-3" do
+      expect(lic_matcher.match_rules('BSD3')[0][0]).to eq('BSD-3-Clause')
+      expect(lic_matcher.match_rules('BSD v3')[0][0]).to eq('BSD-3-Clause')
+      expect(lic_matcher.match_rules('BSD3')[0][0]).to eq('BSD-3-Clause')
+      expect(lic_matcher.match_rules('BSD3 clause')[0][0]).to eq('BSD-3-Clause')
+    end
+
+    it "matches to BSD-4" do
+      expect(lic_matcher.match_rules('BSDv4')[0][0]).to eq('BSD-4-Clause')
+      expect(lic_matcher.match_rules('BSD v4')[0][0]).to eq('BSD-4-Clause')
+      expect(lic_matcher.match_rules('BSD4 Clause')[0][0]).to eq('BSD-4-Clause')
+      expect(lic_matcher.match_rules('BSD LISENCE')[0][0]).to eq('BSD-4-Clause')
+      expect(lic_matcher.match_rules('uses BSD4 clause')[0][0]).to eq('BSD-4-Clause')
+    end
+
+    it "matches to BSL-1.0" do
+      expect(lic_matcher.match_rules('BSLv1.0')[0][0]).to eq('BSL-1.0')
+      expect(lic_matcher.match_rules('BSL-v1')[0][0]).to eq('BSL-1.0')
+      expect(lic_matcher.match_rules('uses BSL-1.0 lic')[0][0]).to eq('BSL-1.0')
+      expect(lic_matcher.match_rules('Boost License 1.0')[0][0]).to eq('BSL-1.0')
+    end
+
+    it "matches to CC0-1.0" do
+      expect(lic_matcher.match_rules('CC0-1.0')[0][0]).to eq('CC0-1.0')
+      expect(lic_matcher.match_rules('CC0 1.0')[0][0]).to eq('CC0-1.0')
+      expect(lic_matcher.match_rules('uses CC0-v1.0 lic')[0][0]).to eq('CC0-1.0')
+
+      expect(lic_matcher.match_rules('CC0v1')[0][0]).to eq('CC0-1.0')
+      expect(lic_matcher.match_rules('CC0-v1')[0][0]).to eq('CC0-1.0')
+      expect(lic_matcher.match_rules('uses CC0 v1 license')[0][0]).to eq('CC0-1.0')
+    end
+
+
     it "matches noisy MIT license names" do
       expect( lic_matcher.match_rules('Original Cutadapt code is under MIT license;').first.first ).to eq('MIT')
     end

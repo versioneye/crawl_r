@@ -305,25 +305,25 @@ class LicenseMatcher
                           /\bARTISTIC\s+LICENSE\b/i, /\bARTISTIC\b/i],
       "Beerware"      => [
                           /\bBEERWARE\b/i, /\bBEER\s+LICEN[c|s]E\b/i,
-                          /\bBEER[-|\s]WARE\b/i, /^BEER$/i,
+                          /\bBEER[-|\s]WARE\b/i, /^BEER\b/i,
                           /\bBuy\ssnare\sa\sbeer\b/i,
                           /\bWISKY[-|_|\s]?WARE\b/i
                          ],
-      "BSD-2-Clause"  => [/\bBSD[-|v]?2/i, /^FREEBSD$/i, /^OPENBSD$/i],
-      "BSD-3-Clause"  => [/\bBSD[-|v]?3/i, /\bBSD[-|\s]3[-\s]CLAUSE\b/i,
-                          /\bBDS[-|\s]3[-|\s]CLAUSE\b/i, /^BDS$/i, /^various\/BSDish$/],
+      "BSD-2-Clause"  => [/\bBSD[-|_|\s]?v?2\b/i, /^FREEBSD\b/i, /^OPENBSD\b/i],
+      "BSD-3-Clause"  => [/\bBSD[-|_|\s]?v?3\b/i, /\bBSD[-|\s]3[-\s]CLAUSE\b/i,
+                          /\bBDS[-|_|\s]3[-|\s]CLAUSE\b/i, /^BDS$/i, /^various\/BSDish$/],
       "BSD-4-Clause"  => [
-                          /\bBSD[-|v]?4/i, /\bBSD\b/i, /\bBSD\s+LICENSE\b/i,
+                          /\bBSD[-|_|\s]?v?4/i, /\bBSD\b/i, /\bBSD\s+LICENSE\b/i,
                           /\bBSD-4-CLAUSE\b/i,
                           /^http:\/\/en\.wikipedia\.org\/wiki\/BSD_licenses$/i
                          ],
       "BSL-1.0"       => [
-                          /\bbsl[-|v]?1\b/i, /\bBSL[-|v]?1\.0\b/i, /^BOOST$/i,
+                          /\bBSL[-|_|\s]?v?1\.0\b/i, /\bbsl[-|_|\s]?v?1\b/i, /^BOOST\b/i,
                           /\bBOOST\s+SOFTWARE\s+LICENSE\b/i,
                           /\bBoost\sLicense\s1\.0\b/i
                          ],
       "CC0-1.0"       => [
-                          /\bCC0[-|v|\s]?1\.0\b/i, /\bCC0[-|v]?1\b/i,
+                          /\bCC0[-|_|\s]?v?1\.0\b/i, /\bCC0[-|_|\s]?v?1\b/i,
                           /\bCC[-|\s]?[0|o]\b/i, /\bCreative\s+Commons\s+0\b/i
                          ],
       "CC-BY-1.0"     => [/\bCC.BY.1\b/i, /\bCC.BY.1\.0\b/i, /^CC[-|_|\s]?BY$/i],
