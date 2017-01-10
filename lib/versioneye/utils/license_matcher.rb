@@ -117,18 +117,18 @@ class LicenseMatcher
   #   text - string, a name of license,
   #   early_exit  - boolean, default: true, will only return first match
   # @returns:
-  #   [[spdx_id, confidence]]
   def match_rules(text, early_exit = true)
     matches = []
-    text_ = text.to_s.strip
+    text_ = text.to_s.strip + " " #required to make difference between end of versionNumber and end of string
     ignore_rules = get_ignore_rules()
 
     #if text is in ignore list, then return same text, but negative score as it's spam
     return [text_, -1] if matches_any_rule?(ignore_rules, text_)
 
     @rules.each do |spdx_id, rules|
-      if matches_any_rule?(rules, text_)
-        matches << [spdx_id, 1.0]
+      matching_rule = matches_any_rule?(rules, text_)
+      unless matching_rule.nil?
+        matches << [spdx_id, 1.0, matching_rule]
         break if early_exit
       end
     end
@@ -137,7 +137,15 @@ class LicenseMatcher
   end
 
   def matches_any_rule?(rules, license_name)
-    rules.any? {|rule| rule.match(license_name.to_s) != nil }
+    matching_rule = nil
+    rules.each do |rule|
+      if rule.match(license_name.to_s)
+        matching_rule = rule
+        break
+      end
+    end
+
+    matching_rule
   end
 
 
@@ -251,7 +259,7 @@ class LicenseMatcher
 
   def get_rules
     {
-      "AAL"           => [/^AAL$/i, /\bAAL\s+License\b/i,
+      "AAL"           => [/\bAAL\b/i, /\bAAL\s+License\b/i,
                           /\bAttribution\s+Assurance\s+License\b/i],
       "AFL-1.1"       => [/\bAFL[-|v]?1[^\.]\b/i, /\bafl[-|v]?1\.1\b/i],
       "AFL-1.2"       => [/\bAFL[-|v]?1\.2\b/i],
@@ -262,9 +270,10 @@ class LicenseMatcher
                           /\bhttps?:\/\/opensource\.org\/licenses\/academic\.php\b/i
                           ],
       "AGPL-1.0"      => [
-                          /\bAGPL\z/i, /\bAGPL[-|v|_|\s]?1\.0\b/i,
+                          /\bAGPL[-|v|_|\s]?1\.0\b/i,
                           /\bAGPL[-|v|_|\s]1\b/i , /\bAGPL[_|-|v]?2\b/i,
                           /\bAffero\s+General\s+Public\s+License\s+[v]?1\b/i,
+                          /\bAGPL\s(?!(v|\d))/i #Matches only AGPL, but not AGPL v1, AGPL 1.0 etc
                           ],
       "AGPL-3.0"      => [
                           /\bAGPL[-|_|\s]?3\.0\b/i, /\bAGPL[-|v|_]?3/i,
@@ -275,24 +284,25 @@ class LicenseMatcher
                           /\bAFFERO GENERAL PUBLIC\b/,
                           /^AFFERO$/i
                          ],
-      "Apache-1.0"    => [/\bAPACHE[-|_|\s]?v?1[^\.]\b/i, /\bAPACHE[-|\s]?v?1\.0\b/i],
+      "Apache-1.0"    => [/\bAPACHE[-|_|\s]?v?1[^\.]/i, /\bAPACHE[-|\s]?v?1\.0\b/i],
       "Apache-1.1"    => [/\bAPACHE[-|_|\s]?v?1\.1\b/i],
       "Apache-2.0"    => [
-                          /\bAPACHE[-|v]?2/i, /\bAPACHE\s+2\.0\b/i,
+                          /\bAPACHE[-|_|\s]?v?2\b/i, /\bAPACHE\s+2\.0\b/i,
                           /\bAPL\s+2\.0\b/i, /\bAPL[\.|-|v]?2\b/i, /\bASL\s+2\.0\b/i,
                           /\bASL[-|v|\s]?2\b/i, /\bAPACHE\s+LICENSE\s+VERSION\s+2\.0\b/i,
                           /\bALv2\b/i, /\bASF[-|\s]?2\.0\b/i, /\bAPACHE[^-v_\s]\b/i, /^ASL$/i,
                           /\bASL\s+v?\.2\.0\b/i
                          ],
-      "APL-1.0"       => [/\bapl[-|v]?1\b/i, /\bapl[-|v]?1\.0\b/i, /^APL$/i],
-      "APSL-1.0"      => [/APSL[-|v]1\.0/i, /APSL[-|v]1/i, /APPLE\s+PUBLIC\s+SOURCE/i],
-      "APSL-1.1"      => [/APSL[-|v]1\.1/i],
-      "APSL-1.2"      => [/APSL[-|v]1\.2/i],
-      "APSL-2.0"      => [/APSL[-|v]2\.0/i],
-      "Artistic-1.0"  => [/\bartistic[-|v]?1\b/i, /\bartistic[-|v]?1\.0/i],
-      "Artistic-2.0"  => [/\bartistic[-|v]?2\b/i, /\bartistic[-|v]?2\.0\b/i,
+      "APL-1.0"       => [/\bapl[-|_|\s]?v?1\b/i, /\bAPL[-|_|\s]?v?1\.0\b/i, /^APL$/i],
+      "APSL-1.0"      => [/\bAPSL[-|_|\s]?v?1\.0\b/i, /\bAPSL[-|_|\s]?v?1(?!\.)\b/i, /\bAPPLE\s+PUBLIC\s+SOURCE\b/i],
+      "APSL-1.1"      => [/\bAPSL[-|_|\s]?v?1\.1\b/i],
+      "APSL-1.2"      => [/\bAPSL[-|_|\s]?v?1\.2\b/i],
+      "APSL-2.0"      => [/\bAPSL[-|_|\s]?v?2\.0\b/i, /\bAPSL[-|_|\s]?v?2\b/i],
+
+      "Artistic-1.0-Perl" => [/\bArtistic[-|_|\s]?v?1\.0\-Perl\b/i, /\bPerlArtistic\b/i],
+      "Artistic-1.0"  => [/\bartistic[-|_|\s]?v?1\.0\b/i, /\bartistic[-|_|\s]?v?1\b/i],
+      "Artistic-2.0"  => [/\bARTISTIC[-|_|\s]?v?2\.0\b/i, /\bartistic[-|_|\s]?v?2\b/i,
                           /\bARTISTIC\s+LICENSE\b/i, /\bARTISTIC\b/i],
-      "Artistic-1.0-Perl" => [/\bArtistic[-|\s]?1\.0\-Perl\b/i, /^$PerlArtistic/i],
       "Beerware"      => [
                           /\bBEERWARE\b/i, /\bBEER\s+LICEN[c|s]E\b/i,
                           /\bBEER[-|\s]WARE\b/i, /^BEER$/i,
