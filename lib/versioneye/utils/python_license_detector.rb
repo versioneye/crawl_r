@@ -39,18 +39,17 @@ class PythonLicenseDetector
     n, detected, ignored, unknown = [0, 0, 0, 0]
     licenses.each do |license|
       spdx_id, score = detect( license.name )
-      if spdx_id and score >= 0
+      if spdx_id and score > 0
         log.info "PythonLicenseDetector.run: #{license.to_s} => #{spdx_id}"
         license.update(spdx_id: spdx_id) if update == true
         detected += 1
       elsif spdx_id and score < 0
-        log.info "PythonLicenseDetector.run: ignoring #{license.to_s}"
+        log.info "PythonLicenseDetector.run: ignoring #{license.to_s} because similarity (#{score}) is too low."
         ignored += 1
       else
         log.warn "PythonLicenseDetector.run: unknown license for #{license.to_s} \n #{license.name}"
         unknown += 1
       end
-
       n += 1
     end
 
@@ -72,18 +71,7 @@ class PythonLicenseDetector
   #  spdx_id - String | nil, returns a spdx_id of best matching license only if higher than min_confidence
   #
   def detect( license_name )
-    lic_txt = license_name.to_s.downcase.strip
-    return [lic_txt, -1] if lic_txt.size < 3
-
-    rule_ids = @matcher.get_rule_ids
-    results = if rule_ids.has_key?(lic_txt)
-                [[rule_ids[lic_txt], 1.0]] # lic_txt is already an spdx_id
-              elsif lic_txt.size < @min_chars
-                @matcher.match_rules(license_name)
-              else
-                @matcher.match_text(license_name)
-              end
-
+    results = calc_similarities( license_name )
     return [nil, -1] if results.empty?
 
     spdx_id, confidence = results.first
@@ -93,6 +81,21 @@ class PythonLicenseDetector
     end
 
     [spdx_id, -1]
+  end
+
+
+  def calc_similarities( license_name )
+    lic_txt = license_name.to_s.downcase.strip
+    return [lic_txt, -1] if lic_txt.size < 3
+
+    rule_ids = @matcher.get_rule_ids
+    if rule_ids.has_key?(lic_txt)
+      return [[rule_ids[lic_txt], 1.0]] # lic_txt is already an spdx_id
+    elsif lic_txt.size < @min_chars
+      return @matcher.match_rules(license_name)
+    else
+      return @matcher.match_text(license_name)
+    end
   end
 
 
