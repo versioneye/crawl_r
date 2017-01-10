@@ -28,11 +28,16 @@ Mongoid.logger.level = Logger::ERROR
 
 RSpec.configure do |config|
 
-  RubyCrawl.new
+  #RubyCrawl.new
 
   config.before(:each) do
-    DatabaseCleaner.clean
     FakeWeb.clean_registry
+
+    FakeWeb.allow_net_connect = true
+    WebMock.enable!
+    WebMock.allow_net_connect!
+
+    DatabaseCleaner.clean
 
     models = Mongoid.models
     models.each do |model|
@@ -41,11 +46,6 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    DatabaseCleaner.clean
-    FakeWeb.clean_registry
-    FakeWeb.allow_net_connect = true
-    WebMock.enable!
-    WebMock.allow_net_connect!
   end
 
   #include FactoryGirl into test DSL
