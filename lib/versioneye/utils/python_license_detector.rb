@@ -24,27 +24,30 @@ class PythonLicenseDetector
   end
 
 
-  # Detects all spdx_ids for all the licenses and updates values when askes
-  #  args:
-  #    licenses  - [License], list of License models to work with
-  #    update    - boolean, should it also update License model with detected result
-  #  return:
+  # Detects spdx_ids for the given licenses and updates them in DB.
+  #
+  # args:
+  #    licenses - [License], list of License models to work with
+  #    update   - boolean, should it also update License model with detected result
+  #
+  # return:
   #    Integer - a number of licenses where update
-  def run(licenses, update = false)
-    return if licenses.to_a.empty?
+  #
+  def run( licenses, update = false )
+    return 0 if licenses.to_a.empty?
 
     n, detected, ignored, unknown = [0, 0, 0, 0]
-    licenses.each do |lic|
-      spdx_id, score = detect(lic.name)
+    licenses.each do |license|
+      spdx_id, score = detect( license.name )
       if spdx_id and score >= 0
-        log.info "PythonLicenseDetector.run: #{lic.to_s} => #{spdx_id}"
-        lic.update(spdx_id: spdx_id) if update == true
+        log.info "PythonLicenseDetector.run: #{license.to_s} => #{spdx_id}"
+        license.update(spdx_id: spdx_id) if update == true
         detected += 1
       elsif spdx_id and score < 0
-        #log.info "PythonLicenseDetector.run: ignoring #{lic.to_s}"
+        log.info "PythonLicenseDetector.run: ignoring #{license.to_s}"
         ignored += 1
       else
-        log.warn "PythonLicenseDetector.run: unknown license for #{lic.to_s} \n #{lic.name}"
+        log.warn "PythonLicenseDetector.run: unknown license for #{license.to_s} \n #{license.name}"
         unknown += 1
       end
 
