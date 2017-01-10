@@ -4,10 +4,11 @@ require 'tf-idf-similarity'
 require 'json'
 
 class LicenseMatcher
+
   attr_reader :corpus, :licenses, :model, :url_index, :rules, :spdx_ids, :custom_ids
 
   DEFAULT_CORPUS_FILES_PATH = 'data/spdx_licenses/plain'
-  CUSTOM_CORPUS_FILES_PATH  = 'data/custom_licenses' #where to look up non SPDX licenses
+  CUSTOM_CORPUS_FILES_PATH  = 'data/custom_licenses' # Where to look up non SPDX licenses
   LICENSE_JSON_FILE         = 'data/spdx_licenses/licenses.json'
 
   def get_rule_ids
@@ -20,9 +21,11 @@ class LicenseMatcher
     ids
   end
 
+
   def log
     Versioneye::Log.instance.log
   end
+
 
   def initialize(files_path = DEFAULT_CORPUS_FILES_PATH, license_json_file = LICENSE_JSON_FILE)
     spdx_ids, spdx_docs = read_corpus(files_path)
@@ -39,6 +42,7 @@ class LicenseMatcher
     @rules = get_rules
     true
   end
+
 
   def match_text(text, n = 3)
     clean_text = safe_encode(text)
@@ -63,6 +67,7 @@ class LicenseMatcher
     end
   end
 
+
   def match_html(html_doc, n = 3)
     doc = Nokogiri.HTML(html_doc)
     return [] if doc.nil?
@@ -85,7 +90,8 @@ class LicenseMatcher
     match_text(body_txt, n)
   end
 
-  #matches License.url with urls in Licenses.json and returns tuple [spdx_id, score]
+
+  # Matches License.url with urls in Licenses.json and returns tuple [spdx_id, score]
   def match_url(the_url)
     the_url = the_url.to_s.strip
     spdx_id = nil
@@ -103,6 +109,7 @@ class LicenseMatcher
 
     [spdx_id, 1.0]
   end
+
 
   # finds matching regex rules in the license name
   # ps: not very efficient, but good enough to handle special cases;
@@ -136,7 +143,7 @@ class LicenseMatcher
 
 #-- helpers
 
-  # transforms document into TF-IDF matrix used for comparition
+  # Transforms document into TF-IDF matrix used for comparition
   def doc_tfidf_matrix(doc)
     arr = Array.new(@model.terms.size) do |i|
       the_term = @model.terms[i]
@@ -151,7 +158,8 @@ class LicenseMatcher
     NArray[*arr]
   end
 
-  # calculates cosine similarity between 2 TF-IDF vector
+
+  # Calculates cosine similarity between 2 TF-IDF vector
   def cos_sim(mat1, mat2)
     length = (mat1 * mat2).sum
     norm   = Math::sqrt((mat1 ** 2).sum) * Math::sqrt((mat2 ** 2).sum)
@@ -167,12 +175,14 @@ class LicenseMatcher
     nil
   end
 
-  #reads license urls from the license.json and builds a map {url : spdx_id}
+
+  # Reads license urls from the license.json and builds a map {url : spdx_id}
   def read_license_url_index(spdx_licenses)
     url_index = {}
     spdx_licenses.each {|lic| url_index.merge! process_spdx_item(lic) }
     url_index
   end
+
 
   def process_spdx_item(lic)
     url_index = {}
@@ -185,7 +195,8 @@ class LicenseMatcher
     url_index
   end
 
-  #reads licenses content from the files_path and returns list of texts
+
+  # Reads licenses content from the files_path and returns list of texts
   def read_corpus(files_path)
     file_names = get_license_names(files_path)
 
@@ -204,17 +215,20 @@ class LicenseMatcher
     [file_names, docs]
   end
 
+
   def get_license_names(files_path)
     Dir.entries(files_path).to_a.delete_if {|name| ( name == '.' or name == '..' or name =~ /\w+\.py/i or name =~ /.DS_Store/i )}
   end
 
-  #returns top-N matching licenses with matching score
+
+  # Returns top-N matching licenses with matching score
   def safe_encode(txt)
     txt.to_s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
   rescue
      "Failed to encode text:\n #{txt}"
     return nil
   end
+
 
   def get_ignore_rules
     [
