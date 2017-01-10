@@ -5,6 +5,7 @@
 require_relative 'license_matcher'
 
 class PythonLicenseDetector
+
   attr_reader :matcher, :min_chars, :min_confidence
 
 
@@ -12,21 +13,23 @@ class PythonLicenseDetector
     Versioneye::Log.instance.log
   end
 
-  #@args:
-  # min_chars - int,will ignore smaller license names than this value
-  # min_confidence - float(0 - 1.0), will ignore matches which has lower matching score
+
+  # @args:
+  #  min_chars - int,will ignore smaller license names than this value
+  #  min_confidence - float(0 - 1.0), will ignore matches which has lower matching score
   def initialize(min_chars = 150, min_confidence = 0.9)
     @matcher =  LicenseMatcher.new
     @min_chars = min_chars
     @min_confidence = min_confidence
   end
 
-  #detects all spdx_ids for all the licenses and updates values when askes
-  # args:
-  #   licenses  - [License], list of License models to work with
-  #   update    - boolean, should it also update License model with detected result
-  # return:
-  #   Integer - a number of licenses where update
+
+  # Detects all spdx_ids for all the licenses and updates values when askes
+  #  args:
+  #    licenses  - [License], list of License models to work with
+  #    update    - boolean, should it also update License model with detected result
+  #  return:
+  #    Integer - a number of licenses where update
   def run(licenses, update = false)
     return if licenses.to_a.empty?
 
@@ -54,6 +57,7 @@ class PythonLicenseDetector
     ])
     return n
   end
+
 
   # detects license spdx id if text is longer than X
   # otherwise will return license name as it is
@@ -85,5 +89,6 @@ class PythonLicenseDetector
       [spdx_id, -1]
     end
   end
+
 
 end
