@@ -180,15 +180,459 @@ describe LicenseMatcher do
       expect(lic_matcher.match_rules('uses CC0 v1 license')[0][0]).to eq('CC0-1.0')
     end
 
+    it "matches to CC-BY-1.0" do
+      expect(lic_matcher.match_rules('CC-BY-1.0')[0][0]).to eq('CC-BY-1.0')
+      expect(lic_matcher.match_rules('CC BY 1.0')[0][0]).to eq('CC-BY-1.0')
+      expect(lic_matcher.match_rules('uses CC BY-1.0 lic')[0][0]).to eq('CC-BY-1.0')
+
+      expect(lic_matcher.match_rules('CC-BY-v1')[0][0]).to eq('CC-BY-1.0')
+      expect(lic_matcher.match_rules('uses CC BY v1 lic')[0][0]).to eq('CC-BY-1.0')
+    end
+
+    it "matches to CC-BY-2.0" do
+      expect(lic_matcher.match_rules('CC-by-2.0')[0][0]).to eq('CC-BY-2.0')
+      expect(lic_matcher.match_rules('CC by v2.0')[0][0]).to eq('CC-BY-2.0')
+      expect(lic_matcher.match_rules('uses CC-BY-2.0 lic')[0][0]).to eq('CC-BY-2.0')
+
+      expect(lic_matcher.match_rules('CC-BY-2')[0][0]).to eq('CC-BY-2.0')
+      expect(lic_matcher.match_rules('CC-by v2')[0][0]).to eq('CC-BY-2.0')
+      expect(lic_matcher.match_rules('uses CC-BY-2 lic')[0][0]).to eq('CC-BY-2.0')
+    end
+
+    it "matches to CC-BY-2.5" do
+      expect(lic_matcher.match_rules('CC-BY-2.5')[0][0]).to eq('CC-BY-2.5')
+      expect(lic_matcher.match_rules('CC BY 2.5')[0][0]).to eq('CC-BY-2.5')
+      expect(lic_matcher.match_rules('CC-BY v2.5')[0][0]).to eq('CC-BY-2.5')
+      expect(lic_matcher.match_rules('uses CC-BY-2.5 lic')[0][0]).to eq('CC-BY-2.5')
+    end
+
+    it "matches to CC-BY-3.0" do
+      expect(lic_matcher.match_rules('CC-BY-3.0')[0][0]).to eq('CC-BY-3.0')
+      expect(lic_matcher.match_rules('CC BY 3.0')[0][0]).to eq('CC-BY-3.0')
+      expect(lic_matcher.match_rules('CC-BY v3.0')[0][0]).to eq('CC-BY-3.0')
+      expect(lic_matcher.match_rules('uses CC-BY-3.0')[0][0]).to eq('CC-BY-3.0')
+
+      expect(lic_matcher.match_rules('CC-BY-3')[0][0]).to eq('CC-BY-3.0')
+      expect(lic_matcher.match_rules('CC-BY v3')[0][0]).to eq('CC-BY-3.0')
+    end
+
+    it "matches to CC-BY-4.0" do
+      expect(lic_matcher.match_rules('CC-BY-4.0')[0][0]).to eq('CC-BY-4.0')
+      expect(lic_matcher.match_rules('CC BY 4.0')[0][0]).to eq('CC-BY-4.0')
+      expect(lic_matcher.match_rules('uses CC-BY-4.0')[0][0]).to eq('CC-BY-4.0')
+
+      expect(lic_matcher.match_rules('CC-BY-4')[0][0]).to eq('CC-BY-4.0')
+      expect(lic_matcher.match_rules('CC-BY v4')[0][0]).to eq('CC-BY-4.0')
+
+      expect(lic_matcher.match_rules('CREATIVE COMMONS ATTRIBUTION v4.0')[0][0]).to eq('CC-BY-4.0')
+    end
+
+    it "matches to CC-BY-SA-1.0" do
+      expect(lic_matcher.match_rules('CC-BY-SA-1.0')[0][0]).to eq('CC-BY-SA-1.0')
+      expect(lic_matcher.match_rules('CC BY-SA 1.0')[0][0]).to eq('CC-BY-SA-1.0')
+      expect(lic_matcher.match_rules('uses CC BY-SA v1.0')[0][0]).to eq('CC-BY-SA-1.0')
+
+      expect(lic_matcher.match_rules('CC-BY-SA v1')[0][0]).to eq('CC-BY-SA-1.0')
+      expect(lic_matcher.match_rules('CC BY-SA-1')[0][0]).to eq('CC-BY-SA-1.0')
+    end
+
+    it "matches to CC-BY-SA-2.0" do
+      expect(lic_matcher.match_rules('CC-BY-SA 2.0')[0][0]).to eq('CC-BY-SA-2.0')
+      expect(lic_matcher.match_rules('CC BY-SA-2.0')[0][0]).to eq('CC-BY-SA-2.0')
+      expect(lic_matcher.match_rules('CC BY-SA v2.0')[0][0]).to eq('CC-BY-SA-2.0')
+      expect(lic_matcher.match_rules('uses CC BY-SA 2.0 lic')[0][0]).to eq('CC-BY-SA-2.0')
+
+      expect(lic_matcher.match_rules('CC-BY-SA-2')[0][0]).to eq('CC-BY-SA-2.0')
+      expect(lic_matcher.match_rules('CC BY-SA v2')[0][0]).to eq('CC-BY-SA-2.0')
+    end
+
+    it "matches to CC-BY-SA-2.5" do
+      expect(lic_matcher.match_rules('CC-BY-SA-2.5')[0][0]).to eq('CC-BY-SA-2.5')
+      expect(lic_matcher.match_rules('CC BY-SA 2.5')[0][0]).to eq('CC-BY-SA-2.5')
+      expect(lic_matcher.match_rules('CC-BY-SA v2.5')[0][0]).to eq('CC-BY-SA-2.5')
+      expect(lic_matcher.match_rules('uses CC BY-SA 2.5')[0][0]).to eq('CC-BY-SA-2.5')
+    end
+
+    it "matches to CC-BY-SA-3.0" do
+      expect(lic_matcher.match_rules('CC BY-SA 3.0')[0][0]).to eq('CC-BY-SA-3.0')
+      expect(lic_matcher.match_rules('CC-BY-SA-3.0')[0][0]).to eq('CC-BY-SA-3.0')
+      expect(lic_matcher.match_rules('CC-BY-SA v3.0')[0][0]).to eq('CC-BY-SA-3.0')
+      expect(lic_matcher.match_rules('uses CC BY-SA 3.0 lic')[0][0]).to eq('CC-BY-SA-3.0')
+
+      expect(lic_matcher.match_rules('CC-BY-SA-3')[0][0]).to eq('CC-BY-SA-3.0')
+      expect(lic_matcher.match_rules('CC BY-SA v3')[0][0]).to eq('CC-BY-SA-3.0')
+      expect(lic_matcher.match_rules('uses CC BY-SA-3')[0][0]).to eq('CC-BY-SA-3.0')
+    end
+
+    it "matches to CC-BY-SA-4.0" do
+      expect(lic_matcher.match_rules('CC BY-SA 4.0')[0][0]).to eq('CC-BY-SA-4.0')
+      expect(lic_matcher.match_rules('CC-BY-SA v4.0')[0][0]).to eq('CC-BY-SA-4.0')
+      expect(lic_matcher.match_rules('uses CC BY SA 4.0 lic')[0][0]).to eq('CC-BY-SA-4.0')
+
+      expect(lic_matcher.match_rules('CC-BY-SA v4')[0][0]).to eq('CC-BY-SA-4.0')
+      expect(lic_matcher.match_rules('CC BY-SA 4')[0][0]).to eq('CC-BY-SA-4.0')
+      expect(lic_matcher.match_rules('uses CC BY-SA v4 lic')[0][0]).to eq('CC-BY-SA-4.0')
+
+      expect(lic_matcher.match_rules('CCSA-4.0')[0][0]).to eq('CC-BY-SA-4.0')
+      expect(lic_matcher.match_rules('uses CCSA-4.0 lic')[0][0]).to eq('CC-BY-SA-4.0')
+    end
+
+    it "matches to CC-BY-NC-1.0" do
+      expect(lic_matcher.match_rules('CC BY-NC 1.0')[0][0]).to eq('CC-BY-NC-1.0')
+      expect(lic_matcher.match_rules('CC BY NC v1.0')[0][0]).to eq('CC-BY-NC-1.0')
+      expect(lic_matcher.match_rules('uses CC-BY-NC v1.0 lic')[0][0]).to eq('CC-BY-NC-1.0')
+
+      expect(lic_matcher.match_rules('CC-BY-NC-1')[0][0]).to eq('CC-BY-NC-1.0')
+      expect(lic_matcher.match_rules('CC BY-NC v1')[0][0]).to eq('CC-BY-NC-1.0')
+      expect(lic_matcher.match_rules('uses CC-BY-NC-1 lic')[0][0]).to eq('CC-BY-NC-1.0')
+    end
+
+    it "matches to CC-BY-NC-2.0" do
+      expect(lic_matcher.match_rules('CC-BY-NC 2.0')[0][0]).to eq('CC-BY-NC-2.0')
+      expect(lic_matcher.match_rules('CC-BY-NCv2.0')[0][0]).to eq('CC-BY-NC-2.0')
+      expect(lic_matcher.match_rules('uses CC-BY-NC 2.0 lic')[0][0]).to eq('CC-BY-NC-2.0')
+    end
+
+    it "matches to CC-BY-NC-2.5" do
+      expect(lic_matcher.match_rules('CC-BY-NC 2.5')[0][0]).to eq('CC-BY-NC-2.5')
+      expect(lic_matcher.match_rules('CC BY-NC v2.5')[0][0]).to eq('CC-BY-NC-2.5')
+      expect(lic_matcher.match_rules('CC-BY-NC-2.5')[0][0]).to eq('CC-BY-NC-2.5')
+      expect(lic_matcher.match_rules('uses CC-BY-NC 2.5 lic')[0][0]).to eq('CC-BY-NC-2.5')
+    end
+
+    it "matches to CC-BY-NC-3.0" do
+      expect(lic_matcher.match_rules('CC-BY-NC 3.0')[0][0]).to eq('CC-BY-NC-3.0')
+      expect(lic_matcher.match_rules('CC BY-NC v3.0')[0][0]).to eq('CC-BY-NC-3.0')
+      expect(lic_matcher.match_rules('uses CC BY-NC3.0 lic')[0][0]).to eq('CC-BY-NC-3.0')
+      
+      expect(lic_matcher.match_rules('CC BY NC v3')[0][0]).to eq('CC-BY-NC-3.0')
+      expect(lic_matcher.match_rules('CC-BY-NC-3')[0][0]).to eq('CC-BY-NC-3.0')
+      expect(lic_matcher.match_rules('uses CC-BY-NC v3 lic')[0][0]).to eq('CC-BY-NC-3.0')
+    end
+
+    it "matches to CC-BY-NC-4.0" do
+      expect(lic_matcher.match_rules('CC-BY-NC 4.0')[0][0]).to eq('CC-BY-NC-4.0')
+      expect(lic_matcher.match_rules('CC BY-NC v4.0')[0][0]).to eq('CC-BY-NC-4.0')
+      expect(lic_matcher.match_rules('uses CC-BY-NC 4.0 lic')[0][0]).to eq('CC-BY-NC-4.0')
+
+      expect(lic_matcher.match_rules('CC-BY-NC v4')[0][0]).to eq('CC-BY-NC-4.0')
+      expect(lic_matcher.match_rules('CC BY-NC-4')[0][0]).to eq('CC-BY-NC-4.0')
+      expect(lic_matcher.match_rules('uses CC-BY-NC 4 lic')[0][0]).to eq('CC-BY-NC-4.0')
+    end
+
+    it "matches to CC-BY-NC-SA-1.0" do
+      expect(lic_matcher.match_rules('CC-BY-NC-SA-1.0')[0][0]).to eq('CC-BY-NC-SA-1.0')
+      expect(lic_matcher.match_rules('CC BY-NC SA v1.0')[0][0]).to eq('CC-BY-NC-SA-1.0')
+      expect(lic_matcher.match_rules('uses CC BY-NC-SA 1.0 lic')[0][0]).to eq('CC-BY-NC-SA-1.0')
+
+      expect(lic_matcher.match_rules('CC BY-NC-SA v1')[0][0]).to eq('CC-BY-NC-SA-1.0')
+      expect(lic_matcher.match_rules('CC BY-NC-SA-1')[0][0]).to eq('CC-BY-NC-SA-1.0')
+      expect(lic_matcher.match_rules('uses CC-BY-NC-SA-1 lic')[0][0]).to eq('CC-BY-NC-SA-1.0')
+    end
+
+    it "matches to CC-BY-NC-SA-2.0" do
+      expect(lic_matcher.match_rules('CC BY-NC-SA 2.0')[0][0]).to eq('CC-BY-NC-SA-2.0')
+      expect(lic_matcher.match_rules('CC-BY-NC-SA-v2.0')[0][0]).to eq('CC-BY-NC-SA-2.0')
+      expect(lic_matcher.match_rules('uses CC-BY-NC-SA 2.0 lic')[0][0]).to eq('CC-BY-NC-SA-2.0')
+    end
+
+    it "matches to CC-BY-NC-SA-2.5" do
+      expect(lic_matcher.match_rules('CC-BY-NC-SA-2.5')[0][0]).to eq('CC-BY-NC-SA-2.5')
+      expect(lic_matcher.match_rules('CC BY-NC-SA v2.5')[0][0]).to eq('CC-BY-NC-SA-2.5')
+      expect(lic_matcher.match_rules('uses CC BY-NC SA2.5')[0][0]).to eq('CC-BY-NC-SA-2.5')
+    end
+
+    it "matches to CC-BY-NC-SA-3.0" do
+      expect(lic_matcher.match_rules('CC-BY-NC-SA-3.0')[0][0]).to eq('CC-BY-NC-SA-3.0')
+      expect(lic_matcher.match_rules('CC BY-NC-SA v3.0')[0][0]).to eq('CC-BY-NC-SA-3.0')
+      expect(lic_matcher.match_rules('uses CC BY NC-SA-3.0')[0][0]).to eq('CC-BY-NC-SA-3.0')
+
+
+      expect(lic_matcher.match_rules('CC BY-NC-SA v3')[0][0]).to eq('CC-BY-NC-SA-3.0')
+      expect(lic_matcher.match_rules('uses CC-BY-NC-SA-3 lic')[0][0]).to eq('CC-BY-NC-SA-3.0')
+
+      expect(lic_matcher.match_rules('BY-NC-SA v3.0')[0][0]).to eq('CC-BY-NC-SA-3.0')
+      expect(lic_matcher.match_rules('as By-NC-SA 3.0 lic')[0][0]).to eq('CC-BY-NC-SA-3.0')
+    end
+
+    it "matches to CC-BY-NC-SA-4.0" do
+      expect(lic_matcher.match_rules('CC-BY-NC-SA-4.0')[0][0]).to eq('CC-BY-NC-SA-4.0')
+      expect(lic_matcher.match_rules('CC BY-NC SAv4.0')[0][0]).to eq('CC-BY-NC-SA-4.0')
+      expect(lic_matcher.match_rules('uses CC-BY-NC-SA v4.0')[0][0]).to eq('CC-BY-NC-SA-4.0')
+
+      expect(lic_matcher.match_rules('CC-BY-NC-SA v4')[0][0]).to eq('CC-BY-NC-SA-4.0')
+      expect(lic_matcher.match_rules('CC BY-NC-SA-4')[0][0]).to eq('CC-BY-NC-SA-4.0')
+      expect(lic_matcher.match_rules('uses CC-BY-NC-SA-v4 lic')[0][0]).to eq('CC-BY-NC-SA-4.0')
+    end
+
+    it "matches to CC-BY-ND-1.0" do
+      expect(lic_matcher.match_rules('CC-BY-ND-1.0')[0][0]).to eq('CC-BY-ND-1.0')
+      expect(lic_matcher.match_rules('CC-BY-ND v1.0')[0][0]).to eq('CC-BY-ND-1.0')
+      expect(lic_matcher.match_rules('uses CC BY-ND 1.0 lic')[0][0]).to eq('CC-BY-ND-1.0')
+    end
+
+    it "matches to CC-BY-ND-2.0" do
+      expect(lic_matcher.match_rules('CC-BY-ND-2.0')[0][0]).to eq('CC-BY-ND-2.0')
+      expect(lic_matcher.match_rules('CC-BY-ND v2.0')[0][0]).to eq('CC-BY-ND-2.0')
+      expect(lic_matcher.match_rules('uses CC BY-ND 2.0 lic')[0][0]).to eq('CC-BY-ND-2.0')
+    end
+
+    it "matches to CC-BY-ND-2.5" do
+      expect(lic_matcher.match_rules('CC-BY-ND-2.5')[0][0]).to eq('CC-BY-ND-2.5')
+      expect(lic_matcher.match_rules('CC-BY-ND v2.5')[0][0]).to eq('CC-BY-ND-2.5')
+      expect(lic_matcher.match_rules('uses CC BY-ND 2.5 lic')[0][0]).to eq('CC-BY-ND-2.5')
+    end
+
+    it "matches to CC-BY-ND-3.0" do
+      expect(lic_matcher.match_rules('CC-BY-ND-3.0')[0][0]).to eq('CC-BY-ND-3.0')
+      expect(lic_matcher.match_rules('CC-BY-ND v3.0')[0][0]).to eq('CC-BY-ND-3.0')
+      expect(lic_matcher.match_rules('uses CC BY-ND 3.0 lic')[0][0]).to eq('CC-BY-ND-3.0')
+    end
+
+    it "matches to CC-BY-ND-4.0" do
+      expect(lic_matcher.match_rules('CC-BY-ND-4.0')[0][0]).to eq('CC-BY-ND-4.0')
+      expect(lic_matcher.match_rules('CC-BY-ND v4.0')[0][0]).to eq('CC-BY-ND-4.0')
+      expect(lic_matcher.match_rules('uses CC BY-ND 4.0 lic')[0][0]).to eq('CC-BY-ND-4.0')
+    end
+
+    it "matches CDDL-1.0 rules" do
+      expect(lic_matcher.match_rules('CDDL-V1.0')[0][0]).to eq('CDDL-1.0')
+      expect(lic_matcher.match_rules('CDDL 1.0')[0][0]).to eq('CDDL-1.0')
+      expect(lic_matcher.match_rules('uses CDDLv1.0')[0][0]).to eq('CDDL-1.0')
+
+      expect(lic_matcher.match_rules('CDDL v1')[0][0]).to eq('CDDL-1.0')
+      expect(lic_matcher.match_rules('CDDL-1')[0][0]).to eq('CDDL-1.0')
+      expect(lic_matcher.match_rules('uses CDDL v1 lic')[0][0]).to eq('CDDL-1.0')
+
+      expect(lic_matcher.match_rules('CDDL License')[0][0]).to eq('CDDL-1.0')
+      expect(lic_matcher.match_rules('COMMON DEVELOPMENT AND DISTRIBUTION LICENSE')[0][0]).to eq('CDDL-1.0')
+    end
+
+    it "matches CECILL-B rules" do
+      expect(lic_matcher.match_rules('CECILL-B')[0][0]).to eq('CECILL-B')
+      expect(lic_matcher.match_rules('CECILL B')[0][0]).to eq('CECILL-B')
+      expect(lic_matcher.match_rules('uses CECILL_B lic')[0][0]).to eq('CECILL-B')
+      expect(lic_matcher.match_rules('CECILLB')[0][0]).to eq('CECILL-B')
+    end
+
+    it "matches CECILL-C rules" do
+      expect(lic_matcher.match_rules('CECILL-C')[0][0]).to eq('CECILL-C')
+      expect(lic_matcher.match_rules('CECILL C')[0][0]).to eq('CECILL-C')
+      expect(lic_matcher.match_rules('uses CECILL-C lic')[0][0]).to eq('CECILL-C')
+      expect(lic_matcher.match_rules('CECILLC')[0][0]).to eq('CECILL-C')
+    end
+
+    it "matches CECILL-1.0 rules" do
+      expect(lic_matcher.match_rules('CECILL-1.0')[0][0]).to eq('CECILL-1.0')
+      expect(lic_matcher.match_rules('CECILL v1.0')[0][0]).to eq('CECILL-1.0')
+      expect(lic_matcher.match_rules('uses CECILL 1.0 lic')[0][0]).to eq('CECILL-1.0')
+
+      expect(lic_matcher.match_rules('CECILL-1')[0][0]).to eq('CECILL-1.0')
+      expect(lic_matcher.match_rules('CECILL v1')[0][0]).to eq('CECILL-1.0')
+      expect(lic_matcher.match_rules('uses CECILL v1 lic')[0][0]).to eq('CECILL-1.0')
+
+      expect(lic_matcher.match_rules('http://www.cecill.info')[0][0]).to eq('CECILL-1.0')
+    end
+
+    it "matches CECILL-2.1 rules" do
+      expect(lic_matcher.match_rules('CECILL-2.1')[0][0]).to eq('CECILL-2.1')
+      expect(lic_matcher.match_rules('CECILL v2.1')[0][0]).to eq('CECILL-2.1')
+      expect(lic_matcher.match_rules('uses CECILL 2.1 lic')[0][0]).to eq('CECILL-2.1')
+
+      expect(lic_matcher.match_rules('Cecill Version 2.1')[0][0]).to eq('CECILL-2.1')
+    end
+
+    it "matches CPL-1.0 rules" do
+      expect(lic_matcher.match_rules('CPL-1.0')[0][0]).to eq('CPL-1.0')
+      expect(lic_matcher.match_rules('CPL v1.0')[0][0]).to eq('CPL-1.0')
+      expect(lic_matcher.match_rules('uses CPL 1.0 lic')[0][0]).to eq('CPL-1.0')
+
+      expect(lic_matcher.match_rules('CPL-v1')[0][0]).to eq('CPL-1.0')
+      expect(lic_matcher.match_rules('CPL v1')[0][0]).to eq('CPL-1.0')
+      expect(lic_matcher.match_rules('uses CPL-1 lic')[0][0]).to eq('CPL-1.0')
+
+      expect(lic_matcher.match_rules('uses COMMON PUBLIC LICENSE')[0][0]).to eq('CPL-1.0')
+    end
+
+    it "matches D-FSL-1.0" do
+      expect(lic_matcher.match_rules('DFSL-v1.0')[0][0]).to eq('D-FSL-1.0')
+      expect(lic_matcher.match_rules('D-FSL 1.0')[0][0]).to eq('D-FSL-1.0')
+      expect(lic_matcher.match_rules('uses D-FSL v1.0 lic')[0][0]).to eq('D-FSL-1.0')
+
+      expect(lic_matcher.match_rules('D-FSL v1')[0][0]).to eq('D-FSL-1.0')
+      expect(lic_matcher.match_rules('DFSL-1')[0][0]).to eq('D-FSL-1.0')
+      expect(lic_matcher.match_rules('uses DFSL v1 lic')[0][0]).to eq('D-FSL-1.0')
+
+      expect(lic_matcher.match_rules('German Free Software')[0][0]).to eq('D-FSL-1.0')
+      expect(lic_matcher.match_rules('Deutsche Freie Software Lizenz')[0][0]).to eq('D-FSL-1.0')
+    end
+
+    it "matches ECL-1.0" do
+      expect(lic_matcher.match_rules('ECL v1.0')[0][0]).to eq('ECL-1.0')
+      expect(lic_matcher.match_rules('ECL-1.0')[0][0]).to eq('ECL-1.0')
+      expect(lic_matcher.match_rules('uses ECL 1.0 lic')[0][0]).to eq('ECL-1.0')
+
+      expect(lic_matcher.match_rules('ECL v1')[0][0]).to eq('ECL-1.0')
+      expect(lic_matcher.match_rules('ECL-1')[0][0]).to eq('ECL-1.0')
+      expect(lic_matcher.match_rules('uses ECL-V1 lic')[0][0]).to eq('ECL-1.0')
+    end
+
+    it "matches ECL-2.0" do
+      expect(lic_matcher.match_rules('ECL-2.0')[0][0]).to eq('ECL-2.0')
+      expect(lic_matcher.match_rules('ECL v2.0')[0][0]).to eq('ECL-2.0')
+      expect(lic_matcher.match_rules('uses ECL-2.0 lic')[0][0]).to eq('ECL-2.0')
+
+      expect(lic_matcher.match_rules('ECL-v2')[0][0]).to eq('ECL-2.0')
+      expect(lic_matcher.match_rules('ECL 2')[0][0]).to eq('ECL-2.0')
+      expect(lic_matcher.match_rules('uses ECL 2 lic')[0][0]).to eq('ECL-2.0')
+
+      expect(lic_matcher.match_rules('EDUCATIONAL COMMUNITY LICENSE VERSION 2.0'))
+    end
+
+    it "matches EFL-1.0" do
+      expect(lic_matcher.match_rules('EFL-1.0')[0][0]).to eq('EFL-1.0')
+      expect(lic_matcher.match_rules('EFL v1.0')[0][0]).to eq('EFL-1.0')
+      expect(lic_matcher.match_rules('uses EFL 1.0 lic')[0][0]).to eq('EFL-1.0')
+
+      expect(lic_matcher.match_rules('EFL v1')[0][0]).to eq('EFL-1.0')
+      expect(lic_matcher.match_rules('EFL-1')[0][0]).to eq('EFL-1.0')
+      expect(lic_matcher.match_rules('uses EFL v1 lic')[0][0]).to eq('EFL-1.0')
+    end
+
+    it "matches EFL-2.0" do
+      expect(lic_matcher.match_rules('EFL-2.0')[0][0]).to eq('EFL-2.0')
+      expect(lic_matcher.match_rules('EFL v2.0')[0][0]).to eq('EFL-2.0')
+      expect(lic_matcher.match_rules('uses EFL 2.0 lic')[0][0]).to eq('EFL-2.0')
+
+      expect(lic_matcher.match_rules('EFL v2')[0][0]).to eq('EFL-2.0')
+      expect(lic_matcher.match_rules('EFL-2')[0][0]).to eq('EFL-2.0')
+      expect(lic_matcher.match_rules('uses EFL v2 lic')[0][0]).to eq('EFL-2.0')
+
+      expect(lic_matcher.match_rules('Eiffel Forum License version 2'))
+    end
+
+    it "matches EPL-1.0" do
+      expect(lic_matcher.match_rules('EPL-1.0')[0][0]).to eq('EPL-1.0')
+      expect(lic_matcher.match_rules('EPL v1.0')[0][0]).to eq('EPL-1.0')
+      expect(lic_matcher.match_rules('uses EPLv1.0 lic')[0][0]).to eq('EPL-1.0')
+
+      expect(lic_matcher.match_rules('EPLv1')[0][0]).to eq('EPL-1.0')
+      expect(lic_matcher.match_rules('EPL-1')[0][0]).to eq('EPL-1.0')
+      expect(lic_matcher.match_rules('uses EPL v1 lic')[0][0]).to eq('EPL-1.0')
+
+      expect(lic_matcher.match_rules('ECLIPSE PUBLIC LICENSE 1.0')[0][0]).to eq('EPL-1.0')
+      expect(lic_matcher.match_rules('ECLIPSE PUBLIC LICENSE')[0][0]).to eq('EPL-1.0')
+    end
+
+    it "matches EUPL-1.0 " do
+      expect(lic_matcher.match_rules('EUPL-1.0')[0][0]).to eq('EUPL-1.0')
+      expect(lic_matcher.match_rules('EUPL v1.0')[0][0]).to eq('EUPL-1.0')
+      expect(lic_matcher.match_rules('(EUPL1.0)')[0][0]).to eq('EUPL-1.0')
+      expect(lic_matcher.match_rules('uses EUPL 1.0 lic')[0][0]).to eq('EUPL-1.0')
+    end
+
+    it "matches EUPL-1.1 " do
+      expect(lic_matcher.match_rules('EUPL-1.1')[0][0]).to eq('EUPL-1.1')
+      expect(lic_matcher.match_rules('EUPL v1.1')[0][0]).to eq('EUPL-1.1')
+      expect(lic_matcher.match_rules('(EUPL1.1)')[0][0]).to eq('EUPL-1.1')
+      expect(lic_matcher.match_rules('uses EUPL 1.1 lic')[0][0]).to eq('EUPL-1.1')
+
+      expect(lic_matcher.match_rules('EUROPEAN UNION PUBLIC LICENSE 1.1')[0][0]).to eq('EUPL-1.1')
+    end
+
+    it "matches GPL-1.0 rules" do
+      expect(lic_matcher.match_rules('GPL-1.0')[0][0]).to eq('GPL-1.0')
+      expect(lic_matcher.match_rules('GPL v1.0')[0][0]).to eq('GPL-1.0')
+      expect(lic_matcher.match_rules('uses GPL 1.0 lic')[0][0]).to eq('GPL-1.0')
+
+      expect(lic_matcher.match_rules('GPLv1')[0][0]).to eq('GPL-1.0')
+      expect(lic_matcher.match_rules('GPL-1')[0][0]).to eq('GPL-1.0')
+      expect(lic_matcher.match_rules('uses GPL v1 lic')[0][0]).to eq('GPL-1.0')
+
+      expect(lic_matcher.match_rules('GNU Public License 1.0')[0][0]).to eq('GPL-1.0')
+    end
+
+    it "matches GPL-2.0 rules" do
+      expect(lic_matcher.match_rules('GPL v2.0')[0][0]).to eq('GPL-2.0') 
+      expect(lic_matcher.match_rules('GPL-2.0')[0][0]).to eq('GPL-2.0')
+      expect(lic_matcher.match_rules('uses GPL 2.0 lic')[0][0]).to eq('GPL-2.0')
+
+      expect(lic_matcher.match_rules('GPL-2')[0][0]).to eq('GPL-2.0')
+      expect(lic_matcher.match_rules('GPL v2')[0][0]).to eq('GPL-2.0')
+      expect( lic_matcher.match_rules('GNU GPL v2 or later, plus transitive 12 m').first.first ).to eq('GPL-2.0')
+
+      expect(lic_matcher.match_rules('GNU PUBLIC LICENSE 2.0')[0][0]).to eq('GPL-2.0')
+      expect(lic_matcher.match_rules('GNU PUBLIC LICENSE 2')[0][0]).to eq('GPL-2.0')
+      expect(lic_matcher.match_rules('GNU GPL v2')[0][0]).to eq('GPL-2.0')
+      expect(lic_matcher.match_rules('GLPv2')[0][0]).to eq('GPL-2.0')
+    end
+
+    it "matches GPL-3.0 rules" do
+      expect(lic_matcher.match_rules('GPL-3.0')[0][0]).to eq('GPL-3.0')
+      expect(lic_matcher.match_rules('GPL v3.0')[0][0]).to eq('GPL-3.0')
+      expect(lic_matcher.match_rules('uses GPL 3.0 lic')[0][0]).to eq('GPL-3.0')
+
+      expect(lic_matcher.match_rules('GPL v3')[0][0]).to eq('GPL-3.0')
+      expect(lic_matcher.match_rules('GPL-3')[0][0]).to eq('GPL-3.0')
+      expect(lic_matcher.match_rules('uses GPL v3 lic')[0][0]).to eq('GPL-3.0')
+
+      expect(lic_matcher.match_rules('GNU Public License v3.0')[0][0]).to eq('GPL-3.0')
+      expect(lic_matcher.match_rules('GNU PUBLIC license 3')[0][0]).to eq('GPL-3.0')
+      expect(lic_matcher.match_rules('GNU PUBLIC v3')[0][0]).to eq('GPL-3.0')
+    end
+
+    it "matches ISC rules" do
+      expect(lic_matcher.match_rules('ISC license')[0][0]).to eq('ISC')
+      expect(lic_matcher.match_rules('uses ISC license')[0][0]).to eq('ISC')
+      
+      expect(lic_matcher.match_rules('(ISCL)')[0][0]).to eq('ISC')
+    end
+
+    it "matches JSON license rules" do
+      expect(lic_matcher.match_rules('JSON license')[0][0]).to eq('JSON')
+    end
+
+    it "matches LGPL-2.0 rules" do
+      expect(lic_matcher.match_rules('LGPL-2.0')[0][0]).to eq('LGPL-2.0')
+      expect(lic_matcher.match_rules('uses LGPL v2.0')[0][0]).to eq('LGPL-2.0')
+
+      expect(lic_matcher.match_rules('LGPL v2')[0][0]).to eq('LGPL-2.0')
+      expect(lic_matcher.match_rules('LGPL2')[0][0]).to eq('LGPL-2.0')
+      expect(lic_matcher.match_rules('uses LGPL-2 lic')[0][0]).to eq('LGPL-2.0')
+    end
+
+    it "matches LGPL-2.1 rules" do
+      expect(lic_matcher.match_rules('LGPL-2.1')[0][0]).to eq('LGPL-2.1')
+      expect(lic_matcher.match_rules('LGPL v2.1')[0][0]).to eq('LGPL-2.1')
+      expect(lic_matcher.match_rules('uses LGPL 2.1 lic')[0][0]).to eq('LGPL-2.1')
+    end
+
+    it "matches LGPL-3.0 rules" do
+      expect(lic_matcher.match_rules('LGPL-3.0')[0][0]).to eq('LGPL-3.0')
+      expect(lic_matcher.match_rules('LGPL v3.0')[0][0]).to eq('LGPL-3.0')
+      expect(lic_matcher.match_rules('uses LGPL 3.0 lic')[0][0]).to eq('LGPL-3.0')
+
+      expect(lic_matcher.match_rules('LGPL v3')[0][0]).to eq('LGPL-3.0')
+      expect(lic_matcher.match_rules('LGPL3')[0][0]).to eq('LGPL-3.0')
+      expect(lic_matcher.match_rules('uses LGPL 3 lic')[0][0]).to eq('LGPL-3.0')
+
+      expect(lic_matcher.match_rules('LESSER GENERAL PUBLIC License v3')[0][0]).to eq('LGPL-3.0')
+    end
+
+    it "matches MirOS rules" do
+      expect(lic_matcher.match_rules('MirOs')[0][0]).to eq('MirOS')
+      expect(lic_matcher.match_rules('uses MirOS lic')[0][0]).to eq('MirOS')
+    end
 
     it "matches noisy MIT license names" do
+      expect(lic_matcher.match_rules('MIT License')[0][0]).to eq('MIT')
+      expect(lic_matcher.match_rules('MIT')[0][0]).to eq('MIT')
       expect( lic_matcher.match_rules('Original Cutadapt code is under MIT license;').first.first ).to eq('MIT')
     end
 
-    it "matches GPL2 rules" do
-      expect( lic_matcher.match_rules('GNU GPL v2 or later, plus transitive 12 m').first.first ).to eq('GPL-2.0')
+    it "matches MPL-1.0 rules" do
+      #TODO:
     end
 
   end
-
 end
