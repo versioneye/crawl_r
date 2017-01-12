@@ -117,13 +117,14 @@ class LicenseMatcher
   #   text - string, a name of license,
   #   early_exit  - boolean, default: true, will only return first match
   # @returns:
+  #   [spdx_id, score, matching_rule]
   def match_rules(text, early_exit = true)
     matches = []
     text_ = text.to_s.strip + " " #required to make difference between end of versionNumber and end of string
     ignore_rules = get_ignore_rules()
 
     #if text is in ignore list, then return same text, but negative score as it's spam
-    return [text_, -1] if matches_any_rule?(ignore_rules, text_)
+    return [text, -1] if matches_any_rule?(ignore_rules, text_)
 
     @rules.each do |spdx_id, rules|
       matching_rule = matches_any_rule?(rules, text_)
@@ -245,14 +246,14 @@ class LicenseMatcher
       /\bDFSG\s+APPROVED\b/i, /\bSee\slicense\sin\spackage\b/i,
       /\bFree\s+for\s+non[-]?commercial\b/i, /\bFree\s+To\s+Use\b/i,
       /\bFree\sFor\sHome\sUse\b/i, /\bFree\s+For\s+Educational\b/i,
-      /^Freely\s+Distributable$/i, /^COPYRIGHT\s+\d{2,4}/i,
-      /^Copyright\s+\(c\)\s+\d{2,4}\b/i, /^COPYRIGHT$/i, /^COPYRIGHT\.\w{2,8}\b/i,
+      /^Freely\s+Distributable\s*$/i, /^COPYRIGHT\s+\d{2,4}/i,
+      /^Copyright\s+\(c\)\s+\d{2,4}\b/i, /^COPYRIGHT\s*$/i, /^COPYRIGHT\.\w{2,8}\b/i,
       /^\(c\)\s+\d{2,4}\d/,
-      /^LICENSE$/i, /^FREE$/i, /^See\sLicense$/i, /^TODO$/i, /^FREEWARE$/i,
-      /^All\srights\sreserved$/i, /^COPYING$/i, /^OTHER$/i, /^NONE$/i, /^DUAL$/i,
-      /^KEEP\s+IT\s+REAL$/i, /\bSee\s+LICENSE\s+file\b/i, /^LICEN[C|S]E$/i,
-      /^PUBLIC$/i, /^see file LICENSE$/i, /^__license__$/i,
-      /^GNU$/i, /^GNU[-|\s]?v3$/i, /^OSI\s+Approved$/i, /^OSI$/i,
+      /^LICENSE\s*$/i, /^FREE\s*$/i, /^See\sLicense\s*$/i, /^TODO\s*$/i, /^FREEWARE\s*$/i,
+      /^All\srights\sreserved\s*$/i, /^COPYING\s*$/i, /^OTHER\s*$/i, /^NONE\s*$/i, /^DUAL\s*$/i,
+      /^KEEP\s+IT\s+REAL\s*$/i, /\bSee\s+LICENSE\s+file\b/i, /^LICEN[C|S]E\s*$/i,
+      /^PUBLIC\s*$/i, /^see file LICENSE\s*$/i, /^__license__\s*$/i,
+      /^GNU\s*$/i, /^GNU[-|\s]?v3\s*$/i, /^OSI\s+Approved\s*$/i, /^OSI\s*$/i,
       /^https?:\/\/github.com/i
     ]
   end

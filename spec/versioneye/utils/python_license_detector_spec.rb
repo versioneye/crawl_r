@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe PythonLicenseDetector do
-  let(:detector){ PythonLicenseDetector.new }
+  detector = PythonLicenseDetector.new
+
   let(:wtf_text){
     %q[
         DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
