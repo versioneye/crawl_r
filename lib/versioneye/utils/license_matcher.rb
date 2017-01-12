@@ -117,13 +117,14 @@ class LicenseMatcher
   #   text - string, a name of license,
   #   early_exit  - boolean, default: true, will only return first match
   # @returns:
+  #   [spdx_id, score, matching_rule]
   def match_rules(text, early_exit = true)
     matches = []
     text_ = text.to_s.strip + " " #required to make difference between end of versionNumber and end of string
     ignore_rules = get_ignore_rules()
 
     #if text is in ignore list, then return same text, but negative score as it's spam
-    return [text_, -1] if matches_any_rule?(ignore_rules, text_)
+    return [text, -1] if matches_any_rule?(ignore_rules, text_)
 
     @rules.each do |spdx_id, rules|
       matching_rule = matches_any_rule?(rules, text_)
@@ -252,7 +253,7 @@ class LicenseMatcher
       /^All\srights\sreserved$/i, /^COPYING$/i, /^OTHER$/i, /^NONE$/i, /^DUAL$/i,
       /^KEEP\s+IT\s+REAL$/i, /\bSee\s+LICENSE\s+file\b/i, /^LICEN[C|S]E$/i,
       /^PUBLIC$/i, /^see file LICENSE$/i, /^__license__$/i,
-      /^GNU$/i, /^GNU[-|\s]?v3$/i, /^OSI\s+Approved$/i, /^OSI$/i,
+      /^GNU\s*$/i, /^GNU[-|\s]?v3$/i, /^OSI\s+Approved$/i, /^OSI$/i,
       /^https?:\/\/github.com/i
     ]
   end
