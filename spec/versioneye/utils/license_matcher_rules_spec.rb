@@ -631,8 +631,231 @@ describe LicenseMatcher do
     end
 
     it "matches MPL-1.0 rules" do
-      #TODO:
+      expect(lic_matcher.match_rules('MPL-V1.0')[0][0]).to eq('MPL-1.0')
+      expect(lic_matcher.match_rules('MPL 1.0')[0][0]).to eq('MPL-1.0')
+      expect(lic_matcher.match_rules('uses MPL 1.0 lic')[0][0]).to eq('MPL-1.0')
+
+      expect(lic_matcher.match_rules('MPL v1')[0][0]).to eq('MPL-1.0')
+      expect(lic_matcher.match_rules('MPL-1')[0][0]).to eq('MPL-1.0')
+      expect(lic_matcher.match_rules('uses MPL v1 lic')[0][0]).to eq('MPL-1.0')
     end
 
+    it "matches MPL-1.1 rules" do
+      expect(lic_matcher.match_rules('MPL-1.1')[0][0]).to eq('MPL-1.1')
+      expect(lic_matcher.match_rules('MPL v1.1')[0][0]).to eq('MPL-1.1')
+      expect(lic_matcher.match_rules('uses MPL 1.1 lic')[0][0]).to eq('MPL-1.1')
+    end
+
+    it "matches MPL-2.0 rules" do
+      expect(lic_matcher.match_rules('MPL-2.0')[0][0]).to eq('MPL-2.0')
+      expect(lic_matcher.match_rules('MPL v2.0')[0][0]).to eq('MPL-2.0')
+      expect(lic_matcher.match_rules('uses MPL 2.0 lic')[0][0]).to eq('MPL-2.0')
+
+
+      expect(lic_matcher.match_rules('MPL v2')[0][0]).to eq('MPL-2.0')
+      expect(lic_matcher.match_rules('MPL-2')[0][0]).to eq('MPL-2.0')
+      expect(lic_matcher.match_rules('uses MPL 2 lic')[0][0]).to eq('MPL-2.0')
+
+      expect(lic_matcher.match_rules('Mozilla Public License 2.0')[0][0]).to eq('MPL-2.0')
+    end
+
+    it "matches MS-PL rules" do
+      expect(lic_matcher.match_rules('MS-PL')[0][0]).to eq('MS-PL')
+      expect(lic_matcher.match_rules('MSPL')[0][0]).to eq('MS-PL')
+      expect(lic_matcher.match_rules('uses MS-PL')[0][0]).to eq('MS-PL')
+    end
+
+    it "matches MS-RL rules" do
+      expect(lic_matcher.match_rules('MS-RL')[0][0]).to eq('MS-RL')
+      expect(lic_matcher.match_rules('MSRL')[0][0]).to eq('MS-RL')
+      expect(lic_matcher.match_rules('uses MS-RL')[0][0]).to eq('MS-RL')
+    end
+
+    it "matches NCSA rules" do
+      expect(lic_matcher.match_rules('NCSA license')[0][0]).to eq('NCSA')
+      expect(lic_matcher.match_rules('use NCSA license')[0][0]).to eq('NCSA')
+
+      expect(lic_matcher.match_rules('NCSA')[0][0]).to eq('NCSA')
+      expect(lic_matcher.match_rules('Illinois NCSA Open Source')[0][0]).to eq('NCSA')
+    end
+
+    it "matches NGPL rules" do
+      expect(lic_matcher.match_rules('NGPL license')[0][0]).to eq('NGPL')
+      expect(lic_matcher.match_rules('NGPL')[0][0]).to eq('NGPL')
+    end
+
+    it "matches NPOSL-3.0" do
+      expect(lic_matcher.match_rules('NPOSL-3.0')[0][0]).to eq('NPOSL-3.0')
+      expect(lic_matcher.match_rules('NPOSL v3.0')[0][0]).to eq('NPOSL-3.0')
+      expect(lic_matcher.match_rules('uses NPOSL 3.0 lic')[0][0]).to eq('NPOSL-3.0')
+
+      expect(lic_matcher.match_rules('NPOSL v3')[0][0]).to eq('NPOSL-3.0')
+      expect(lic_matcher.match_rules('NPOSL-3')[0][0]).to eq('NPOSL-3.0')
+      expect(lic_matcher.match_rules('uses NPOSL 3 lic')[0][0]).to eq('NPOSL-3.0')
+    end
+
+    it "matches OFL-1.0" do
+      expect(lic_matcher.match_rules('OFL-1.0')[0][0]).to eq('OFL-1.0')
+      expect(lic_matcher.match_rules('OFL v1.0')[0][0]).to eq('OFL-1.0')
+      expect(lic_matcher.match_rules('uses OFL 1.0 lic')[0][0]).to eq('OFL-1.0')
+
+      expect(lic_matcher.match_rules('OFL v1')[0][0]).to eq('OFL-1.0')
+      expect(lic_matcher.match_rules('OFL-1')[0][0]).to eq('OFL-1.0')
+      expect(lic_matcher.match_rules('uses OFL 1 lic')[0][0]).to eq('OFL-1.0')
+  
+      expect(lic_matcher.match_rules('SIL OFL 1.0')[0][0]).to eq('OFL-1.0')
+    end
+
+    it "matches OFL-1.1" do
+      expect(lic_matcher.match_rules('OFL-1.1')[0][0]).to eq('OFL-1.1')
+      expect(lic_matcher.match_rules('OFL v1.1')[0][0]).to eq('OFL-1.1')
+      expect(lic_matcher.match_rules('uses OFL 1.1 lic')[0][0]).to eq('OFL-1.1')
+
+      expect(lic_matcher.match_rules('SIL OFL 1.1')[0][0]).to eq('OFL-1.1')
+      expect(lic_matcher.match_rules('uses SIL OFL 1.1 lic')[0][0]).to eq('OFL-1.1')
+    end
+
+    it "matches OSL-1.0" do
+      expect(lic_matcher.match_rules('OSL-1.0')[0][0]).to eq('OSL-1.0')
+      expect(lic_matcher.match_rules('OSL v1.0')[0][0]).to eq('OSL-1.0')
+      expect(lic_matcher.match_rules('uses OSL 1.0 lic')[0][0]).to eq('OSL-1.0')
+
+      expect(lic_matcher.match_rules('OSL v1')[0][0]).to eq('OSL-1.0')
+      expect(lic_matcher.match_rules('OSL-1')[0][0]).to eq('OSL-1.0')
+      expect(lic_matcher.match_rules('uses OSL 1 lic')[0][0]).to eq('OSL-1.0')
+    end
+
+    it "matches OSL-2.0" do
+      expect(lic_matcher.match_rules('OSL-2.0')[0][0]).to eq('OSL-2.0')
+      expect(lic_matcher.match_rules('OSL v2.0')[0][0]).to eq('OSL-2.0')
+      expect(lic_matcher.match_rules('uses OSL 2.0 lic')[0][0]).to eq('OSL-2.0')
+
+      expect(lic_matcher.match_rules('OSL v2')[0][0]).to eq('OSL-2.0')
+      expect(lic_matcher.match_rules('uses OSL 2 lic')[0][0]).to eq('OSL-2.0')
+    end
+
+    it "matches OSL-2.1 rules" do
+      expect(lic_matcher.match_rules('OSL-2.1')[0][0]).to eq('OSL-2.1')
+      expect(lic_matcher.match_rules('OSL v2.1')[0][0]).to eq('OSL-2.1')
+      expect(lic_matcher.match_rules('uses OSL 2.1 lic')[0][0]).to eq('OSL-2.1')
+    end
+
+    it "matches OSL-3.0 rules" do
+      expect(lic_matcher.match_rules('OSL-3.0')[0][0]).to eq('OSL-3.0')
+      expect(lic_matcher.match_rules('OSL v3.0')[0][0]).to eq('OSL-3.0')
+      expect(lic_matcher.match_rules('uses OSL 3.0 lic')[0][0]).to eq('OSL-3.0')
+
+      expect(lic_matcher.match_rules('OSL v3')[0][0]).to eq('OSL-3.0')
+      expect(lic_matcher.match_rules('uses OSL-3 lic')[0][0]).to eq('OSL-3.0')
+    end
+
+    it "matches PostgreSQL rules" do
+      expect(lic_matcher.match_rules('PostgreSQL')[0][0]).to eq('PostgreSQL')
+      expect(lic_matcher.match_rules('uses PostgreSQL lic')[0][0]).to eq('PostgreSQL')
+    end
+
+    it "matches Python-2.0 rules" do
+      expect(lic_matcher.match_rules('Python v2.0')[0][0]).to eq('Python-2.0')
+      expect(lic_matcher.match_rules('Python-2.0')[0][0]).to eq('Python-2.0')
+      expect(lic_matcher.match_rules('uses Python 2.0 lic')[0][0]).to eq('Python-2.0')
+
+      expect(lic_matcher.match_rules('Python v2')[0][0]).to eq('Python-2.0')
+      expect(lic_matcher.match_rules('Python-2')[0][0]).to eq('Python-2.0')
+      expect(lic_matcher.match_rules('uses Python 2 lic')[0][0]).to eq('Python-2.0')
+
+      expect(lic_matcher.match_rules('PSF v2')[0][0]).to eq('Python-2.0')
+      expect(lic_matcher.match_rules('uses PSF2 lic')[0][0]).to eq('Python-2.0')
+      expect(lic_matcher.match_rules('Python Software Foundation')[0][0]).to eq('Python-2.0')
+    end
+
+    it "matches RPL-1.1 rules" do
+      expect(lic_matcher.match_rules('RPL-1.1')[0][0]).to eq('RPL-1.1')
+      expect(lic_matcher.match_rules('RPL v1.1')[0][0]).to eq('RPL-1.1')
+      expect(lic_matcher.match_rules('uses RPL 1.1 lic')[0][0]).to eq('RPL-1.1')
+
+      expect(lic_matcher.match_rules('uses RPL-1')[0][0]).to eq('RPL-1.1')
+      expect(lic_matcher.match_rules('uses RPL v1')[0][0]).to eq('RPL-1.1')
+    end
+
+    it "matches RPL-1.5 rules" do
+      expect(lic_matcher.match_rules('RPL-1.5')[0][0]).to eq('RPL-1.5')
+      expect(lic_matcher.match_rules('RPL v1.5')[0][0]).to eq('RPL-1.5')
+      expect(lic_matcher.match_rules('uses RPL 1.5 lic')[0][0]).to eq('RPL-1.5')
+    end
+
+    it "matches QPL-1.0 rules" do
+      expect(lic_matcher.match_rules('QPL-1.0')[0][0]).to eq('QPL-1.0')
+      expect(lic_matcher.match_rules('QPL v1.0')[0][0]).to eq('QPL-1.0')
+      expect(lic_matcher.match_rules('uses QPL 1.0 lic')[0][0]).to eq('QPL-1.0')
+
+      expect(lic_matcher.match_rules('QT Public License')[0][0]).to eq('QPL-1.0')
+      expect(lic_matcher.match_rules('PyQ GENERAL LICENSE')[0][0]).to eq('QPL-1.0')
+    end
+
+    it "matches SleepyCat rules" do
+      expect(lic_matcher.match_rules('Sleepycat')[0][0]).to eq('Sleepycat')
+    end
+
+    it "matches W3C rules" do
+      expect(lic_matcher.match_rules('W3C')[0][0]).to eq('W3C')
+    end
+
+    it "matches OpenSSL rules" do
+      expect(lic_matcher.match_rules('OpenSSL')[0][0]).to eq('OpenSSL')
+    end
+
+    it "matches Unlicense rules" do
+      expect(lic_matcher.match_rules('UNLICENSE')[0][0]).to eq('Unlicense')
+      expect(lic_matcher.match_rules('Unlicensed')[0][0]).to eq('Unlicense')
+      expect(lic_matcher.match_rules('No License')[0][0]).to eq('Unlicense')
+      expect(lic_matcher.match_rules('Undecided')[0][0]).to eq('Unlicense')
+    end
+
+    it "matches WTFPL " do
+      expect(lic_matcher.match_rules('WTFPL')[0][0]).to eq('WTFPL')
+      expect(lic_matcher.match_rules('WTFPLv2')[0][0]).to eq('WTFPL')
+      expect(lic_matcher.match_rules('Do whatever you want')[0][0]).to eq('WTFPL')
+      expect(lic_matcher.match_rules('DWTFYW')[0][0]).to eq('WTFPL')
+    end
+
+    it "matches WXwindows rules" do
+      expect(lic_matcher.match_rules('wxWindows')[0][0]).to eq('WXwindows')
+      expect(lic_matcher.match_rules('wxWINDOWS LIBRARY license')[0][0]).to eq('WXwindows')
+    end
+
+    it "matches X11 rules" do
+      expect(lic_matcher.match_rules('X11')[0][0]).to eq('X11')
+      expect(lic_matcher.match_rules('uses X11 lic')[0][0]).to eq('X11')
+    end
+
+    it "matches ZPL-1.1 rules" do
+      expect(lic_matcher.match_rules('ZPL v1.1')[0][0]).to eq('ZPL-1.1')
+      expect(lic_matcher.match_rules('ZPL-1.1')[0][0]).to eq('ZPL-1.1')
+      expect(lic_matcher.match_rules('uses ZPL 1.1 lic')[0][0]).to eq('ZPL-1.1')
+
+      expect(lic_matcher.match_rules('ZPL v1')[0][0]).to eq('ZPL-1.1')
+      expect(lic_matcher.match_rules('uses ZPL-1')[0][0]).to eq('ZPL-1.1')
+    end
+
+    it "matches ZPL-2.1 rules" do
+      expect(lic_matcher.match_rules('ZPL-2.1')[0][0]).to eq('ZPL-2.1')
+      expect(lic_matcher.match_rules('ZPL v2.1')[0][0]).to eq('ZPL-2.1')
+      expect(lic_matcher.match_rules('uses ZPL 2.1 lic')[0][0]).to eq('ZPL-2.1')
+
+      expect(lic_matcher.match_rules('ZPL v2')[0][0]).to eq('ZPL-2.1')
+      expect(lic_matcher.match_rules('ZPL-2')[0][0]).to eq('ZPL-2.1')
+      expect(lic_matcher.match_rules('uses ZPL 2 lic')[0][0]).to eq('ZPL-2.1')
+
+      expect(lic_matcher.match_rules('ZOPE PUBLIC LICENSE')[0][0]).to eq('ZPL-2.1')
+    end
+
+    it "matches ZLIB rules" do
+      expect(lic_matcher.match_rules('ZLIB')[0][0]).to eq('ZLIB')
+      expect(lic_matcher.match_rules('uses ZLIB license')[0][0]).to eq('ZLIB')
+    end
+
+    it "matches ZLIB-acknowledgement rules" do
+      expect(lic_matcher.match_rules('ZLIB/LIBPNG')[0][0]).to eq('zlib-acknowledgement')
+    end
   end
 end

@@ -453,66 +453,68 @@ class LicenseMatcher
                          ],
       "MirOS"         => [/\bMirOS\b/i],
       "MIT"           => [/\bMIT\s+LICEN[S|C]E\b/i, /\bMIT\b/i, /\bEXPAT\b/i],
-      "MPL-1.0"       => [/\bMPL[-|v]?1\b/i, /\bMPL[-|v]?1\.0\b/i],
-      "MPL-1.1"       => [/\bMPL[-|v]?1\.1\b/i],
+      "MPL-1.0"       => [/\bMPL[-|\s|\_]?v?1\.0\b/i, /\bMPL[-|\s|\_]?v?1(?!\.)\b/i ],
+      "MPL-1.1"       => [/\bMPL[-|\s|\_]?v?1\.1\b/i],
       "MPL-2.0"       => [
-                          /\bMPL[-|v]?2\b/i, /\bMPL[-|v]?2\.0\b/i,
+                          /\bMPL[-|\s|\_]?v?2\.0\b/i, /\bMPL[-|\s|\_]?v?2\b/i, 
                           /\bMOZILLA\s+PUBLIC\s+LICENSE\s+2\.0\b/i,
                           /\bMOZILLA\s+PUBLIC\s+LICENSE[,]?\s+version\s+2\.0\b/i,
-                          /\bMozilla\sPublic\sLicense\b/i,
-                          /\b[\(]?MPL\s+2\.0[\)]?\b/i, /\b[\(]?MPL[\)]?\b/i
+                          /\b[\(]?MPL\s+2\.0[\)]?\b/
                          ],
       "MS-PL"         => [/\bMS-?PL\b/i],
       "MS-RL"         => [/\bMS-?RL\b/i, /\bMSR\-LA\b/i],
-      "NCSA"          => [/^NCSA$/, /\bNCSA\s+License\b/i,
-                          /\bIllinois\/NCSA\sOpen\sSource\b/i],
+      "NCSA"          => [/\bNCSA\s+License\b/i, /\bIllinois\/NCSA\sOpen\sSource\b/i, /\bNCSA\b/i ],
       "NGPL"          => [/\bNGPL\b/i],
-      "NPOSL-3.0"     => [/\bNPOSL[-|_|\s]?3\.0\b/i],
-      "OFL-1.0"       => [/\bOFL[-|v]?1\.0\b/i, /\bOFL[-|v]?1\b/i, /\bSIL\s+OFL\s+1\.0\b/i],
-      "OFL-1.1"       => [/\bOFL[-|v]?1\.1\b/i, /\bSIL\s+OFL\s+1\.1\b/i],
-      "OSL-1.0"       => [/\bOSL[-|v]?1\b/i, /\b\OSL[-|v]?1\.0\b/i],
-      "OSL-2.0"       => [/\bOSL[-|v]?2\b/i, /\bOSL[-|v]2\.0?\b/i],
-      "OSL-2.1"       => [/\bOSL[-|v]?2\.1\b/i],
-      "OSL-3.0"       => [/\bOSL[-|v]?3/i, /\bOSL[-|v]?3\.0\b/i],
+      "NPOSL-3.0"     => [/\bNPOSL[-|\s|\_]?v?3\.0\b/i, /\bNPOSL[-|\s|\_]?v?3\b/],
+      "OFL-1.0"       => [/\bOFL[-|\s|\_]?v?1\.0\b/i, /\bOFL[-|\s|\_]?v?1(?!\.)\b/i,
+                          /\bSIL\s+OFL\s+1\.0\b/i],
+      "OFL-1.1"       => [/\bOFL[-|\s|\_]?v?1\.1\b/i, /\bSIL\s+OFL\s+1\.1\b/i],
+
+      "OSL-1.0"       => [/\bOSL[-|\s|\_]?v?1\.0\b/i, /\b\OSL[-|\s|\_]?v?1(?!\.)\b/i],
+      "OSL-2.0"       => [/\bOSL[-|\s|\_]?v?2\.0\b/i, /\bOSL[-|\s|\_]?v?2(?!\.)\b/i],
+      "OSL-2.1"       => [/\bOSL[-|\s|\_]?v?2\.1\b/i],
+      "OSL-3.0"       => [/\bOSL[-|\s|\_]?v?3\.0\b/i, /\bOSL[-|\s|\_]?v?3(?!\.)\b/i],
+
       "PostgreSQL"    => [/\bPostgreSQL\b/i],
-      "Public Domain" => [/\bPublic\s+Domain\b/i],
       "Python-2.0"    => [
-                          /\bPython[-|v]?2\b/i, /\bPython[-|v]?2\.0\b/i,
-                          /\bPSF2\b/i, /\bPSFL\b/i, /\bPSF\b/i,
+                          /\bPython[-|\s|\_]?v?2\.0\b/i, /\bPython[-|\s|\_]?v?2(?!\.)\b/i,
+                          /\bPSF[-|\s|\_]?v?2\b/i, /\bPSFL\b/i, /\bPSF\b/i,
                           /\bPython\s+Software\s+Foundation\b/i,
                           /\bPython\b/i, /\bPSL\b/i,
                           /^http:\/\/www\.opensource\.org\/licenses\/PythonSoftFoundation\.php$/i
                          ],
-      "RPL-1.1"       => [/\bRPL[-|v]?1\b/i, /\bRPL[-|v]?1\.1\b/i],
+
+      "RPL-1.1"       => [/\bRPL[-|\s|_]?v?1\.1\b/i, /\bRPL[-|\s|_]?v?1(?!\.)\b/i],
       "RPL-1.5"       => [
-                          /\bRPL[-|v]?1\.5\b/i, /^RPL$/,
+                          /\bRPL[-|\s|_]?v?1\.5\b/i,
                           /\bhttps?:\/\/www\.opensource\.org\/licenses\/rpl\.php\b/i
                          ],
-      "QPL-1.0"       => [/\bQPL[_|-|\s]?1\.0\b/i,
+
+      "QPL-1.0"       => [/\bQPL[-|\s|_]?v?1\.0\b/i,
                           /\bQT\sPublic\sLicen[c|s]e\b/i,
                           /\bPyQ\sGeneral\sLicense\b/i],
       "Sleepycat"     => [/\bSleepyCat\b/i],
       "W3C"           => [/\bW3C\b/i],
       "OpenSSL"       => [/\bOPENSSL\b/i],
       "Unlicense"     => [
-                          /\bUNLICENSE\b/i, /^Unlicensed$/i, /\bNO\s+LICEN[C|S]E\b/i,
-                          /^Opensourse$/i, /^go\sfor\sit/i, /^Undecided$/i
+                          /\bUNLICENSE\b/i, /^Unlicensed\b/i, /\bNO\s+LICEN[C|S]E\b/i,
+                          /^go\sfor\sit\b/i, /^Undecided\b/i
                          ],
       "WTFPL"         => [
-                          /\bWTF[P|G]L\b/i, /\bWTFPL[-|v]?2\b/i, /^WTFL$/i,
+                          /\bWTF[P|G]?L\b/i, /\bWTFPL[-|v]?2\b/i,
                           /\bDo\s+whatever\s+you\s+want\b/i, /\bDWTFYW\b/i,
                           /\bDo\s+What\s+the\s+Fuck\s+You\s+Want\b/i, /^DWTFYWT$/i
                          ],
-      "WXwindows"     => [/^wxWindows$/i, /\bwxWINDOWS\s+LIBRARY\sLICEN[C|S]E\b/i],
+      "WXwindows"     => [/\bwxWINDOWS\s+LIBRARY\sLICEN[C|S]E\b/i, /\bWXwindows\b/i],
       "X11"           => [/\bX11\b/i],
-      "ZPL-1.1"       => [/\bZPL[-|v]?1\b/i, /\bZPL[-|v]?1\.1\b/i],
+      "ZPL-1.1"       => [/\bZPL[-|\s|\_]?v?1\.1\b/i, /\bZPL[-|\s|\_]?v?1(?!\.)\b/i],
       "ZPL-2.1"       => [
-                          /\bZPL[-|v]?2\b/i, /\bZPL[-|v]?2\.1\b/i,
-                          /\bZPL\s+2\.1\b/i, /\bZOPE\s+PUBLIC\s+LICENSE\b/i,
-                          /\bZPL\b/i
+                          /\bZPL[-|\s|_]?v?2\.1\b/i, /\bZPL[-|\s|_]?v?2(?!\.)\b/i, 
+                          /\bZPL\s+2\.1\b/i, /\bZOPE\s+PUBLIC\s+LICENSE\b/i
                          ],
-      "ZLIB"          => [/\bZLIB\b/i],
-      "zlib-acknowledgement" => [/\bZLIB\/LIBPNG\b/i]
+      "zlib-acknowledgement" => [/\bZLIB[\/|-|\s]LIBPNG\b/i],
+      "ZLIB"          => [/\bZLIB(?!\-)\b/i]
+
     }
   end
 
