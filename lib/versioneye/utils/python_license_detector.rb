@@ -38,7 +38,7 @@ class PythonLicenseDetector
 
     n, detected, ignored, unknown = [0, 0, 0, 0]
     licenses.each do |license|
-      spdx_id, score = detect( license.name )
+      spdx_id, score = detect( license.name_substitute )
       if spdx_id and score > 0
         log.info "PythonLicenseDetector.run: #{license.to_s} => #{spdx_id}"
         if update == true
