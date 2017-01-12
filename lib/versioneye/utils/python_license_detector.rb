@@ -41,7 +41,10 @@ class PythonLicenseDetector
       spdx_id, score = detect( license.name )
       if spdx_id and score > 0
         log.info "PythonLicenseDetector.run: #{license.to_s} => #{spdx_id}"
-        license.update(spdx_id: spdx_id) if update == true
+        if update == true
+          license.spdx_id = spdx_id
+          license.comments = "Updated by PythonLicenseDetector"
+        end
         detected += 1
       elsif spdx_id and score < 0
         log.info "PythonLicenseDetector.run: ignoring #{license.to_s} because similarity (#{score}) is too low."
