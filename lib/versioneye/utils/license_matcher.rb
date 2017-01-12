@@ -59,7 +59,7 @@ class LicenseMatcher
 
     top_matches = dists.sort {|a,b| b[1] <=> a[1]}.take(n)
 
-    #translate doc numbers to id
+    # Translate doc numbers to id
     top_matches.reduce([]) do |acc, doc_id_and_score|
       doc_id, score = doc_id_and_score
       acc << [ @model.documents[doc_id].id, score ]
