@@ -40,7 +40,7 @@ class PythonLicenseDetector
     licenses.each do |license|
       spdx_id, score = detect( license.name_substitute )
       if spdx_id and score > 0
-        log.info "PythonLicenseDetector.run: #{license.to_s} => #{spdx_id}"
+        log.info "PythonLicenseDetector.run: #{license.to_s[0..200]} => #{spdx_id}"
         if update == true
           license.spdx_id = spdx_id
           license.comments = "Updated by PythonLicenseDetector"
