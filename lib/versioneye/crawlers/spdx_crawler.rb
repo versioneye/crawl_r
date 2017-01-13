@@ -14,6 +14,7 @@ class SpdxCrawler
     map
   end
 
+
   def self.handle_line tr, map
     full_name = ''
     identifier = ''
@@ -36,6 +37,7 @@ class SpdxCrawler
     map
   end
 
+
   def self.handle_full_name td
     td.children.each do |child|
       next if !child.name.eql?("a")
@@ -44,6 +46,7 @@ class SpdxCrawler
     nil
   end
 
+
   def self.handle_identifier td
     td.children.each do |child|
       next if !child.name.eql?('code')
@@ -51,5 +54,6 @@ class SpdxCrawler
     end
     nil
   end
+
 
 end
