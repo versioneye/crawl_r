@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe LicenseMatcher do
-  #let(:lic_matcher){ LicenseMatcher.new }
   lic_matcher = LicenseMatcher.new #initialization is slow, just init once
 
   describe "match_rules" do
@@ -32,8 +31,11 @@ describe LicenseMatcher do
 
       expect(lic_matcher.match_rules('AGPL-3').first.first).to eq('AGPL-3.0')
       expect(lic_matcher.match_rules('It uses AGPLv3.0').first.first).to eq('AGPL-3.0')
-      expect(lic_matcher.match_rules('GNU Affero General Public License v3 or later (AGPLv3+)').first.first ).to eq('AGPL-3.0')
+      expect(lic_matcher.match_rules('GNU Affero General Public License v3 or later (AGPLv3+)').first.first).to eq('AGPL-3.0')
 
+      expect(lic_matcher.match_rules('Affero General Public License, version 3.0')[0][0]).to eq('AGPL-3.0')
+      expect(lic_matcher.match_rules('GNU Affero General Public License, version 3')[0][0]).to eq('AGPL-3.0')
+      expect(lic_matcher.match_rules('GNU AGPL v3')[0][0]).to eq('AGPL-3.0')
     end
 
     it "matches APACHE licenses" do
@@ -53,6 +55,16 @@ describe LicenseMatcher do
       expect(lic_matcher.match_rules('uses Apache 2.0').first.first).to eq('Apache-2.0')
       expect(lic_matcher.match_rules('Apache 2 is it').first.first).to eq('Apache-2.0')
       expect(lic_matcher.match_rules('Apache license version 2.0').first.first).to eq('Apache-2.0')
+
+      expect(lic_matcher.match_rules('Apache License 2.0')[0][0]).to eq('Apache-2.0')
+      expect(lic_matcher.match_rules('Apache License, Version 2.0')[0][0]).to eq('Apache-2.0')
+      expect(lic_matcher.match_rules('Apache Software License')[0][0]).to eq('Apache-2.0')
+      expect(lic_matcher.match_rules('License :: OSI Approved :: Apache Software License')[0][0]).to eq('Apache-2.0')
+      expect(lic_matcher.match_rules('Apache License v2.0')[0][0]).to eq('Apache-2.0')
+      expect(lic_matcher.match_rules('Apache License (2.0)')[0][0]).to eq('Apache-2.0')
+      expect(lic_matcher.match_rules('Apache license')[0][0]).to eq('Apache-2.0')
+      expect(lic_matcher.match_rules('Apache')[0][0]).to eq('Apache-2.0')
+      expect(lic_matcher.match_rules('Apache Open Source License 2.0')[0][0]).to eq('Apache-2.0')
     end
 
     it "matches APL licenses" do
@@ -563,6 +575,7 @@ describe LicenseMatcher do
 
       expect(lic_matcher.match_rules('GNU PUBLIC LICENSE 2.0')[0][0]).to eq('GPL-2.0')
       expect(lic_matcher.match_rules('GNU PUBLIC LICENSE 2')[0][0]).to eq('GPL-2.0')
+      expect(lic_matcher.match_rules('GNU General Public License v2.0')[0][0]).to eq('GPL-2.0')
       expect(lic_matcher.match_rules('GNU GPL v2')[0][0]).to eq('GPL-2.0')
       expect(lic_matcher.match_rules('GLPv2')[0][0]).to eq('GPL-2.0')
     end
@@ -579,6 +592,9 @@ describe LicenseMatcher do
       expect(lic_matcher.match_rules('GNU Public License v3.0')[0][0]).to eq('GPL-3.0')
       expect(lic_matcher.match_rules('GNU PUBLIC license 3')[0][0]).to eq('GPL-3.0')
       expect(lic_matcher.match_rules('GNU PUBLIC v3')[0][0]).to eq('GPL-3.0')
+
+      expect(lic_matcher.match_rules('GNUGPL-v3')[0][0]).to eq('GPL-3.0')
+      expect(lic_matcher.match_rules('GNU General Public License version 3')[0][0]).to eq('GPL-3.0')
     end
 
     it "matches ISC rules" do
@@ -638,6 +654,8 @@ describe LicenseMatcher do
       expect(lic_matcher.match_rules('MPL v1')[0][0]).to eq('MPL-1.0')
       expect(lic_matcher.match_rules('MPL-1')[0][0]).to eq('MPL-1.0')
       expect(lic_matcher.match_rules('uses MPL v1 lic')[0][0]).to eq('MPL-1.0')
+
+      expect(lic_matcher.match_rules('Mozilla Public License 1.0 (MPL)')[0][0]).to eq('MPL-1.0')
     end
 
     it "matches MPL-1.1 rules" do
