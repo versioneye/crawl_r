@@ -17,7 +17,7 @@ class PythonLicenseDetector
   # @args:
   #  min_chars - int,will ignore smaller license names than this value
   #  min_confidence - float(0 - 1.0), will ignore matches which has lower matching score
-  def initialize(min_chars = 150, min_confidence = 0.9)
+  def initialize(min_chars = 150, min_confidence = 0.95)
     @matcher =  LicenseMatcher.new
     @min_chars = min_chars
     @min_confidence = min_confidence
@@ -42,8 +42,9 @@ class PythonLicenseDetector
       if spdx_id and score > 0
         log.info "PythonLicenseDetector.run: #{license.to_s[0..100]} => #{spdx_id}"
         if update == true
-          license.spdx_id = spdx_id
-          license.comments = "Updated by PythonLicenseDetector"
+          license.spdx_id  = spdx_id
+          license.comments = "pld_1.0.0"
+          license.save
         end
         detected += 1
       elsif spdx_id and score < 0
