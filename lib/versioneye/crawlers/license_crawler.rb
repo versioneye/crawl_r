@@ -39,24 +39,24 @@ class LicenseCrawler < Versioneye::Crawl
     logger.info "crawl_unidentified_urls: starting crawling process."
     n, failed = 0,0
     licenses = License.where(language: language, spdx_id: nil)
-    licenses.to_a.each do |lic_db|
+    licenses.to_a.each do |license|
       n += 1
 			# First try to match by url without doing http request
-			spdx_id, score = lic_matcher.match_url(lic_db[:url])
+			spdx_id, score = lic_matcher.match_url(license[:url])
 			if spdx_id.nil?
-				logger.info "crawl_unidentified_urls: going to fetch license text from #{lic_db[:url]}"
-	      spdx_id, score = crawl_license_file(lic_matcher, lic_db)
+				logger.info "crawl_unidentified_urls: going to fetch license text from #{license[:url]}"
+	      spdx_id, score = crawl_license_file(lic_matcher, license)
 			else
-				logger.info "crawl_unidentified_urls: found match by url - #{spdx_id}, #{lic_db[:url]}"
+				logger.info "crawl_unidentified_urls: found match by url - #{spdx_id}, #{license[:url]}"
 			end
 
 			if spdx_id.nil?
-				logger.warn "crawl_unidentified_urls: detect no license for #{lic_db[:url]}"
+				logger.warn "crawl_unidentified_urls: detect no license for #{license[:url]}"
 				failed += 1
 				next
 			end
 
-			lic_db.update(
+			license.update(
 				spdx_id: spdx_id,
 				name: spdx_id
 			)
