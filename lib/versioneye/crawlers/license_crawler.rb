@@ -46,8 +46,6 @@ class LicenseCrawler < Versioneye::Crawl
 			if spdx_id.nil?
 				logger.info "crawl_unidentified_urls: going to fetch license text from #{license[:url]}"
 	      spdx_id, score = crawl_license_file(lic_matcher, license)
-			else
-				logger.info "crawl_unidentified_urls: found match by url - #{spdx_id}, #{license[:url]}"
 			end
 
 			if spdx_id.nil?
@@ -56,10 +54,10 @@ class LicenseCrawler < Versioneye::Crawl
 				next
 			end
 
-			license.update(
-				spdx_id: spdx_id,
-				name: spdx_id
-			)
+      if score.to_i > 0
+  			license.update( spdx_id: spdx_id )
+        logger.info "detected SPDX ID #{spdx_id} for #{license[:url]}"
+      end
     end
 
     logger.info "crawl_unidentified_urls: done! crawled #{n} licenses, skipped: #{failed}"
