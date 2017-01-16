@@ -254,7 +254,7 @@ class LicenseMatcher
       /^KEEP\s+IT\s+REAL\s*$/i, /\bSee\s+LICENSE\s+file\b/i, /^LICEN[C|S]E\s*$/i,
       /^PUBLIC\s*$/i, /^see file LICENSE\s*$/i, /^__license__\s*$/i,
       /^GNU\s*$/i, /^GNU[-|\s]?v3\s*$/i, /^OSI\s+Approved\s*$/i, /^OSI\s*$/i,
-      /^https?:\/\/github.com/i
+      /^https?:\/\/github.com/i, /^https?:\/\/gitlab\.com/i
     ]
   end
 
@@ -282,17 +282,23 @@ class LicenseMatcher
                           /\bGNU\s+Affero\s+General\s+Public\s+License\s+[v]?3/i,
                           /\bAFFERO\sGNU\sPUBLIC\sLICENSE\sv3\b/i,
                           /\bGnu\sAffero\sPublic\sLicense\sv3+?\b/i,
+                          /\bAffero\sGeneral\sPublic\sLicen[s|c]e[\,]?\sversion\s+3[\.0]?\b/i,
+                          /\bGNU\sAGPL\sv?3[\.0]?\b/,
                           /\bAFFERO GENERAL PUBLIC\b/,
-                          /^AFFERO$/i
+                          /^AFFERO\b/i
                          ],
       "Apache-1.0"    => [/\bAPACHE[-|_|\s]?v?1[^\.]/i, /\bAPACHE[-|\s]?v?1\.0\b/i],
       "Apache-1.1"    => [/\bAPACHE[-|_|\s]?v?1\.1\b/i],
       "Apache-2.0"    => [
-                          /\bAPACHE[-|_|\s]?v?2\b/i, /\bAPACHE\s+2\.0\b/i,
+                          /\bAPACHE\s+2\.0\b/i, /\bAPACHE[-|_|\s]?v?2\b/i,
+                          /\bApache\sOpen\sSource\sLicense\s2\.0\b/i,
+                          /\bAPACHE\s+Licen[c|s]e\s+[\(]?v?2\.0[\)]?\b/i,
+                          /\bAPACHE\s+LICENSE\,?\s+VERSION\s+2\.0\b/i,
+                          /\bApache\s+Software\sLicense\b/i,
+                          /\bApache\s+license\b/i,
                           /\bAPL\s+2\.0\b/i, /\bAPL[\.|-|v]?2\b/i, /\bASL\s+2\.0\b/i,
-                          /\bASL[-|v|\s]?2\b/i, /\bAPACHE\s+LICENSE\s+VERSION\s+2\.0\b/i,
-                          /\bALv2\b/i, /\bASF[-|\s]?2\.0\b/i, /\bAPACHE[^-v_\s]\b/i, /^ASL$/i,
-                          /\bASL\s+v?\.2\.0\b/i
+                          /\bASL[-|v|\s]?2\b/i, /\bALv2\b/i, /\bASF[-|\s]?2\.0\b/i,
+                          /\bAPACHE\b/i, /^ASL$/i, /\bASL\s+v?\.2\.0\b/i
                          ],
       "APL-1.0"       => [/\bapl[-|_|\s]?v?1\b/i, /\bAPL[-|_|\s]?v?1\.0\b/i, /^APL$/i],
       "APSL-1.0"      => [/\bAPSL[-|_|\s]?v?1\.0\b/i, /\bAPSL[-|_|\s]?v?1(?!\.)\b/i, /\bAPPLE\s+PUBLIC\s+SOURCE\b/i],
@@ -425,8 +431,9 @@ class LicenseMatcher
                          ],
       "GPL-2.0"       => [
                           /\bGPL[-|\s|_]?v?2\.0/i, /\bGPL[-|\s|_]?v?2\b/i, /\bGPL\s+[v]?2\b/i,
-                          /\bGNU\s+PUBLIC\s+LICENSE\s+2\.0\b/i,
+                          /\bGNU\s+PUBLIC\s+LICENSE\s+v?2\.0\b/i,
                           /\bGNU\s+PUBLIC\s+License\sV?2\b/i,
+                          /\bGNU\sGeneral\sPublic\sLicense\sv?2\.0\b/i,
                           /\bGNU\s+GPL\s+v2\b/i, /^GNUv?2\b/i, /^GLPv2\b/,
                           /\bWhatever\slicense\sPlone\sis\b/i
                          ],
@@ -436,7 +443,10 @@ class LicenseMatcher
                           /\bGNU\sPublic\sLicense\sv?3\.0\b/i,
                           /\bGNU\s+PUBLIC\s+LICENSE\s+v?3\b/i,
                           /\bGnu\sPublic\sLicense\sversion\s3\b/i,
+                          /\bGNU\sGeneral\sPublic\sLicense\sversion\s?3\b/i,
+                          /\bGNU\sGENERAL\sPUBLIC\sLICENSE\b/i,
                           /\bGNU\s+PUBLIC\s+v3\+?\b/i,
+                          /\bGNUGPL[-|\s|\_]?v?3\b/i,
                           /\b[\(]?GPL[\)]?\b/i, /\bGNU\s+PL\s+[v]?3\b/i,
                           /\bGLPv3\b/i, /\bGNU3\b/i, /GPvL3/i,
                           /\bGNU\sGLP\sv?3\b/i
@@ -454,7 +464,10 @@ class LicenseMatcher
                          ],
       "MirOS"         => [/\bMirOS\b/i],
       "MIT"           => [/\bMIT\s+LICEN[S|C]E\b/i, /\bMIT\b/i, /\bEXPAT\b/i],
-      "MPL-1.0"       => [/\bMPL[-|\s|\_]?v?1\.0\b/i, /\bMPL[-|\s|\_]?v?1(?!\.)\b/i ],
+      "MPL-1.0"       => [
+                          /\bMPL[-|\s|\_]?v?1\.0\b/i, /\bMPL[-|\s|\_]?v?1(?!\.)\b/i,
+                         /\bMozilla\sPublic\sLicense\sv?1\.0\b/i,
+                         ],
       "MPL-1.1"       => [/\bMPL[-|\s|\_]?v?1\.1\b/i],
       "MPL-2.0"       => [
                           /\bMPL[-|\s|\_]?v?2\.0\b/i, /\bMPL[-|\s|\_]?v?2\b/i, 
@@ -477,6 +490,7 @@ class LicenseMatcher
       "OSL-3.0"       => [/\bOSL[-|\s|\_]?v?3\.0\b/i, /\bOSL[-|\s|\_]?v?3(?!\.)\b/i],
 
       "PostgreSQL"    => [/\bPostgreSQL\b/i],
+      "Public Domain" => [/\bPublic\s+Domain\b/i],
       "Python-2.0"    => [
                           /\bPython[-|\s|\_]?v?2\.0\b/i, /\bPython[-|\s|\_]?v?2(?!\.)\b/i,
                           /\bPSF[-|\s|\_]?v?2\b/i, /\bPSFL\b/i, /\bPSF\b/i,
