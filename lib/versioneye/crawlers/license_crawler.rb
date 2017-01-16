@@ -55,7 +55,9 @@ class LicenseCrawler < Versioneye::Crawl
 			end
 
       if score.to_i > 0
-  			license.update( spdx_id: spdx_id )
+  			license.spdx_id = spdx_id
+        license.comments = "#{license.language}_license_crawler_update"
+        license.save
         logger.info " -- detected SPDX ID #{spdx_id} for #{license[:url]}"
       end
     end
