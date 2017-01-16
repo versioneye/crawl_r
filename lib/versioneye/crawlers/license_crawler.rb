@@ -17,7 +17,7 @@ class LicenseCrawler < Versioneye::Crawl
 
 
   def self.fetch url
-    HTTParty.get url
+    HTTParty.get url, { timeout: 5 }
   rescue
     logger.error "failed to fetch data from #{url}"
     nil
