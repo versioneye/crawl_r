@@ -3,9 +3,9 @@ class LicenseCrawler < Versioneye::Crawl
 
   A_SOURCE_GMB = 'GMB'    # GitHub Master Branch
   A_SOURCE_G   = 'GITHUB' # GitHub Master Branch
-  A_MIN_SCORE_CONFIDENCE = 0.5
 
-  LICENSE_FILES = ['LICENSE.md', 'LICENSE.txt', 'LICENSE', 'LICENCE', 'MIT-LICENSE', 'license.md', 'licence.md', 'UNLICENSE.md', 'README.md']
+  LICENSE_FILES = ['LICENSE.md', 'LICENSE.txt', 'LICENSE', 'LICENCE', 'MIT-LICENSE', 
+                   'license.md', 'licence.md', 'UNLICENSE.md', 'README.md']
 
 
   def self.logger
@@ -23,42 +23,68 @@ class LicenseCrawler < Versioneye::Crawl
     nil
   end
 
+  def self.parse_url url_text
+    return URI.parse(url_text).to_s.strip
+
+  rescue
+    logger.error "Not valid url: #{url_text}"
+  end
 
   # it fetches license file from url and then tries to match it with
   # all the OSS licenses on SPDX and uses best result as license ID
-  def self.crawl_unidentified_urls(language)
+  # params:
+  #   licenses - [License], an array of license models, which should be processes
+  #   min_confidence - Float[0.0,1.0], a minimum score which is acceptable for updates
+  def self.crawl_unidentified_urls(licenses, min_confidence = 0.9, update = false)
     logger.info "crawl_unidentified_urls: initializing a LicenseMatcher."
     #initialization of LicenseMatcher takes long time
     lic_matcher = LicenseMatcher.new
+    url_cache   = ActiveSupport::Cache::MemoryStore.new(expires_in: 2.minutes) 
 
     if lic_matcher.licenses.empty?
       logger.error "crawl_unidentified_urls: failed to initialize LicenseMatcher"
       return
     end
 
-    logger.info "crawl_unidentified_urls: starting crawling process."
     n, failed = 0,0
-    licenses = License.where(language: language, spdx_id: nil)
+
+    logger.info "crawl_unidentified_urls: starting crawling process."
     licenses.to_a.each do |license|
       n += 1
+      the_url = parse_url(license[:url])
+      if the_url.to_s.empty?
+        logger.error "#{license.to_s} - not valid url #{license[:url]}"
+        next
+      end
+
 			# First try to match by url without doing http request
-			spdx_id, score = lic_matcher.match_url(license[:url])
-			if spdx_id.nil?
-				logger.info "crawl_unidentified_urls: going to fetch license text from #{license[:url]}"
-	      spdx_id, score = crawl_license_file(lic_matcher, license)
+			spdx_id, score = lic_matcher.match_url(the_url)
+		
+      # Second if urls wastn SPDX url, then fetch raw file and match by content
+      if spdx_id.nil?
+			  spdx_id, score = url_cache.fetch(the_url) do
+                          logger.info "#-- NOT-CACHED: #{the_url} ---------------------------"
+                  				logger.info "crawl_unidentified_urls: going to fetch license text from #{the_url}"
+
+                          fetch_and_match_license_url(lic_matcher, license.to_s, the_url)
+                        end
+
 			end
 
 			if spdx_id.nil?
-				logger.warn "crawl_unidentified_urls: detect no license for #{license[:url]}"
+				logger.warn "crawl_unidentified_urls: detected no licenses for #{the_url}"
 				failed += 1
 				next
 			end
 
-      if score.to_i > 0
+      if score >= min_confidence
   			license.spdx_id = spdx_id
         license.comments = "#{license.language}_license_crawler_update"
-        license.save
-        logger.info " -- detected SPDX ID #{spdx_id} for #{license[:url]}"
+        license.save if update
+
+        logger.info " -- updated #{license.to_s} SPDX ID #{spdx_id} from #{the_url}"
+      else 
+        logger.info "-- too low confidence #{score} for #{spdx_id}: #{the_url}"
       end
     end
 
@@ -69,22 +95,22 @@ class LicenseCrawler < Versioneye::Crawl
   # to detect matching SPDX_ID;
   # arguments:
   #   lic_matcher - a LicenseMatcher instance
-  #   lic_db - a instance of License model
+  #   prod_id - license id, it used only for logging
+  #   url - string with valid url
   # returns:
-  #  [spdx_id, confidence] - a tuple with the best match, iff confidence > MIN_SCORE_CONFIDENCE
-  def self.crawl_license_file(lic_matcher, lic_db)
-    prod_id = "#{lic_db[:language]}/#{lic_db[:prod_key]}"
-    url = lic_db[:url].to_s.strip
-    if url.empty?
+  #  [spdx_id, confidence] - a tuple with the best match
+  def self.fetch_and_match_license_url(lic_matcher, prod_id, url = nil)
+
+    the_url = parse_url(url.to_s)
+    if the_url.to_s.empty?
       logger.warn "crawl_license_file: no url for #{prod_id}."
-      return []
+      return [nil, -1]
     end
 
-    res = fetch url
+    res = fetch the_url
     if res.nil? or res.code != 200
-      logger.error "crawl_license_file: failed to read #{prod_id} data from: #{url} - #{res.try(:code)}"
-      lic_db.update(name: 'unknown')
-      return []
+      logger.error "crawl_license_file: failed to read #{prod_id} data from: #{the_url} - #{res.try(:code)}"
+      return [nil, -1]
     end
 
     matches = case res.headers["content-type"]
@@ -99,27 +125,12 @@ class LicenseCrawler < Versioneye::Crawl
 
     best_match = matches.to_a.first
     if best_match.nil? or best_match.empty?
-      logger.warn "crawl_license_file: found no match for #{prod_id}, #{url}"
-      return []
+      logger.warn "crawl_license_file: found no match for #{prod_id}, #{the_url}"
+      return [nil, -1]
     end
 
-    if best_match.last < A_MIN_SCORE_CONFIDENCE
-      logger.warn "crawl_license_file: #{prod_id} best match had too low score #{best_match}, #{url}"
-      return []
-    end
-
-    spdx_id, score = best_match
-
-    #TODO: if these special cases gets bigger -> refactor to License.match_url
-    case url
-    when 'http://jquery.org/license'
-      spdx_id, score = 'MIT', 1.0 #Jquery license page doesnt include any license text
-    when 'https://www.mozilla.org/en-US/MPL/'
-      spdx_id, score = 'MPL-2.0', 1.0
-    end
-
-    logger.debug "crawl_license_file: best match for #{prod_id} => #{spdx_id}:#{score} #{url}"
-    [spdx_id, score]
+    logger.debug "crawl_license_file: best match for #{prod_id} => #{best_match} #{the_url}"
+    best_match
   end
 
 
