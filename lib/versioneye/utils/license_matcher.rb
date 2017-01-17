@@ -398,7 +398,8 @@ class LicenseMatcher
                               /\bhttp:\/\/creativecommons.org\/licenses\/by-nc-sa\/3.0\/us[\/]?\b/i
                             ],
       "CC-BY-NC-SA-4.0" => [/\bCC[-|\s]?BY.NC.SA[-|\s]?v?4\.0\b/i,
-                            /\bCC[-|_|\s]BY.NC.SA[-\s]?v?4(?!\.)\b/i],
+                            /\bCC[-|_|\s]BY.NC.SA[-|\s]?v?4(?!\.)\b/i,
+                            /\bBY.NC.SA[-|\s|\_]v?4\.0\b/i],
 
       "CC-BY-ND-1.0"  => [/\bCC[-|\s]BY.ND[-|\s]?v?1\.0\b/i],
       "CC-BY-ND-2.0"  => [/\bCC[-|\s]BY.ND[-|\s]?v?2\.0\b/i],
@@ -517,6 +518,7 @@ class LicenseMatcher
       "ISC"           => [/\bISC\s+LICENSE\b/i, /\b[\(]?ISCL[\)]?\b/i, /\bISC\b/i,
                           /\AICS\s*\z/i],
       "JSON"          => [/\bJSON\s+LICENSE\b/i],
+      "KINDLY"        => [/\bKINDLY\s+License\b/i],
       "LGPL-2.0"      => [
                           /\bLGPL[-|\s|_]?v?2\.0\b/i, /\bLGPL[-|\s|_]?v?2(?!\.)\b/i,
                           /\bLesser\sGeneral\sPublic\sLicense\sv?2(?!\.)\b/i,
@@ -540,7 +542,7 @@ class LicenseMatcher
       "MIT"           => [
                           /\bMIT\s+LICEN[S|C]E\b/i, /\bMITL?\b/i, /\bEXPAT\b/i,
                           /\bMIT[-|\_]LICENSE\.\w{2,8}\b/i, /^MTI\b/i,
-                          /\bMIT[-|\s|\_]?v?2\.0\b/i,
+                          /\bMIT[-|\s|\_]?v?2\.0\b/i, /\AM\.I\.T[\.]?\s*\z/,
                           /\bMassachusetts-Institute-of-Technology-License/i
                          ],
       "MITNFA"        => [/\bMIT\s\+no\-false\-attribs\slicense\b/i],
@@ -617,8 +619,10 @@ class LicenseMatcher
                          ],
       "W3C"           => [/\bW3C\b/i],
       "OpenSSL"       => [/\bOPENSSL\b/i],
+      "Unicode-TOU"   => [/\AUnicode-TOU[\s|\/|-]/i],
+      "UPL-1.0"       => [/\bUniversal\sPermissive\sLicense\b/i],
       "Unlicense"     => [
-                          /\bUNLI[C|S]EN[S|C]E\b/i, /^Unlicensed\b/i, /^go\sfor\sit\b/i,
+                          /\bUNLI[C|S]EN[S|C]E\b/i, /\AUnlicen[s|c]ed\s*\z/i, /^go\sfor\sit\b/i,
                           /^Undecided\b/i,
                           /\bNO\s+LICEN[C|S]E\b/i, /\bNON[\s|-|\_]?LICENSE\b/i
                          ],

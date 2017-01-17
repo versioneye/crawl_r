@@ -427,6 +427,7 @@ describe LicenseMatcher do
       expect(lm.match_rules('CC-BY-NC-SA v4')[0][0]).to eq('CC-BY-NC-SA-4.0')
       expect(lm.match_rules('CC BY-NC-SA-4')[0][0]).to eq('CC-BY-NC-SA-4.0')
       expect(lm.match_rules('uses CC-BY-NC-SA-v4 lic')[0][0]).to eq('CC-BY-NC-SA-4.0')
+      expect(lm.match_rules('BY-NC-SA 4.0')[0][0]).to eq('CC-BY-NC-SA-4.0')
     end
 
     it "matches to CC-BY-ND-1.0" do
@@ -715,6 +716,10 @@ describe LicenseMatcher do
       expect(lm.match_rules('JSON license')[0][0]).to eq('JSON')
     end
 
+    it "matches Kindly rules" do
+      expect(lm.match_rules('KINDLY License')[0][0]).to eq('KINDLY')
+    end
+
     it "matches LGPL-2.0 rules" do
       expect(lm.match_rules('LGPL-2.0')[0][0]).to eq('LGPL-2.0')
       expect(lm.match_rules('uses LGPL v2.0')[0][0]).to eq('LGPL-2.0')
@@ -774,6 +779,7 @@ describe LicenseMatcher do
       expect(lm.match_rules('MTI')[0][0]).to eq('MIT')
       expect(lm.match_rules('MIT2.0')[0][0]).to eq('MIT')
       expect(lm.match_rules('Massachusetts-Institute-of-Technology-License-')[0][0]).to eq('MIT')
+      expect(lm.match_rules('M.I.T')[0][0]).to eq('MIT')
     end
 
     it "matches MPL-1.0 rules" do
@@ -1016,12 +1022,17 @@ describe LicenseMatcher do
       expect(lm.match_rules('OpenSSL')[0][0]).to eq('OpenSSL')
     end
 
+    it "Unicode-TOU rules" do
+      expect(lm.match_rules('Unicode-TOU/http://www.unicode.org/copyright.html')[0][0]).to eq('Unicode-TOU')
+    end
+
     it "matches Unlicense rules" do
       expect(lm.match_rules('UNLICENSE')[0][0]).to eq('Unlicense')
       expect(lm.match_rules('Unlicensed')[0][0]).to eq('Unlicense')
       expect(lm.match_rules('No License')[0][0]).to eq('Unlicense')
       expect(lm.match_rules('Undecided')[0][0]).to eq('Unlicense')
       expect(lm.match_rules('NONLICENSE')[0][0]).to eq('Unlicense')
+      expect(lm.match_rules('UNLICENCED')[0][0]).to eq('Unlicense')
     end
 
     it "matches W3C rules" do
