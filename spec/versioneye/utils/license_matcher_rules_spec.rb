@@ -23,7 +23,9 @@ describe LicenseMatcher do
       expect(lm.match_rules('uses AFLv3.0 license').first.first).to eq('AFL-3.0')
       expect(lm.match_rules('Academic Free License').first.first).to eq('AFL-3.0')
 
+      expect(lm.match_rules('AFL-v3.0')[0][0]).to eq('AFL-3.0')
       expect(lm.match_rules('AFL')[0][0]).to eq('AFL-3.0')
+      expect(lm.match_rules('Academic-Free-License-(AFL)')[0][0]).to eq('AFL-3.0')
     end
 
     it "matches AGPL licenses" do
@@ -85,6 +87,9 @@ describe LicenseMatcher do
       expect(lm.match_rules('Apache license')[0][0]).to eq('Apache-2.0')
       expect(lm.match_rules('Apache')[0][0]).to eq('Apache-2.0')
       expect(lm.match_rules('Apache Open Source License 2.0')[0][0]).to eq('Apache-2.0')
+      expect(lm.match_rules('Apapche-2.0')[0][0]).to eq('Apache-2.0')
+      expect(lm.match_rules('AL-2.0')[0][0]).to eq('Apache-2.0')
+
     end
 
     it "matches APL licenses" do
@@ -156,6 +161,7 @@ describe LicenseMatcher do
       expect(lm.match_rules('uses Artistic 2 license')[0][0]).to eq('Artistic-2.0')
 
       expect(lm.match_rules('uses Artistic License')[0][0]).to eq('Artistic-2.0')
+      expect(lm.match_rules('Artistic_2_0')[0][0]).to eq('Artistic-2.0')
     end
 
     it "matches Artistic-1.0-Perl licenses" do
@@ -170,10 +176,15 @@ describe LicenseMatcher do
       expect(lm.match_rules('Rel as Beer-Ware lic')[0][0]).to eq('Beerware')
       expect(lm.match_rules('BEER License')[0][0]).to eq('Beerware')
       expect(lm.match_rules('BEER')[0][0]).to eq('Beerware')
+      expect(lm.match_rules('Free as in beer.')[0][0]).to eq('Beerware')
     end
 
     it "matches BitTorrent-1.1 rules" do
       expect(lm.match_rules('BitTorrent Open Source License')[0][0]).to eq('BitTorrent-1.1')
+    end
+
+    it "matches to 0BSD rules" do
+      expect(lm.match_rules('0BSD')[0][0]).to eq('0BSD')
     end
 
     it "matches to BSD-2" do
@@ -182,6 +193,7 @@ describe LicenseMatcher do
       expect(lm.match_rules('Uses BSD v2 lic')[0][0]).to eq('BSD-2-Clause')
 
       expect(lm.match_rules('FreeBSD')[0][0]).to eq('BSD-2-Clause')
+      expect(lm.match_rules('BSDLv2')[0][0]).to eq('BSD-2-Clause')
     end
 
     it "matches to BSD-3" do
@@ -217,7 +229,7 @@ describe LicenseMatcher do
       expect(lm.match_rules('CC0-v1')[0][0]).to eq('CC0-1.0')
       expect(lm.match_rules('uses CC0 v1 license')[0][0]).to eq('CC0-1.0')
       expect(lm.match_rules('http://creativecommons.org/publicdomain/zero/1.0/')[0][0]).to eq('CC0-1.0')
-
+      expect(lm.match_rules('cc-zero')[0][0]).to eq('CC0-1.0')
     end
 
     it "matches to CC-BY-1.0" do
@@ -415,6 +427,7 @@ describe LicenseMatcher do
       expect(lm.match_rules('CC-BY-NC-SA v4')[0][0]).to eq('CC-BY-NC-SA-4.0')
       expect(lm.match_rules('CC BY-NC-SA-4')[0][0]).to eq('CC-BY-NC-SA-4.0')
       expect(lm.match_rules('uses CC-BY-NC-SA-v4 lic')[0][0]).to eq('CC-BY-NC-SA-4.0')
+      expect(lm.match_rules('BY-NC-SA 4.0')[0][0]).to eq('CC-BY-NC-SA-4.0')
     end
 
     it "matches to CC-BY-ND-1.0" do
@@ -446,6 +459,14 @@ describe LicenseMatcher do
       expect(lm.match_rules('CC-BY-ND v4.0')[0][0]).to eq('CC-BY-ND-4.0')
       expect(lm.match_rules('uses CC BY-ND 4.0 lic')[0][0]).to eq('CC-BY-ND-4.0')
       expect(lm.match_rules('CC BY-NC-ND 4.0')[0][0]).to eq('CC-BY-ND-4.0')
+    end
+
+    it "matches CC-BY-NC-ND-3.0 rules" do
+      expect(lm.match_rules('CC-BY-NC-ND-3.0')[0][0]).to eq('CC-BY-NC-ND-3.0')
+    end
+
+    it "matches CC-BY-NC-ND-4.0 rules" do
+      expect(lm.match_rules('CC-BY-NC-ND-4.0')[0][0]).to eq('CC-BY-NC-ND-4.0')
     end
 
     it "matches CDDL-1.0 rules" do
@@ -511,6 +532,14 @@ describe LicenseMatcher do
       expect(lm.match_rules('uses CPL-1 lic')[0][0]).to eq('CPL-1.0')
 
       expect(lm.match_rules('uses COMMON PUBLIC LICENSE')[0][0]).to eq('CPL-1.0')
+    end
+
+    it "matches DBAD rules" do
+      expect(lm.match_rules('DONT BE A DICK PUBLIC LICENSE')[0][0]).to eq('DBAD')
+      expect(lm.match_rules('DBAD')[0][0]).to eq('DBAD')
+      expect(lm.match_rules('dbad-license')[0][0]).to eq('DBAD')
+      expect(lm.match_rules('DBAD-1')[0][0]).to eq('DBAD')
+      expect(lm.match_rules('DBAP License')[0][0]).to eq('DBAD')
     end
 
     it "matches D-FSL-1.0" do
@@ -605,6 +634,12 @@ describe LicenseMatcher do
       expect(lm.match_rules('EUROPEAN UNION PUBLIC LICENSE 1.1')[0][0]).to eq('EUPL-1.1')
       expect(lm.match_rules('European Union Public License')[0][0]).to eq('EUPL-1.1')
       expect(lm.match_rules('EUPL ')[0][0]).to eq('EUPL-1.1')
+      expect(lm.match_rules('EUPL V.1.1')[0][0]).to eq('EUPL-1.1')
+    end
+
+    it "matches Fair rules" do
+      expect(lm.match_rules('Fair license')[0][0]).to eq('Fair')
+      expect(lm.match_rules('Fair')[0][0]).to eq('Fair')
     end
 
     it "matches GFDL-1.0 rules" do
@@ -681,6 +716,10 @@ describe LicenseMatcher do
       expect(lm.match_rules('JSON license')[0][0]).to eq('JSON')
     end
 
+    it "matches Kindly rules" do
+      expect(lm.match_rules('KINDLY License')[0][0]).to eq('KINDLY')
+    end
+
     it "matches LGPL-2.0 rules" do
       expect(lm.match_rules('LGPL-2.0')[0][0]).to eq('LGPL-2.0')
       expect(lm.match_rules('uses LGPL v2.0')[0][0]).to eq('LGPL-2.0')
@@ -691,6 +730,8 @@ describe LicenseMatcher do
 
       expect(lm.match_rules('GNU Lesser General Public License v2')[0][0]).to eq('LGPL-2.0')
       expect(lm.match_rules('GNU Lesser General Public License v2 or higher')[0][0]).to eq('LGPL-2.0')
+      expect(lm.match_rules('LPGLv2')[0][0]).to eq('LGPL-2.0')
+
     end
 
     it "matches LGPL-2.1 rules" do
@@ -736,6 +777,9 @@ describe LicenseMatcher do
       expect( lm.match_rules('Original Cutadapt code is under MIT license;')[0][0]).to eq('MIT')
       expect(lm.match_rules('MIT_License.txt')[0][0]).to eq('MIT')
       expect(lm.match_rules('MTI')[0][0]).to eq('MIT')
+      expect(lm.match_rules('MIT2.0')[0][0]).to eq('MIT')
+      expect(lm.match_rules('Massachusetts-Institute-of-Technology-License-')[0][0]).to eq('MIT')
+      expect(lm.match_rules('M.I.T')[0][0]).to eq('MIT')
     end
 
     it "matches MPL-1.0 rules" do
@@ -769,6 +813,7 @@ describe LicenseMatcher do
       expect(lm.match_rules('Mozilla Public License 2.0')[0][0]).to eq('MPL-2.0')
       expect(lm.match_rules('Mozilla Public License, v. 2.0')[0][0]).to eq('MPL-2.0')
       expect(lm.match_rules('Mozilla Public License')[0][0]).to eq('MPL-2.0')
+      expect(lm.match_rules('Mozilla 2.0')[0][0]).to eq('MPL-2.0')
     end
 
     it "matches MS-PL rules" do
@@ -841,6 +886,9 @@ describe LicenseMatcher do
 
       expect(lm.match_rules('SIL OFL 1.1')[0][0]).to eq('OFL-1.1')
       expect(lm.match_rules('uses SIL OFL 1.1 lic')[0][0]).to eq('OFL-1.1')
+      expect(lm.match_rules('SIL Open Font License')[0][0]).to eq('OFL-1.1')
+      expect(lm.match_rules('SIL OFL')[0][0]).to eq('OFL-1.1')
+      expect(lm.match_rules('Open Font License')[0][0]).to eq('OFL-1.1')
     end
 
     it "matches OSL-1.0" do
@@ -875,11 +923,21 @@ describe LicenseMatcher do
 
       expect(lm.match_rules('OSL v3')[0][0]).to eq('OSL-3.0')
       expect(lm.match_rules('uses OSL-3 lic')[0][0]).to eq('OSL-3.0')
+      expect(lm.match_rules('Open Software Licence v3.0')[0][0]).to eq('OSL-3.0')
+      expect(lm.match_rules('OSL-3.O')[0][0]).to eq('OSL-3.0')
+
+      expect(lm.match_rules('OSL')[0][0]).to eq('OSL-3.0')
+      expect(lm.match_rules('Open-Software-License-(OSL)')[0][0]).to eq('OSL-3.0')
+      expect(lm.match_rules('OSL-v.3.0')[0][0]).to eq('OSL-3.0')
+      expect(lm.match_rules('The Open Software License version 3.0')[0][0]).to eq('OSL-3.0')
+      expect(lm.match_rules('Open Software License (OSL) v 3.0')[0][0]).to eq('OSL-3.0')
     end
 
     it "matches PHP-3.0 rules" do
       expect(lm.match_rules('PHP')[0][0]).to eq('PHP-3.0')
       expect(lm.match_rules('PHP License 3.0')[0][0]).to eq('PHP-3.0')
+      expect(lm.match_rules('PHP license')[0][0]).to eq('PHP-3.0')
+      expect(lm.match_rules('PHP-License')[0][0]).to eq('PHP-3.0')
     end
 
     it "matches PHP-3.01 rules" do
@@ -933,6 +991,14 @@ describe LicenseMatcher do
       expect(lm.match_rules('uses RPL 1.5 lic')[0][0]).to eq('RPL-1.5')
     end
 
+    it "matches Ruby rules" do
+      expect(lm.match_rules('Ruby')[0][0]).to eq('Ruby')
+      expect(lm.match_rules("Ruby's")[0][0]).to eq('Ruby')
+      expect(lm.match_rules('Ruby License')[0][0]).to eq('Ruby')
+      expect(lm.match_rules('same as ruby\'s')[0][0]).to eq('Ruby')
+      expect(lm.match_rules('Ruby/http://spdx.org/licenses/Ruby')[0][0]).to eq('Ruby')
+    end
+
     it "matches QPL-1.0 rules" do
       expect(lm.match_rules('QPL-1.0')[0][0]).to eq('QPL-1.0')
       expect(lm.match_rules('QPL v1.0')[0][0]).to eq('QPL-1.0')
@@ -952,12 +1018,12 @@ describe LicenseMatcher do
       expect(lm.match_rules('Sun Public License')[0][0]).to eq('SPL-1.0')
     end
 
-    it "matches W3C rules" do
-      expect(lm.match_rules('W3C')[0][0]).to eq('W3C')
-    end
-
     it "matches OpenSSL rules" do
       expect(lm.match_rules('OpenSSL')[0][0]).to eq('OpenSSL')
+    end
+
+    it "Unicode-TOU rules" do
+      expect(lm.match_rules('Unicode-TOU/http://www.unicode.org/copyright.html')[0][0]).to eq('Unicode-TOU')
     end
 
     it "matches Unlicense rules" do
@@ -966,14 +1032,29 @@ describe LicenseMatcher do
       expect(lm.match_rules('No License')[0][0]).to eq('Unlicense')
       expect(lm.match_rules('Undecided')[0][0]).to eq('Unlicense')
       expect(lm.match_rules('NONLICENSE')[0][0]).to eq('Unlicense')
+      expect(lm.match_rules('UNLICENCED')[0][0]).to eq('Unlicense')
     end
+
+    it "matches W3C rules" do
+      expect(lm.match_rules('W3C')[0][0]).to eq('W3C')
+    end
+
 
     it "matches WTFPL " do
       expect(lm.match_rules('WTFPL')[0][0]).to eq('WTFPL')
       expect(lm.match_rules('WTFPLv2')[0][0]).to eq('WTFPL')
+      expect(lm.match_rules('WTFP')[0][0]).to eq('WTFPL')
       expect(lm.match_rules('Do whatever you want')[0][0]).to eq('WTFPL')
       expect(lm.match_rules('DWTFYW')[0][0]).to eq('WTFPL')
       expect(lm.match_rules('DWYW')[0][0]).to eq('WTFPL')
+      expect(lm.match_rules('DWTFYWTP')[0][0]).to eq('WTFPL')
+      expect(lm.match_rules('DWHTFYWTPL')[0][0]).to eq('WTFPL')
+      expect(lm.match_rules('DO THE FUCK WHAT YOU WANT')[0][0]).to eq('WTFPL')
+    end
+
+    it "matches Whiskeyware rules" do
+      expect(lm.match_rules('Whiskey-WARE')[0][0]).to eq('Whiskeyware')
+      expect(lm.match_rules('WISKEY-WARE')[0][0]).to eq('Whiskeyware')
     end
 
     it "matches WXwindows rules" do
@@ -984,6 +1065,10 @@ describe LicenseMatcher do
     it "matches X11 rules" do
       expect(lm.match_rules('X11')[0][0]).to eq('X11')
       expect(lm.match_rules('uses X11 lic')[0][0]).to eq('X11')
+    end
+
+    it "matches Zend-2.0 rules" do
+      expect(lm.match_rules('Zend Framework')[0][0]).to eq('Zend-2.0')
     end
 
     it "matches ZPL-1.1 rules" do
