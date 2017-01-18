@@ -95,6 +95,24 @@ class LicenseMatcher
   def match_url(the_url)
     the_url = the_url.to_s.strip
     spdx_id = nil
+
+    #TODO: if these special cases gets bigger, include into url_index
+    case the_url
+    when 'http://jquery.org/license'
+      return ['MIT', 1.0] #Jquery license page doesnt include any license text
+    when 'https://www.mozilla.org/en-US/MPL/'
+      return ['MPL-2.0', 1.0]
+    when 'http://fairlicense.org'
+      return ['Fair', 1.0]
+    when 'http://www.aforgenet.com/framework/license.html'
+      return ['LGPL-3.0', 1.0]
+    when 'http://aws.amazon.com/apache2.0/'
+      return ['Apache-2.0', 1.0]
+    when 'http://aws.amazon.com/asl/'
+      return ['Amazon', 1.0]
+    end
+
+    #check through SPDX urls
     @url_index.each do |lic_url, lic_id|
       lic_url = lic_url.to_s.strip.gsub(/https?:\/\//i, '').gsub(/www\./, '') #normalizes urls in the file
       matcher = Regexp.new("^https?:\/\/(www\.)?#{lic_url}.*$", Regexp::IGNORECASE)
