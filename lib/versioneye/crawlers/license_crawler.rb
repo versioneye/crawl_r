@@ -4,7 +4,7 @@ class LicenseCrawler < Versioneye::Crawl
   A_SOURCE_GMB = 'GMB'    # GitHub Master Branch
   A_SOURCE_G   = 'GITHUB' # GitHub Master Branch
 
-  LICENSE_FILES = ['LICENSE.md', 'LICENSE.txt', 'LICENSE', 'LICENCE', 'MIT-LICENSE', 
+  LICENSE_FILES = ['LICENSE.md', 'LICENSE.txt', 'LICENSE', 'LICENCE', 'MIT-LICENSE',
                    'license.md', 'licence.md', 'UNLICENSE.md', 'README.md']
 
 
@@ -39,7 +39,7 @@ class LicenseCrawler < Versioneye::Crawl
     logger.info "crawl_unidentified_urls: initializing a LicenseMatcher."
     #initialization of LicenseMatcher takes long time
     lic_matcher = LicenseMatcher.new
-    url_cache   = ActiveSupport::Cache::MemoryStore.new(expires_in: 2.minutes) 
+    url_cache   = ActiveSupport::Cache::MemoryStore.new(expires_in: 2.minutes)
 
     if lic_matcher.licenses.empty?
       logger.error "crawl_unidentified_urls: failed to initialize LicenseMatcher"
@@ -59,7 +59,7 @@ class LicenseCrawler < Versioneye::Crawl
 
 			# First try to match by url without doing http request
 			spdx_id, score = lic_matcher.match_url(the_url)
-		
+
       # Second if urls wastn SPDX url, then fetch raw file and match by content
       if spdx_id.nil?
 			  spdx_id, score = url_cache.fetch(the_url) do
@@ -83,7 +83,7 @@ class LicenseCrawler < Versioneye::Crawl
         license.save if update
 
         logger.info " -- updated #{license.to_s} SPDX ID #{spdx_id} from #{the_url}"
-      else 
+      else
         logger.info "-- too low confidence #{score} for #{spdx_id}: #{the_url}"
       end
     end
