@@ -38,7 +38,14 @@ class PythonLicenseDetector
 
     n, detected, ignored, unknown = [0, 0, 0, 0]
     licenses.each do |license|
-      spdx_id, score = detect( license.name_substitute )
+      lic_name = if license.name.length < @min_chars
+                   license.name_substitute
+                else
+                  license.name.strip
+                end
+
+      spdx_id, score = detect( lic_name )
+      
       if spdx_id and score > 0
         log.info "PythonLicenseDetector.run: #{license.to_s[0..100]} => #{spdx_id}"
         if update == true
@@ -84,6 +91,7 @@ class PythonLicenseDetector
       return results.first
     end
 
+    log.warn "PythonLicenseDetector.detect: too low confidence(#{confidence}) for #{spdx_id} : \n#{license_name}"
     [spdx_id, -1]
   end
 
