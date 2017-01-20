@@ -107,11 +107,24 @@ class LicenseMatcher
       return ['Fair', 1.0]
     when 'http://www.aforgenet.com/framework/license.html'
       return ['LGPL-3.0', 1.0]
+    when 'http://www.apache.org/licenses/'
+      return ['Apache-2.0', 1.0]
     when 'http://aws.amazon.com/apache2.0/'
       return ['Apache-2.0', 1.0]
     when 'http://aws.amazon.com/asl/'
       return ['Amazon', 1.0]
+    when 'https://choosealicense.com/no-license/'
+      return ['no-license', 1.0]
+    when 'http://www.gzip.org/zlib/zlib_license.html'
+      return ['zlib', 1.0]
     end
+
+    #does url match with choosealicense.com
+    match = the_url.match /\bhttps?:\/\/(www\.)?choosealicense\.com\/licenses\/([\S|^\/]+)[\/]?\b/i
+    if match
+      return [match[2], 1.0]
+    end
+
 
     #check through SPDX urls
     @url_index.each do |lic_url, lic_id|

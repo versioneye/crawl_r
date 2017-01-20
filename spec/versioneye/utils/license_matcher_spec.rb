@@ -123,4 +123,11 @@ describe LicenseMatcher do
 		expect( lic_matcher.match_url(gpl3).first ).to eq('GPL-3.0')
 	end
 
+  it "matches chooselicense urls to spdx_Id" do
+    expect(lic_matcher.match_url('https://www.choosealicense.com/licenses/apache-2.0/')[0]).to eq('apache-2.0')
+    expect(lic_matcher.match_url('http://choosealicense.com/licenses/agpl-3.0/')[0]).to eq('agpl-3.0')
+    expect(lic_matcher.match_url('https://choosealicense.com/licenses/cc0-1.0')[0]).to eq('cc0-1.0')
+    expect(lic_matcher.match_url('https://choosealicense.com/licenses/mit/')[0]).to eq('mit')
+  end
+
 end
