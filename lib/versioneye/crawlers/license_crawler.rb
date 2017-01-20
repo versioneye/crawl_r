@@ -51,45 +51,50 @@ class LicenseCrawler < Versioneye::Crawl
     logger.info "crawl_unidentified_urls: starting crawling process."
     licenses.to_a.each do |license|
       n += 1
-      the_url = parse_url(license[:url])
-      if the_url.to_s.empty?
-        logger.error "#{license.to_s} - not valid url #{license[:url]}"
-        next
-      end
-
-			# First try to match by url without doing http request
-			spdx_id, score = lic_matcher.match_url(the_url)
-
-      # Second if urls wastn SPDX url, then fetch raw file and match by content
-      if spdx_id.nil?
-			  spdx_id, score = url_cache.fetch(the_url) do
-                          logger.info "#-- NOT-CACHED: #{the_url} ---------------------------"
-                  				logger.info "crawl_unidentified_urls: going to fetch license text from #{the_url}"
-
-                          fetch_and_match_license_url(lic_matcher, license.to_s, the_url)
-                        end
-
-			end
-
-			if spdx_id.nil?
-				logger.warn "crawl_unidentified_urls: detected no licenses for #{the_url}"
-				failed += 1
-				next
-			end
-
-      if score >= min_confidence
-  			license.spdx_id = spdx_id
-        license.comments = "#{license.language}_license_crawler_update"
-        license.save if update
-
-        logger.info " -- updated #{license.to_s} SPDX ID #{spdx_id} from #{the_url}"
-      else
-        logger.info "-- too low confidence #{score} for #{spdx_id}: #{the_url}"
-      end
+      failed += process_license( license, lic_matcher, url_cache ).to_i
     end
 
     logger.info "crawl_unidentified_urls: done! crawled #{n} licenses, skipped: #{failed}"
   end
+
+
+  def self.process_license( license, lic_matcher, url_cache )
+    the_url = parse_url(license[:url])
+    if the_url.to_s.empty?
+      logger.error "#{license.to_s} - not valid url #{license[:url]}"
+      return 0
+    end
+
+    # First try to match by url without doing http request
+    spdx_id, score = lic_matcher.match_url(the_url)
+
+    if spdx_id.nil?
+      spdx_id, score = url_cache.fetch(the_url) do
+                        logger.info "crawl_unidentified_urls: going to fetch license text from #{the_url}"
+                        fetch_and_match_license_url(lic_matcher, license.to_s, the_url)
+                      end
+
+    end
+
+    if spdx_id.nil?
+      logger.warn "crawl_unidentified_urls: detected no licenses for #{the_url}"
+      return 1
+    end
+
+    if score >= min_confidence
+      license.spdx_id = spdx_id
+      license.comments = "#{license.language}_license_crawler_update"
+      license.save if update
+      logger.info " -- updated #{license.to_s} SPDX ID #{spdx_id} from #{the_url}"
+    else
+      logger.info "-- too low confidence #{score} for #{spdx_id}: #{the_url}"
+    end
+    return 0
+  rescue => e
+    logger.error "ERROR in process_license - #{e.message}"
+    0
+  end
+
 
   # fetches license file by url and uses LicenseMatcher to match the body of licence text
   # to detect matching SPDX_ID;
