@@ -70,7 +70,14 @@ class LicenseMatcher
 
   def match_html(html_doc, n = 3)
     html_doc = safe_encode(html_doc)
-    doc = Nokogiri.HTML(html_doc)
+
+    begin
+      doc = Nokogiri.HTML(html_doc)
+    rescue Exception => e
+      log.error "failed to parse html doc: \n #{html_doc}"
+      doc = nil
+    end
+
     return [] if doc.nil?
 
     body_txt = doc.xpath(
