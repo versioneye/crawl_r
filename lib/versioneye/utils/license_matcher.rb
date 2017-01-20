@@ -69,6 +69,7 @@ class LicenseMatcher
 
 
   def match_html(html_doc, n = 3)
+    html_doc = safe_encode(html_doc)
     doc = Nokogiri.HTML(html_doc)
     return [] if doc.nil?
 
@@ -252,8 +253,8 @@ class LicenseMatcher
   def safe_encode(txt)
     txt.to_s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
   rescue
-     "Failed to encode text:\n #{txt}"
-    return nil
+    log.error "Failed to encode text:\n #{txt}i"
+    return ""
   end
 
 
