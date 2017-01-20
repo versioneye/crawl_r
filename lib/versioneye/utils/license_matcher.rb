@@ -117,6 +117,8 @@ class LicenseMatcher
       return ['no-license', 1.0]
     when 'http://www.gzip.org/zlib/zlib_license.html'
       return ['zlib', 1.0]
+    when 'http://www.wtfpl.net/about/'
+      return ['wtfpl', 1.0]
     end
 
     #does url match with choosealicense.com
@@ -125,6 +127,10 @@ class LicenseMatcher
       return [match[2], 1.0]
     end
 
+    match = the_url.match /\bhttps?:\/\/(www\.)?creativecommons\.org\/licenses\/([\S|^\/]+)[\/]?\b/i
+    if match
+      return ["cc-#{match[2].to_s.gsub(/\//, '-')}", 1.0]
+    end
 
     #check through SPDX urls
     @url_index.each do |lic_url, lic_id|
