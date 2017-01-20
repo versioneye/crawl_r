@@ -51,14 +51,14 @@ class LicenseCrawler < Versioneye::Crawl
     logger.info "crawl_unidentified_urls: starting crawling process."
     licenses.to_a.each do |license|
       n += 1
-      failed += process_license( license, lic_matcher, url_cache ).to_i
+      failed += process_license( license, lic_matcher, url_cache, min_confidence, update ).to_i
     end
 
     logger.info "crawl_unidentified_urls: done! crawled #{n} licenses, skipped: #{failed}"
   end
 
 
-  def self.process_license( license, lic_matcher, url_cache )
+  def self.process_license( license, lic_matcher, url_cache, min_confidence = 0.9, update = false )
     the_url = parse_url(license[:url])
     if the_url.to_s.empty?
       logger.error "#{license.to_s} - not valid url #{license[:url]}"
