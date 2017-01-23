@@ -39,7 +39,7 @@ class LicenseMatcher
     licenses_json_doc = read_json_file license_json_file
     @url_index = read_license_url_index(licenses_json_doc)
     @model = TfIdfSimilarity::BM25Model.new(@corpus, :library => :narray)
-    @rules = get_rules
+    @rules = init_rules
     true
   end
 
@@ -144,7 +144,7 @@ class LicenseMatcher
     #check through SPDX urls
     @url_index.each do |lic_url, lic_id|
       lic_url = lic_url.to_s.strip.gsub(/https?:\/\//i, '').gsub(/www\./, '') #normalizes urls in the file
-      matcher = Regexp.new("^https?:\/\/(www\.)?#{lic_url}.*$", Regexp::IGNORECASE)
+      matcher = Regexp.new("\bhttps?:\/\/(www\.)?#{lic_url}.*", Regexp::IGNORECASE)
 
       if matcher.match(the_url)
         spdx_id = lic_id
@@ -167,14 +167,16 @@ class LicenseMatcher
   #   [spdx_id, score, matching_rule]
   def match_rules(text, early_exit = true)
     matches = []
-    text_ = text.to_s.strip + " " #required to make difference between end of versionNumber and end of string
-    ignore_rules = get_ignore_rules()
-
-    #if text is in ignore list, then return same text, but negative score as it's spam
-    return [text, -1] if matches_any_rule?(ignore_rules, text_)
-
+    text = safe_encode(text).to_s.strip
+		
+		#if text is already spdx_id, then shortcut matching
+		if @rules.has_key?(text.downcase)
+			return [[text.downcase, 1.0]] 
+		end
+		
+		text += ' ' # required to make wordborder matcher to work with 1word texts
     @rules.each do |spdx_id, rules|
-      matching_rule = matches_any_rule?(rules, text_)
+      matching_rule = matches_any_rule?(rules, text)
       unless matching_rule.nil?
         matches << [spdx_id, 1.0, matching_rule]
         break if early_exit
@@ -285,6 +287,66 @@ class LicenseMatcher
     return ""
   end
 
+	# combines SPDX rules with custom handwritten rules
+	def init_rules
+		rules = {}
+		rules = build_rules_from_spdx_json
+		
+		get_custom_rules.each do |spdx_id, custom_rules_array|
+			spdx_id = spdx_id.to_s.strip.downcase
+
+			if rules.has_key?(spdx_id)
+				rules[spdx_id].concat custom_rules_array
+			else
+				rules[spdx_id] = custom_rules_array
+			end
+		end
+
+		rules
+	end
+
+
+  # builds regex rules based on the LicenseJSON file
+  # rules are using urls, IDS, names and alternative names to build full string matching regexes
+  def build_rules_from_spdx_json
+    spdx_rules = {}
+
+    spdx_json = read_json_file(LICENSE_JSON_FILE)
+    unless spdx_json
+      raise "init_spdx_rules: failed to read spdx JSON file at #{LICENSE_JSON_FILE}."
+    end
+
+    spdx_json.each do |spdx_item|
+			spdx_id = spdx_item[:id].to_s.downcase.strip
+      spdx_rules[spdx_id] = build_spdx_item_rules(spdx_item)
+    end
+
+    spdx_rules
+  end
+
+  def build_spdx_item_rules(spdx_item)
+    rules = []
+    rules << Regexp.new("\\b#{spdx_item[:name]}\\b".gsub(/\s+/, '\\s').gsub(/\./, '\\.'), Regexp::IGNORECASE)
+     
+		rules << Regexp.new("\\b[\\(]?#{spdx_item[:id]}[\\)]?\\s".gsub(/\s+/, '\\s').gsub(/\./, '\\.'), Regexp::IGNORECASE)
+   
+    spdx_item[:identifiers].to_a.each do |id|
+      rules << Regexp.new("\\b#{id[:identifier]}\\s".gsub(/\s+/, '\\s').gsub(/\./, '\\.'), Regexp::IGNORECASE)
+    end
+
+    spdx_item[:links].to_a.each do |link|
+      lic_url = link[:url].to_s.strip.gsub(/https?:\/\//i, '').gsub(/www\./, '') #normalizes urls in the file
+
+			rules << Regexp.new("\\b[\\(]?https?:\/\/(www\.)?#{lic_url}[\\)]?\\b".gsub(/\s+/, '\\s'), Regexp::IGNORECASE)
+    end
+
+    spdx_item[:other_names].to_a.each do |alt|
+      rules << Regexp.new("\\b#{alt[:name]}\\b".gsub(/\s+/, '\\s'), Regexp::IGNORECASE)
+    end
+
+    rules
+  end
+
 
   def get_ignore_rules
     [
@@ -309,11 +371,6 @@ class LicenseMatcher
     ]
   end
 
-  def build_rules_from_spdx_json
-    rules = {}
-
-    return rules
-  end
 
   def get_custom_rules
     {
@@ -347,8 +404,8 @@ class LicenseMatcher
                           /\bGNU\sAGPL\sv?3[\.0]?\b/i,
                           /\bGNU\sAFFERO\sv?3\b/i,
                           /\bhttps?:\/\/gnu\.org\/licenses\/agpl\.html\b/i,
-                          /\bAFFERO\sGENERAL\sPUBLIC\b/i,
-                          /^AFFERO\s*\b/i
+                          /\AAFFERO\sGENERAL\sPUBLIC\sLICENSE\s*\z/i,
+                          /^AFFERO\s*\z/i
                          ],
       "Aladdin"       => [/\b[\(]?AFPL[\)]?\b/i, /\bAladdin\sFree\sPublic\sLicense\b/i],
       "Amazon"        => [/\bAmazon\sSoftware\sLicense\b/i],
@@ -363,7 +420,7 @@ class LicenseMatcher
                           /\bApache\s+license\b/i,
                           /\bAPL\s+2\.0\b/i, /\bAPL[\.|-|v]?2\b/i, /\bASL\s+2\.0\b/i,
                           /\bASL[-|v|\s]?2\b/i, /\bALv2\b/i, /\bASF[-|\s]?2\.0\b/i,
-                          /\bAPACHE\b/i, /\AASL\s*\z/i, /\bASL\s+v?\.2\.0\b/i, /\AASF\s*\z/i,
+                          /\AAPACHE\s*\z/i, /\AASL\s*\z/i, /\bASL\s+v?\.2\.0\b/i, /\AASF\s*\z/i,
                           /\bApapche[-|\s|\_]?v?2\.0\b/i, /\bAL[-|\s|\_]2\.0\b/i
                          ],
       "APL-1.0"       => [/\bapl[-|_|\s]?v?1\b/i, /\bAPL[-|_|\s]?v?1\.0\b/i, /^APL$/i],
@@ -373,10 +430,10 @@ class LicenseMatcher
       "APSL-2.0"      => [/\bAPSL[-|_|\s]?v?2\.0\b/i, /\bAPSL[-|_|\s]?v?2\b/i],
 
       "Artistic-1.0-Perl" => [/\bArtistic[-|_|\s]?v?1\.0\-Perl\b/i, /\bPerlArtistic\b/i],
-      "Artistic-1.0"  => [/\bartistic[-|_|\s]?v?1\.0\b/i, /\bartistic[-|_|\s]?v?1\b/i],
+      "Artistic-1.0"  => [/\bartistic[-|_|\s]?v?1\.0(?!\-)\b/i, /\bartistic[-|_|\s]?v?1(?!\.)\b/i],
       "Artistic-2.0"  => [/\bARTISTIC[-|_|\s]?v?2\.0\b/i, /\bartistic[-|_|\s]?v?2\b/i,
                           /\bArtistic.2.0\b/i,
-                          /\bARTISTIC\s+LICENSE\b/i, /\bARTISTIC\b/i],
+                          /\bARTISTIC\s+LICENSE\b/i, /\AARTISTIC\s*\z/i],
       "Beerware"      => [
                           /\bBEERWARE\b/i, /\bBEER\s+LICEN[c|s]E\b/i,
                           /\bBEER[-|\s]WARE\b/i, /^BEER\b/i,
@@ -385,13 +442,13 @@ class LicenseMatcher
                          ],
       'BitTorrent-1.1' => [/\bBitTorrent\sOpen\sSource\sLicense\b/i],
       "0BSD"          => [/\A0BSD\s*\z/i],
-      "BSD-2-Clause"  => [
+      "BSD-2"  				=> [
                           /\bBSD[-|_|\s]?v?2\b/i, /^FREEBSD\b/i, /^OPENBSD\b/i,
                           /\bBSDLv2\b/i
                          ],
-      "BSD-3-Clause"  => [/\bBSD[-|_|\s]?v?3\b/i, /\bBSD[-|\s]3[-\s]CLAUSE\b/i,
+      "BSD-3"  				=> [/\bBSD[-|_|\s]?v?3\b/i, /\bBSD[-|\s]3[-\s]CLAUSE\b/i,
                           /\bBDS[-|_|\s]3[-|\s]CLAUSE\b/i, /\ABDS\s*\z/i, /^various\/BSDish\s*$/],
-      "BSD-4-Clause"  => [
+      "BSD-4"  				=> [
                           /\bBSD[-|_|\s]?v?4/i, /\bBSD\b/i, /\bBSD\s+LICENSE\b/i,
                           /\bBSD-4-CLAUSE\b/i,
                           /\bhttps?:\/\/en\.wikipedia\.org\/wiki\/BSD_licenses\b/i
@@ -521,7 +578,7 @@ class LicenseMatcher
                          ],
       "ESA-1.0"       => [
                           /\bESCL\s+[-|_]?\sType\s?1\b/,
-                          /\bESA\sSoftware\sCommunity\sLicense\s–\sType\s1\b/i
+                          /\bESA\sSOFTWARE\sCommunity\sLICENSE.+TYPE\s?1\b/i
                          ],
       "EUPL-1.0"      => [/\b[\(]?EUPL[-|\s]?v?1\.0[\)]?\b/i],
       "EUPL-1.1"      => [
@@ -557,10 +614,10 @@ class LicenseMatcher
                           /\bGNU\sGeneral\sPublic\sLicense\sversion\s?3\b/i,
                           /\bGNU\sGENERAL\sPUBLIC\sLICENSE\b/i,
                           /\bGNU\s+PUBLIC\s+v3\+?\b/i,
-                          /\bGNUGPL[-|\s|\_]?v?3\b/i,
-                          /\b[\(]?GPL[\)]?\b/i, /\bGNU\s+PL\s+[v]?3\b/i,
-                          /\bGLPv3\b/i, /\bGNU3\b/i, /GPvL3/i,
-                          /\bGNU\sGLP\sv?3\b/i
+                          /\bGNUGPL[-|\s|\_]?v?3\b/i, /\bGNU\s+PL\s+[v]?3\b/i,
+                          /\bGLPv3\b/i, /\bGNU3\b/i, /GPvL3/i, /\bGNU\sGLP\sv?3\b/i,
+                          /\A[\(]?GPL[\)]?\s*\z/i,
+
                          ],
 
       "IDPL-1.0"      => [
@@ -583,13 +640,13 @@ class LicenseMatcher
                           /\bLESSER\sGENERAL\sPUBLIC\sLICENSE[\,]?\sv?2\.1\b/i
                          ],
       "LGPL-3.0"      => [/\bLGPL[-|\s|_]?v?3\.0\b/i, /\bLGPL[-|\s|_]?v?3[\+]?\b/i, 
-                          /\b[\(]?LGPL[\)]?/i, /\bLGLP[\s|-|v]?3\.0\b/i, /^LPLv3\s*$/,
-                          /\bLPGL[-|\s|_]?v?3[\+]?\b/i, 
+													/\bLGLP[\s|-|v]?3\.0\b/i, /^LPLv3\s*$/, /\bLPGL[-|\s|_]?v?3[\+]?\b/i, 
                           /\bLESSER\s+GENERAL\s+PUBLIC\s+License\s+[v]?3\b/i,
                           /\bLesser\sGeneral\sPublic\sLicense\sv?\.?\s+3\.0\b/i,
                           /\bhttps?:\/\/www\.gnu\.org\/copyleft\/lesser.html\b/i,
                           /\bLESSER\sGENERAL\sPUBLIC\sLICENSE\sVersion\s3\b/i,
-                          /\bLesser\sGeneral\sPublic\sLicense[\,]?\sversion\s3\.0\b/i
+                          /\bLesser\sGeneral\sPublic\sLicense[\,]?\sversion\s3\.0\b/i,
+                          /\A[\(]?LGPL[\)]?\s*\z/i
                          ],
       "MirOS"         => [/\bMirOS\b/i],
       "MIT"           => [
@@ -624,12 +681,11 @@ class LicenseMatcher
 
       "NPOSL-3.0"     => [/\bNPOSL[-|\s|\_]?v?3\.0\b/i, /\bNPOSL[-|\s|\_]?v?3\b/],
       "OFL-1.0"       => [/\bOFL[-|\s|\_]?v?1\.0\b/i, /\bOFL[-|\s|\_]?v?1(?!\.)\b/i,
-                          /\bSIL\s+OFL\s+1\.0\b/i],
+                          /\bSIL\s+OFL\s+1\.0\b/i, /\ASIL\sOFL\s*\z/i ],
       "OFL-1.1"       => [
                           /\bOFL[-|\s|\_]?v?1\.1\b/i, /\bSIL\s+OFL\s+1\.1\b/i,
-                          /\bSIL\sOpen\sFont\sLicense\b/i, /\bSIL\sOFL\b/i,
-                          /\bOpen\sFont\sLicense\b/i
-                         ],
+                          /\bSIL\sOpen\sFont\sLicense\b/i, /\bSIL\sOFL\s1\.1\b/i,
+                          /\bOpen\sFont\sLicense\b/i                         ],
 
       "OSL-1.0"       => [/\bOSL[-|\s|\_]?v?1\.0\b/i, /\b\OSL[-|\s|\_]?v?1(?!\.)\b/i],
       "OSL-2.0"       => [/\bOSL[-|\s|\_]?v?2\.0\b/i, /\bOSL[-|\s|\_]?v?2(?!\.)\b/i],
@@ -699,7 +755,7 @@ class LicenseMatcher
                           /\bZPL\s?$/i
                          ],
       "zlib-acknowledgement" => [/\bZLIB[\/|-|\s]LIBPNG\b/i],
-      "ZLIB"          => [/\bZLIB(?!\-)\b/i]
+      "ZLIB"          => [/\bZLIB(?!\-|\/)\b/i]
 
     }
   end
