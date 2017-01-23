@@ -147,7 +147,7 @@ class LicenseMatcher
   #   [spdx_id, score, matching_rule]
   def match_rules(text, early_exit = true)
     matches = []
-    text = safe_encode(text).to_s.strip
+    text = preprocess_text(text)
 		
 		#if text is already spdx_id, then shortcut matching
 		if @rules.has_key?(text.downcase)
@@ -190,6 +190,8 @@ class LicenseMatcher
 			text = clean_html(html_doc)
 		end
 
+		#remove markdown url tags
+		text = text.gsub(/\[.+?\]\(.+?\)/, ' ')
 		return text.to_s.gsub(/\s+/, ' ')	
 	end
 
@@ -300,7 +302,6 @@ class LicenseMatcher
   end
 
 
-  # Returns top-N matching licenses with matching score
   def safe_encode(txt)
     txt.to_s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
   rescue

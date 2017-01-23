@@ -15,11 +15,11 @@ describe LicenseMatcher do
   let(:mit_issue11){ File.read("#{spec_path}/mit_issue11.txt")}   
 
   it "finds correct matches for text files" do
-    expect( lic_matcher.match_text(mit_txt).first.first ).to eq("MIT")
-    expect( lic_matcher.match_text(pg_txt).first.first ).to eq('PostgreSQL')
-    expect( lic_matcher.match_text(lgpl_txt).first.first ).to eq('LGPL-2.0')
-    expect( lic_matcher.match_text(pg_txt).first.first ).to eq('PostgreSQL')
-    expect( lic_matcher.match_text(bsd3_txt).first.first ).to eq('BSD-3')
+    expect( lic_matcher.match_text(mit_txt).first.first ).to eq("mit")
+    expect( lic_matcher.match_text(pg_txt).first.first ).to eq('postgresql')
+    expect( lic_matcher.match_text(lgpl_txt).first.first ).to eq('lgpl-2.0')
+    expect( lic_matcher.match_text(pg_txt).first.first ).to eq('postgresql')
+    expect( lic_matcher.match_text(bsd3_txt).first.first ).to eq('bsd-3')
     expect( lic_matcher.match_text(dotnet_txt).first.first ).to eq('msl_dotnet')
   end
 
@@ -28,7 +28,7 @@ describe LicenseMatcher do
     expect( res.size ).to eq(3)
     
     spdx_id, score = res.first
-    expect( spdx_id ).to eq("MIT")
+    expect( spdx_id ).to eq("mit")
     expect( score ).to be > 0.9
   end
 
@@ -47,42 +47,42 @@ describe LicenseMatcher do
 
   it "finds correct matches for html files" do
 
-    expect( lic_matcher.match_html(mit_html).first.first ).to eq('MIT')
-    expect( lic_matcher.match_html(apache_html).first.first ).to eq('Apache-2.0')
+    expect( lic_matcher.match_html(mit_html).first.first ).to eq('mit')
+    expect( lic_matcher.match_html(apache_html).first.first ).to eq('apache-2.0')
     expect( lic_matcher.match_html(dotnet_html).first.first ).to eq('msl_dotnet')
-    expect( lic_matcher.match_html(bsd3_html).first.first ).to eq('BSD-4')
+    expect( lic_matcher.match_html(bsd3_html).first.first ).to eq('bsd-3-clear')
 
     #how it handles noisy pages
     spdx_id, score = lic_matcher.match_html(apache_aws).first
-    expect( spdx_id ).to eq('Apache-2.0')
+    expect( spdx_id ).to eq('apache-2.0')
     expect( score ).to be > min_score
 
     spdx_id, score = lic_matcher.match_html(apache_plex).first 
-    expect( spdx_id ).to eq('Apache-2.0')
+    expect( spdx_id ).to eq('apache-2.0')
     expect( score ).to be > min_score
 
     spdx_id, score = lic_matcher.match_html(bsd_fparsec).first
-    expect( spdx_id ).to eq('BSD-3')
+    expect( spdx_id ).to eq('bsd-3-clear')
     expect( score ).to be > min_score
 
     spdx_id, score = lic_matcher.match_html(mit_ooi).first 
-    expect( spdx_id ).to eq('MIT')
+    expect( spdx_id ).to eq('mit')
     expect( score ).to be > min_score
 
     spdx_id, score = lic_matcher.match_html(mit_bb).first
-    expect( spdx_id ).to eq('MIT')
+    expect( spdx_id ).to eq('mit')
     expect( score ).to be > min_score
 
-    expect( lic_matcher.match_html(mspl_ooi).first.first ).to eq('MS-PL')
+    expect( lic_matcher.match_html(mspl_ooi).first.first ).to eq('ms-pl')
 
     spdx_id, score = lic_matcher.match_html(cpol).first
-    expect( spdx_id ).to eq('CPOL-1.02')
+    expect( spdx_id ).to eq('cpol-1.02')
     expect( score ).to be > min_score 
   end
 
   it "matches all the license files in the corpuse correctly" do
     lic_matcher.spdx_ids.each do |lic_id|
-      next if lic_id == 'msl_dotnet' or lic_id == 'CPOL-1.02'
+      next if lic_id == 'msl_dotnet' or lic_id == 'cpol-1.02'
 
       lic_txt = File.read "#{corpus_path}/#{lic_id}"
 
