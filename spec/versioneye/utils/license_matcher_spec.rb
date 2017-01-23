@@ -106,21 +106,21 @@ describe LicenseMatcher do
 
     url_index = lic_matcher.read_license_url_index url_doc
     expect( url_index ).not_to be_nil
-    expect( url_index[aal_url] ).to eq('AAL')
-		expect( url_index[apache1] ).to eq('Apache-1.1')
-		expect( url_index[apache2] ).to eq('Apache-2.0')
-		expect( url_index[bsd2] ).to eq('BSD-2')
-		expect( url_index[bsd3] ).to eq('BSD-3')
-		expect( url_index[gpl3] ).to eq('GPL-3.0')
+    expect( url_index[aal_url] ).to eq('aal')
+		expect( url_index[apache1] ).to eq('apache-1.1')
+		expect( url_index[apache2] ).to eq('apache-2.0')
+		expect( url_index[bsd2] ).to eq('bsd-2')
+		expect( url_index[bsd3] ).to eq('bsd-3')
+		expect( url_index[gpl3] ).to eq('gpl-3.0')
   end
 
 	it "matches saved URL with SPDX url" do
-		expect( lic_matcher.match_url(aal_url).first ).to eq('AAL')
-		expect( lic_matcher.match_url(apache1).first ).to eq('Apache-1.1')
-		expect( lic_matcher.match_url(apache2).first ).to eq('Apache-2.0')
-		expect( lic_matcher.match_url(bsd2).first).to eq('BSD-2')
-		expect( lic_matcher.match_url(bsd3).first).to eq('BSD-3')
-		expect( lic_matcher.match_url(gpl3).first ).to eq('GPL-3.0')
+		expect( lic_matcher.match_url(aal_url).first ).to eq('aal')
+		expect( lic_matcher.match_url(apache1).first ).to eq('apache-1.1')
+		expect( lic_matcher.match_url(apache2).first ).to eq('apache-2.0')
+		expect( lic_matcher.match_url(bsd2).first).to eq('bsd-2')
+		expect( lic_matcher.match_url(bsd3).first).to eq('bsd-3')
+		expect( lic_matcher.match_url(gpl3).first ).to eq('gpl-3.0')
 	end
 
   it "matches chooselicense urls to spdx_Id" do

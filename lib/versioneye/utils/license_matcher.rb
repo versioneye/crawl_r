@@ -144,7 +144,7 @@ class LicenseMatcher
     #check through SPDX urls
     @url_index.each do |lic_url, lic_id|
       lic_url = lic_url.to_s.strip.gsub(/https?:\/\//i, '').gsub(/www\./, '') #normalizes urls in the file
-      matcher = Regexp.new("\bhttps?:\/\/(www\.)?#{lic_url}.*", Regexp::IGNORECASE)
+      matcher = Regexp.new("https?:\/\/(www\.)?#{lic_url}", Regexp::IGNORECASE)
 
       if matcher.match(the_url)
         spdx_id = lic_id
@@ -244,7 +244,7 @@ class LicenseMatcher
 
   def process_spdx_item(lic)
     url_index = {}
-    lic_id = lic[:id]
+    lic_id = lic[:id].to_s.strip.downcase
     return url_index if lic_id.nil?
 
     lic[:links].to_a.each {|x| url_index[x[:url]] = lic_id }
