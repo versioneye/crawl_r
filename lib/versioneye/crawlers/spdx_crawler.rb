@@ -4,7 +4,7 @@ class SpdxCrawler
   def self.crawl
     p "map = {}"
     map = {}
-    url = "http://spdx.org/licenses/"
+    url = "https://spdx.org/licenses/"
     page = Nokogiri::HTML(open(url))
     trs = page.xpath("//table[contains(@class,'sortable')]/tbody/tr")
     trs.each do |tr|

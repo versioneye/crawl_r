@@ -45,7 +45,7 @@ class LicenseMatcher
 
 
   def match_text(text, n = 3)
-    clean_text = safe_encode(text)
+    clean_text = preprocess_text(text)
     test_doc   = TfIdfSimilarity::Document.new(clean_text, {:id => "test"})
 
     mat1 = @model.instance_variable_get(:@matrix)
@@ -67,35 +67,15 @@ class LicenseMatcher
     end
   end
 
-
   def match_html(html_doc, n = 3)
-    html_doc = safe_encode(html_doc)
+    body_text = preprocess_text(html_doc)
 
-    begin
-      doc = Nokogiri.HTML(html_doc)
-    rescue Exception => e
-      log.error "failed to parse html doc: \n #{html_doc}"
-      doc = nil
-    end
-
-    return [] if doc.nil?
-
-    body_txt = doc.xpath(
-      '//p | //h1 | //h2 | //h3 | //h4 | //h5 | //h6 | //em | // strong |//td |//pre
-      |//li[not(@id) and not(@class) and not(a)]'
-    ).text.to_s.strip
-
-    if body_txt.empty?
-      log.error "match_html: document didnt pass noise filter, will use whole body content"
-      body_txt = doc.xpath('//body').text.to_s.strip
-    end
-
-    if body_txt.empty?
-      log.info "match_html: didnt find enough text from html_doc: #{html_doc}"
+    if body_text.empty?
+      log.info "match_html: no content in the html_doc: #{html_doc}"
       return []
     end
 
-    match_text(body_txt, n)
+    match_text(body_text, n)
   end
 
 
@@ -200,6 +180,47 @@ class LicenseMatcher
 
 
 #-- helpers
+	def preprocess_text(text)
+		text = safe_encode(text)
+		
+		# if text is HTML doc, then
+		# extract text only from visible html tags
+		html_doc = parse_html(text)
+		if html_doc
+			text = clean_html(html_doc)
+		end
+
+		return text.to_s.gsub(/\s+/, ' ')	
+	end
+
+	def clean_html(html_doc)
+    body_text = ""
+		body_elements = html_doc.xpath(
+      '//p | //h1 | //h2 | //h3 | //h4 | //h5 | //h6 | //em | //strong | //td | //pre
+      | //li[not(@id) and not(@class) and not(a)]'
+    ).to_a
+
+		#extract text from html tag and separate them by space
+		body_elements.each {|el| body_text += ' ' + el.text.to_s}
+		body_text = body_text.to_s.strip
+
+    if body_text.empty?
+      log.error "match_html: document didnt pass noise filter, will use whole body content"
+      body_text = html_doc.xpath('//body').text.to_s.strip
+    end
+
+		return body_text
+	end
+
+	def parse_html(html_doc)
+    begin
+      return Nokogiri.HTML(html_doc)
+    rescue Exception => e
+      log.error "failed to parse html doc: \n #{html_doc}"
+      return nil
+    end
+	end
+
 
   # Transforms document into TF-IDF matrix used for comparition
   def doc_tfidf_matrix(doc)
@@ -327,8 +348,9 @@ class LicenseMatcher
   def build_spdx_item_rules(spdx_item)
     rules = []
     rules << Regexp.new("\\b#{spdx_item[:name]}\\b".gsub(/\s+/, '\\s').gsub(/\./, '\\.'), Regexp::IGNORECASE)
-     
-		rules << Regexp.new("\\b[\\(]?#{spdx_item[:id]}[\\)]?\\s".gsub(/\s+/, '\\s').gsub(/\./, '\\.'), Regexp::IGNORECASE)
+    
+		#it should match exact spdx_ids only when it's one liner, in there may be conflicst in full text: Fair license 
+		rules << Regexp.new("\\A[\\(]?#{spdx_item[:id]}[\\)]?\\s*\z".gsub(/\s+/, '\\s').gsub(/\./, '\\.'), Regexp::IGNORECASE)
    
     spdx_item[:identifiers].to_a.each do |id|
       rules << Regexp.new("\\b#{id[:identifier]}\\s".gsub(/\s+/, '\\s').gsub(/\./, '\\.'), Regexp::IGNORECASE)
@@ -449,7 +471,7 @@ class LicenseMatcher
       "BSD-3"  				=> [/\bBSD[-|_|\s]?v?3\b/i, /\bBSD[-|\s]3[-\s]CLAUSE\b/i,
                           /\bBDS[-|_|\s]3[-|\s]CLAUSE\b/i, /\ABDS\s*\z/i, /^various\/BSDish\s*$/],
       "BSD-4"  				=> [
-                          /\bBSD[-|_|\s]?v?4/i, /\bBSD\b/i, /\bBSD\s+LICENSE\b/i,
+                          /\bBSD[-|_|\s]?v?4/i, /\ABSD\s*\z/i, /\ABSD\s+LI[s|c]EN[S|C]E\s*\z/i,
                           /\bBSD-4-CLAUSE\b/i,
                           /\bhttps?:\/\/en\.wikipedia\.org\/wiki\/BSD_licenses\b/i
                          ],
@@ -475,7 +497,7 @@ class LicenseMatcher
       "CC-BY-4.0"     => [
                           /^CC[-|\s]?BY[-|\s]?v?4\.0$/i, /\bCC.BY.v?4\b/i, /\bCC.BY.4\.0\b/i,
                           /\bCREATIVE\s+COMMONS\s+ATTRIBUTION\s+[v]?4\.0\b/i,
-                          /\bCREATIVE\s+COMMONS\s+ATTRIBUTION\b/i
+                          /\ACREATIVE\s+COMMONS\s+ATTRIBUTION\s*\z\b/i
                          ],
       "CC-BY-SA-1.0"  => [/\bCC[-|\s]BY.SA.v?1\.0\b/i, /\bCC[-|\s]BY.SA.v?1\b/i],
       "CC-BY-SA-2.0"  => [/\bCC[-|\s]BY.SA.v?2\.0\b/i, /\bCC[-|\s]BY.SA.v?2(?!\.)\b/i],
