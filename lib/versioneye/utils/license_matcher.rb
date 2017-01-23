@@ -124,6 +124,8 @@ class LicenseMatcher
       return ['no-license', 1.0]
     when 'http://www.gzip.org/zlib/zlib_license.html'
       return ['zlib', 1.0]
+    when 'http://zlib.net/zlib-license.html'
+      return ['zlib', 1.0]
     when 'http://www.wtfpl.net/about/'
       return ['wtfpl', 1.0]
     end
@@ -307,7 +309,13 @@ class LicenseMatcher
     ]
   end
 
-  def get_rules
+  def build_rules_from_spdx_json
+    rules = {}
+
+    return rules
+  end
+
+  def get_custom_rules
     {
       "AAL"           => [/\bAAL\b/i, /\bAAL\s+License\b/i,
                           /\bAttribution\s+Assurance\s+License\b/i],
