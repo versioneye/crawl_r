@@ -1,7 +1,8 @@
 require 'httparty'
+require 'json'
 
 class SpdxCrawler
-  DEFAULT_LICENSE_FILES_PATH = 'data/spdx_licenses/plain'
+  DEFAULT_LICENSE_PATH = 'data/spdx_licenses'
   SPDX_URI = "https://spdx.org/licenses/"  
 
   def self.logger
@@ -22,10 +23,15 @@ class SpdxCrawler
     p "map"
 
     if crawl_license_texts
-      logger.info "Going to save license texts to #{DEFAULT_LICENSE_FILES_PATH}"
-      crawl_license_files(map.keys, DEFAULT_LICENSE_FILES_PATH)
+      logger.info "Going to save license texts to #{DEFAULT_LICENSE_FILES_PATH}/plain"
+      crawl_license_files(map.keys, "#{DEFAULT_LICENSE_PATH}/plain")
     end
 
+    add_missing_licenses_to_file(
+      map,
+      "#{DEFAULT_LICENSE_PATH}/licenses_orig.json",
+      "#{DEFAULT_LICENSE_PATH}/licenses.json"
+    )
     map
   end
 
@@ -41,11 +47,9 @@ class SpdxCrawler
       lic_url = "#{SPDX_URI}#{spdx_id}.txt"
       res = HTTParty.get(lic_url)
 
-      spdx_id = spdx_id.to_s.strip.downcase
+      spdx_id = spdx_id.to_s.strip.downcase #gsub unifies BSD ids
       next if blacklist.include? spdx_id #duplicate licenses
 
-      spdx_id = spdx_id.gsub(/-clause/, '') #unify BSD licenses with ids in licenses.json
-     
       if res.code == 200
         logger.info "crawl_license_files: going to save #{spdx_id} license text"
         File.open("#{target_folder}/#{spdx_id}", 'w') do |file|
@@ -57,6 +61,34 @@ class SpdxCrawler
         logger.error "Failed to pull license text from the #{lic_url}"  
       end
     end
+  end
+
+  # adds missing spdx ids into licenses.json used to build rules for LicenseMatcher
+  def self.add_missing_licenses_to_file(lic_map, original_file, target_file)
+    licenses = JSON.parse(File.read(original_file))
+    existing_license_ids = licenses.reduce(Set.new()) {|acc, lic| acc << lic['id'].downcase; acc}
+
+    lic_map.each do |lic_id, lic_dt|
+      lic_id = lic_id.gsub(/-clause/i, '').to_s.strip #unify BSD licenses with ids in licenses.json
+      lic_id.downcase!
+
+      lic_name = lic_dt[:fullname]
+
+      #avoid name collision after spdx id is removed in the name label
+      if lic_id ==  "fsfullr" or lic_id == 'mpl-2.0-no-copyleft-exception'
+        lic_name.gsub(/\(|\)/, '')
+      end
+
+      unless existing_license_ids.include? lic_id.downcase
+        p "Add #{lic_id} into licenses file"
+        licenses << {
+          id: lic_id,
+          name: lic_name
+        }
+      end
+    end
+
+    File.open(target_file, 'w'){|f| f.write(JSON.pretty_generate(licenses)) }
   end
 
   def self.safe_encode(txt)

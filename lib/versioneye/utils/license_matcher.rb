@@ -67,15 +67,24 @@ class LicenseMatcher
     end
   end
 
-  def match_html(html_doc, n = 3)
-    body_text = preprocess_text(html_doc)
+  def match_html(html_text, n = 3)
+ 		# if text is HTML doc, then
+		# extract text only from visible html tags
+		html_doc = parse_html(html_text)
+		if html_doc
+			text = clean_html(html_doc)
+    else
+      log.error "match_html: failed to parse html document\n#{html_text}"
+      return []
+		end
 
-    if body_text.empty?
-      log.info "match_html: no content in the html_doc: #{html_doc}"
+    text = preprocess_text(text)
+    if text.empty?
+      log.info "match_html: no content after preprocessing: #{html_doc}"
       return []
     end
 
-    match_text(body_text, n)
+    match_text(text, n)
   end
 
 
@@ -138,13 +147,12 @@ class LicenseMatcher
   end
 
 
-  # finds matching regex rules in the license name
+  # finds matching regex rules in the text and sorts matches by length of match
   # ps: not very efficient, but good enough to handle special cases;
   # @args:
   #   text - string, a name of license,
-  #   early_exit  - boolean, default: true, will only return first match
   # @returns:
-  #   [spdx_id, score, matching_rule]
+  #   [[spdx_id, score, matching_rule, matching_length],...]
   def match_rules(text, early_exit = true)
     matches = []
     text = preprocess_text(text)
@@ -156,26 +164,32 @@ class LicenseMatcher
 		
 		text += ' ' # required to make wordborder matcher to work with 1word texts
     @rules.each do |spdx_id, rules|
-      matching_rule = matches_any_rule?(rules, text)
-      unless matching_rule.nil?
-        matches << [spdx_id, 1.0, matching_rule]
-        break if early_exit
+      match_res = matches_any_rule?(rules, text)
+      unless match_res.nil?
+        matches << ([spdx_id, 1.0] + match_res)
       end
     end
 
-    matches
+    matches.sort do |a, b|
+      if (a.size == b.size and a.size == 4)
+        -1 * (a[3] <=> b[3])
+      else
+        0
+      end
+    end
   end
 
   def matches_any_rule?(rules, license_name)
-    matching_rule = nil
+    res = nil
     rules.each do |rule|
-      if rule.match(license_name.to_s)
-        matching_rule = rule
+      m = rule.match(license_name.to_s)
+      if m
+        res = [rule, m[0].size]
         break
       end
     end
 
-    matching_rule
+    res
   end
 
 
@@ -183,16 +197,13 @@ class LicenseMatcher
 	def preprocess_text(text)
 		text = safe_encode(text)
 		
-		# if text is HTML doc, then
-		# extract text only from visible html tags
-		html_doc = parse_html(text)
-		if html_doc
-			text = clean_html(html_doc)
-		end
-
 		#remove markdown url tags
 		text = text.gsub(/\[.+?\]\(.+?\)/, ' ')
-		return text.to_s.gsub(/\s+/, ' ')	
+
+    #remove spam words
+    text.gsub!(/\bTHE\b/i, '')
+
+    return text.to_s.strip.gsub(/\s+/, ' ')	
 	end
 
 	def clean_html(html_doc)
@@ -214,11 +225,14 @@ class LicenseMatcher
 		return body_text
 	end
 
-	def parse_html(html_doc)
+	def parse_html(html_text)
     begin
-      return Nokogiri.HTML(html_doc)
+      html_text = safe_encode(text)
+      return Nokogiri.HTML(html_text) do |config|
+        config.options = Nokogiri::XML::ParseOptions::STRICT | Nokogiri::XML::ParseOptions::NOBLANKS
+      end
     rescue Exception => e
-      log.error "failed to parse html doc: \n #{html_doc}"
+      log.error "failed to parse html doc: \n #{html_text}"
       return nil
     end
 	end
@@ -338,7 +352,8 @@ class LicenseMatcher
       raise "init_spdx_rules: failed to read spdx JSON file at #{LICENSE_JSON_FILE}."
     end
 
-    spdx_json.each do |spdx_item|
+    sorted_spdx_json = spdx_json.sort_by {|x|  x[:id]}
+    sorted_spdx_json.each do |spdx_item|
 			spdx_id = spdx_item[:id].to_s.downcase.strip
       spdx_rules[spdx_id] = build_spdx_item_rules(spdx_item)
     end
@@ -348,19 +363,32 @@ class LicenseMatcher
 
   def build_spdx_item_rules(spdx_item)
     rules = []
-    rules << Regexp.new("\\b#{spdx_item[:name]}\\b".gsub(/\s+/, '\\s').gsub(/\./, '\\.'), Regexp::IGNORECASE)
+    spdx_name = preprocess_text(spdx_item[:name])
+    spdx_name.gsub!(/\(.+?\)/, '')       #remove SPDX ids in the license names
+    spdx_name.gsub!(/\./, '\\.')         #mark version dots as not regex selector
+    spdx_name.gsub!(/[\*|\?|\+]/, '.')   #replace regex selector with whatever mark ~> WTFPL name
+    spdx_name.gsub!(/\,/, '[\\,]?')      #make comma optional
+    spdx_name.strip!
+    spdx_name.gsub!(/\s+/, '\\s\\+')     #replace spaces with space selector
+
+    rules << Regexp.new("\\b#{spdx_name}\\b", Regexp::IGNORECASE)
     
-		#it should match exact spdx_ids only when it's one liner, in there may be conflicst in full text: Fair license 
-		rules << Regexp.new("\\A[\\(]?#{spdx_item[:id]}[\\)]?\\s*\z".gsub(/\s+/, '\\s').gsub(/\./, '\\.'), Regexp::IGNORECASE)
-   
+    spdx_id = spdx_item[:id].to_s.gsub(/-clause/, '').strip
+    #use spdx_id in full-text match if it's uniq and doest ambiquity like MIT, Fair, Glide
+    if spdx_id.match /[\d|-]|ware\z/
+  		rules << Regexp.new("\\b[\\(]?#{spdx_id}[\\)]?\\b".gsub(/\s+/, '\\s').gsub(/\./, '\\.'), Regexp::IGNORECASE)
+    else
+      rules << Regexp.new("\\A[\\(]?#{spdx_id}[\\)]?\\b", Regexp::IGNORECASE)
+    end
+
     spdx_item[:identifiers].to_a.each do |id|
       rules << Regexp.new("\\b#{id[:identifier]}\\s".gsub(/\s+/, '\\s').gsub(/\./, '\\.'), Regexp::IGNORECASE)
     end
 
     spdx_item[:links].to_a.each do |link|
-      lic_url = link[:url].to_s.strip.gsub(/https?:\/\//i, '').gsub(/www\./, '') #normalizes urls in the file
+      lic_url = link[:url].to_s.strip.gsub(/https?:\/\//i, '').gsub(/www\./, '').gsub(/\./, '\\.') #normalizes urls in the file
 
-			rules << Regexp.new("\\b[\\(]?https?:\/\/(www\.)?#{lic_url}[\\)]?\\b".gsub(/\s+/, '\\s'), Regexp::IGNORECASE)
+			rules << Regexp.new("\\b[\\(]?https?:\/\/(www\.)?#{lic_url}[\/]?[\\)]?\\b".gsub(/\s+/, ''), Regexp::IGNORECASE)
     end
 
     spdx_item[:other_names].to_a.each do |alt|
@@ -405,9 +433,9 @@ class LicenseMatcher
       "AFL-2.1"       => [/\bAFL[-|v]?2\.1\b/i],
       "AFL-3.0"       => [
                           /\bAFL[-|\s|\_]?v?3\.0\b/i, /\bAFL[-|\s|\_]?v?3/i,
-                          /\bAcademic\s+Free\s+License\b/i, /^AFL\s?\z/i,
+                          /\AAcademic\s+Free\s+License\s*\z/i, /^AFL\s?\z/i,
                           /\bhttps?:\/\/opensource\.org\/licenses\/academic\.php\b/i,
-                          /\bAcademic[-|\s]Free[-|\s]License[-]?/i
+                          /\AAcademic[-|\s]Free[-|\s]License[-]?\s*\z/i
                           ],
       "AGPL-1.0"      => [
                           /\bAGPL[-|v|_|\s]?1\.0\b/i,
@@ -440,14 +468,14 @@ class LicenseMatcher
                           /\bAPACH[A|E]\s+Licen[c|s]e\s+[\(]?v?2\.0[\)]?\b/i,
                           /\bAPACHE\s+LICENSE\,?\s+VERSION\s+2\.0\b/i,
                           /\bApache\s+Software\sLicense\b/i,
-                          /\bApache\s+license\b/i,
+                          /\bApapche[-|\s|\_]?v?2\.0\b/i, /\bAL[-|\s|\_]2\.0\b/i,
                           /\bAPL\s+2\.0\b/i, /\bAPL[\.|-|v]?2\b/i, /\bASL\s+2\.0\b/i,
                           /\bASL[-|v|\s]?2\b/i, /\bALv2\b/i, /\bASF[-|\s]?2\.0\b/i,
                           /\AAPACHE\s*\z/i, /\AASL\s*\z/i, /\bASL\s+v?\.2\.0\b/i, /\AASF\s*\z/i,
-                          /\bApapche[-|\s|\_]?v?2\.0\b/i, /\bAL[-|\s|\_]2\.0\b/i
+                          /\AApache\s+license\s*\z/i,
                          ],
       "APL-1.0"       => [/\bapl[-|_|\s]?v?1\b/i, /\bAPL[-|_|\s]?v?1\.0\b/i, /^APL$/i],
-      "APSL-1.0"      => [/\bAPSL[-|_|\s]?v?1\.0\b/i, /\bAPSL[-|_|\s]?v?1(?!\.)\b/i, /\bAPPLE\s+PUBLIC\s+SOURCE\b/i],
+      "APSL-1.0"      => [/\bAPSL[-|_|\s]?v?1\.0\b/i, /\bAPSL[-|_|\s]?v?1(?!\.)\b/i, /\AAPPLE\s+PUBLIC\s+SOURCE\s*\z/i],
       "APSL-1.1"      => [/\bAPSL[-|_|\s]?v?1\.1\b/i],
       "APSL-1.2"      => [/\bAPSL[-|_|\s]?v?1\.2\b/i],
       "APSL-2.0"      => [/\bAPSL[-|_|\s]?v?2\.0\b/i, /\bAPSL[-|_|\s]?v?2\b/i],
@@ -493,7 +521,7 @@ class LicenseMatcher
       "CC-BY-3.0"     => [
                           /\bCC.BY.v?3\.0\b/i, /\b[\(]?CC.BY[\)]?.v?3\b/i,
                           /\bCreative\sCommons\sBY\s3\.0\b/i,
-                          /\bhttps?:\/\/creativecommons\.org\/licenses\/by\/3\.0[\/]?\b/i
+                          /\bhttps?:\/\/.+\/licenses\/by\/3\.0[\/]?/i
                          ],
       "CC-BY-4.0"     => [
                           /^CC[-|\s]?BY[-|\s]?v?4\.0$/i, /\bCC.BY.v?4\b/i, /\bCC.BY.4\.0\b/i,
@@ -505,7 +533,7 @@ class LicenseMatcher
       "CC-BY-SA-2.5"  => [/\bCC[-|\s]BY.SA.v?2\.5\b/i],
       "CC-BY-SA-3.0"  => [/\bCC[-|\s]BY.SA.v?3\.0\b/i, /\bCC[-|\s]BY.SA.v?3\b/i,
                           /\bCC3\.0[-|_|\s]BY.SA\b/i,
-                          /\bhttps?:\/\/creativecommons\.org\/licenses\/by-sa\/3\.0[\/]?\b/i],
+                          /\bhttps?:\/\/(www\.)?.+\/by.sa\/3\.0[\/]?/i],
       "CC-BY-SA-4.0"  => [
                           /CC[-|\s]BY.SA.v?4\.0$/i, /\bCC[-|\s]BY.SA.v?4\b/i,
                           /CCSA-4\.0/i
@@ -608,7 +636,7 @@ class LicenseMatcher
                           /\b[\(]?EUPL[-|\s]?v?1\.1[\)]?\b/i,
                           /\bEUROPEAN\s+UNION\s+PUBLIC\s+LICENSE\s+1\.1\b/i,
                           /\bEuropean\sUnion\sPublic\sLicense\b/i,
-                          /\bEUPL\s+V?\.?1\.1\b/i, /\AEUPL\s?\z/i
+                          /\bEUPL\s+V?\.?1\.1\b/i, /\AEUPL\s*\z/i
                          ],
       "Fair"          => [ /\bFAIR\s+LICENSE\b/i, /\AFair\s*\z/i],
       "GFDL-1.0"      => [
@@ -731,7 +759,7 @@ class LicenseMatcher
                           /\bPython[-|\s|\_]?v?2\.0\b/i, /\bPython[-|\s|\_]?v?2(?!\.)\b/i,
                           /\bPSF[-|\s|\_]?v?2\b/i, /\bPSFL\b/i, /\bPSF\b/i,
                           /\bPython\s+Software\s+Foundation\b/i,
-                          /\bPython\b/i, /\bPSL\b/i, /\bSAME\sAS\spython2\.3\b/i,
+                          /\APython\b/i, /\bPSL\b/i, /\bSAME\sAS\spython2\.3\b/i,
                           /\bhttps?:\/\/www\.opensource\.org\/licenses\/PythonSoftFoundation\.php\b/i,
                           /\bhttps?:\/\/opensource\.org\/licenses\/PythonSoftFoundation\.php\b/i
                          ],
