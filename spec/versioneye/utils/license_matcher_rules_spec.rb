@@ -111,7 +111,7 @@ describe LicenseMatcher do
       expect(lm.match_rules('APSL-v1')[0][0]).to eq('apsl-1.0')
       expect(lm.match_rules('APSL v1')[0][0]).to eq('apsl-1.0')
 
-      expect(lm.match_rules('aa APPLE PUBLIC source')[0][0]).to eq('apsl-1.0')
+      expect(lm.match_rules('APPLE PUBLIC source')[0][0]).to eq('apsl-1.0')
     end
 
     it "matches apsl-1.1 licenses" do
@@ -458,7 +458,7 @@ describe LicenseMatcher do
       expect(lm.match_rules('cc-by-nd-4.0')[0][0]).to eq('cc-by-nd-4.0')
       expect(lm.match_rules('CC-BY-ND v4.0')[0][0]).to eq('cc-by-nd-4.0')
       expect(lm.match_rules('uses CC BY-ND 4.0 lic')[0][0]).to eq('cc-by-nd-4.0')
-      expect(lm.match_rules('CC BY-NC-ND 4.0')[0][0]).to eq('cc-by-nd-4.0')
+      expect(lm.match_rules('CC BY-ND 4.0')[0][0]).to eq('cc-by-nd-4.0')
     end
 
     it "matches CC-BY-NC-ND-3.0 rules" do

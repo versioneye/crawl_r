@@ -444,7 +444,8 @@ class LicenseMatcher
                           /\bAFL[-|\s|\_]?v?3\.0\b/i, /\bAFL[-|\s|\_]?v?3/i,
                           /\AAcademic\s+Free\s+License\s*\z/i, /^AFL\s?\z/i,
                           /\bhttps?:\/\/opensource\.org\/licenses\/academic\.php\b/i,
-                          /\AAcademic[-|\s]Free[-|\s]License[-]?\s*\z/i
+                          /\AAcademic[-|\s]Free[-|\s]License[-]?\s*\z/i,
+                          /\bAcademic.Free.License.\(AFL\)/i
                           ],
       "AGPL-1.0"      => [
                           /\bAGPL[-|v|_|\s]?1\.0\b/i,
@@ -802,7 +803,7 @@ class LicenseMatcher
                           /\bDo\s+What\s+the\s+Fuck\s+You\s+Want\b/i, /\ADWTFYWT\s*\z/i,
                           /\ADo\sWHATEVER\b/i, /\ADWYW\b/i, /\bDWTFYWTP\b/i,
                           /\ADWHTFYWTPL\s*\z/i, /\AWhatever\s*\z/i,
-                          /\bDO\sTHE\sFUCK\sWHAT\sYOU\sWANT\b/i
+                          /\bDO\s(THE\s)?FUCK\sWHAT\sYOU\sWANT\b/i
                          ],
       "WXwindows"     => [/\bwxWINDOWS\s+LIBRARY\sLICEN[C|S]E\b/i, /\bWXwindows\b/i],
       "X11"           => [/\bX11\b/i],
