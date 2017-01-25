@@ -1115,10 +1115,6 @@
       {
         "note": "tl;dr legal",
         "url": "https://tldrlegal.com/license/gnu-general-public-license-v2"
-      },
-      {
-        "note": "Wikipedia page",
-        "url": "https://en.wikipedia.org/wiki/GNU_General_Public_License"
       }
     ],
     "id": "GPL-2.0",
@@ -1393,10 +1389,6 @@
       {
         "note": "OSI Page",
         "url": "https://opensource.org/licenses/LGPL-2.1"
-      },
-      {
-        "note": "Wikipedia page",
-        "url": "https://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License"
       }
     ],
     "id": "LGPL-2.1",

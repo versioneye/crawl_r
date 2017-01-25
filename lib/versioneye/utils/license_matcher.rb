@@ -363,6 +363,21 @@ class LicenseMatcher
 
   def build_spdx_item_rules(spdx_item)
     rules = []
+
+    #links are first, because it has highest confidence that they are talking about the license
+    spdx_item[:links].to_a.each do |link|
+      lic_url = link[:url].to_s.strip.gsub(/https?:\/\//i, '').gsub(/www\./, '').gsub(/\./, '\\.') #normalizes urls in the file
+
+			rules << Regexp.new("\\b[\\(]?https?:\/\/(www\.)?#{lic_url}[\/]?[\\)]?\\b".gsub(/\s+/, ''), Regexp::IGNORECASE)
+    end
+
+    #include also links to license texts
+    spdx_item[:text].to_a.each do |link|
+      lic_url = link[:url].to_s.strip.gsub(/https?:\/\//i, '').gsub(/www\./, '').gsub(/\./, '\\.') #normalizes urls in the file
+			rules << Regexp.new("\\b[\\(]?https?:\/\/(www\.)?#{lic_url}[\/]?[\\)]?\\b".gsub(/\s+/, ''), Regexp::IGNORECASE)
+    end
+
+    
     spdx_name = preprocess_text(spdx_item[:name])
     spdx_name.gsub!(/\(.+?\)/, '')       #remove SPDX ids in the license names
     spdx_name.gsub!(/\./, '\\.')         #mark version dots as not regex selector
@@ -383,12 +398,6 @@ class LicenseMatcher
 
     spdx_item[:identifiers].to_a.each do |id|
       rules << Regexp.new("\\b#{id[:identifier]}\\s".gsub(/\s+/, '\\s').gsub(/\./, '\\.'), Regexp::IGNORECASE)
-    end
-
-    spdx_item[:links].to_a.each do |link|
-      lic_url = link[:url].to_s.strip.gsub(/https?:\/\//i, '').gsub(/www\./, '').gsub(/\./, '\\.') #normalizes urls in the file
-
-			rules << Regexp.new("\\b[\\(]?https?:\/\/(www\.)?#{lic_url}[\/]?[\\)]?\\b".gsub(/\s+/, ''), Regexp::IGNORECASE)
     end
 
     spdx_item[:other_names].to_a.each do |alt|

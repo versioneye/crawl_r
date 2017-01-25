@@ -16,6 +16,20 @@ describe LicenseMatcher do
       #-- does it detect license name?
       expect(lm.match_rules(lic["name"])[0][0]).to eq(spdx_id)
       expect(lm.match_rules("xxx #{lic['name']} zzz")[0][0]).to eq(spdx_id)
+
+      #-- does it match urls
+      lic["links"].to_a.each do |link|
+        p "    #-- url: #{link["url"]}"
+        expect(lm.match_rules(link["url"])[0][0]).to eq(spdx_id)
+        expect(lm.match_rules("aaaa " + link["url"] + " vnvnnv")[0][0]).to eq(spdx_id)
+      end
+
+      #-- does it match urls of license text
+      lic["text"].to_a.each do |link|
+        p "    #-- url: #{link["url"]}"
+        expect(lm.match_rules(link["url"])[0][0]).to eq(spdx_id)
+        expect(lm.match_rules("aaaa " + link["url"] + " vnvnnv")[0][0]).to eq(spdx_id)
+      end
     end
   end
 
