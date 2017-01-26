@@ -89,7 +89,7 @@ describe LicenseMatcher do
       expect(lm.match_rules('Apache Open Source License 2.0')[0][0]).to eq('apache-2.0')
       expect(lm.match_rules('Apapche-2.0')[0][0]).to eq('apache-2.0')
       expect(lm.match_rules('AL-2.0')[0][0]).to eq('apache-2.0')
-
+      expect(lm.match_rules('the Apache License v2 ')[0][0]).to eq('apache-2.0')
     end
 
     it "matches APL licenses" do
@@ -675,6 +675,7 @@ describe LicenseMatcher do
       expect(lm.match_rules('GNU Public License >=2 (ask me if you want other)')[0][0]).to eq('gpl-2.0')
       expect(lm.match_rules('GNU GPL v2')[0][0]).to eq('gpl-2.0')
       expect(lm.match_rules('GLPv2')[0][0]).to eq('gpl-2.0')
+      expect(lm.match_rules('GNU public license version 2')[0][0]).to eq('gpl-2.0')
     end
 
     it "matches gpl-3.0 rules" do
@@ -800,6 +801,7 @@ describe LicenseMatcher do
       expect(lm.match_rules('mpl-1.1')[0][0]).to eq('mpl-1.1')
       expect(lm.match_rules('MPL v1.1')[0][0]).to eq('mpl-1.1')
       expect(lm.match_rules('uses MPL 1.1 lic')[0][0]).to eq('mpl-1.1')
+      expect(lm.match_rules('uses Mozilla Public License v1.1 ddd')[0][0]).to eq('mpl-1.1')
     end
 
     it "matches mpl-2.0 rules" do

@@ -210,7 +210,7 @@ class LicenseMatcher
 		body_elements = html_doc.xpath(
       '//p | //h1 | //h2 | //h3 | //h4 | //h5 | //h6 | //em | //strong | //b | //td | //pre
       | //li[not(@id) and not(@class) and not(a)] | //section//section[@class="project-info"]
-      | //blockquote '
+      | //blockquote | //textarea'
     ).to_a
 
 		#extract text from html tag and separate them by space
@@ -477,6 +477,7 @@ class LicenseMatcher
                           /\bApache\sOpen\sSource\sLicense\s2\.0\b/i,
                           /\bAPACH[A|E]\s+Licen[c|s]e\s+[\(]?v?2\.0[\)]?\b/i,
                           /\bAPACHE\s+LICENSE\,?\s+VERSION\s+2\.0\b/i,
+                          /\bApache\s+License\s+v?2\b/i,
                           /\bApache\s+Software\sLicense\b/i,
                           /\bApapche[-|\s|\_]?v?2\.0\b/i, /\bAL[-|\s|\_]2\.0\b/i,
                           /\bAPL\s+2\.0\b/i, /\bAPL[\.|-|v]?2\b/i, /\bASL\s+2\.0\b/i,
@@ -663,6 +664,7 @@ class LicenseMatcher
                           /\bGPL[-|\s|_]?v?2\.0/i, /\bGPL[-|\s|_]?v?2\b/i, /\bGPL\s+[v]?2\b/i,
                           /\bGNU\s+PUBLIC\s+LICENSE\s+v?2\.0\b/i,
                           /\bGNU\s+PUBLIC\s+License\sV?2\b/i,
+                          /\bGNU\spublic\slicense\sversion\s2\b/i,
                           /\bGNU\sGeneral\sPublic\sLicense\sv?2\.0\b/i,
                           /\bGNU\sPublic\sLicense\s>=2\b/i,
                           /\bGNU\s+GPL\s+v2\b/i, /^GNUv?2\b/i, /^GLPv2\b/,
@@ -723,7 +725,10 @@ class LicenseMatcher
                           /\bMPL[-|\s|\_]?v?1\.0\b/i, /\bMPL[-|\s|\_]?v?1(?!\.)\b/i,
                          /\bMozilla\sPublic\sLicense\sv?1\.0\b/i,
                          ],
-      "MPL-1.1"       => [/\bMPL[-|\s|\_]?v?1\.1\b/i],
+      "MPL-1.1"       => [
+                          /\bMozilla.Public.License\s+v?1\.1\b/i,
+                          /\bMPL[-|\s|\_]?v?1\.1\b/i,
+                         ],
       "MPL-2.0"       => [
                           /\bMPL[-|\s|\_]?v?2\.0\b/i, /\bMPL[-|\s|\_]?v?2\b/i, 
                           /\bMOZILLA\s+PUBLIC\s+LICENSE\s+2\.0\b/i,
@@ -731,7 +736,7 @@ class LicenseMatcher
                           /\bMOZILLA\s+PUBLIC\s+LICENSE[,]?\s+version\s+2\.0\b/i,
                           /\bMozilla\s+v?2\.0\b/i,
                           /\b[\(]?MPL\s+2\.0[\)]?\b/, /\bMPL\b/i,
-                          /\bMozilla\sPublic\sLicense\b/i
+                          /\AMozilla\sPublic\sLicense\s*\z/i
                          ],
       "MS-PL"         => [/\bMS-?PL\b/i],
       "MS-RL"         => [/\bMS-?RL\b/i, /\bMSR\-LA\b/i],

@@ -117,4 +117,66 @@ describe LicenseMatcher do
       expect(rls[1][0]).to eq('lgpl-3.0')
     end
   end
+
+  it "detects license from Staty bitbucket page" do
+    VCR.use_cassette('rules/staty') do
+      res = HTTParty.get 'https://bitbucket.org/apacha/staty'
+      expect(res.code).to eq(200)
+
+      txt = lm.preprocess_text lm.clean_html lm.parse_html res.body
+      rls = lm.match_rules txt
+      expect(rls.size).to eq(1)
+      expect(rls[0][0]).to eq('mit')
+    end
+  end
+
+  it "detects license from Taskscheduler codeplex" do
+    VCR.use_cassette('rules/taskscheduler') do
+      res = HTTParty.get 'http://taskscheduler.codeplex.com/license'
+      expect(res.code).to eq(200)
+
+      txt = lm.preprocess_text lm.clean_html lm.parse_html res.body
+      rls = lm.match_rules txt
+      expect(rls.size).to eq(1)
+      expect(rls[0][0]).to eq('mit')
+    end
+  end
+
+  it "detects license from TeststackWhite github" do
+    VCR.use_cassette('rules/TeststackWhite') do
+      res = HTTParty.get 'https://github.com/TestStack/White/blob/master/LICENSE.txt'
+      expect(res.code).to eq(200)
+
+      txt = lm.preprocess_text lm.clean_html lm.parse_html res.body
+      rls = lm.match_rules txt
+      expect(rls.size).to eq(1)
+      expect(rls[0][0]).to eq('apache-2.0')
+    end
+  end
+
+  it "detects license from WCFextras codeplex" do
+    VCR.use_cassette('rules/WCFextras') do
+      res = HTTParty.get 'http://wcfextras.codeplex.com/license'
+      expect(res.code).to eq(200)
+
+      txt = lm.preprocess_text lm.clean_html lm.parse_html res.body
+      rls = lm.match_rules txt
+      expect(rls.size).to eq(1)
+      expect(rls[0][0]).to eq('ms-pl')
+    end
+  end
+
+  it "detects licenses from RabbitMQ page" do
+    VCR.use_cassette('rules/RabbitMQ') do
+      res = HTTParty.get('http://www.rabbitmq.com/dotnet.html')
+      expect(res.code).to eq(200)
+
+      txt = lm.preprocess_text lm.clean_html lm.parse_html res.body
+      rls = lm.match_rules txt
+      expect(rls.size).to eq(2)
+      expect(rls[0][0]).to eq('mpl-1.1')
+      expect(rls[1][0]).to eq('apache-2.0')
+    end
+  end
+
 end
