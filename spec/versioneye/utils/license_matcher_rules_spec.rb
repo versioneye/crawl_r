@@ -201,6 +201,7 @@ describe LicenseMatcher do
       expect(lm.match_rules('BSD v3')[0][0]).to eq('bsd-3')
       expect(lm.match_rules('BSD3')[0][0]).to eq('bsd-3')
       expect(lm.match_rules('BSD3 clause')[0][0]).to eq('bsd-3')
+      expect(lm.match_rules('aaa three-clause BSD license aaa')[0][0]).to eq('bsd-3')
     end
 
     it "matches to BSD-4" do
@@ -692,7 +693,7 @@ describe LicenseMatcher do
       expect(lm.match_rules('GNUGPL-v3')[0][0]).to eq('gpl-3.0')
       expect(lm.match_rules('GNU General Public License version 3')[0][0]).to eq('gpl-3.0')
       expect(lm.match_rules('GPLv.3')[0][0]).to eq('gpl-3.0')
-
+      expect(lm.match_rules('GNU General Public License, Version 3.0')[0][0]).to eq('gpl-3.0')
     end
 
     it "matches IDPL-1.0 rules" do
@@ -764,6 +765,7 @@ describe LicenseMatcher do
       expect(lm.match_rules('LPGLv3+')[0][0]).to eq('lgpl-3.0')
 
       expect(lm.match_rules('GNU Lesser General Public License, version 3.0')[0][0]).to eq('lgpl-3.0')
+      expect(lm.match_rules('terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the')[0][0]).to eq('lgpl-3.0')
     end
 
     it "matches MirOS rules" do

@@ -1,4 +1,30 @@
-[{
+[
+  {
+    "id": "curl",
+    "name": "curl License",
+    "links": [{
+        "note": "Homepage",
+        "url": "http://curl.haxx.se/libcurl"
+    },
+    {
+        "note": "Copyright",
+        "url": "https://curl.haxx.se/docs/copyright.html"
+    }]
+  },
+  {
+    "id": "SugarCRM-1.1.3",
+    "name": "SugarCRM Public License v1.1.3",
+    "links": [{
+        "note": "Homepage",
+        "url": "http://www.sugarcrm.com/page/sugarcrm-public-license/en"
+    }]
+  },
+    {
+    "id": "Nunit",
+    "name": "Nunit License", 
+    "links" : [{"url": "http://nunit.org/nuget/license.html"}]
+  },
+    {
     "other_names": [],
     "identifiers": [{
         "identifier": "AAL",
@@ -215,7 +241,12 @@
     "links": [{
         "note": "OSI Page",
         "url": "https://opensource.org/licenses/BSD-2-Clause"
-    }, {
+    },
+    {
+        "note": "OSI Page2 ",
+        "url": "https://opensource.org/licenses/bsd-license.php"
+    },
+     {
         "note": "Wikipedia Page",
         "url": "https://en.wikipedia.org/wiki/BSD_licenses#2-clause"
     }],
@@ -301,7 +332,12 @@
     "links": [{
         "note": "OSI Page",
         "url": "https://opensource.org/licenses/BSL-1.0"
-    }],
+    },
+       {
+        "note": "Home Page",
+        "url": "http://www.boost.org/users/license.html"
+      }
+    ],
     "keywords": ["osi-approved"],
     "text": [{
         "title": "HTML",
@@ -826,7 +862,7 @@
 }, {
     "other_names": [],
     "identifiers": [{
-        "identifier": "Intel",
+        "identifier": "Intel license",
         "scheme": "SPDX"
     }, {
         "identifier": "License :: OSI Approved :: Intel Open Source License",
@@ -1013,22 +1049,16 @@
     "id": "LiLiQ-R-1.1"
 }, {
     "other_names": [{
-        "name": "MIT",
+        "name": "MIT License",
         "note": "Because MIT has used many licenses for software, the Free Software Foundation considers MIT License ambiguous. The MIT License published on the OSI site is the same as the Expat License."
     }, {
         "name": "Expat",
         "note": "Because MIT has used many licenses for software, the Free Software Foundation considers MIT License ambiguous. The MIT License published on the OSI site is the same as the Expat License."
     }],
     "identifiers": [{
-        "identifier": "MIT",
-        "scheme": "DEP5"
-    }, {
         "identifier": "Expat",
         "scheme": "DEP5"
-    }, {
-        "identifier": "MIT",
-        "scheme": "SPDX"
-    }, {
+    },  {
         "identifier": "License :: OSI Approved :: MIT License",
         "scheme": "Trove"
     }],
@@ -1136,7 +1166,11 @@
     "links": [{
         "note": "OSI Page",
         "url": "https://opensource.org/licenses/MS-PL"
-    }],
+    },
+      {
+        "note": "Outdated urls in Nuget",
+        "url": "http://www.microsoft.com/opensource/licenses.mspx#Ms-PL"
+      }],
     "text": [{
         "title": "HTML",
         "media_type": "text/html",
@@ -1336,7 +1370,7 @@
 }, {
     "other_names": [],
     "identifiers": [{
-        "identifier": "Nokia",
+        "identifier": "Nokia License",
         "scheme": "SPDX"
     }, {
         "identifier": "License :: OSI Approved :: Nokia Open Source License",
@@ -1534,7 +1568,16 @@
     "links": [{
         "note": "OSI Page",
         "url": "https://opensource.org/licenses/Python-2.0"
-    }],
+    },
+      {
+        "note": "Homepage",
+       "url": "https://docs.python.org/3/license.html"
+      },
+      {
+        "note": "Homepage",
+       "url": "https://docs.python.org/2.7/license.html"
+      }
+    ],
     "keywords": ["discouraged", "non-reusable", "osi-approved"],
     "text": [{
         "title": "HTML",

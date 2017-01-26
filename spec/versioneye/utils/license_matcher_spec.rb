@@ -11,7 +11,7 @@ describe LicenseMatcher do
   let(:pg_txt){ File.read("#{corpus_path}/PostgreSQL") }
   let(:lgpl_txt){ File.read("#{corpus_path}/LGPL-2.0") }
   let(:bsd3_txt){ File.read("#{corpus_path}/BSD-3") }
-  let(:dotnet_txt){ File.read('data/custom_licenses/msl_dotnet') }
+  let(:dotnet_txt){ File.read('data/custom_licenses/ms_dotnet') }
   let(:mit_issue11){ File.read("#{spec_path}/mit_issue11.txt")}   
 
   it "finds correct matches for text files" do
@@ -20,7 +20,7 @@ describe LicenseMatcher do
     expect( lic_matcher.match_text(lgpl_txt).first.first ).to eq('lgpl-2.0')
     expect( lic_matcher.match_text(pg_txt).first.first ).to eq('postgresql')
     expect( lic_matcher.match_text(bsd3_txt).first.first ).to eq('bsd-3')
-    expect( lic_matcher.match_text(dotnet_txt).first.first ).to eq('msl_dotnet')
+    expect( lic_matcher.match_text(dotnet_txt).first.first ).to eq('ms_dotnet')
   end
 
   it "matches MIT license so it could fix the issue#11" do
@@ -49,7 +49,7 @@ describe LicenseMatcher do
 
     expect( lic_matcher.match_html(mit_html).first.first ).to eq('mit')
     expect( lic_matcher.match_html(apache_html).first.first ).to eq('apache-2.0')
-    expect( lic_matcher.match_html(dotnet_html).first.first ).to eq('msl_dotnet')
+    expect( lic_matcher.match_html(dotnet_html).first.first ).to eq('ms_dotnet')
     expect( lic_matcher.match_html(bsd3_html).first.first ).to eq('bsd-3-clear')
 
     #how it handles noisy pages
@@ -82,7 +82,7 @@ describe LicenseMatcher do
 
   it "matches all the license files in the corpuse correctly" do
     lic_matcher.spdx_ids.each do |lic_id|
-      next if lic_id == 'msl_dotnet' or lic_id == 'cpol-1.02'
+      next if lic_id == 'ms_dotnet' or lic_id == 'cpol-1.02'
 
       lic_txt = File.read "#{corpus_path}/#{lic_id}"
 

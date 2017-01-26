@@ -78,12 +78,6 @@ class LicenseMatcher
       return []
 		end
 
-    text = preprocess_text(text)
-    if text.empty?
-      log.info "match_html: no content after preprocessing: #{html_doc}"
-      return []
-    end
-
     match_text(text, n)
   end
 
@@ -202,6 +196,11 @@ class LicenseMatcher
 
     #remove spam words
     text.gsub!(/\bTHE\b/i, '')
+    
+    #remove some XML grabage
+    text = text.gsub(/\<\!\[CDATA.*?\]\]\>/, ' ').to_s
+    text = text.gsub(/\<\!--.+?--\>/,  ' ').to_s
+    text = text.gsub(/<\!\[CDATA.+?\]>/, ' ').to_s
 
     return text.to_s.strip.gsub(/\s+/, ' ')	
 	end
@@ -209,13 +208,17 @@ class LicenseMatcher
 	def clean_html(html_doc)
     body_text = ""
 		body_elements = html_doc.xpath(
-      '//p | //h1 | //h2 | //h3 | //h4 | //h5 | //h6 | //em | //strong | //td | //pre
-      | //li[not(@id) and not(@class) and not(a)]'
+      '//p | //h1 | //h2 | //h3 | //h4 | //h5 | //h6 | //em | //strong | //b | //td | //pre
+      | //li[not(@id) and not(@class) and not(a)] | //section//section[@class="project-info"]
+      | //blockquote '
     ).to_a
 
 		#extract text from html tag and separate them by space
 		body_elements.each {|el| body_text += ' ' + el.text.to_s}
-		body_text = body_text.to_s.strip
+
+    #REMOVE XML CDATA like opensource.org pages has
+    body_text = body_text.to_s.strip
+    body_text.gsub!(/\<\!\[CDATA.+?\]\]\>/i, ' ')
 
     if body_text.empty?
       log.error "match_html: document didnt pass noise filter, will use whole body content"
@@ -227,10 +230,7 @@ class LicenseMatcher
 
 	def parse_html(html_text)
     begin
-      html_text = safe_encode(text)
-      return Nokogiri.HTML(html_text) do |config|
-        config.options = Nokogiri::XML::ParseOptions::STRICT | Nokogiri::XML::ParseOptions::NOBLANKS
-      end
+      return Nokogiri.HTML(safe_encode(html_text))
     rescue Exception => e
       log.error "failed to parse html doc: \n #{html_text}"
       return nil
@@ -508,7 +508,9 @@ class LicenseMatcher
                           /\bBSDLv2\b/i
                          ],
       "BSD-3"  				=> [/\bBSD[-|_|\s]?v?3\b/i, /\bBSD[-|\s]3[-\s]CLAUSE\b/i,
-                          /\bBDS[-|_|\s]3[-|\s]CLAUSE\b/i, /\ABDS\s*\z/i, /^various\/BSDish\s*$/],
+                          /\bBDS[-|_|\s]3[-|\s]CLAUSE\b/i,
+                          /\bthree-clause\sBSD\slicen[s|c]e\b/i,
+                          /\ABDS\s*\z/i, /^various\/BSDish\s*$/],
       "BSD-4"  				=> [
                           /\bBSD[-|_|\s]?v?4/i, /\ABSD\s*\z/i, /\ABSD\s+LI[s|c]EN[S|C]E\s*\z/i,
                           /\bBSD-4-CLAUSE\b/i,
@@ -607,7 +609,6 @@ class LicenseMatcher
                             /\bCommon\sPublic\sAttribution\sLicense\s1\.0\b/i,
                             /[\(]?\bCPAL\b[\)]?/i
                           ],
-
       "DBAD"          => [
                           /\bDONT\sBE\sA\sDICK\b/i, /\ADBAD\s*\z/i,
                           /\bdbad[-|\s|\_]license\b/i, /\ADBAD-1\s*\z/i,
@@ -632,10 +633,10 @@ class LicenseMatcher
                           /\bEiffel\sForum\sLicense\b/i
                          ],
       "EPL-1.0"       => [
-                          /\bEPL[-|\s|_]?v?1\.0\b/i, /\bEPL[-|\s|_]?v?1\b/i, /\bEPL\b/,
+                          /\bEPL[-|\s|_]?v?1\.0\b/i, /\bEPL[-|\s|_]?v?1\b/i,                         
                           /\bECLIPSE\s+PUBLIC\s+LICENSE\s+[v]?1\.0\b/i,
                           /\bECLIPSE\s+PUBLIC\s+LICENSE\b/i,
-                          /^ECLIPSE$/i
+                          /^ECLIPSE$/i, /\AEPL\s*\z/
                          ],
       "ESA-1.0"       => [
                           /\bESCL\s+[-|_]?\sType\s?1\b/,
@@ -649,6 +650,7 @@ class LicenseMatcher
                           /\bEUPL\s+V?\.?1\.1\b/i, /\AEUPL\s*\z/i
                          ],
       "Fair"          => [ /\bFAIR\s+LICENSE\b/i, /\AFair\s*\z/i],
+      "FreeType"      => [ /\bFreeType\s+LICENSE\b/i],
       "GFDL-1.0"      => [
                           /\bGNU\sFree\sDocumentation\sLicense\b/i,
                           /\b[\(]?FDL[\)]?\b/
@@ -667,18 +669,17 @@ class LicenseMatcher
                           /\bWhatever\slicense\sPlone\sis\b/i
                          ],
       "GPL-3.0"       => [
-                          /\bGPL[-|\s|_]?v?3\.0\b/i, /\bGPL[-|\s|_]?v?[\.]?3\b/i, /\bGPL\s+3\b/i,
                           /\bGNU\s+GENERAL\s+PUBLIC\s+License\s+[v]?3\b/i,
+                          /\bGNU\s+General\s+Public\s+License[\,]?\sVersion\s3[\.0]?\b/i,
                           /\bGNU\sPublic\sLicense\sv?3\.0\b/i,
                           /\bGNU\s+PUBLIC\s+LICENSE\s+v?3\b/i,
                           /\bGnu\sPublic\sLicense\sversion\s3\b/i,
                           /\bGNU\sGeneral\sPublic\sLicense\sversion\s?3\b/i,
-                          /\bGNU\sGENERAL\sPUBLIC\sLICENSE\b/i,
+                          /\bGPL[-|\s|_]?v?3\.0\b/i, /\bGPL[-|\s|_]?v?[\.]?3\b/i, /\bGPL\s+3\b/i,
                           /\bGNU\s+PUBLIC\s+v3\+?\b/i,
                           /\bGNUGPL[-|\s|\_]?v?3\b/i, /\bGNU\s+PL\s+[v]?3\b/i,
                           /\bGLPv3\b/i, /\bGNU3\b/i, /GPvL3/i, /\bGNU\sGLP\sv?3\b/i,
-                          /\A[\(]?GPL[\)]?\s*\z/i,
-
+                          /\AGNU\sGENERAL\sPUBLIC\sLICENSE\s*\z/i, /\A[\(]?GPL[\)]?\s*\z/i
                          ],
 
       "IDPL-1.0"      => [
@@ -707,11 +708,12 @@ class LicenseMatcher
                           /\bhttps?:\/\/www\.gnu\.org\/copyleft\/lesser.html\b/i,
                           /\bLESSER\sGENERAL\sPUBLIC\sLICENSE\sVersion\s3\b/i,
                           /\bLesser\sGeneral\sPublic\sLicense[\,]?\sversion\s3\.0\b/i,
+                          /\bLESSER\sGENERAL\sPUBLIC\sLICENSE.+?version\s?3/i,
                           /\A[\(]?LGPL[\)]?\s*\z/i
                          ],
       "MirOS"         => [/\bMirOS\b/i],
       "MIT"           => [
-                          /\bMIT\s+LICEN[S|C]E\b/i, /\bMITL?\b/i, /\bEXPAT\b/i,
+                          /\bMIT\s+LICEN[S|C]E\b/i, /\AMITL?\s*\z/i, /\bEXPAT\b/i,
                           /\bMIT[-|\_]LICENSE\.\w{2,8}\b/i, /^MTI\b/i,
                           /\bMIT[-|\s|\_]?v?2\.0\b/i, /\AM\.I\.T[\.]?\s*\z/,
                           /\bMassachusetts-Institute-of-Technology-License/i
@@ -733,6 +735,7 @@ class LicenseMatcher
                          ],
       "MS-PL"         => [/\bMS-?PL\b/i],
       "MS-RL"         => [/\bMS-?RL\b/i, /\bMSR\-LA\b/i],
+      "ms_dotnet"     => [/\bMICROSOFT\sSOFTWARE\sLICENSE\sTERMS\b/i],
       "NASA-1.3"      => [/\bNASA[-|\_|\s]?v?1\.3\b/i,
                           /\bNASA\sOpen\sSource\sAgreement\sversion\s1\.3\b/i],
       "NCSA"          => [/\bNCSA\s+License\b/i, /\bIllinois\/NCSA\sOpen\sSource\b/i, /\bNCSA\b/i ],
@@ -805,7 +808,7 @@ class LicenseMatcher
                           /\ADWHTFYWTPL\s*\z/i, /\AWhatever\s*\z/i,
                           /\bDO\s(THE\s)?FUCK\sWHAT\sYOU\sWANT\b/i
                          ],
-      "WXwindows"     => [/\bwxWINDOWS\s+LIBRARY\sLICEN[C|S]E\b/i, /\bWXwindows\b/i],
+      "WXwindows"     => [/\bwxWINDOWS\s+LIBRARY\sLICEN[C|S]E\b/i, /\AWXwindows\s*\z/i],
       "X11"           => [/\bX11\b/i],
       "Zend-2.0"      => [/\bZend\sFramework\b/i],
       "ZPL-1.1"       => [/\bZPL[-|\s|\_]?v?1\.1\b/i, /\bZPL[-|\s|\_]?v?1(?!\.)\b/i,
