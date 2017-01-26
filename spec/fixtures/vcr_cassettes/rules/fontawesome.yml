@@ -1,0 +1,272 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://fontawesome.io/license/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Thu, 26 Jan 2017 11:48:52 GMT
+      Content-Type:
+      - text/html; charset=utf-8
+      Last-Modified:
+      - Thu, 22 Dec 2016 20:54:30 GMT
+      Access-Control-Allow-Origin:
+      - "*"
+      Expires:
+      - Thu, 26 Jan 2017 11:58:52 GMT
+      Cache-Control:
+      - max-age=600
+      X-Github-Request-Id:
+      - CB11:2B054:4864721:62E61A3:5889E224
+      Age:
+      - '0'
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <!-- Basic Page Needs\n
+        ================================================== -->\n  <meta charset=\"utf-8\"
+        />\n  <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n
+        \ <meta name=\"description\" content=\"Font Awesome, the iconic font and CSS
+        framework\">\n  <meta name=\"author\" content=\"Dave Gandy\">\n  <meta http-equiv=\"X-UA-Compatible\"
+        content=\"IE=edge\">\n  <link rel=\"shortcut icon\" href=\"../assets/ico/favicon.ico\">\n\n
+        \ <title>Font Awesome License</title>\n\n  <!-- CSS\n  ==================================================
+        -->\n  <link rel=\"stylesheet\" href=\"../assets/css/site.css\">\n  <link
+        rel=\"stylesheet\" href=\"../assets/css/pygments.css\">\n  <link rel=\"stylesheet\"
+        href=\"../assets/font-awesome/css/font-awesome.css\">\n\n  <!--[if lt IE 9]>\n
+        \   <script src=\"../assets/js/html5shiv.js\"></script>\n    <script src=\"../assets/js/respond.min.js\"></script>\n
+        \ <![endif]-->\n\n  <script src=\"https://use.fonticons.com/ffe176a3.js\"></script>\n\n
+        \ <script>\n    var _gaq = _gaq || [];\n    _gaq.push(['_setAccount', 'UA-30136587-1']);\n
+        \   _gaq.push(['_trackPageview']);\n\n    (function() {\n      var ga = document.createElement('script');\n
+        \     ga.src = 'https://www.google-analytics.com/ga.js';\n      var s = document.scripts[0];\n
+        \     s.parentNode.insertBefore(ga, s);\n    })();\n  </script>\n</head>\n<body
+        class=\"font-awesome \">\n  <div id=\"wrap\"> <!-- necessary for sticky footer.
+        wrap all content except footer -->\n    <div class=\"collapse hidden-print\"
+        id=\"banner\">\n  <div class=\"container\">\n    <div class=\"message-container\">\n
+        \     <div class=\"tagline\">\n        <span id=\"rotating-message\"></span>\n
+        \     </div>\n      <div class=\"action\">\n        <a id=\"rotating-url\"
+        class=\"btn btn-primary btn-lg btn-block\" href=\"\" target=\"_blank\"></a>\n
+        \     </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"navbar navbar-inverse
+        navbar-static-top hidden-print\">\n  <div class=\"container\">\n    <div class=\"navbar-header\">\n
+        \     <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\"
+        data-target=\".navbar-collapse\">\n        <i class=\"fa fa-bars fa-lg\" aria-hidden=\"true\"
+        title=\"Toggle navigation\"></i>\n        <span class=\"sr-only\">Toggle navigation</span>\n
+        \     </button>\n      <a class=\"navbar-brand\" href=\"../\"><i class=\"fa
+        fa-font-awesome\" aria-hidden=\"true\"></i> Font Awesome</a>\n    </div>\n\n
+        \   <div class=\"navbar-collapse collapse\">\n      <ul class=\"nav navbar-nav\">\n
+        \       <li class=\"hidden-sm \"><a href=\"../\">Home</a></li>\n        <li
+        class=\"hidden-sm\">\n          <a href=\"../whats-new/\">What's New</a>\n
+        \       </li>\n        <li class=\"hidden-xs hidden-md hidden-lg\">\n          <a
+        href=\"../whats-new/\">New</a>\n        </li>\n\n        <li class=\"hidden-sm\"><a
+        href=\"../get-started/\">Get Started</a></li>\n        <li class=\"hidden-xs
+        hidden-md hidden-lg\">\n          <a href=\"../get-started/\">Start</a>\n
+        \       </li>\n\n        <li class=\"dropdown-split-left\"><a href=\"../icons/\">Icons</a></li>\n
+        \       <li class=\"dropdown dropdown-split-right hidden-xs\">\n          <a
+        href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n            <i
+        class=\"fa fa-caret-down\" aria-hidden=\"true\" title=\"Toggle dropdown menu\"></i>\n
+        \           <span class=\"sr-only\">Toggle dropdown menu</span>\n            <span
+        class=\"toggle drop down\"></span>\n          </a>\n          <ul class=\"dropdown-menu
+        pull-right\">\n            <li><a href=\"../icons/\"><i class=\"fa fa-flag
+        fa-fw\" aria-hidden=\"true\"></i>&nbsp; All Icons</a></li>\n            <li
+        class=\"divider\"></li>\n            <li><a href=\"../icons/#new\"><i class=\"fa
+        fa-handshake-o fa-fw\" aria-hidden=\"true\"></i>&nbsp; New Icons in 4.7</a></li>\n
+        \           <li><a href=\"../icons/#web-application\"><i class=\"fa fa-camera-retro
+        fa-fw\" aria-hidden=\"true\"></i>&nbsp; Web Application Icons</a></li>\n            <li><a
+        href=\"../icons/#accessibility\"><i class=\"fa fa-universal-access fa-fw\"
+        aria-hidden=\"true\"></i>&nbsp; Accessibility Icons</a></li>\n            <li><a
+        href=\"../icons/#hand\"><i class=\"fa fa-hand-spock-o fa-fw\" aria-hidden=\"true\"></i>&nbsp;
+        Hand Icons</a></li>\n            <li><a href=\"../icons/#transportation\"><i
+        class=\"fa fa-ship fa-fw\" aria-hidden=\"true\"></i>&nbsp; Transportation
+        Icons</a></li>\n            <li><a href=\"../icons/#gender\"><i class=\"fa
+        fa-venus fa-fw\" aria-hidden=\"true\"></i>&nbsp; Gender Icons</a></li>\n            <li><a
+        href=\"../icons/#file-type\"><i class=\"fa fa-file-image-o fa-fw\" aria-hidden=\"true\"></i>&nbsp;
+        File Type Icons</a></li>\n            <li><a href=\"../icons/#spinner\"><i
+        class=\"fa fa-spinner fa-fw\" aria-hidden=\"true\"></i>&nbsp; Spinner Icons</a></li>\n
+        \           <li><a href=\"../icons/#form-control\"><i class=\"fa fa-check-square
+        fa-fw\" aria-hidden=\"true\"></i>&nbsp; Form Control Icons</a></li>\n            <li><a
+        href=\"../icons/#payment\"><i class=\"fa fa-credit-card fa-fw\" aria-hidden=\"true\"></i>&nbsp;
+        Payment Icons</a></li>\n            <li><a href=\"../icons/#chart\"><i class=\"fa
+        fa-pie-chart fa-fw\" aria-hidden=\"true\"></i>&nbsp; Chart Icons</a></li>\n
+        \           <li><a href=\"../icons/#currency\"><i class=\"fa fa-won fa-fw\"
+        aria-hidden=\"true\"></i>&nbsp; Currency Icons</a></li>\n            <li><a
+        href=\"../icons/#text-editor\"><i class=\"fa fa-file-text-o fa-fw\" aria-hidden=\"true\"></i>&nbsp;
+        Text Editor Icons</a></li>\n            <li><a href=\"../icons/#directional\"><i
+        class=\"fa fa-arrow-right fa-fw\" aria-hidden=\"true\"></i>&nbsp; Directional
+        Icons</a></li>\n            <li><a href=\"../icons/#video-player\"><i class=\"fa
+        fa-play-circle fa-fw\" aria-hidden=\"true\"></i>&nbsp; Video Player Icons</a></li>\n
+        \           <li><a href=\"../icons/#brand\"><i class=\"fa fa-facebook-official
+        fa-fw\" aria-hidden=\"true\"></i>&nbsp; Brand Icons</a></li>\n            <li><a
+        href=\"../icons/#medical\"><i class=\"fa fa-medkit fa-fw\" aria-hidden=\"true\"></i>&nbsp;
+        Medical Icons</a></li>\n          </ul>\n        </li>\n        <li class=\"dropdown-split-left\"><a
+        href=\"../examples/\">Examples</a></li>\n        <li class=\"dropdown dropdown-split-right
+        hidden-xs\">\n          <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">\n
+        \           <i class=\"fa fa-caret-down\" aria-hidden=\"true\" title=\"Toggle
+        dropdown menu\"></i>\n            <span class=\"sr-only\">Toggle dropdown
+        menu</span>\n            <span class=\"toggle drop down\"></span>\n          </a>\n
+        \         <ul class=\"dropdown-menu pull-right\">\n            <li><a href=\"../examples/\">Examples</a></li>\n
+        \           <li class=\"divider\"></li>\n            <li><a href=\"../examples/#basic\">Basic
+        Icons</a></li>\n            <li><a href=\"../examples/#larger\">Larger Icons</a></li>\n
+        \           <li><a href=\"../examples/#fixed-width\">Fixed Width Icons</a></li>\n
+        \           <li><a href=\"../examples/#list\">List Icons</a></li>\n            <li><a
+        href=\"../examples/#bordered-pulled\">Bordered & Pulled Icons</a></li>\n            <li><a
+        href=\"../examples/#animated\">Animated Icons</a></li>\n            <li><a
+        href=\"../examples/#accessible\">Accessibility-Minded</a></li>\n            <li><a
+        href=\"../examples/#rotated-flipped\">Rotated &amp; Flipped Icons</a></li>\n
+        \           <li><a href=\"../examples/#stacked\">Stacked Icons</a></li>\n
+        \           <li><a href=\"../examples/#bootstrap\">Bootstrap 3 Examples</a></li>\n
+        \           <li><a href=\"../examples/#custom\">Custom CSS</a></li>\n          </ul>\n
+        \       </li>\n        <li class=\"hidden-sm\"><a href=\"../accessibility/\">Accessibility</a></li>\n
+        \       <li class=\"hidden-xs hidden-md hidden-lg\"><a href=\"../accessibility/\"><i
+        class=\"fa fa-universal-access\"></i></a></li>\n        <li><a href=\"../community/\">Community</a></li>\n
+        \       <li class=\"active\"><a href=\"../license/\">License</a></li>\n      </ul>\n\n
+        \     <ul class=\"nav navbar-nav navbar-right\">\n        <li><a href=\"http://articles.fortawesome.com\">Blog</a></li>\n
+        \     </ul>\n    </div>\n  </div>\n</div>\n\n\n    \n\n\n<div class=\"jumbotron
+        jumbotron-ad hidden-print\">\n  <div class=\"container\">\n    \n    <h1><i
+        class=\"fa fa-gavel\" aria-hidden=\"true\"></i>&nbsp; License</h1>\n    <p>The
+        full details of how Font Awesome is licensed</p>\n    \n  </div>\n</div>\n\n<div
+        id=\"social-buttons\" class=\"hidden-print\">\n  <div class=\"container\">\n
+        \   <form id=\"newsletter\" method=\"post\" action=\"https://formkeep.com/f/ba101f5b69f0\">\n
+        \ <div class=\"row\">\n    <div class=\"col-md-4 col-md-offset-2 col-sm-6\">\n
+        \     <div class=\"form-group margin-bottom\">\n        <input name=\"email\"
+        type=\"email\" class=\"form-control\" id=\"email\" placeholder=\"Enter your
+        email address&hellip;\" required>\n      </div>\n    </div>\n    <div class=\"col-md-4
+        col-sm-6\">\n      <button type=\"submit\" class=\"btn btn-success btn-block
+        margin-bottom-lg\"\n          data-toggle=\"popover\" data-trigger=\"hover\"
+        data-placement=\"top\" title=\"Stay up to date with the Awesome\"\n          data-content=\"We'll
+        send you updates on new Font Awesome releases, icons, and other stuff that
+        we're working on. We won't spam you. Scout's honor.\">\n        Subscribe
+        to Font Awesome Updates&nbsp;&nbsp;<i class=\"fa fa-envelope\" aria-hidden=\"true\"></i>\n
+        \     </button>\n    </div>\n  </div>\n</form>\n\n    <ul class=\"list-inline\">\n
+        \     <li>\n        <iframe class=\"github-btn\" src=\"https://ghbtns.com/github-btn.html?user=FortAwesome&repo=Font-Awesome&type=watch&count=true\"
+        allowtransparency=\"true\" frameborder=\"0\" scrolling=\"0\" width=\"100px\"
+        height=\"20px\"></iframe>\n      </li>\n      <li>\n        <iframe class=\"github-btn\"
+        src=\"https://ghbtns.com/github-btn.html?user=FortAwesome&repo=Font-Awesome&type=fork&count=true\"
+        allowtransparency=\"true\" frameborder=\"0\" scrolling=\"0\" width=\"102px\"
+        height=\"20px\"></iframe>\n      </li>\n      <li class=\"follow-btn\">\n
+        \       <a href=\"https://twitter.com/fontawesome\" class=\"twitter-follow-button\"
+        data-link-color=\"#000000\" data-show-count=\"true\">Follow @fontawesome</a>\n
+        \     </li>\n      <li class=\"tweet-btn hidden-phone\">\n        <a href=\"https://twitter.com/share\"
+        class=\"twitter-share-button\" data-url=\"http://fontawesome.io\" data-text=\"Font
+        Awesome, the iconic font and CSS framework\" data-counturl=\"http://fortawesome.github.com/Font-Awesome/\"
+        data-count=\"horizontal\" data-via=\"fontawesome\" data-related=\"davegandy:Creator
+        of Font Awesome\">Tweet</a>\n      </li>\n    </ul>\n  </div>\n</div>\n\n\n<div
+        class=\"container\">\n  \n  <section class=\"hidden-print\">\n  <div class=\"stripe-ad\">\n
+        \   <script async type=\"text/javascript\" src=\"//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=fontawesome\"
+        id=\"_carbonads_js\"></script>\n\n    \n  <p class=\"lead\">\n    Font Awesome
+        is fully open source and is GPL friendly. You can use it for commercial projects,
+        open source\n    projects, or really just about whatever you want.\n  </p>\n
+        \ \n  </div>\n</section>\n\n\n  <section>\n    <div class=\"alert alert-success\">\n
+        \     <ul class=\"fa-ul margin-bottom-none\">\n        <li>\n          <i
+        class=\"fa-li fa fa-info-circle fa-lg\" aria-hidden=\"true\"></i>Attribution
+        is no longer required as of Font Awesome 3.0 but is much appreciated:\n          \"Font
+        Awesome by Dave Gandy - http://fontawesome.io\".\n        </li>\n      </ul>\n
+        \   </div>\n  </section>\n\n  <section>\n    <h2 class=\"page-header\">Font
+        License</h2>\n    <ul>\n      <li>\n        Applies to all desktop and webfont
+        files in the following directory:\n        <code>font-awesome/fonts/</code>.\n
+        \     </li>\n      <li>License: SIL OFL 1.1</li>\n      <li>URL: <a href=\"http://scripts.sil.org/OFL\">http://scripts.sil.org/OFL</a></li>\n
+        \   </ul>\n  </section>\n\n  <section>\n    <h2 class=\"page-header\">Code
+        License</h2>\n    <ul>\n      <li>\n        Applies to all CSS and LESS files
+        in the following directories:\n        <code>font-awesome/css/</code>,\n        <code>font-awesome/less/</code>,
+        and\n        <code>font-awesome/scss/</code>.\n      </li>\n      <li>License:
+        MIT License</li>\n      <li>URL: <a href=\"http://opensource.org/licenses/mit-license.html\">http://opensource.org/licenses/mit-license.html</a></li>\n
+        \   </ul>\n  </section>\n\n  <section>\n    <h2 class=\"page-header\">Documentation
+        License</h2>\n    <ul>\n      <li>Applies to all Font Awesome project files
+        that are not a part of the Font or Code licenses.</li>\n      <li>License:
+        CC BY 3.0</li>\n      <li>URL: <a href=\"http://creativecommons.org/licenses/by/3.0/\">http://creativecommons.org/licenses/by/3.0/</a></li>\n
+        \   </ul>\n  </section>\n\n  <section>\n    <h2 class=\"page-header\">Brand
+        Icons</h2>\n    <ul class=\"margin-bottom-none padding-left-lg\">\n  <li>All
+        brand icons are trademarks of their respective owners.</li>\n  <li>The use
+        of these trademarks does not indicate endorsement of the trademark holder
+        by Font Awesome, nor vice versa.</li>\n  <li>Brand icons should only be used
+        to represent the company or product to which they refer.</li>\n  <li class=\"strong\">Please
+        do not use brand logos for any purpose except to represent that particular
+        brand or service.</li>\n</ul>\n\n  </section>\n</div>\n\n  </div>\n  <footer
+        id=\"footer\" class=\"footer hidden-print\">\n  <div class=\"container text-center\">\n
+        \   <div id=\"inventory\">\n      <a href=\"http://www.wpbeginner.com/?utm_source=fontawesome_footer&utm_medium=banner&utm_campaign=fontawesome\"\n
+        \         title=\"Beginner's Guide to WordPress\" target=\"_blank\" rel=\"nofollow\"\n
+        \         onClick=\"_gaq.push(['_trackEvent', 'Outbound Link', 'wpbeginner.com']);\">\n
+        \       <img src=\"../assets/img/logo-wpbeginner.png\" width=\"220\" height=\"65\"
+        alt=\"\">\n      </a>\n      <a href=\"http://themeisle.com/?utm_source=fontawesome_footer&utm_medium=banner&utm_campaign=fontawesome\"\n
+        \         title=\"Premium Wordpress Themes\" target=\"_blank\" rel=\"nofollow\"\n
+        \         onClick=\"_gaq.push(['_trackEvent', 'Outbound Link', 'themeisle.com']);\">\n
+        \       <img src=\"../assets/img/logo-themeisle.png\" width=\"220\" height=\"65\"
+        alt=\"\">\n      </a>\n    </div>\n    <div>\n      <i class=\"fa fa-flag\"
+        aria-hidden=\"true\"></i> Font Awesome 4.7.0\n      <span class=\"hide-xs\">&middot;</span><br
+        class=\"hide-sm hide-md hide-lg\">\n      Created by <a href=\"https://twitter.com/davegandy\">Dave
+        Gandy</a>\n    </div>\n    <div>\n      Font Awesome licensed under <a href=\"http://scripts.sil.org/OFL\">SIL
+        OFL 1.1</a>\n      <span class=\"hide-xs\">&middot;</span><br class=\"hide-sm
+        hide-md hide-lg\">\n      Code licensed under <a href=\"http://opensource.org/licenses/mit-license.html\">MIT
+        License</a>\n      <span class=\"hide-xs hide-sm\">&middot;</span><br class=\"hide-md
+        hide-lg\">\n      Documentation licensed under <a href=\"http://creativecommons.org/licenses/by/3.0/\">CC
+        BY 3.0</a>\n    </div>\n    <div>\n      Thanks to <a href=\"http://tracking.maxcdn.com/c/148092/3982/378/\"><i
+        class=\"fa fa-maxcdn\"></i> MaxCDN</a> for providing the excellent <a href=\"https://www.bootstrapcdn.com/fontawesome/\">BootstrapCDN
+        for Font Awesome</a>\n    </div>\n    <div class=\"project\">\n      <a href=\"https://github.com/FortAwesome/Font-Awesome\">GitHub
+        Project</a> &middot;\n      <a href=\"https://github.com/FortAwesome/Font-Awesome/issues\">Issues</a>
+        &middot;\n      <a href=\"../3.2.1\">Old 3.2.1 Docs</a>\n    </div>\n  </div>\n</footer>\n\n
+        \ <div class=\"modal\" id=\"modal-fa5\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal-fa5-label\">\n
+        \ <div class=\"modal-dialog modal-lg\" role=\"document\">\n    <div class=\"modal-content\">\n
+        \     <div class=\"modal-header\">\n        <button type=\"button\" class=\"close\"
+        data-dismiss=\"modal\" aria-label=\"Close\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i><span
+        class=\"close\"></span></button>\n        <h2 class=\"modal-title\" id=\"modal-fa5-label\">Font
+        Awesome 5 Pre-Orders Now Available!</h2>\n      </div>\n      <div class=\"modal-body\">\n\n
+        \       <style>.embed-container { position: relative; padding-bottom: 56.25%;
+        height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container
+        object, .embed-container embed { position: absolute; top: 0; left: 0; width:
+        100%; height: 100%; }</style>\n        <div class='embed-container'>\n          <iframe
+        id=\"fa5-iframe\" src=\"https://www.kickstarter.com/projects/232193852/font-awesome-5/widget/video.html\"
+        frameborder=\"0\" scrolling=\"no\" allowfullscreen></iframe>\n        </div>\n\n
+        \       <p class=\"lead text-center margin-top-lg margin-bottom-lg\">\n          Pre-order
+        and get Font Awesome 5 Pro and <strong>ALL</strong> stretch goals for just
+        $40!\n        </p>\n        <a class=\"btn btn-fa5 btn-lg btn-block\" href=\"http://five.fontawesome.com\"
+        target=\"_blank\"\n           onClick=\"_gaq.push(['_trackEvent', 'Outbound
+        Modal Link', 'Pre-Order']);\">\n          <h3 class=\"margin text-sans-serif
+        strong\">Pre-Order! &nbsp;<i class=\"fa fa-external-link-square\" aria-hidden=\"true\"></i></h3>\n
+        \       </a>\n\n      </div>\n    </div>\n  </div>\n</div>\n\n  <script src=\"https://platform.twitter.com/widgets.js\"></script>\n
+        \ <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js\"></script>\n
+        \ <script src=\"https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js\"></script>\n
+        \ <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js\"></script>\n
+        \ <script src=\"https://cdn.jsdelivr.net/algoliasearch/3.13.1/algoliasearch.jquery.min.js\"
+        integrity=\"sha256-2MTQjOt4Q02v+W/QjgCO5yv+si9RAo/o/RGR5alVYzY=\" crossorigin=\"anonymous\"></script>\n
+        \ <script src=\"https://cdn.jsdelivr.net/algoliasearch.helper/2.9.1/algoliasearch.helper.min.js\"
+        integrity=\"sha256-MhjLBzVVNkMEKnIE2ueYNb7QSj+oiSv4x89dlui09hg=\" crossorigin=\"anonymous\"></script>\n
+        \ <script src=\"https://cdn.jsdelivr.net/underscorejs/1.8.3/underscore-min.js\"
+        integrity=\"sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=\" crossorigin=\"anonymous\"></script>\n
+        \ <script src=\"https://cdn.jsdelivr.net/backbonejs/1.2.2/backbone-min.js\"
+        integrity=\"sha256-p6bkfFqmxtebrKOS+wyGi+Qf3d111eWUQP67keyXJ6Q=\" crossorigin=\"anonymous\"></script>\n
+        \ <script src=\"https://cdn.jsdelivr.net/jsdelivr-rum/1.5/jsdelivr-rum.min.js\"
+        integrity=\"sha256-HlY2rbkgbiHhtilMXmQ86rjL/EIxGDtdg9GU9/T2ZxE=\" crossorigin=\"anonymous\"></script>\n
+        \ <script src=\"../assets/js/site.js\"></script>\n  <script src=\"../assets/js/search.js\"></script>\n
+        \ <script src=\"../assets/js/monetization.js\" type=\"text/javascript\"></script>\n\n
+        \ <script>\n    (function(){\n      // format, zoneKey, segment:value, options\n
+        \     _bsa.init('imageonly', 'CVADP2Y', 'placement:demo', {\n        target:
+        '#inventory',\n        disable_css: true,\n        path: 'http://inventory.fontawesome.io/api/inventory?zone=CVADP2Y'\n
+        \     });\n    })();\n  </script>\n\n  <!-- Facebook Pixel Code -->\n  <script>\n
+        \ !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?\n
+        \ n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;\n
+        \ n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;\n
+        \ t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,\n
+        \ document,'script','https://connect.facebook.net/en_US/fbevents.js');\n\n
+        \ fbq('init', '590758314440297');\n  fbq('track', \"PageView\");</script>\n
+        \ <noscript><img height=\"1\" width=\"1\" style=\"display:none\"\n  src=\"https://www.facebook.com/tr?id=590758314440297&ev=PageView&noscript=1\"\n
+        \ /></noscript>\n  <!-- End Facebook Pixel Code -->\n  </body>\n</html>\n"
+    http_version: 
+  recorded_at: Thu, 26 Jan 2017 11:48:52 GMT
+recorded_with: VCR 3.0.3
