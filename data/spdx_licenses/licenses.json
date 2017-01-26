@@ -234,6 +234,10 @@
       {
         "note": "Wikipedia page",
         "url": "https://en.wikipedia.org/wiki/Apache_License"
+      },
+      {
+        "note": "Amazon Apache",
+        "url": "https://aws.amazon.com/apache-2-0"
       }
     ],
     "id": "Apache-2.0",
@@ -1053,7 +1057,7 @@
     ],
     "identifiers": [
       {
-        "identifier": "Fair",
+        "identifier": "Fair license",
         "scheme": "SPDX"
       }
     ],

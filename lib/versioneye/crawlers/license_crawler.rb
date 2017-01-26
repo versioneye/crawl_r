@@ -54,45 +54,71 @@ class LicenseCrawler < Versioneye::Crawl
       failed += process_license( license, lic_matcher, url_cache, min_confidence, update ).to_i
     end
 
-    logger.info "crawl_unidentified_urls: done! crawled #{n} licenses, skipped: #{failed}"
+    logger.info "crawl_unidentified_urls: done! crawled #{n} licenses, unknown: #{failed}"
   end
 
 
   def self.process_license( license, lic_matcher, url_cache, min_confidence = 0.9, update = false )
+    failed = 1
+
     the_url = parse_url(license[:url])
     if the_url.to_s.empty?
       logger.error "#{license.to_s} - not valid url #{license[:url]}"
-      return 0
+      return failed
     end
 
     # First try to match by url without doing http request
     spdx_id, score = lic_matcher.match_url(the_url)
-
-    if spdx_id.nil?
-      spdx_id, score = url_cache.fetch(the_url) do
-                        logger.info "crawl_unidentified_urls: going to fetch license text from #{the_url}"
-                        fetch_and_match_license_url(lic_matcher, license.to_s, the_url)
-                      end
-
+    if spdx_id
+      best_matches = [[spdx_id, score]]
+    else
+      #second try cached result first, but if no cached result, then go to internet
+      best_matches = url_cache.fetch(the_url) do
+        logger.info "process_license: going to fetch license text from #{the_url}"
+        fetch_and_match_license_url(lic_matcher, license.to_s, the_url, min_confidence)
+      end
     end
 
+    if best_matches.nil? or best_matches.first.to_a.empty?
+      log.error "process_license: no match for #{license.to_s} -> #{the_url}"
+      return failed
+    end
+
+    if best_matches.size > 3
+      log.warn "process_license: matched too many licenses: #{the_url} \n #{best_matches}"
+      update = false #dont update projects with too many licenses #TODO: re-evaluate logic
+    end
+
+    best_matches.to_a.each do |m|
+      next if m.size < 2 #empty array
+
+      if m[0] and m[1] >= min_confidence
+        log.info "process_license: match for #{license.to_s}: \n #{m}"
+        save_detected_match(license.to_s, the_url, m) if update
+      else
+        #dont debug low score results in match_text
+        log.error "process_license: too low confidence for #{license.to_s}: #{m}"
+      end
+    end
+    
+    return 0
+  #rescue => e
+  #  logger.error "ERROR in process_license - #{e.message}"
+  #  0
+  end
+
+  def self.save_detected_match(prod_id, the_url, spdx_match)
+    spdx_id, score = spdx_match
     if spdx_id.nil?
-      logger.warn "crawl_unidentified_urls: detected no licenses for #{the_url}"
+      logger.warn "save_detected_match: no license spdx_id for #{prod_id}: #{spdx_match}"
       return 1
     end
 
-    if score >= min_confidence
-      license.spdx_id = spdx_id
-      license.comments = "#{license.language}_license_crawler_update"
-      license.save if update
-      logger.info " -- updated #{license.to_s} SPDX ID #{spdx_id} from #{the_url}"
-    else
-      logger.info "-- too low confidence #{score} for #{spdx_id}: #{the_url}"
-    end
+    license.spdx_id = spdx_id
+    license.comments = "#{license.language}_license_crawler_update"
+    logger.info "save_detected_match -- updated #{prod_id} SPDX ID #{spdx_id} from #{the_url}"
+
     return 0
-  rescue => e
-    logger.error "ERROR in process_license - #{e.message}"
-    0
   end
 
 
@@ -103,39 +129,47 @@ class LicenseCrawler < Versioneye::Crawl
   #   prod_id - license id, it used only for logging
   #   url - string with valid url
   # returns:
-  #  [spdx_id, confidence] - a tuple with the best match
-  def self.fetch_and_match_license_url(lic_matcher, prod_id, url = nil)
+  #  [[spdx_id, confidence], ...] - list of best matching licenses
+  def self.fetch_and_match_license_url(lic_matcher, prod_id, url = nil, min_confidence = 0.9)
 
     the_url = parse_url(url.to_s)
     if the_url.to_s.empty?
-      logger.warn "crawl_license_file: no url for #{prod_id}."
-      return [nil, -1]
+      logger.warn "\tfetch_match: no url for #{prod_id}."
+      return []
     end
 
     res = fetch the_url
     if res.nil? or res.code != 200
-      logger.error "crawl_license_file: failed to read #{prod_id} data from: #{the_url} - #{res.try(:code)}"
-      return [nil, -1]
+      logger.error "\tfetch_match: failed request #{res.try(:code)} - #{prod_id}, #{url}"
+      return []
     end
 
-    matches = case res.headers["content-type"]
-              when /text\/plain/i
-                lic_matcher.match_text res.body
-              when /text\/html/i
-                lic_matcher.match_html res.body
-              else
-                logger.warn "crawl_license_file: unsupported content-type #{res.headers['content-type']} - #{prod_id}, #{url}"
-                []
-              end
+    lic_text = res.body
+    #pre-process result
+    case res.headers["content-type"]
+    when /text\/plain/i
+      lic_text = lic_matcher.preprocess_text(lic_text)
+    when /text\/html/i
+      lic_text = lic_matcher.preprocess_text lic_matcher.preprocess_html(lic_text)
+    else
+      logger.warn "\tfetch_match: unsupported content-type #{res.headers['content-type']} - #{prod_id}, #{url}"
+    end
+    
+    matches = lic_matcher.match_text(lic_text, 3, true)
 
-    best_match = matches.to_a.first
-    if best_match.nil? or best_match.empty?
-      logger.warn "crawl_license_file: found no match for #{prod_id}, #{the_url}"
-      return [nil, -1]
+    #fall back to lm.match_rules when found no matches by comparing texts
+    if matches.to_a.empty? or matches[0][1] < min_confidence
+      logger.info "\tfetch_match: trying match_rules as text similarity was too low"
+      matches = lic_matcher.match_rules(lic_text)
     end
 
-    logger.debug "crawl_license_file: best match for #{prod_id} => #{best_match} #{the_url}"
-    best_match
+    if matches.nil? or matches.empty?
+      logger.warn "\tfetch_match: no match for #{prod_id}, #{the_url}"
+      return []
+    end
+
+    logger.debug "\tfetch_match: matches for #{prod_id} => #{matches} #{the_url}"
+    matches
   end
 
 

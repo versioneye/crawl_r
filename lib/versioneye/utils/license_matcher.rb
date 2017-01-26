@@ -44,9 +44,11 @@ class LicenseMatcher
   end
 
 
-  def match_text(text, n = 3)
-    clean_text = preprocess_text(text)
-    test_doc   = TfIdfSimilarity::Document.new(clean_text, {:id => "test"})
+  def match_text(text, n = 3, is_processed_text = false)
+    return [] if text.to_s.empty?
+
+    text = preprocess_text(text) if is_processed_text == false
+    test_doc   = TfIdfSimilarity::Document.new(text, {:id => "test"})
 
     mat1 = @model.instance_variable_get(:@matrix)
     mat2 = doc_tfidf_matrix(test_doc)
@@ -68,19 +70,8 @@ class LicenseMatcher
   end
 
   def match_html(html_text, n = 3)
- 		# if text is HTML doc, then
-		# extract text only from visible html tags
-		html_doc = parse_html(html_text)
-		if html_doc
-			text = clean_html(html_doc)
-    else
-      log.error "match_html: failed to parse html document\n#{html_text}"
-      return []
-		end
-
-    match_text(text, n)
+    match_text(preprocess_html(html_text), n)
   end
-
 
   # Matches License.url with urls in Licenses.json and returns tuple [spdx_id, score]
   def match_url(the_url)
@@ -147,7 +138,7 @@ class LicenseMatcher
   #   text - string, a name of license,
   # @returns:
   #   [[spdx_id, score, matching_rule, matching_length],...]
-  def match_rules(text, early_exit = true)
+  def match_rules(text, early_exit = false)
     matches = []
     text = preprocess_text(text)
 		
@@ -161,6 +152,7 @@ class LicenseMatcher
       match_res = matches_any_rule?(rules, text)
       unless match_res.nil?
         matches << ([spdx_id, 1.0] + match_res)
+        break if early_exit == true
       end
     end
 
@@ -204,6 +196,22 @@ class LicenseMatcher
 
     return text.to_s.strip.gsub(/\s+/, ' ')	
 	end
+
+  def preprocess_html(html_text)
+ 		# if text is HTML doc, then
+		# extract text only from visible html tags
+		text = ""
+
+    html_doc = parse_html(html_text)
+		if html_doc
+			text = clean_html(html_doc)
+    else
+      log.error "match_html: failed to parse html document\n#{html_text}"
+		end
+
+    return text
+  end
+
 
 	def clean_html(html_doc)
     body_text = ""
