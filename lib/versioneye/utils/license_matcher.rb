@@ -5,22 +5,11 @@ require 'json'
 
 class LicenseMatcher
 
-  attr_reader :corpus, :licenses, :model, :url_index, :rules, :spdx_ids, :custom_ids
+  attr_reader :corpus, :licenses, :model, :url_index, :rules, :spdx_ids, :custom_ids, :id_spdx_idx
 
   DEFAULT_CORPUS_FILES_PATH = 'data/spdx_licenses/plain'
   CUSTOM_CORPUS_FILES_PATH  = 'data/custom_licenses' # Where to look up non SPDX licenses
   LICENSE_JSON_FILE         = 'data/spdx_licenses/licenses.json'
-
-  def get_rule_ids
-    ids = {}
-    @rules.keys.each do |the_key|
-      the_id = the_key.to_s.downcase.strip
-      ids[the_id] = the_key
-    end
-
-    ids
-  end
-
 
   def log
     Versioneye::Log.instance.log
@@ -39,10 +28,26 @@ class LicenseMatcher
     licenses_json_doc = read_json_file license_json_file
     @url_index = read_license_url_index(licenses_json_doc)
     @model = TfIdfSimilarity::BM25Model.new(@corpus, :library => :narray)
-    @rules = init_rules
+    @rules = init_rules(licenses_json_doc)
+
+    @id_spdx_idx = init_id_idx(licenses_json_doc) #reverse index from downcased licenseID to case sensitive spdx id
     true
   end
 
+  def init_id_idx(licenses_json_doc)
+    idx = {}
+    licenses_json_doc.to_a.each do |spdx_item| 
+      lic_id = spdx_item[:id].to_s.downcase
+      idx[lic_id] = spdx_item[:id]
+    end
+
+    idx
+  end
+
+  # converts downcases spdxID to case-sensitive SPDX-ID as it's in licenses.json
+  def to_spdx_id(lic_id)
+    @id_spdx_idx.fetch(lic_id.to_s.downcase, lic_id.upcase)
+  end
 
   def match_text(text, n = 3, is_processed_text = false)
     return [] if text.to_s.empty?
@@ -163,6 +168,13 @@ class LicenseMatcher
         0
       end
     end
+  end
+
+  # if testable license text is in the ignore set return true
+  def ignore?(lic_text)
+    ignore_rules = get_ignore_rules
+    m = matches_any_rule?(ignore_rules, lic_text.to_s)
+    not m.nil? 
   end
 
   def matches_any_rule?(rules, license_name)
@@ -332,9 +344,9 @@ class LicenseMatcher
   end
 
 	# combines SPDX rules with custom handwritten rules
-	def init_rules
+	def init_rules(license_json_doc)
 		rules = {}
-		rules = build_rules_from_spdx_json
+		rules = build_rules_from_spdx_json(license_json_doc)
 		
 		get_custom_rules.each do |spdx_id, custom_rules_array|
 			spdx_id = spdx_id.to_s.strip.downcase
@@ -352,13 +364,8 @@ class LicenseMatcher
 
   # builds regex rules based on the LicenseJSON file
   # rules are using urls, IDS, names and alternative names to build full string matching regexes
-  def build_rules_from_spdx_json
+  def build_rules_from_spdx_json(spdx_json)
     spdx_rules = {}
-
-    spdx_json = read_json_file(LICENSE_JSON_FILE)
-    unless spdx_json
-      raise "init_spdx_rules: failed to read spdx JSON file at #{LICENSE_JSON_FILE}."
-    end
 
     sorted_spdx_json = spdx_json.sort_by {|x|  x[:id]}
     sorted_spdx_json.each do |spdx_item|
@@ -418,19 +425,19 @@ class LicenseMatcher
 
   def get_ignore_rules
     [
-      /\bProprietary\b/i, /\bOther\/Proprietary\b/i, /\bLICEN[C|S]E\.\w{2,8}\b/i,
+      /\bProprietary\b/i, /\bOther\/Proprietary\b/i, /\ALICEN[C|S]E\.\w{2,8}\b/i,
       /^LICEN[C|S]ING\.\w{2,8}\b/i, /^COPYING\.\w{2,8}/i,
-      /\bDFSG\s+APPROVED\b/i, /\bSee\slicense\sin\spackage\b/i,
-      /\bSee LICENSE\b/i,
-      /\bFree\s+for\s+non[-]?commercial\b/i, /\bFree\s+To\s+Use\b/i,
-      /\bFree\sFor\sHome\sUse\b/i, /\bFree\s+For\s+Educational\b/i,
+      /\ADFSG\s+APPROVED\b/i, /\ASee\slicense\sin\spackage\b/i,
+      /\ASee LICENSE\b/i,
+      /\AFree\s+for\s+non[-]?commercial\b/i, /\AFree\s+To\s+Use\b/i,
+      /\AFree\sFor\sHome\sUse\b/i, /\AFree\s+For\s+Educational\b/i,
       /^Freely\s+Distributable\s*$/i, /^COPYRIGHT\s+\d{2,4}/i,
       /^Copyright\s+\(c\)\s+\d{2,4}\b/i, /^COPYRIGHT\s*$/i, /^COPYRIGHT\.\w{2,8}\b/i,
       /^\(c\)\s+\d{2,4}\d/,
       /^LICENSE\s*$/i, /^FREE\s*$/i, /\ASee\sLicense\s*\b/i, /^TODO\s*$/i, /^FREEWARE\s*$/i,
       /^All\srights\sreserved\s*$/i, /^COPYING\s*$/i, /^OTHER\s*$/i, /^NONE\s*$/i, /^DUAL\s*$/i,
       /^KEEP\s+IT\s+REAL\s*\b/i, /\ABE\s+REAL\s*\z/i, /\APrivate\s*\z/i, /\ACommercial\s*\z/i, 
-      /\bSee\s+LICENSE\s+file\b/i, /\bSee\sthe\sLICENSE\b/i, /\ALICEN[C|S]E\s*\z/i,
+      /\ASee\s+LICENSE\s+file\b/i, /\ASee\sthe\sLICENSE\b/i, /\ALICEN[C|S]E\s*\z/i,
       /^PUBLIC\s*$/i, /^see file LICENSE\s*$/i, /^__license__\s*$/i,
       /\bLIEULA\b/i, /\AEULA\s*\z/i, /^qQuickLicen[c|s]e\b/i, /^For\sfun\b/i, /\AVarious\s*\z/i,
       /^GNU\s*$/i, /^GNU[-|\s]?v3\s*$/i, /^OSI\s+Approved\s*$/i, /^OSI\s*$/i,

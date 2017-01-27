@@ -237,7 +237,11 @@
       },
       {
         "note": "Amazon Apache",
-        "url": "https://aws.amazon.com/apache-2-0"
+        "url": "http://aws.amazon.com/apache-2-0"
+      },
+      {
+        "note": "Amazon Apache broken",
+        "url": "http://aws.amazon.com/apache2.0"
       }
     ],
     "id": "Apache-2.0",
