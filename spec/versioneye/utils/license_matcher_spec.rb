@@ -11,16 +11,16 @@ describe LicenseMatcher do
   let(:pg_txt){ File.read("#{corpus_path}/PostgreSQL") }
   let(:lgpl_txt){ File.read("#{corpus_path}/LGPL-2.0") }
   let(:bsd3_txt){ File.read("#{corpus_path}/BSD-3") }
-  let(:dotnet_txt){ File.read('data/custom_licenses/msl_dotnet') }
+  let(:dotnet_txt){ File.read('data/custom_licenses/ms_dotnet') }
   let(:mit_issue11){ File.read("#{spec_path}/mit_issue11.txt")}   
 
   it "finds correct matches for text files" do
-    expect( lic_matcher.match_text(mit_txt).first.first ).to eq("MIT")
-    expect( lic_matcher.match_text(pg_txt).first.first ).to eq('PostgreSQL')
-    expect( lic_matcher.match_text(lgpl_txt).first.first ).to eq('LGPL-2.0')
-    expect( lic_matcher.match_text(pg_txt).first.first ).to eq('PostgreSQL')
-    expect( lic_matcher.match_text(bsd3_txt).first.first ).to eq('BSD-3')
-    expect( lic_matcher.match_text(dotnet_txt).first.first ).to eq('msl_dotnet')
+    expect( lic_matcher.match_text(mit_txt).first.first ).to eq("mit")
+    expect( lic_matcher.match_text(pg_txt).first.first ).to eq('postgresql')
+    expect( lic_matcher.match_text(lgpl_txt).first.first ).to eq('lgpl-2.0')
+    expect( lic_matcher.match_text(pg_txt).first.first ).to eq('postgresql')
+    expect( lic_matcher.match_text(bsd3_txt).first.first ).to eq('bsd-3')
+    expect( lic_matcher.match_text(dotnet_txt).first.first ).to eq('ms_dotnet')
   end
 
   it "matches MIT license so it could fix the issue#11" do
@@ -28,7 +28,7 @@ describe LicenseMatcher do
     expect( res.size ).to eq(3)
     
     spdx_id, score = res.first
-    expect( spdx_id ).to eq("MIT")
+    expect( spdx_id ).to eq("mit")
     expect( score ).to be > 0.9
   end
 
@@ -47,42 +47,42 @@ describe LicenseMatcher do
 
   it "finds correct matches for html files" do
 
-    expect( lic_matcher.match_html(mit_html).first.first ).to eq('MIT')
-    expect( lic_matcher.match_html(apache_html).first.first ).to eq('Apache-2.0')
-    expect( lic_matcher.match_html(dotnet_html).first.first ).to eq('msl_dotnet')
-    expect( lic_matcher.match_html(bsd3_html).first.first ).to eq('BSD-4')
+    expect( lic_matcher.match_html(mit_html).first.first ).to eq('mit')
+    expect( lic_matcher.match_html(apache_html).first.first ).to eq('apache-2.0')
+    expect( lic_matcher.match_html(dotnet_html).first.first ).to eq('ms_dotnet')
+    expect( lic_matcher.match_html(bsd3_html).first.first ).to eq('bsd-3-clear')
 
     #how it handles noisy pages
     spdx_id, score = lic_matcher.match_html(apache_aws).first
-    expect( spdx_id ).to eq('Apache-2.0')
+    expect( spdx_id ).to eq('apache-2.0')
     expect( score ).to be > min_score
 
     spdx_id, score = lic_matcher.match_html(apache_plex).first 
-    expect( spdx_id ).to eq('Apache-2.0')
+    expect( spdx_id ).to eq('apache-2.0')
     expect( score ).to be > min_score
 
     spdx_id, score = lic_matcher.match_html(bsd_fparsec).first
-    expect( spdx_id ).to eq('BSD-3')
+    expect( spdx_id ).to eq('bsd-3-clear')
     expect( score ).to be > min_score
 
     spdx_id, score = lic_matcher.match_html(mit_ooi).first 
-    expect( spdx_id ).to eq('MIT')
+    expect( spdx_id ).to eq('mit')
     expect( score ).to be > min_score
 
     spdx_id, score = lic_matcher.match_html(mit_bb).first
-    expect( spdx_id ).to eq('MIT')
+    expect( spdx_id ).to eq('mit')
     expect( score ).to be > min_score
 
-    expect( lic_matcher.match_html(mspl_ooi).first.first ).to eq('MS-PL')
+    expect( lic_matcher.match_html(mspl_ooi).first.first ).to eq('ms-pl')
 
     spdx_id, score = lic_matcher.match_html(cpol).first
-    expect( spdx_id ).to eq('CPOL-1.02')
+    expect( spdx_id ).to eq('cpol-1.02')
     expect( score ).to be > min_score 
   end
 
   it "matches all the license files in the corpuse correctly" do
     lic_matcher.spdx_ids.each do |lic_id|
-      next if lic_id == 'msl_dotnet' or lic_id == 'CPOL-1.02'
+      next if lic_id == 'ms_dotnet' or lic_id == 'cpol-1.02'
 
       lic_txt = File.read "#{corpus_path}/#{lic_id}"
 
@@ -106,21 +106,21 @@ describe LicenseMatcher do
 
     url_index = lic_matcher.read_license_url_index url_doc
     expect( url_index ).not_to be_nil
-    expect( url_index[aal_url] ).to eq('AAL')
-		expect( url_index[apache1] ).to eq('Apache-1.1')
-		expect( url_index[apache2] ).to eq('Apache-2.0')
-		expect( url_index[bsd2] ).to eq('BSD-2')
-		expect( url_index[bsd3] ).to eq('BSD-3')
-		expect( url_index[gpl3] ).to eq('GPL-3.0')
+    expect( url_index[aal_url] ).to eq('aal')
+		expect( url_index[apache1] ).to eq('apache-1.1')
+		expect( url_index[apache2] ).to eq('apache-2.0')
+		expect( url_index[bsd2] ).to eq('bsd-2')
+		expect( url_index[bsd3] ).to eq('bsd-3')
+		expect( url_index[gpl3] ).to eq('gpl-3.0')
   end
 
 	it "matches saved URL with SPDX url" do
-		expect( lic_matcher.match_url(aal_url).first ).to eq('AAL')
-		expect( lic_matcher.match_url(apache1).first ).to eq('Apache-1.1')
-		expect( lic_matcher.match_url(apache2).first ).to eq('Apache-2.0')
-		expect( lic_matcher.match_url(bsd2).first).to eq('BSD-2')
-		expect( lic_matcher.match_url(bsd3).first).to eq('BSD-3')
-		expect( lic_matcher.match_url(gpl3).first ).to eq('GPL-3.0')
+		expect( lic_matcher.match_url(aal_url).first ).to eq('aal')
+		expect( lic_matcher.match_url(apache1).first ).to eq('apache-1.1')
+		expect( lic_matcher.match_url(apache2).first ).to eq('apache-2.0')
+		expect( lic_matcher.match_url(bsd2).first).to eq('bsd-2')
+		expect( lic_matcher.match_url(bsd3).first).to eq('bsd-3')
+		expect( lic_matcher.match_url(gpl3).first ).to eq('gpl-3.0')
 	end
 
   it "matches chooselicense urls to spdx_Id" do

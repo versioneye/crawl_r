@@ -17,14 +17,14 @@ class PythonLicenseDetector
   # @args:
   #  min_chars - int,will ignore smaller license names than this value
   #  min_confidence - float(0 - 1.0), will ignore matches which has lower matching score
-  def initialize(min_chars = 150, min_confidence = 0.95)
+  def initialize(min_chars = 150, min_confidence = 0.9)
     @matcher =  LicenseMatcher.new
     @min_chars = min_chars
     @min_confidence = min_confidence
   end
 
 
-  # Detects spdx_ids for the given licenses and updates them in DB.
+  # Detects lic_ids for the given licenses and updates them in DB.
   #
   # args:
   #    licenses - [License], list of License models to work with
@@ -38,17 +38,17 @@ class PythonLicenseDetector
 
     n, detected, ignored, unknown = [0, 0, 0, 0]
     licenses.each do |license|
-      spdx_id, score = detect( license.label )
+      lic_id, score = detect( license.label )
 
-      if spdx_id and score > 0
-        log.info "PythonLicenseDetector.run: #{license.to_s[0..100]} => #{spdx_id}"
+      if lic_id and score > 0
+        log.info "PythonLicenseDetector.run: #{license.to_s[0..100]} => #{lic_id}"
         if update == true
-          license.spdx_id  = spdx_id
+          license.spdx_id  = @matcher.to_spdx_id(lic_id)
           license.comments = "pld_1.0.0"
           license.save
         end
         detected += 1
-      elsif spdx_id and score < 0
+      elsif lic_id and score < 0
         log.info "PythonLicenseDetector.run: ignoring #{license.to_s} because similarity (#{score}) is too low."
         ignored += 1
       else
@@ -73,20 +73,22 @@ class PythonLicenseDetector
   #  license_name - String, a name of a license aka a value from License.name
   #
   # returns:
-  #  spdx_id - String | nil, returns a spdx_id of best matching license only if higher than min_confidence
+  #  lic_id - String | nil, returns a lic_id of best matching license only if higher than min_confidence
   #
   def detect( license_name )
+
     results = calc_similarities( license_name )
     return [nil, -1] if results.empty?
 
-    spdx_id, confidence = results.first
+    lic_id, confidence = results.first
+
     if confidence && confidence >= @min_confidence
-      log.info "PythonLicenseDetector.detect: best match #{spdx_id}: #{confidence} for #{license_name[0..@min_chars]}"
+      log.info "PythonLicenseDetector.detect: best match #{lic_id}: #{confidence} for #{license_name[0..@min_chars]}"
       return results.first
     end
 
-    log.warn "PythonLicenseDetector.detect: too low confidence(#{confidence}) for #{spdx_id} : \n#{license_name}"
-    [spdx_id, -1]
+    log.warn "PythonLicenseDetector.detect: too low confidence(#{confidence}) for #{lic_id} : \n#{license_name}"
+    [lic_id, -1]
   end
 
 
@@ -94,10 +96,13 @@ class PythonLicenseDetector
     lic_txt = license_name.to_s.downcase.strip
     return [lic_txt, -1] if lic_txt.size < 3
 
-    rule_ids = @matcher.get_rule_ids
-    if rule_ids.has_key?(lic_txt)
-      return [[rule_ids[lic_txt], 1.0]] # lic_txt is already an spdx_id
+    rule_ids = Set.new @matcher.spdx_ids
+    if rule_ids.include?(lic_txt)
+      return [[rule_ids[lic_txt], 1.0]] # lic_txt is already an lic_id
     elsif lic_txt.size < @min_chars
+      #ignore obvious garbage
+      return [license_name, -1] if @matcher.ignore?(license_name) 
+
       return @matcher.match_rules(license_name)
     else
       return @matcher.match_text(license_name)

@@ -66,32 +66,32 @@ class LicenseCrawler < Versioneye::Crawl
     end
 
     # First try to match by url without doing http request
-    spdx_id, score = lic_matcher.match_url(the_url)
+    lic_id, score = lic_matcher.match_url(the_url)
 
-    if spdx_id.nil?
-      spdx_id, score = url_cache.fetch(the_url) do
-                        logger.info "crawl_unidentified_urls: going to fetch license text from #{the_url}"
+    if lic_id.nil?
+      lic_id, score = url_cache.fetch(the_url) do
+                        logger.info "\tprocess_license: going to fetch license text from #{the_url}"
                         fetch_and_match_license_url(lic_matcher, license.to_s, the_url)
                       end
-
     end
 
-    if spdx_id.nil?
-      logger.warn "crawl_unidentified_urls: detected no licenses for #{the_url}"
+    if lic_id.nil?
+      logger.warn "\tprocess_license: detected no licenses for #{the_url}"
       return 1
     end
 
     if score >= min_confidence
-      license.spdx_id = spdx_id
+			#licenseID == downcased SPDX_ID
+      license.spdx_id = lic_matcher.to_spdx_id(lic_id)
       license.comments = "#{license.language}_license_crawler_update"
       license.save if update
-      logger.info " -- updated #{license.to_s} SPDX ID #{spdx_id} from #{the_url}"
+      logger.info "\tprocess_license: updated #{license.to_s} SPDX ID #{license.spdx_id} from #{the_url}"
     else
-      logger.info "-- too low confidence #{score} for #{spdx_id}: #{the_url}"
+      logger.info "\tprocess_license: -- too low confidence #{score} for #{license.spdx_id}: #{the_url}"
     end
     return 0
   rescue => e
-    logger.error "ERROR in process_license - #{e.message}"
+    logger.error "process_license: ERROR in process_license - #{e.message}"
     0
   end
 
@@ -103,39 +103,43 @@ class LicenseCrawler < Versioneye::Crawl
   #   prod_id - license id, it used only for logging
   #   url - string with valid url
   # returns:
-  #  [spdx_id, confidence] - a tuple with the best match
-  def self.fetch_and_match_license_url(lic_matcher, prod_id, url = nil)
+  #  [spdx_id, confidence] - 1st of best matching licenses
+  def self.fetch_and_match_license_url(lic_matcher, prod_id, url = nil, min_confidence = 0.9)
 
     the_url = parse_url(url.to_s)
     if the_url.to_s.empty?
-      logger.warn "crawl_license_file: no url for #{prod_id}."
-      return [nil, -1]
+      logger.warn "\tfetch_match: no url for #{prod_id}."
+      return []
     end
 
     res = fetch the_url
     if res.nil? or res.code != 200
-      logger.error "crawl_license_file: failed to read #{prod_id} data from: #{the_url} - #{res.try(:code)}"
-      return [nil, -1]
+      logger.error "\tfetch_match: failed request #{res.try(:code)} - #{prod_id}, #{url}"
+      return []
     end
 
-    matches = case res.headers["content-type"]
-              when /text\/plain/i
-                lic_matcher.match_text res.body
-              when /text\/html/i
-                lic_matcher.match_html res.body
-              else
-                logger.warn "crawl_license_file: unsupported content-type #{res.headers['content-type']} - #{prod_id}, #{url}"
-                []
-              end
+    lic_text = res.body
+    #pre-process result
+    case res.headers["content-type"]
+    when /text\/plain/i
+      lic_text = lic_matcher.preprocess_text(lic_text)
+    when /text\/html/i
+      lic_text = lic_matcher.preprocess_text lic_matcher.preprocess_html(lic_text)
+    else
+			#someone psoted link to pdf, docx, etc
+      logger.error "\tfetch_match: unsupported content-type #{res.headers['content-type']} - #{prod_id}, #{url}"
+			return []
+    end
+    
+    matches = lic_matcher.match_text(lic_text, 3, true)
 
-    best_match = matches.to_a.first
-    if best_match.nil? or best_match.empty?
-      logger.warn "crawl_license_file: found no match for #{prod_id}, #{the_url}"
-      return [nil, -1]
+    if matches.nil? or matches.empty?
+      logger.warn "\tfetch_match: no match for #{prod_id}, #{the_url}"
+      return []
     end
 
-    logger.debug "crawl_license_file: best match for #{prod_id} => #{best_match} #{the_url}"
-    best_match
+    logger.debug "\tfetch_match: matches for #{prod_id} => #{matches} #{the_url}"
+    matches.first
   end
 
 

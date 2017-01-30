@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe PythonLicenseDetector do
-  detector = PythonLicenseDetector.new
+  detector = PythonLicenseDetector.new(150, 0.9)
 
   let(:wtf_text){
     %q[
@@ -43,14 +43,16 @@ describe PythonLicenseDetector do
 
   describe "detecting standard spdx license texts" do
     it "detects MIT license by license text" do
+      expect(mit_txt.size).to be > 150
+
       spdx_id, score = detector.detect(mit_txt)
-      expect(spdx_id).to eq('MIT')
+      expect(spdx_id).to eq('mit')
       expect(score).to be > 0.9
     end
 
     it "detects MIT with rule" do
      spdx_id, score = detector.detect('RELEASED UNDER MIT LICENSE')
-     expect(spdx_id).to eq('MIT')
+     expect(spdx_id).to eq('mit')
      expect(score).to be > 0.99
     end
 
@@ -64,19 +66,19 @@ describe PythonLicenseDetector do
   describe "detects special cases" do
     it "detects WTFPL" do
       spdx_id, score = detector.detect(wtf_text)
-      expect(spdx_id).to eq('WTFPL')
+      expect(spdx_id).to eq('wtfpl')
       expect(score).to be > 0.9
     end
     
     it "detects APACHE2 short version" do
       spdx_id, score = detector.detect(aws_short)
-      expect(spdx_id).to eq('Apache2')
+      expect(spdx_id).to eq('apache2')
       expect(score).to be > 0.9
     end
 
     it "detects Unlicensed" do
       spdx_id, score = detector.detect(unlicense_txt)
-      expect(spdx_id).to eq('UNLICENSE')
+      expect(spdx_id).to eq('unlicense')
       expect(score).to be > 0.9
     end
 
