@@ -228,6 +228,14 @@
         "url": "https://opensource.org/licenses/Apache-2.0"
       },
       {
+        "note": "Apache Page",
+        "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+      },
+      {
+        "note": "Apache Page",
+        "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+      },
+      {
         "note": "tl;dr legal",
         "url": "https://tldrlegal.com/license/apache-license-2.0-%28apache-2.0%29"
       },
@@ -1705,6 +1713,10 @@
       {
         "note": "OSI Page",
         "url": "https://opensource.org/licenses/mit"
+      },
+      {
+        "note": "OSI page",
+        "url": "https://opensource.org/licenses/MIT"
       },
       {
         "note": "tl;dr legal",
