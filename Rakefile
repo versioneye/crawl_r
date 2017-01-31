@@ -15,7 +15,7 @@ require 'rake'
 require 'versioneye-core'
 desc "Open an irb session preloaded with this library"
 task :console do
-  sh "irb -rubygems -I lib -r versioneye-security.rb"
+  sh "irb -rubygems -I lib -r ruby_crawl.rb"
 end
 
 require 'rake/testtask'
