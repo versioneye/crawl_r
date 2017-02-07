@@ -745,6 +745,7 @@ describe LicenseMatcher do
       expect(lm.match_rules('GNU Lesser General Public License, version 2.1')[0][0]).to eq('lgpl-2.1')
       expect(lm.match_rules('GNU Lesser General Public License v2.1 (see COPYING)')[0][0]).to eq('lgpl-2.1')
 
+      expect(lm.match_rules('Lesser General Public License (LGPL) Version 2.1 data')[0][0]).to eq('lgpl-2.1')
     end
 
     it "matches lgpl-3.0 rules" do

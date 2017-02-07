@@ -282,6 +282,30 @@ class LicenseMatcher
     ( norm > 0 ? length / norm : 0.0)
   end
 
+  #combines results of text match and rules match
+  def rank_text_and_rules_matches(text_results, rules_results)
+    scores = [] # list of tuple <spdx_id, score>
+    #for each text_results
+    t_scores = text_results.reduce([]) {|acc, i| acc << i[1]; acc}
+    t_max = t_scores.max
+
+    r_total = rules_results.reduce(0) {|acc, i| acc += i[3];  acc}
+    
+    text_results.to_a.each do |t|
+      #find match in rules results and calc rankscore
+      lic_id = t[0].downcase
+      r = rules_results.to_a.find {|x| x[0].downcase == lic_id }
+      next if r.nil? #there was no matching rules
+      
+      t_score = t[1] #score of confidence
+      r_score = r[3] #length of match
+
+      score = (t_score / t_max) * (r_score / r_total)
+      scores << [lic_id, score]
+    end
+
+    scores.sort {|a, b| a[1] <=> b[1]}
+  end
 
   def read_json_file(file_path)
     JSON.parse(File.read(file_path), {symbolize_names: true})
@@ -317,7 +341,7 @@ class LicenseMatcher
 
     docs = file_names.reduce([]) do |acc, file_name|
       content = File.read("#{files_path}/#{file_name}")
-      txt = safe_encode(content)
+      txt = preprocess_text content
       if txt
         acc << TfIdfSimilarity::Document.new(txt, :id => file_name)
       else
@@ -715,6 +739,7 @@ class LicenseMatcher
                          ],
       "LGPL-2.1"      => [
                           /\bLGPL[-|\s|_]?v?2\.1\b/i,
+                          /\bLesser\sGeneral\sPublic\sLicense\s+\(LGPL\)\s+Version\s+2\.1\b/i,
                           /\bLESSER\sGENERAL\sPUBLIC\sLICENSE[\,]?\sVersion\s2\.1[\,]?\b/i,
                           /\bLESSER\sGENERAL\sPUBLIC\sLICENSE[\,]?\sv?2\.1\b/i
                          ],

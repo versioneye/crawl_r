@@ -368,8 +368,12 @@
         "note": "OSI Page",
         "url": "https://opensource.org/licenses/BSD-2-Clause"
       },
-        {
-        "note": "OSI Page2 ",
+      {
+        "note": "OSI Page2",
+        "url": "https://opensource.org/licenses/bsd-license"
+      },
+      {
+        "note": "OSI Page3",
         "url": "https://opensource.org/licenses/bsd-license.php"
       },
       {
@@ -1485,6 +1489,10 @@
         "url": "https://opensource.org/licenses/lgpl-license"
       },
       {
+        "note": "Homepage",
+        "url": "http://www.gnu.org/licenses/lgpl.html"
+      },
+      {
         "note": "Wikipedia page",
         "url": "https://en.wikipedia.org/wiki/GNU_Lesser_General_Public_License"
       }
@@ -1725,6 +1733,10 @@
       {
         "note": "Wikipedia page",
         "url": "https://en.wikipedia.org/wiki/MIT_License"
+      },
+      {
+        "note": "SPDX page",
+        "url": "https://spdx.org/licenses/MIT"
       }
     ],
     "id": "MIT",
@@ -1847,6 +1859,10 @@
         "note": "Mozilla Page",
         "url": "https://www.mozilla.org/en-US/MPL/"
       },
+    {
+        "note": "OSI Page2",
+        "url": "https://opensource.org/licenses/bsd-license"
+    },
       {
         "note": "Wikipedia page",
         "url": "https://en.wikipedia.org/wiki/MPL_License"
@@ -3392,23 +3408,43 @@
   },
   {
     "id": "CC-BY-1.0",
-    "name": "Creative Commons Attribution 1.0"
+    "name": "Creative Commons Attribution 1.0",
+    "links": [
+      {"note": "Homepage",
+        "url": "http://creativecommons.org/licences/by/1.0"}
+    ]
   },
   {
     "id": "CC-BY-2.0",
-    "name": "Creative Commons Attribution 2.0"
+    "name": "Creative Commons Attribution 2.0",
+    "links": [
+      {"note": "Homepage",
+        "url": "http://creativecommons.org/licences/by/2.0"}
+    ]
   },
   {
     "id": "CC-BY-2.5",
-    "name": "Creative Commons Attribution 2.5"
+    "name": "Creative Commons Attribution 2.5",
+    "links": [
+      {"note": "Homepage",
+        "url": "http://creativecommons.org/licences/by/2.5"}
+    ]
   },
   {
     "id": "CC-BY-3.0",
-    "name": "Creative Commons Attribution 3.0"
+    "name": "Creative Commons Attribution 3.0",
+    "links": [
+      {"note": "Homepage",
+        "url": "http://creativecommons.org/licences/by/3.0"}
+    ]
   },
   {
     "id": "CC-BY-4.0",
-    "name": "Creative Commons Attribution 4.0"
+    "name": "Creative Commons Attribution 4.0",
+    "links": [
+      {"note": "Homepage",
+        "url": "http://creativecommons.org/licences/by/4.0"}
+    ]
   },
   {
     "id": "CC-BY-ND-1.0",
@@ -3515,7 +3551,9 @@
     "name": "Creative Commons Zero v1.0 Universal",
     "links": [
     	{ "note" : "Homepage",
-    	  "url" : "http://creativecommons.org/publicdomain/zero/1.0/legalcode"}
+    	  "url" : "http://creativecommons.org/publicdomain/zero/1.0/legalcode"},
+      {"note" : "Homepage2",
+       "url": "http://creativecommons.org/publicdomain/zero/1.0"}
     ]
   },
   {
@@ -4054,6 +4092,10 @@
       {
         "note": "Homepage",
         "url": "http://unlicense.org"
+      },
+      {
+        "note": "ChooseALicense",
+        "url": "https://choosealicense.com/no-license"
       }
     ]
   },
