@@ -1,6 +1,7 @@
 class GithubLicenseCrawler < Versioneye::Crawl
   GITHUB_URL = "https://github.com"
 
+
   def self.logger
     if !defined?(@@log) || @@log.nil?
       @@log = Versioneye::DynLog.new("log/license.log", 10).log
@@ -16,9 +17,10 @@ class GithubLicenseCrawler < Versioneye::Crawl
     {code: 500}
   end
 
+
   def self.parse_url url_text
     uri = URI.parse(url_text)
-    
+
     return uri if uri.is_a?(URI::HTTPS) or uri.is_a?(URI::HTTP)
     return nil
   rescue
@@ -37,14 +39,17 @@ class GithubLicenseCrawler < Versioneye::Crawl
     end
   end
 
-  #unifies various github urls into repo main-page
+
+  # unifies various github urls into repo main-page
   def self.to_page_url(link_uri)
     _, owner, repo, _ = link_uri.path.to_s.split(/\//)
     return nil if owner.nil? or repo.nil?
+
     page_url = parse_url("#{GITHUB_URL}/#{owner}/#{repo}")
     logger.info "\t to_page_url: #{link_uri.to_s} => #{page_url.to_s}"
     page_url
   end
+
 
   # matches spdx ids div.overall-summary containes on the github repo page
   def self.crawl_repo_pages(licenses, update = false)
@@ -56,6 +61,7 @@ class GithubLicenseCrawler < Versioneye::Crawl
       link_uri = parse_url lic_db[:url]
       next if link_uri.nil? # ignore non-valid urls
       next if !is_github_url(link_uri) # ignore not valid github urls
+
       link_uri = to_page_url link_uri  # unify various repo urls into main www-page url
       next if link_uri.nil? # failed to unify repo
 
@@ -66,13 +72,13 @@ class GithubLicenseCrawler < Versioneye::Crawl
 
       n += 1
       next if lic_id.nil?
-        
+
       if update
-        lic_db[:spdx_id] = lm.to_spdx_id(lic_id)
-        lic_db[:comments] = "github_license_crawler.crawl_repo_pages"
+        lic_db.spdx_id = lm.to_spdx_id(lic_id)
+        lic_db.comments = "github_license_crawler.crawl_repo_pages"
         lic_db.save
 
-        logger.debug "\t-- updated #{lic_db.to_s} spdx_id -> #{lic_db[:spdx_id]}"
+        logger.debug "\t-- updated #{lic_db.to_s} spdx_id -> #{lic_db.spdx_id}"
       else
         logger.debug "\t-- matched #{lic_db.to_s} spdx_id -> #{lic_id}"
       end
@@ -83,8 +89,9 @@ class GithubLicenseCrawler < Versioneye::Crawl
     logger.info "crawl_repo_pages: done. crawled #{n} github pages, found match #{matched}"
   end
 
+
   def self.fetch_and_process_page(lm, link_uri)
-    summary_text = fetch_overall_summary link_uri 
+    summary_text = fetch_overall_summary link_uri
 
     return [] if summary_text.to_s.empty?
 
@@ -96,6 +103,7 @@ class GithubLicenseCrawler < Versioneye::Crawl
 
     return best_match
   end
+
 
   def self.fetch_overall_summary(link_uri)
     res = fetch link_uri
@@ -118,4 +126,5 @@ class GithubLicenseCrawler < Versioneye::Crawl
 
     body_text.gsub(/\s+/, ' ')
   end
+
 end
