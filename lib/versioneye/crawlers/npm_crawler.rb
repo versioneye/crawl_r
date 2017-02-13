@@ -90,8 +90,11 @@ class NpmCrawler < Versioneye::Crawl
         next
       end
 
-      db_version     = product.version_by_number version_number
-      next if db_version
+      db_version = product.version_by_number version_number
+      if db_version
+        create_download product, version_number, version_obj
+        next
+      end
 
       if version[0].to_s.match(/.+-nightly\..+/i)
         logger.info "skip nightly version #{version[0]} for #{name}"
@@ -210,11 +213,32 @@ class NpmCrawler < Versioneye::Crawl
   def self.create_download product, version_number, version_obj
     dist = version_obj['dist']
     return nil if dist.nil? || dist.empty?
+
+    create_sha( dist['shasum'], product, version_number )
     dist_url  = dist['tarball']
     dist_name = dist_url.split("/").last
-    archive = Versionarchive.new({:language => Product::A_LANGUAGE_NODEJS, :prod_key => product.prod_key,
-      :version_id => version_number, :name => dist_name, :link => dist_url})
+    archive = Versionarchive.new({
+        :language => Product::A_LANGUAGE_NODEJS,
+        :prod_key => product.prod_key,
+        :version_id => version_number,
+        :name => dist_name,
+        :link => dist_url})
     Versionarchive.create_if_not_exist_by_name( archive )
+  end
+
+
+  def self.create_sha(sha, product, version_number )
+    artefact = Artefact.find_or_create_by(
+                  :language => product.language,
+                  :prod_key => product.prod_key,
+                  :version => version_number,
+                  :prod_type => 'npm',
+                  :sha_value => sha,
+                  :sha_method => 'sha1' )
+    artefact.save
+  rescue => e
+    self.logger.error "ERROR in create_sha Message: #{e.message}"
+    self.logger.error e.backtrace.join("\n")
   end
 
 
