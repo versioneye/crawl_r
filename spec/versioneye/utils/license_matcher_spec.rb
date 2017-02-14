@@ -3,14 +3,14 @@ require 'httparty'
 
 describe LicenseMatcher do
   lic_matcher = LicenseMatcher.new
- 
+  let(:licenses_json_path){'data/spdx_licenses/licenses.json'} 
   let(:corpus_path){ 'data/spdx_licenses/plain' }
   let(:spec_path){ 'spec/fixtures/files/licenses' }
 
   let(:mit_txt){ File.read("#{corpus_path}/MIT") }
   let(:pg_txt){ File.read("#{corpus_path}/PostgreSQL") }
   let(:lgpl_txt){ File.read("#{corpus_path}/LGPL-2.0") }
-  let(:bsd3_txt){ File.read("#{corpus_path}/BSD-3") }
+  let(:bsd3_txt){ File.read("#{corpus_path}/BSD-3-Clause") }
   let(:dotnet_txt){ File.read('data/custom_licenses/ms_dotnet') }
   let(:mit_issue11){ File.read("#{spec_path}/mit_issue11.txt")}   
 
@@ -19,7 +19,7 @@ describe LicenseMatcher do
     expect( lic_matcher.match_text(pg_txt).first.first ).to eq('postgresql')
     expect( lic_matcher.match_text(lgpl_txt).first.first ).to eq('lgpl-2.0')
     expect( lic_matcher.match_text(pg_txt).first.first ).to eq('postgresql')
-    expect( lic_matcher.match_text(bsd3_txt).first.first ).to eq('bsd-3')
+    expect( lic_matcher.match_text(bsd3_txt).first.first ).to eq('bsd-3-clause')
     expect( lic_matcher.match_text(dotnet_txt).first.first ).to eq('ms_dotnet')
   end
 
@@ -82,12 +82,14 @@ describe LicenseMatcher do
 
   it "matches all the license files in the corpuse correctly" do
     lic_matcher.spdx_ids.each do |lic_id|
+      lic_id = lic_id.downcase
       next if lic_id == 'ms_dotnet' or lic_id == 'cpol-1.02'
+    
 
       lic_txt = File.read "#{corpus_path}/#{lic_id}"
 
       res = lic_matcher.match_text(lic_txt)
-      p "#{lic_id} => #{res} "
+      #p "#{lic_id} => #{res} "
       expect(res).not_to be_nil
       expect(res.first.first).to eq(lic_id)
     end
@@ -101,7 +103,7 @@ describe LicenseMatcher do
 	let(:gpl3){ "https://www.gnu.org/licenses/gpl-3.0.txt" }
 
   it "build license url index from license.json file" do
-    url_doc = lic_matcher.read_json_file "#{spec_path}/licenses.json"
+    url_doc = lic_matcher.read_json_file licenses_json_path
     expect( url_doc ).not_to be_nil
 
     url_index = lic_matcher.read_license_url_index url_doc
@@ -109,8 +111,8 @@ describe LicenseMatcher do
     expect( url_index[aal_url] ).to eq('aal')
 		expect( url_index[apache1] ).to eq('apache-1.1')
 		expect( url_index[apache2] ).to eq('apache-2.0')
-		expect( url_index[bsd2] ).to eq('bsd-2')
-		expect( url_index[bsd3] ).to eq('bsd-3')
+    expect( url_index[bsd2] ).to eq('bsd-2-clause')
+		expect( url_index[bsd3] ).to eq('bsd-3-clause')
 		expect( url_index[gpl3] ).to eq('gpl-3.0')
   end
 
@@ -118,8 +120,8 @@ describe LicenseMatcher do
 		expect( lic_matcher.match_url(aal_url).first ).to eq('aal')
 		expect( lic_matcher.match_url(apache1).first ).to eq('apache-1.1')
 		expect( lic_matcher.match_url(apache2).first ).to eq('apache-2.0')
-		expect( lic_matcher.match_url(bsd2).first).to eq('bsd-2')
-		expect( lic_matcher.match_url(bsd3).first).to eq('bsd-3')
+		expect( lic_matcher.match_url(bsd2).first).to eq('bsd-2-clause')
+		expect( lic_matcher.match_url(bsd3).first).to eq('bsd-3-clause')
 		expect( lic_matcher.match_url(gpl3).first ).to eq('gpl-3.0')
 	end
 

@@ -52,44 +52,13 @@ namespace :versioneye do
       VersioneyeCore.new
       lm = LicenseMatcher.new
       licenses = License.where(
-        language: Product::A_LANGUAGE_CSHARP,
         spdx_id: nil,
         url: /codeplex\.com/i
       )
-
-      #modify codeplex urls to use direct license page
-      n = 0
-      licenses.to_a.each do |lic|
-        uri = LicenseCrawler.to_uri(lic[:url])
-        if uri.nil?
-          p "#-- not valid url: #{lic.to_s} : #{lic[:url]}"
-          next
-        end
-
-        uri = LicenseCrawler.to_uri "https://#{uri.host}/license"
-        next if uri.nil?
-
-        res = LicenseCrawler.fetch uri
-        if res.nil? or res.code < 200 or res.code >= 400
-          p "NO RESPONSE: #{uri.to_s}"
-          next
-        end
-
-        txt = lm.preprocess_text lm.preprocess_html res.body.to_s
-        text_results = lm.match_text txt, 3, true
-        rule_results = lm.match_rules txt
-        if text_results.empty? 
-          p "No text results for #{uri.to_s}"
-          next
-        end
-
-        ranked_results = lm.rank_text_and_rules_matches(text_results, rule_results)
-        p "final result for #{lic.to_s}: #{ranked_results.first}"
-
-        n += 1
-      end
-
-      p "Done. Found match for #{n} versions."
+      
+      p "Warming up CodeplexLicenseCrawler"
+      CodeplexLicenseCrawler.crawl_pages licenses, 0.9, true
+      p "Done"
     end
 
   end

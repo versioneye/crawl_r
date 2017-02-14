@@ -60,6 +60,7 @@ module Versioneye
     require './lib/versioneye/utils/license_matcher'
     require './lib/versioneye/utils/python_license_detector'
     require './lib/versioneye/crawlers/github_license_crawler'
+    require './lib/versioneye/crawlers/codeplex_license_crawler'
 
     def self.log
       Versioneye::Log.instance.log
@@ -76,7 +77,26 @@ module Versioneye
     def logger
       Versioneye::Log.instance.log
     end
-    
+ 
+
+    def self.parse_url url_text
+      uri = URI.parse(url_text)
+
+      return uri if uri.is_a?(URI::HTTPS) or uri.is_a?(URI::HTTP)
+      return nil
+    rescue
+      logger.error "Not valid url: #{url_text}"
+      nil
+    end
+
+    def self.fetch url
+     HTTParty.get url, { timeout: 5 }
+    rescue
+      logger.error "failed to fetch data from #{url}"
+      nil
+    end
+
+   
     def self.fetch_json( url, ttl = 5)
       res = Timeout::timeout(ttl) { HTTParty.get(url) }
       if res.code != 200

@@ -350,6 +350,10 @@
       {
         "name": "FreeBSD License",
         "note": null
+      },
+      {
+        "name": "BSD-2",
+        "note": null
       }
     ],
     "identifiers": [
@@ -385,7 +389,7 @@
         "url": "https://en.wikipedia.org/wiki/BSD_licenses#2-clause"
       }
     ],
-    "id": "BSD-2",
+    "id": "BSD-2-Clause",
     "name": "BSD 2-Clause License",
     "keywords": [
       "osi-approved",
@@ -440,7 +444,7 @@
         "url": "https://en.wikipedia.org/wiki/BSD_licenses#3-clause"
       }
     ],
-    "id": "BSD-3",
+    "id": "BSD-3-Clause",
     "name": "BSD 3-Clause License",
     "keywords": [
       "osi-approved",
@@ -459,6 +463,10 @@
     "other_names": [
       {
         "name": "Original BSD License",
+        "note": null
+      },
+      {
+        "name": "BSD-3",
         "note": null
       }
     ],
@@ -483,7 +491,7 @@
         "url": "https://en.wikipedia.org/wiki/BSD_licenses#4-clause"
       }
     ],
-    "id": "BSD-4",
+    "id": "BSD-4-Clause",
     "name": "BSD 4-Clause License",
     "keywords": [
       "osi-approved",
@@ -499,7 +507,14 @@
   },
   {
     "other_names": [
-
+      {
+        "name": "BSD-4",
+        "note": null
+      },
+      {
+        "name": "BSD 4-Clause",
+        "note": null
+      }
     ],
     "identifiers": [
       {
@@ -1859,10 +1874,6 @@
         "note": "Mozilla Page",
         "url": "https://www.mozilla.org/en-US/MPL/"
       },
-    {
-        "note": "OSI Page2",
-        "url": "https://opensource.org/licenses/bsd-license"
-    },
       {
         "note": "Wikipedia page",
         "url": "https://en.wikipedia.org/wiki/MPL_License"
@@ -3344,7 +3355,7 @@
   },
   {
     "id": "BSD-4-UC",
-    "name": "BSD-4-Clause (University of California-Specific)"
+    "name": "BSD-4-Clause University California"
   },
   {
     "id": "bzip2-1.0.5",

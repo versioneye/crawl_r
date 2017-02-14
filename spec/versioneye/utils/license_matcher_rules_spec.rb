@@ -188,30 +188,30 @@ describe LicenseMatcher do
     end
 
     it "matches to BSD-2" do
-      expect(lm.match_rules('BSD2')[0][0]).to eq('bsd-2')
-      expect(lm.match_rules('BSD-2')[0][0]).to eq('bsd-2')
-      expect(lm.match_rules('Uses BSD v2 lic')[0][0]).to eq('bsd-2')
+      expect(lm.match_rules('BSD2')[0][0]).to eq('bsd-2-clause')
+      expect(lm.match_rules('BSD-2')[0][0]).to eq('bsd-2-clause')
+      expect(lm.match_rules('Uses BSD v2 lic')[0][0]).to eq('bsd-2-clause')
 
-      expect(lm.match_rules('FreeBSD')[0][0]).to eq('bsd-2')
-      expect(lm.match_rules('BSDLv2')[0][0]).to eq('bsd-2')
+      expect(lm.match_rules('FreeBSD')[0][0]).to eq('bsd-2-clause')
+      expect(lm.match_rules('BSDLv2')[0][0]).to eq('bsd-2-clause')
     end
 
     it "matches to BSD-3" do
-      expect(lm.match_rules('BSD3')[0][0]).to eq('bsd-3')
-      expect(lm.match_rules('BSD v3')[0][0]).to eq('bsd-3')
-      expect(lm.match_rules('BSD3')[0][0]).to eq('bsd-3')
-      expect(lm.match_rules('BSD3 clause')[0][0]).to eq('bsd-3')
-      expect(lm.match_rules('aaa three-clause BSD license aaa')[0][0]).to eq('bsd-3')
+      expect(lm.match_rules('BSD3')[0][0]).to eq('bsd-3-clause')
+      expect(lm.match_rules('BSD v3')[0][0]).to eq('bsd-3-clause')
+      expect(lm.match_rules('BSD3')[0][0]).to eq('bsd-3-clause')
+      expect(lm.match_rules('BSD3 clause')[0][0]).to eq('bsd-3-clause')
+      expect(lm.match_rules('aaa three-clause BSD license aaa')[0][0]).to eq('bsd-3-clause')
     end
 
     it "matches to BSD-4" do
-      expect(lm.match_rules('BSDv4')[0][0]).to eq('bsd-4')
-      expect(lm.match_rules('BSD v4')[0][0]).to eq('bsd-4')
-      expect(lm.match_rules('BSD4 Clause')[0][0]).to eq('bsd-4')
-      expect(lm.match_rules('BSD LISENCE')[0][0]).to eq('bsd-4')
-      expect(lm.match_rules('uses BSD4 clause')[0][0]).to eq('bsd-4')
+      expect(lm.match_rules('BSDv4')[0][0]).to eq('bsd-4-clause')
+      expect(lm.match_rules('BSD v4')[0][0]).to eq('bsd-4-clause')
+      expect(lm.match_rules('BSD4 Clause')[0][0]).to eq('bsd-4-clause')
+      expect(lm.match_rules('BSD LISENCE')[0][0]).to eq('bsd-4-clause')
+      expect(lm.match_rules('uses BSD4 clause')[0][0]).to eq('bsd-4-clause')
 
-      expect(lm.match_rules('http://en.wikipedia.org/wiki/BSD_licenses')[0][0]).to eq('bsd-4')
+      expect(lm.match_rules('http://en.wikipedia.org/wiki/BSD_licenses')[0][0]).to eq('bsd-4-clause')
     end
 
     it "matches to bsl-1.0" do

@@ -9,26 +9,6 @@ class GithubLicenseCrawler < Versioneye::Crawl
     @@log
   end
 
-
-  def self.fetch url
-     HTTParty.get url, { timeout: 5 }
-  rescue
-    logger.error "failed to fetch data from #{url}"
-    {code: 500}
-  end
-
-
-  def self.parse_url url_text
-    uri = URI.parse(url_text)
-
-    return uri if uri.is_a?(URI::HTTPS) or uri.is_a?(URI::HTTP)
-    return nil
-  rescue
-    logger.error "Not valid url: #{url_text}"
-    nil
-  end
-
-
   def self.is_github_url(uri)
     false if uri.to_s.empty?
 
@@ -49,7 +29,6 @@ class GithubLicenseCrawler < Versioneye::Crawl
     logger.info "\t to_page_url: #{link_uri.to_s} => #{page_url.to_s}"
     page_url
   end
-
 
   # matches spdx ids div.overall-summary containes on the github repo page
   def self.crawl_repo_pages(licenses, update = false)
@@ -107,7 +86,7 @@ class GithubLicenseCrawler < Versioneye::Crawl
 
   def self.fetch_overall_summary(link_uri)
     res = fetch link_uri
-    if res.code < 200 or res.code >= 400
+    if res.nil? or res.code < 200 or res.code >= 400
       logger.warn "\tfetch_overall_summary: failed request #{res.code} -> #{link_uri.to_s}"
       return nil
     end
