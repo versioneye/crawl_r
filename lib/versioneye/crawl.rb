@@ -59,6 +59,7 @@ module Versioneye
 
     require './lib/versioneye/utils/license_matcher'
     require './lib/versioneye/utils/python_license_detector'
+    require './lib/versioneye/crawlers/github_license_crawler'
 
     def self.log
       Versioneye::Log.instance.log

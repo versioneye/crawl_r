@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/versioneye/versioneye-core.git
-  revision: 5db95e8e044edee2b6a9081efd2c58f319feb36b
-  tag: v11.4.6
+  revision: 2ee75b7addbb778839d695587788d23a6e8a43da
+  tag: v11.6.6
   specs:
-    versioneye-core (11.4.6)
+    versioneye-core (11.6.6)
       actionmailer (~> 5.0.1)
       aws-sdk (~> 2.7.2)
       bunny (~> 2.6.0)
@@ -13,7 +13,7 @@ GIT
       gemnasium-parser (~> 0.1.9)
       httparty (~> 0.14.0)
       mongoid (~> 6.1.0)
-      naturalsorter (~> 3.0.15)
+      naturalsorter (~> 3.0.16)
       net-ldap (~> 0.15.0)
       nokogiri (~> 1.7.0.1)
       oauth (~> 0.5.0)
@@ -62,13 +62,13 @@ GEM
       public_suffix (~> 2.0, >= 2.0.2)
     amq-protocol (2.1.0)
     ansi (1.5.0)
-    aws-sdk (2.7.3)
-      aws-sdk-resources (= 2.7.3)
-    aws-sdk-core (2.7.3)
+    aws-sdk (2.7.5)
+      aws-sdk-resources (= 2.7.5)
+    aws-sdk-core (2.7.5)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.7.3)
-      aws-sdk-core (= 2.7.3)
+    aws-sdk-resources (2.7.5)
+      aws-sdk-core (= 2.7.5)
     aws-sigv4 (1.0.0)
     bson (4.2.1)
     builder (3.2.3)
@@ -114,7 +114,7 @@ GEM
       domain_name (~> 0.5)
     httparty (0.14.0)
       multi_xml (>= 0.5.2)
-    i18n (0.7.0)
+    i18n (0.8.0)
     jmespath (1.3.1)
     json (2.0.3)
     loofah (2.0.3)
@@ -135,7 +135,7 @@ GEM
     multipart-post (2.0.0)
     nap (1.1.0)
     narray (0.6.1.2)
-    naturalsorter (3.0.15)
+    naturalsorter (3.0.16)
     net-ldap (0.15.0)
     netrc (0.11.0)
     nokogiri (1.7.0.1)
