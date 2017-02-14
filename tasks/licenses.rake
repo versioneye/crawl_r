@@ -50,6 +50,7 @@ namespace :versioneye do
     desc "fetches licenses for codeplex projects which has no spdx_ids"
     task :crawl_codeplex do
       VersioneyeCore.new
+      lm = LicenseMatcher.new
       licenses = License.where(
         language: Product::A_LANGUAGE_CSHARP,
         spdx_id: nil,
@@ -57,18 +58,38 @@ namespace :versioneye do
       )
 
       #modify codeplex urls to use direct license page
-      crawlable_licenses = []
+      n = 0
       licenses.to_a.each do |lic|
         uri = LicenseCrawler.to_uri(lic[:url])
         if uri.nil?
           p "#-- not valid url: #{lic.to_s} : #{lic[:url]}"
           next
         end
-        lic[:url] = "https://#{uri.host}/license"
-        crawlable_licenses << lic
+
+        uri = LicenseCrawler.to_uri "https://#{uri.host}/license"
+        next if uri.nil?
+
+        res = LicenseCrawler.fetch uri
+        if res.nil? or res.code < 200 or res.code >= 400
+          p "NO RESPONSE: #{uri.to_s}"
+          next
+        end
+
+        txt = lm.preprocess_text lm.preprocess_html res.body.to_s
+        text_results = lm.match_text txt, 3, true
+        rule_results = lm.match_rules txt
+        if text_results.empty? 
+          p "No text results for #{uri.to_s}"
+          next
+        end
+
+        ranked_results = lm.rank_text_and_rules_matches(text_results, rule_results)
+        p "final result for #{lic.to_s}: #{ranked_results.first}"
+
+        n += 1
       end
-      p "Found #{crawlable_licenses.size} licenses hosted on codeplex."
-      LicenseCrawler.crawl_unidentified_urls crawlable_licenses, 0.9, false
+
+      p "Done. Found match for #{n} versions."
     end
 
   end
