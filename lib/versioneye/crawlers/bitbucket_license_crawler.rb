@@ -25,7 +25,7 @@ class BitbucketLicenseCrawler < Versioneye::Crawl
     licenses.to_a.each do |lic_db|
       n += 1
 
-      lic_uri = BitbucketLicenseCrawler.to_repo_url lic_db[:url]
+      lic_uri = to_repo_url lic_db[:url]
       next if lic_uri.nil?
       
       code, new_url = url_cache.fetch(lic_uri) do
@@ -56,7 +56,7 @@ class BitbucketLicenseCrawler < Versioneye::Crawl
     return [res.code, nil] if res.code < 200 or res.code > 404
     return [res.code, nil] if res.code != 404
 
-    new_url = BitbucketLicenseCrawler.extract_moved_url res.body
+    new_url = extract_moved_url res.body
     if new_url.nil?
       return [res.code, nil]
     end

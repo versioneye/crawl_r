@@ -74,6 +74,17 @@ namespace :versioneye do
       p "Done! checked #{n} existing pages - #{n_moved} have beed moved."
     end
 
+    desc "tries to get licenses for nuget packages on their release page"
+    task :crawl_unknown_nuget_licenses do
+      VersioneyeCore.new
+      licenses = License.where(
+        language: Product::A_LANGUAGE_CSHARP,
+        spdx_id: nil
+      )
+
+      n, n_lic = NugetLicenseCrawler.crawl_licenses licenses, true
+      p "Done! crawled #{n} version pages - detected license for #{n_lic}"
+    end
 
   end
 end
