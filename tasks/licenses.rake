@@ -61,5 +61,19 @@ namespace :versioneye do
       p "Done"
     end
 
+    desc "updates urls of moved bitbucket repos"
+    task :update_moved_bitbucket_repos do
+      VersioneyeCore.new
+      licenses = License.where(
+        language: Product::A_LANGUAGE_CSHARP,
+        url: /bitbucket/i,
+        spdx_id: nil
+      )
+    
+      n, n_moved = BitbucketLicenseCrawler.crawl_moved_pages(licenses, true)
+      p "Done! checked #{n} existing pages - #{n_moved} have beed moved."
+    end
+
+
   end
 end
