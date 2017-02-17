@@ -50,12 +50,11 @@ namespace :versioneye do
     desc "fetches licenses for codeplex projects which has no spdx_ids"
     task :crawl_codeplex do
       VersioneyeCore.new
-      lm = LicenseMatcher.new
       licenses = License.where(
         spdx_id: nil,
         url: /codeplex\.com/i
       )
-      
+
       p "Warming up CodeplexLicenseCrawler.crawl_licenses"
       n, n_matches = CodeplexLicenseCrawler.crawl_licenses licenses, true, 0.9
       p "Done. crawled #{n} pages, detected: #{n_matches} licenses"
@@ -64,9 +63,8 @@ namespace :versioneye do
     desc "tries to find and match licenses for VersionLink with codeplex url"
     task :crawl_codeplex_versionlinks do
       VersioneyeCore.new
-      lm = LicenseMatcher.new
       links = Versionlink.where(link: /codeplex\.com/i)
-     
+
       unknown_links = links.to_a.keep_if do |link|
         res = false
         prod_licenses = Version.where(
@@ -76,13 +74,44 @@ namespace :versioneye do
         )
         res = true if prod_licenses.count == 0
         res = true if prod_licenses.where(name: /unknown/i).count > 0
-        
+
         res
       end
 
       p "Warming up CodeplexLicenseCrawler.crawl_links"
       n, n_matches = CodeplexLicenseCrawler.crawl_links unknown_links, true, 0.9
       p "Done. Crawled #{n} pages, detected: #{n_matches} licenses"
+    end
+
+    desc "crawls license ids from Github page by using License.urls"
+    task :crawl_github do
+      VersioneyeCore.new
+      licenses = License.where(spdx_id: nil, url: /github/i)
+
+      p "Warming up GithubLicenseCrawler.crawl_licenses"
+      n, n_matches = GithubLicenseCrawler.crawl_licenses licenses, true
+      p "Done. Crawled #{n} pages, detected: #{n_matches} licenses"
+    end
+
+    desc "crawls Github versionlinks which has no license or only unknown licenses"
+    task :crawl_github_versionlinks do
+      VersioneyeCore.new
+      links = Versionlink.where(language: 'CSharp', link: /github/i)
+      unknown_links = links.to_a.keep_if do |link|
+        res = false
+        prod_licenses = Version.where(
+          language: link[:language],
+          prod_key: link[:prod_key],
+          version: link[:version_id]
+        )
+        res = true if prod_licenses.count == 0
+        res = true if prod_licenses.where(name: /unknown/i).count > 0
+        res
+      end
+
+      p "Warming up GithubLicenseCrawler.crawl_versionlinks"
+      n, n_matches = GithubLicenseCrawler.crawl_versionlinks links, true
+      p "Done. Crawled #{n} pages, detected #{n_matches} licenses"
     end
 
   end

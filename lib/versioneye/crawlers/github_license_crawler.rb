@@ -25,49 +25,74 @@ class GithubLicenseCrawler < Versioneye::Crawl
     _, owner, repo, _ = link_uri.path.to_s.split(/\//)
     return nil if owner.nil? or repo.nil?
 
-    page_url = parse_url("#{GITHUB_URL}/#{owner}/#{repo}")
-    logger.info "\t to_page_url: #{link_uri.to_s} => #{page_url.to_s}"
-    page_url
+    parse_url("#{GITHUB_URL}/#{owner}/#{repo}")
   end
 
-  # matches spdx ids div.overall-summary containes on the github repo page
-  def self.crawl_repo_pages(licenses, update = false)
+  def self.crawl_licenses(licenses, update = false)
     lm = LicenseMatcher.new
     url_cache = ActiveSupport::Cache::MemoryStore.new(expires_in: 2.minutes)
 
-    n, matched = 0, 0
+    n, n_match = 0, 0
     licenses.to_a.each do |lic_db|
-      link_uri = parse_url lic_db[:url]
-      next if link_uri.nil? # ignore non-valid urls
-      next if !is_github_url(link_uri) # ignore not valid github urls
-
-      link_uri = to_page_url link_uri  # unify various repo urls into main www-page url
-      next if link_uri.nil? # failed to unify repo
-
-      lic_id, score = url_cache.fetch(link_uri) do
-        logger.info "crawl_repo_pages: going to fetch overall summary from #{link_uri.to_s}"
-        fetch_and_process_page(lm, link_uri)
-      end
-
       n += 1
-      next if lic_id.nil?
+      prod_dt = {
+        language: lic_db[:language],
+        prod_key: lic_db[:prod_key],
+        version: lic_db[:version],
+        url: lic_db[:url]
+      }
 
-      if update
-        lic_db.spdx_id = lm.to_spdx_id(lic_id)
-        lic_db.comments = "github_license_crawler.crawl_repo_pages"
-        lic_db.save
-
-        logger.debug "\t-- updated #{lic_db.to_s} spdx_id -> #{lic_db.spdx_id}"
-      else
-        logger.debug "\t-- matched #{lic_db.to_s} spdx_id -> #{lic_id}"
-      end
-
-      matched += 1
+      res = crawl_repo_page(lm, url_cache, prod_dt, update)
+      n_match += 1 if res
     end
 
-    logger.info "crawl_repo_pages: done. crawled #{n} github pages, found match #{matched}"
+    [n, n_match]
   end
 
+  def self.crawl_versionlinks(links, update = false)
+    lm = LicenseMatcher.new
+    url_cache = ActiveSupport::Cache::MemoryStore.new(expires_in: 2.minutes)
+    n, n_match = 0, 0
+
+    links.to_a.each do |link|
+      n += 1
+      prod_dt = {
+        language: link[:language],
+        prod_key: link[:prod_key],
+        version: link[:version_id],
+        url: link[:link]
+      }
+
+      res = crawl_repo_page(lm, url_cache, prod_dt, update)
+      n_match += 1 if res
+    end
+
+    [n, n_match]
+  end
+
+  # matches spdx ids found in the div.overall-summary container on the github repo page
+  def self.crawl_repo_page(lm, url_cache, prod_dt, update = false, min_confidence = 0.9)
+    repo_uri = parse_url prod_dt[:url]
+    return if repo_uri.nil? # ignore non-valid urls
+    return if !is_github_url(repo_uri) # ignore not valid github urls
+
+    repo_uri = to_page_url repo_uri  # unify various repo urls into main www-page url
+    return if repo_uri.nil? # failed to unify repo
+
+    lic_id, score = url_cache.fetch(repo_uri) do
+      logger.info "crawl_repo_pages: going to fetch overall summary from #{repo_uri.to_s}"
+      fetch_and_process_page(lm, repo_uri)
+    end
+
+    return if lic_id.nil?
+
+    if update
+      matches = [[lm.to_spdx_id(lic_id), score, repo_uri.to_s]]
+      save_license_updates(prod_dt, matches, min_confidence, "GithubLicenseCrawler")
+    end
+
+    true
+  end
 
   def self.fetch_and_process_page(lm, link_uri)
     summary_text = fetch_overall_summary link_uri
