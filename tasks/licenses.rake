@@ -50,7 +50,6 @@ namespace :versioneye do
     desc "fetches licenses for codeplex projects which has no spdx_ids"
     task :crawl_codeplex do
       VersioneyeCore.new
-      lm = LicenseMatcher.new
       licenses = License.where(
         spdx_id: nil,
         url: /codeplex\.com/i
@@ -59,6 +58,21 @@ namespace :versioneye do
       p "Warming up CodeplexLicenseCrawler"
       CodeplexLicenseCrawler.crawl_pages licenses, 0.9, true
       p "Done"
+    end
+
+    desc "crawl licenses with bitbucket urls and tries to find license files from repo"
+    task :crawl_bitbucket_licenses do
+      VersioneyeCore.new
+      licenses = License.where(
+        language: Product::A_LANGUAGE_CSHARP,
+        spdx_id: nil,
+        url: /bitbucket\.org/
+      )
+
+      p "Starting BitbucketLicenseCrawler.crawl_licenses"
+      n, n_match = BitbucketLicenseCrawler.crawl_licenses licenses, true, 0.9
+      p "Done! Crawled #{n} repos, found #{n_match} new match"
+
     end
 
     desc "updates urls of moved bitbucket repos"

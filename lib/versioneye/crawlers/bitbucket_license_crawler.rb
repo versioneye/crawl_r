@@ -7,15 +7,6 @@ class BitbucketLicenseCrawler < Versioneye::Crawl
     end
     @@log
   end
-
-  def self.to_repo_url(uri)
-    uri = parse_url(uri) if uri.is_a?(String)
-    return if uri.nil?
-
-    _, owner, repo, _ = uri.path.split(/\//)
-    parse_url "https://#{uri.host}/#{owner}/#{repo}"
-  end
-
   def self.crawl_moved_pages(licenses, update = false)
     return if licenses.nil? or licenses.empty?
 
@@ -50,6 +41,126 @@ class BitbucketLicenseCrawler < Versioneye::Crawl
     [n, n_moved]
   end
 
+  #crawls licenses with bitbucket urls and tries to find license-file from it
+  def self.crawl_licenses(licenses, update = false, min_confidence = 0.9)
+    lm = LicenseMatcher.new
+    url_cache = ActiveSupport::Cache::MemoryStore.new(expires_in: 2)
+
+    n, n_match = [0, 0]
+    licenses.to_a.each do |lic_db|
+      repo_uri = to_repo_url lic_db[:url]
+      next unless is_bitbucket_url(repo_uri)
+
+      n += 1
+      code, file_urls = url_cache.fetch(repo_uri) do
+        logger.info "Trying to find license file from #{repo_uri.to_s}"  
+        fetch_license_urls( repo_uri.to_s )
+      end
+      
+      if code != 200
+        logger.info "Failed to request data from #{code} => #{repo_uri.to_s}"
+        next
+      end
+      
+      if file_urls.to_a.empty?
+        logger.info "Found no license file at #{repo_uri}"
+        next
+      end
+
+      logger.info "Found #{lic_db.to_s} license files: \n\t #{file_urls}"
+      matches = []
+      file_urls.to_a.each do |file_url|
+        lic_id, score = url_cache.fetch(file_url) do
+          fetch_and_match_license_file(lm, file_url)
+        end
+        
+        if lic_id
+          matches << [lm.to_spdx_id(lic_id), score, file_url]
+
+          logger.info "\tMatch #{file_url} => #{lic_id} : #{score} "
+          n_match += 1
+        else
+          logger.info "\tNo match #{file_url}"
+        end
+
+      end
+
+      if update
+        save_license_updates(lic_db, matches, min_confidence)
+      end
+
+    end
+
+    [n, n_match]
+  end
+
+  
+#-- helper functions
+ 
+  #TODO: what if multiple licenses??
+  def self.save_license_updates(lic_db, matches, min_confidence)
+    return false if matches.nil?
+
+    matches.to_a.each do |spdx_id, score, url|
+      if score < min_confidence
+        logger.warn "update_license_data: low confidence #{score} < #{min_confidence}"
+        logger.warn "license #{lic_db.to_s} , #{spdx_id}, #{url}"
+        next
+      end
+      
+      logger.info "save_license_updates: upsert a versionLicense #{lic_db.to_s} => #{spdx_id} : #{score}"
+      upsert_license_data(
+        lic_db[:language], lic_db[:prod_key], lic_db[:version], spdx_id, url,
+        "BitbucketLicenseCrawler.crawl_licenses"
+      )
+ 
+    end
+
+    true
+  end
+
+  def self.upsert_license_data(language, prod_key, version, spdx_id, url, comments = "")
+    lic_db = License.where(language: language, prod_key: prod_key, version: version, spdx_id: spdx_id).first_or_create
+    
+    lic_db.update(
+      language: language,
+      prod_key: prod_key,
+      version: version,
+      name: spdx_id,
+      spdx_id: spdx_id,
+      url: url,
+      comments: comments
+    )
+    lic_db.save
+    lic_db
+  end
+
+  #tries to read and match license file content with SPDX files
+  #returns [spdx_id, confidence] if there's match otherwise nil
+  def self.fetch_and_match_license_file(lm, file_url)
+    res = fetch file_url
+    if res.nil? or res.code < 200 or res.code > 400
+      logger.error "fetch_and_match_license_file: got no response #{file_url.to_s}"
+      return
+    end
+
+    matches = lm.match_text res.body
+    return matches.to_a.first
+  end
+
+
+  #tries to find license file from the repo's source listing
+  #returns [status_code, urls]
+  def self.fetch_license_urls(repo_uri)
+    res = fetch "#{repo_uri.to_s}/src" 
+    return [500, nil] if res.nil?
+    return [res.code, nil] if res.code < 200 or res.code > 400
+
+    urls = extract_license_file_urls res.body
+
+    return [res.code, urls]
+  end
+
   def self.fetch_and_process_moved_page(repo_uri)
     res = fetch repo_uri
     return [500, nil]      if res.nil?
@@ -65,8 +176,8 @@ class BitbucketLicenseCrawler < Versioneye::Crawl
   end
 
   def self.extract_moved_url(html_txt)
-    return if html_txt.to_s.empty?
     html_txt = html_txt.to_s.gsub(/\s+/, ' ').strip
+    return if html_txt.to_s.empty?
 
     html_doc = Nokogiri::HTML(html_txt)
     return if html_doc.nil?
@@ -78,6 +189,52 @@ class BitbucketLicenseCrawler < Versioneye::Crawl
     elems.each {|el| url = el[:href] if el.has_attribute?('href') }
 
     url
+  end
+
+  def self.extract_license_file_urls(html_txt)
+    html_txt = html_txt.to_s.gsub(/\s+/, ' ').strip
+    return if html_txt.to_s.empty?
+
+    html_doc = Nokogiri::HTML(html_txt)
+    return if html_doc.nil?
+
+    elems = html_doc.xpath(
+      '//table[@id="source-list"]//td[contains(@class, "filename")]//a'
+    )
+
+    host = "https://bitbucket.org"
+    elems.to_a.reduce([]) do |acc, el|
+      if is_license_file( el[:title] )
+        acc << host.to_s + el[:href].to_s.gsub(/\/src\//, '/raw/')
+      end
+
+      acc
+    end
+
+  end
+
+  def self.is_license_file(filename)
+    filename = filename.to_s.strip
+    return false if filename.empty?
+    return true if filename =~ /LICEN[S|C]E/i
+    return true if filename =~ /\ACOPYING/i
+    return false
+  end
+
+  def self.is_bitbucket_url(uri)
+    uri = parse_url(uri) if uri.is_a?(String)
+    return false if uri.nil?
+
+    return true if uri.host =~ /bitbucket\.org/
+    return false
+  end
+
+  def self.to_repo_url(uri)
+    uri = parse_url(uri) if uri.is_a?(String)
+    return if uri.nil?
+
+    _, owner, repo, _ = uri.path.split(/\//)
+    parse_url "https://#{uri.host}/#{owner}/#{repo}"
   end
 
 
