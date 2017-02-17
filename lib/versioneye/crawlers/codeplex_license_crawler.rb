@@ -8,45 +8,112 @@ class CodeplexLicenseCrawler < Versioneye::Crawl
   end
 
   # filters out codeplex licenses and tries to match content of license page
-  def self.crawl_pages(licenses, min_confidence = 0.9, update = false)
+  def self.crawl_licenses(licenses, update = false,  min_confidence = 0.9)
+    return [0,0] if licenses.to_a.empty?
+    
     lm = LicenseMatcher.new
     url_cache = ActiveSupport::Cache::MemoryStore.new(expires_in: 2.minutes)
 
-    n, matched = 0,0
+    n, n_matched = 0,0
     licenses.to_a.each do |lic_db|
-      link_uri = parse_url lic_db[:url]
-      next if link_uri.nil? #ignore non-valid urls
-      next unless is_codeplex_url(link_uri)
-
-      lic_uri = to_license_url(link_uri)
-      next if lic_uri.nil?
-
-      lic_id, score = url_cache.fetch(lic_uri) do
-        logger.info "crawl_pages: going to fetch codeplex license from #{lic_uri.to_s}"
-        fetch_and_process_page(lm, lic_uri)
-      end
-
       n += 1
-      next if lic_id.nil?
+      prod_dt = {
+        language: lic_db[:language],
+        prod_key: lic_db[:prod_key],
+        version: lic_db[:version],
+        url: lic_db[:url]
+      }
+
+      res = crawl_license_page(lm, url_cache, prod_dt, update, min_confidence)
+      n_matched += 1 if res
+    end
+
+    [n, n_matched]
+  end
+
+  def self.crawl_links(links, update = false, min_confidence = 0.9)
+    return [0, 0] if links.to_a.empty?
+    
+    lm = LicenseMatcher.new
+    url_cache = ActiveSupport::Cache::MemoryStore.new(expires_in: 2.minutes)
+
+    n, n_matched = 0,0
+    links.to_a.each do |link|
+      n += 1
+      prod_dt = {
+        language: link[:language],
+        prod_key: link[:prod_key],
+        version: link[:version_id],
+        url: link[:link]
+      }
+
+      res = crawl_license_page(lm, url_cache, prod_dt, update, min_confidence)
+      n_matched += 1 if res
+    end
+
+    [n, n_matched]
+  end
+
+
+  def self.crawl_license_page(lm, url_cache, prod_dt, update, min_confidence)
+    link_uri = parse_url prod_dt[:url]
+    return if link_uri.nil? #ignore non-valid urls
+    return unless is_codeplex_url(link_uri)
+
+    lic_uri = to_license_url(link_uri)
+    return if lic_uri.nil?
+
+    lic_id, score = url_cache.fetch(lic_uri) do
+      logger.info "crawl_license_page: going to fetch codeplex license from #{lic_uri.to_s}"
+      fetch_and_process_page(lm, lic_uri)
+    end
+    return if lic_id.nil?
+
+    logger.info "crawl_license_page: match #{prod_dt} => #{lic_id} : #{score} , #{lic_uri.to_s}"
+
+    if update
+      matches = [[lm.to_spdx_id(lic_id), score, lic_uri.to_s]]
+      save_license_updates(prod_dt, matches, min_confidence)
+    end
+
+    true 
+  end
+
+  def self.save_license_updates(prod_dt, matches, min_confidence)
+    return false if matches.nil?
+
+    matches.to_a.each do |spdx_id, score, url|
       if score < min_confidence
-        logger.warn "\t-- too low confidence for #{lic_uri.to_s} => #{lic_id}, #{score}"
+        logger.warn "save_license_updates: low confidence #{prod_dt.to_s} => #{spdx_id} : #{score} , #{url}"
         next
       end
 
-      #when it found great match with existing SPDX licenses
-      matched += 1
-      if update
-        lic_db.spdx_id  = lm.to_spdx_id(lic_id)
-        lic_db.comments = "codeplex_license_crawler.crawl_pages"
-        lic_db.save
-        logger.debug "\t-- updated #{lic_db.to_s} -> #{lic_db.spdx_id}"
-      else
-        logger.debug "\t-- matched #{lic_db.to_s} -> #{lic_id} : #{score}"
-      end
-
+      logger.info "save_license_updates: updating #{prod_dt.to_s} => #{spdx_id}"
+      upsert_license_data(
+        prod_dt[:language], prod_dt[:prod_key], prod_dt[:version], spdx_id, url,
+        "CodeplexLicenseCrawler.crawl_license_page"
+      )
     end
 
-    logger.info "crawl_pages: done. crawled #{n} pages, fount match #{matched}"
+    true
+  end
+
+  def self.upsert_license_data(language, prod_key, version, spdx_id, url, comment)
+    prod_licenses = License.where(language: language, prod_key: prod_key, version: version)
+    lic_db = prod_licenses.where(name: 'Nuget Unknown').first #try to update unknown license
+    lic_db = prod_licenses.where(name: /Unknown/i).first  unless lic_db #try to update existing Unknown license
+    lic_db = prod_licenses.where(spdx_id: spdx_id).first unless lic_db #try to upate existing
+    lic_db = prod_licenses.first_or_create unless lic_db #create a new model if no matches
+
+    lic_db.update(
+      name: spdx_id,
+      spdx_id: spdx_id,
+      url: url,
+      comments: comment
+    )
+    lic_db.save
+    lic_db
+
   end
 
   def self.fetch_and_process_page(lm, lic_uri)

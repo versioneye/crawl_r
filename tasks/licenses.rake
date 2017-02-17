@@ -31,7 +31,7 @@ namespace :versioneye do
           non_valid += 1
           next
         end
-        
+
         valid += 1
         counts[uri.host] += 1
       end
@@ -56,9 +56,33 @@ namespace :versioneye do
         url: /codeplex\.com/i
       )
       
-      p "Warming up CodeplexLicenseCrawler"
-      CodeplexLicenseCrawler.crawl_pages licenses, 0.9, true
-      p "Done"
+      p "Warming up CodeplexLicenseCrawler.crawl_licenses"
+      n, n_matches = CodeplexLicenseCrawler.crawl_licenses licenses, true, 0.9
+      p "Done. crawled #{n} pages, detected: #{n_matches} licenses"
+    end
+
+    desc "tries to find and match licenses for VersionLink with codeplex url"
+    task :crawl_codeplex_versionlinks do
+      VersioneyeCore.new
+      lm = LicenseMatcher.new
+      links = Versionlink.where(link: /codeplex\.com/i)
+     
+      unknown_links = links.to_a.keep_if do |link|
+        res = false
+        prod_licenses = Version.where(
+          language: link[:language],
+          prod_key: link[:prod_key],
+          version: link[:version_id]
+        )
+        res = true if prod_licenses.count == 0
+        res = true if prod_licenses.where(name: /unknown/i).count > 0
+        
+        res
+      end
+
+      p "Warming up CodeplexLicenseCrawler.crawl_links"
+      n, n_matches = CodeplexLicenseCrawler.crawl_links unknown_links, true, 0.9
+      p "Done. Crawled #{n} pages, detected: #{n_matches} licenses"
     end
 
   end
