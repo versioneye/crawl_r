@@ -66,13 +66,24 @@ namespace :versioneye do
       licenses = License.where(
         language: Product::A_LANGUAGE_CSHARP,
         spdx_id: nil,
-        url: /bitbucket\.org/
+        url: /bitbucket\.org/i
       )
 
       p "Starting BitbucketLicenseCrawler.crawl_licenses"
       n, n_match = BitbucketLicenseCrawler.crawl_licenses licenses, true, 0.9
       p "Done! Crawled #{n} repos, found #{n_match} new match"
+    end
 
+    desc "crawl licenses by bitbucket versionlinks and try to find license files"
+    task :crawl_bitbucket_versionlink_licenses do
+      VersioneyeCore.new
+      bitbucket_links = Versionlink.where(
+        url: /bitbucket\.org/i
+      )
+
+      p "Starting BitbucketLicenseCrawler.crawl_version_links"
+      n, n_match = BitbucketLicenseCrawler.crawl_version_links bitbucket_links, true, 0.9
+      p "Done! Crawled #{n} repos, found #{n_match} new licenses"
     end
 
     desc "updates urls of moved bitbucket repos"

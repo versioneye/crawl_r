@@ -44,73 +44,108 @@ class BitbucketLicenseCrawler < Versioneye::Crawl
   #crawls licenses with bitbucket urls and tries to find license-file from it
   def self.crawl_licenses(licenses, update = false, min_confidence = 0.9)
     lm = LicenseMatcher.new
-    url_cache = ActiveSupport::Cache::MemoryStore.new(expires_in: 2)
+    url_cache = ActiveSupport::Cache::MemoryStore.new(expires_in: 2.minutes)
 
     n, n_match = [0, 0]
     licenses.to_a.each do |lic_db|
-      repo_uri = to_repo_url lic_db[:url]
-      next unless is_bitbucket_url(repo_uri)
-
       n += 1
-      code, file_urls = url_cache.fetch(repo_uri) do
-        logger.info "Trying to find license file from #{repo_uri.to_s}"  
-        fetch_license_urls( repo_uri.to_s )
-      end
-      
-      if code != 200
-        logger.info "Failed to request data from #{code} => #{repo_uri.to_s}"
-        next
-      end
-      
-      if file_urls.to_a.empty?
-        logger.info "Found no license file at #{repo_uri}"
-        next
-      end
+      prod_dt = {
+        language: lic_db[:language],
+        prod_key: lic_db[:prod_key],
+        version: lic_db[:version],
+        url: lic_db[:url]
+      }
 
-      logger.info "Found #{lic_db.to_s} license files: \n\t #{file_urls}"
-      matches = []
-      file_urls.to_a.each do |file_url|
-        lic_id, score = url_cache.fetch(file_url) do
-          fetch_and_match_license_file(lm, file_url)
-        end
-        
-        if lic_id
-          matches << [lm.to_spdx_id(lic_id), score, file_url]
-
-          logger.info "\tMatch #{file_url} => #{lic_id} : #{score} "
-          n_match += 1
-        else
-          logger.info "\tNo match #{file_url}"
-        end
-
-      end
-
-      if update
-        save_license_updates(lic_db, matches, min_confidence)
-      end
-
+      res = crawl_repo_licenses(lm, url_cache, prod_dt, update, min_confidence)
+      n_match += 1 if res
     end
 
     [n, n_match]
   end
 
+  def self.crawl_version_links(links, update = false, min_confidence = 0.9)
+    lm = LicenseMatcher.new
+    url_cache = ActiveSupport::Cache::MemoryStore.new(expires_in: 2.minutes)
+
+    n, n_match = [0,0]
+    links.to_a.each do |link_db|
+      n += 1
+      prod_dt = {
+        language: link_db[:language],
+        prod_key: link_db[:prod_key],
+        version: link_db[:version_id],
+        url: link_db[:link]
+      }
+
+      res = crawl_repo_licenses(lm, url_cache, prod_dt, update, min_confidence)
+      n_match += 1 if res
+    end
+
+    [n, n_match]
+  end
+
+  #crawls license files from Bitbucket site
+  #prod_dt = hash-map {:language String, :prod_key String, :version String, :url String}
+  def self.crawl_repo_licenses(lm, url_cache, prod_dt, update, min_confidence)
+    repo_uri = to_repo_url prod_dt[:url]
+    return unless is_bitbucket_url(repo_uri)
+
+    code, file_urls = url_cache.fetch(repo_uri) do
+      logger.info "Trying to find license file from #{repo_uri.to_s}"  
+      fetch_license_urls( repo_uri.to_s )
+    end
+    
+    if code != 200
+      logger.info "Failed to request data from #{code} => #{repo_uri.to_s}"
+      return
+    end
+    
+    if file_urls.to_a.empty?
+      logger.info "Found no license file at #{repo_uri}"
+      return
+    end
+
+    logger.info "Found #{prod_dt.to_s} license files: \n\t #{file_urls}"
+    matches = []
+    file_urls.to_a.each do |file_url|
+      lic_id, score = url_cache.fetch(file_url) do
+        fetch_and_match_license_file(lm, file_url)
+      end
+      
+      if lic_id
+        matches << [lm.to_spdx_id(lic_id), score, file_url]
+
+        logger.info "\tMatch #{file_url} => #{lic_id} : #{score} "
+      else
+        logger.info "\tNo match #{file_url}"
+      end
+
+    end
+
+    return if matches.empty?
+
+    if update
+      save_license_updates(prod_dt, matches, min_confidence)
+    end
+    true
+  end
   
 #-- helper functions
  
   #TODO: what if multiple licenses??
-  def self.save_license_updates(lic_db, matches, min_confidence)
+  def self.save_license_updates(prod, matches, min_confidence)
     return false if matches.nil?
 
     matches.to_a.each do |spdx_id, score, url|
       if score < min_confidence
         logger.warn "update_license_data: low confidence #{score} < #{min_confidence}"
-        logger.warn "license #{lic_db.to_s} , #{spdx_id}, #{url}"
+        logger.warn "license #{prod.to_s} , #{spdx_id}, #{url}"
         next
       end
       
-      logger.info "save_license_updates: upsert a versionLicense #{lic_db.to_s} => #{spdx_id} : #{score}"
+      logger.info "save_license_updates: upsert a versionLicense #{prod} => #{spdx_id} : #{score}"
       upsert_license_data(
-        lic_db[:language], lic_db[:prod_key], lic_db[:version], spdx_id, url,
+        prod[:language], prod[:prod_key], prod[:version], spdx_id, url,
         "BitbucketLicenseCrawler.crawl_licenses"
       )
  
@@ -120,12 +155,12 @@ class BitbucketLicenseCrawler < Versioneye::Crawl
   end
 
   def self.upsert_license_data(language, prod_key, version, spdx_id, url, comments = "")
-    lic_db = License.where(language: language, prod_key: prod_key, version: version, spdx_id: spdx_id).first_or_create
+    prod_licenses = License.where(language: language, prod_key: prod_key, version: version)
+    lic_db = prod_licenses.where(name: 'Nuget Unknown').first #try to update unknown license
+    lic_db = prod_licenses.where(spdx_id: spdx_id).first unless lic_db #try to upate existing
+    lic_db = prod_licenses.first_or_create unless lic_db #create a new model if no matches
     
     lic_db.update(
-      language: language,
-      prod_key: prod_key,
-      version: version,
       name: spdx_id,
       spdx_id: spdx_id,
       url: url,
