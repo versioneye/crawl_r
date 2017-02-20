@@ -76,7 +76,7 @@ module Versioneye
     def logger
       Versioneye::Log.instance.log
     end
-    
+
     def self.fetch_json( url, ttl = 5)
       res = Timeout::timeout(ttl) { HTTParty.get(url) }
       if res.code != 200
@@ -97,7 +97,7 @@ module Versioneye
         logger.error "Failed to post data to the url: #{url}, #{res.code} - #{res.message}\n#{options}"
         return
       end
-  
+
       return if res.body.to_s.empty?
       JSON.parse(res.body, {symbolize_names: true})
     rescue => e
