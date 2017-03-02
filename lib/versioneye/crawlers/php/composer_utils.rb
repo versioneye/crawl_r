@@ -2,16 +2,24 @@ class ComposerUtils
 
 
   def self.create_license( product, version_number, version_obj )
-    license = version_obj['license']
-    return nil if license.nil? || license.empty?
+    return if version_obj.nil? or version_obj.empty?
 
-    license.each do |license_name|
-      License.find_or_create_by :language => product.language,
-        :prod_key => product.prod_key, :version => version_number,
-        :name => license_name
+    licenses = if version_obj.is_a?(Hash)
+                 CrawlerUtils.split_licenses(version_obj.fetch('license', 'unknown')).to_a
+               else
+                 CrawlerUtils.split_licenses(version_obj) #if it was plain string
+               end
+
+
+    licenses.each do |license_name|
+      License.find_or_create_by(
+        :language => product.language,
+        :prod_key => product.prod_key,
+        :version => version_number,
+        :name => license_name.to_s.strip
+      )
     end
   end
-
 
   def self.create_developers authors, product, version_number
     return nil if authors.nil? || authors.empty?
@@ -69,12 +77,16 @@ class ComposerUtils
       if require_version.strip.eql?("self.version")
         require_version = version_number
       end
-      dep_prod_key = require_name
-      dep = Dependency.find_by( Product::A_LANGUAGE_PHP, product.prod_key, version_number, require_name, require_version, dep_prod_key )
-      next if dep
+
+      next if Dependency.where(:language => Product::A_LANGUAGE_PHP,
+                               :prod_key => product.prod_key,
+                               :prod_version => version_number,
+                               :dep_prod_key => require_name,
+                               :version => require_version,
+                               :scope => scope ).count > 0
 
       dependency = Dependency.new({:name => require_name, :version => require_version,
-        :dep_prod_key => dep_prod_key, :prod_key => product.prod_key,
+        :dep_prod_key => require_name, :prod_key => product.prod_key,
         :prod_version => version_number, :scope => scope, :prod_type => Project::A_TYPE_COMPOSER,
         :language => Product::A_LANGUAGE_PHP })
       dependency.save

@@ -28,6 +28,13 @@ class NpmCrawler < Versioneye::Crawl
   end
 
 
+  def self.crawl_scoped
+    Projectdependency.where(:language => "Node.JS", :name => /@/).distinct(:name).each do |name|
+      NpmCrawler.crawle_package name.gsub("/", "%2f")
+    end
+  end
+
+
   def self.get_first_level_list
     packages = get_first_level_list_from_registry
     if packages.nil? || packages.empty? || packages.count < 50
@@ -83,7 +90,7 @@ class NpmCrawler < Versioneye::Crawl
         next
       end
 
-      db_version     = product.version_by_number version_number
+      db_version = product.version_by_number version_number
       next if db_version
 
       if version[0].to_s.match(/.+-nightly\..+/i)
@@ -203,16 +210,36 @@ class NpmCrawler < Versioneye::Crawl
   def self.create_download product, version_number, version_obj
     dist = version_obj['dist']
     return nil if dist.nil? || dist.empty?
+
+    create_sha( dist['shasum'], product, version_number )
     dist_url  = dist['tarball']
     dist_name = dist_url.split("/").last
-    archive = Versionarchive.new({:language => Product::A_LANGUAGE_NODEJS, :prod_key => product.prod_key,
-      :version_id => version_number, :name => dist_name, :link => dist_url})
+    archive = Versionarchive.new({
+        :language => Product::A_LANGUAGE_NODEJS,
+        :prod_key => product.prod_key,
+        :version_id => version_number,
+        :name => dist_name,
+        :link => dist_url})
     Versionarchive.create_if_not_exist_by_name( archive )
   end
 
 
+  def self.create_sha(sha, product, version_number )
+    artefact = Artefact.find_or_create_by(
+                  :language => product.language,
+                  :prod_key => product.prod_key,
+                  :version => version_number,
+                  :prod_type => 'npm',
+                  :sha_value => sha,
+                  :sha_method => 'sha1' )
+    artefact.save
+  rescue => e
+    self.logger.error "ERROR in create_sha Message: #{e.message}"
+    self.logger.error e.backtrace.join("\n")
+  end
+
+
   def self.create_license( product, version_number, version_obj )
-    check_single_license product, version_number, version_obj
     check_licenses product, version_number, version_obj
     check_license_on_github( product, version_number )
   rescue => e
@@ -233,37 +260,24 @@ class NpmCrawler < Versioneye::Crawl
   end
 
 
-  def self.check_single_license( product, version_number, version_obj )
-    license_value = version_obj['license']
-    return nil if license_value.to_s.empty?
+  def self.check_licenses( product, version_number, version_obj )
+    license_value = ( version_obj['license'] || version_obj['licenses'] )
+    return nil if license_value.nil? or license_value.empty?
 
-    if license_value.is_a? String
-      create_single_license( product, version_number, license_value )
-    elsif license_value.is_a? Hash
+    logger.info "check_licenses: #{product.prod_key}/#{version_number} - #{license_value}"
+    if license_value.is_a? Hash
       license_type = license_value["type"]
       license_url  = license_value["url"]
       create_single_license( product, version_number, license_type, license_url )
-    elsif license_value.is_a? Array
+
+    elsif license_value.is_a?(Array) and license_value.first.is_a?(Hash)
       create_licenses( product, version_number, license_value )
-    end
-  end
 
-
-  def self.check_licenses( product, version_number, version_obj )
-    licenses = version_obj['licenses']
-    return nil if licenses.nil? || licenses.empty?
-
-    if licenses.is_a?( String )
-      create_single_license( product, version_number, licenses )
-    elsif licenses.is_a?( Hash )
-      license_name = licenses["type"]
-      license_url  = licenses["url"]
-      create_single_license( product, version_number, license_name, license_url )
-    elsif licenses.is_a?( Array )
+    else
+      licenses = CrawlerUtils.split_licenses(license_value)
       create_licenses( product, version_number, licenses )
     end
   end
-
 
   def self.create_licenses( product, version_number, licenses )
     licenses.each do |licence|
@@ -280,7 +294,7 @@ class NpmCrawler < Versioneye::Crawl
 
   def self.create_single_license( product, version_number, license_name, license_url = nil )
     license = License.find_or_create( product.language, product.prod_key, version_number, license_name, license_url )
-    self.logger.info " -- find_or_create license - #{license.to_s}"
+    logger.info "create_single_license: find_or_create license - #{license.to_s}"
   end
 
 

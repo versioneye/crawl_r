@@ -184,11 +184,13 @@ class PackagistCrawler < Versioneye::Crawl
     source = source.gsub(".git", "") if source.match(/\.git$/)
     return true if !source.match(/github\.com/)
 
+    source = source.gsub("git@github.com:", "https://github.com/")
     raw_url = "#{source}/releases/tag/#{version_number}"
 
     resp = HttpService.fetch_response raw_url
     return false if resp.nil?
     return true  if resp.code.to_i == 200
+    return true  if resp.code.to_i == 301
     return false
   rescue => e
     self.logger.error e.message

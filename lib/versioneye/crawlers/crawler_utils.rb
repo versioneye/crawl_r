@@ -1,5 +1,19 @@
 class CrawlerUtils
 
+  # splits dual-licensed license string to separate licenses
+  def self.split_licenses(licenses_obj)
+    if licenses_obj.is_a?(Array)
+      return licenses_obj.map(&:strip)
+    elsif licenses_obj.is_a?(String) and licenses_obj.first == '(' and licenses_obj.last == ')'
+      return licenses_obj.gsub(/\(|\)/, '').gsub(/\s+or\s+/i, ',').split(',').to_a
+    elsif licenses_obj.is_a?(String) and licenses_obj.match(",")
+      return licenses_obj.split(",")
+    elsif licenses_obj.is_a?(String)
+      return [licenses_obj]
+    else
+      return [] #happens only if spec of composer.json has been changed
+    end
+  end
 
   def self.create_newest( product, version_number, logger = nil )
     NewestService.create_newest( product, version_number, logger )

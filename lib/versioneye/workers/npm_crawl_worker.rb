@@ -30,6 +30,8 @@ class NpmCrawlWorker < Worker
 
     if package_name.eql?('::npm::')
       NpmCrawler.crawl
+    elsif package_name.eql?('::crawl_scoped::')
+      NpmCrawler.crawl_scoped
     else
       NpmCrawler.crawle_package package_name
     end

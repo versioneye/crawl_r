@@ -12,19 +12,11 @@ rescue Bundler::BundlerError => e
 end
 
 require 'rake'
-require 'jeweler'
-Jeweler::Tasks.new do |gem|
-  # gem is a Gem::Specification... see http://guides.rubygems.org/specification-reference/ for more options
-  gem.name = "ruby_crawl"
-  gem.homepage = "http://github.com/reiz/ruby_crawl"
-  gem.license = "MIT"
-  gem.summary = %Q{VersionEye crawlers implemented in Ruby}
-  gem.description = %Q{VersionEye crawlers implemented in Ruby}
-  gem.email = "robert.reiz.81@gmail.com"
-  gem.authors = ["reiz"]
-  # dependencies defined in Gemfile
+require 'versioneye-core'
+desc "Open an irb session preloaded with this library"
+task :console do
+  sh "irb -rubygems -I lib -r ruby_crawl.rb"
 end
-Jeweler::RubygemsDotOrgTasks.new
 
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|

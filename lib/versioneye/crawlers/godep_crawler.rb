@@ -20,8 +20,8 @@ class GodepCrawler < Versioneye::Crawl
 
   #crawls all the packages got from go-search index
   def self.crawl_all
-    @@license_matcher = LicenseMatcher.new 'data/licenses/texts/plain'
-    
+    @@license_matcher = LicenseMatcher.new
+
     all_pkgs = fetch_package_index
     if all_pkgs.to_a.empty?
       logger.error "crawl_all: failed to retrieve packages for #{A_GODEP_REGISTRY_URL}"
@@ -83,13 +83,13 @@ class GodepCrawler < Versioneye::Crawl
     if latest
       the_prod[:version] = latest.version
     end
-    
+
     #read license data from the repo
     add_version_licenses(the_prod, repo_idx)
- 
+
     res = the_prod.save
     if res == true
-     logger.info "crawl_one: saved #{pkg_id}"      
+     logger.info "crawl_one: saved #{pkg_id}"
     else
       logger.error "crawl_one: failed to save #{pkg_id} - #{the_prod.errors.full_messages}"
     end
@@ -104,7 +104,7 @@ class GodepCrawler < Versioneye::Crawl
     logger.info "crawl_one: a #{pkg_id} repo deleted? #{res}"
   end
 
-  #fetches package details from go-search, 
+  #fetches package details from go-search,
   def self.crawl_package(pkg_id)
     pkg_dt = fetch_package_detail pkg_id
     if pkg_dt.nil?
@@ -160,7 +160,7 @@ class GodepCrawler < Versioneye::Crawl
 
       license_ids = match_licenses(license_files)
       t2 = (Time.now.to_f * 1000).to_i
-      logger.info "add_version_licenses: match_licenses took                |#{t2 - t1}ms"  
+      logger.info "add_version_licenses: match_licenses took                |#{t2 - t1}ms"
 
       license_ids.each {|spdx_id| create_single_license(version[:version], the_prod, spdx_id)}
       t3 = (Time.now.to_f * 1000).to_i
@@ -223,7 +223,7 @@ class GodepCrawler < Versioneye::Crawl
       scope: the_scope,
       version: '*'
     })
-    
+
     unless dep.errors.empty?
       log.error "create_dependency: failed to save dependency #{dep_id} for #{pkg_id},\n #{dep.errors.full_messages}"
     end
@@ -235,15 +235,6 @@ class GodepCrawler < Versioneye::Crawl
     return link if link
 
     Versionlink.create_versionlink prod.language, prod.prod_key, nil, url, name
-  end
-
-  def self.fetch_json( url )
-    res = HTTParty.get(url)
-    if res.code != 200
-      self.logger.error "Failed to fetch JSON doc from: #{url} - #{res}"
-      return nil
-    end
-    JSON.parse(res.body, {symbolize_names: true})
   end
 
   def self.cleanup

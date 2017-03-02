@@ -4,6 +4,7 @@ require 'httparty'
 require 'settings'
 require './lib/versioneye/crawl'
 
+require 'versioneye-core'
 
 class RubyCrawl
 

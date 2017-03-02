@@ -186,6 +186,8 @@ class CocoapodsPodspecParser
 
   def create_license
     type = @podspec.license[:type]
+    return nil if type.nil?
+
     match = @podspec.license[:type].match(/type\s*=>\s*['"](\w+)['"]/i) # Special Case for PubNub
     if match
       type = match[1]
@@ -196,6 +198,10 @@ class CocoapodsPodspecParser
       text = match[1]
     end
     License.find_or_create language, prod_key, version, type, nil, text
+  rescue => e
+    logger.error e.message
+    logger.error e.backtrace.join("\n")
+    nil
   end
 
 
