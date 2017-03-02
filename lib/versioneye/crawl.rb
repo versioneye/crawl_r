@@ -78,7 +78,7 @@ module Versioneye
       Versioneye::Log.instance.log
     end
 
-
+    
     def self.parse_url url_text
       uri = URI.parse(url_text)
 
