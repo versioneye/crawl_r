@@ -26,6 +26,8 @@ class LicenseMatcher
     @corpus = spdx_docs + custom_docs
 
     licenses_json_doc = read_json_file license_json_file
+    raise("Failed to read licenses.json") if licenses_json_doc.nil?
+
     @url_index = read_license_url_index(licenses_json_doc)
     @model = TfIdfSimilarity::BM25Model.new(@corpus, :library => :narray)
     @rules = init_rules(licenses_json_doc)
@@ -69,7 +71,7 @@ class LicenseMatcher
     # Translate doc numbers to id
     top_matches.reduce([]) do |acc, doc_id_and_score|
       doc_id, score = doc_id_and_score
-      acc << [ @model.documents[doc_id].id, score ]
+      acc << [ @model.documents[doc_id].id.downcase, score ]
       acc
     end
   end
@@ -86,19 +88,19 @@ class LicenseMatcher
     #TODO: if these special cases gets bigger, include into url_index
     case the_url
     when 'http://jquery.org/license'
-      return ['MIT', 1.0] #Jquery license page doesnt include any license text
+      return ['mit', 1.0] #Jquery license page doesnt include any license text
     when 'https://www.mozilla.org/en-US/MPL/'
-      return ['MPL-2.0', 1.0]
+      return ['mpl-2.0', 1.0]
     when 'http://fairlicense.org'
-      return ['Fair', 1.0]
+      return ['fair', 1.0]
     when 'http://www.aforgenet.com/framework/license.html'
-      return ['LGPL-3.0', 1.0]
+      return ['lgpl-3.0', 1.0]
     when 'http://www.apache.org/licenses/'
-      return ['Apache-2.0', 1.0]
+      return ['apache-2.0', 1.0]
     when 'http://aws.amazon.com/apache2.0/'
-      return ['Apache-2.0', 1.0]
+      return ['apache-2.0', 1.0]
     when 'http://aws.amazon.com/asl/'
-      return ['Amazon', 1.0]
+      return ['amazon', 1.0]
     when 'https://choosealicense.com/no-license/'
       return ['no-license', 1.0]
     when 'http://www.gzip.org/zlib/zlib_license.html'
@@ -112,7 +114,7 @@ class LicenseMatcher
     #does url match with choosealicense.com
     match = the_url.match /\bhttps?:\/\/(www\.)?choosealicense\.com\/licenses\/([\S|^\/]+)[\/]?\b/i
     if match
-      return [match[2], 1.0]
+      return [match[2].to_s.downcase, 1.0]
     end
 
     match = the_url.match /\bhttps?:\/\/(www\.)?creativecommons\.org\/licenses\/([\S|^\/]+)[\/]?\b/i
@@ -126,7 +128,7 @@ class LicenseMatcher
       matcher = Regexp.new("https?:\/\/(www\.)?#{lic_url}", Regexp::IGNORECASE)
 
       if matcher.match(the_url)
-        spdx_id = lic_id
+        spdx_id = lic_id.to_s.downcase
         break
       end
     end
@@ -146,13 +148,13 @@ class LicenseMatcher
   def match_rules(text, early_exit = false)
     matches = []
     text = preprocess_text(text)
-		
-		#if text is already spdx_id, then shortcut matching
-		if @rules.has_key?(text.downcase)
-			return [[text.downcase, 1.0]] 
-		end
-		
-		text += ' ' # required to make wordborder matcher to work with 1word texts
+    
+    #if text is already spdx_id, then shortcut matching
+    if @rules.has_key?(text.downcase)
+      return [[text.downcase, 1.0]] 
+    end
+    
+    text += ' ' # required to make wordborder matcher to work with 1word texts
     @rules.each do |spdx_id, rules|
       match_res = matches_any_rule?(rules, text)
       unless match_res.nil?
@@ -192,11 +194,11 @@ class LicenseMatcher
 
 
 #-- helpers
-	def preprocess_text(text)
-		text = safe_encode(text)
-		
-		#remove markdown url tags
-		text = text.gsub(/\[.+?\]\(.+?\)/, ' ')
+  def preprocess_text(text)
+    text = safe_encode(text)
+    
+    #remove markdown url tags
+    text = text.gsub(/\[.+?\]\(.+?\)/, ' ')
 
     #remove spam words
     text.gsub!(/\bTHE\b/i, '')
@@ -206,35 +208,35 @@ class LicenseMatcher
     text = text.gsub(/\<\!--.+?--\>/,  ' ').to_s
     text = text.gsub(/<\!\[CDATA.+?\]>/, ' ').to_s
 
-    return text.to_s.strip.gsub(/\s+/, ' ')	
-	end
+    return text.to_s.strip.gsub(/\s+/, ' ') 
+  end
 
   def preprocess_html(html_text)
- 		# if text is HTML doc, then
-		# extract text only from visible html tags
-		text = ""
+    # if text is HTML doc, then
+    # extract text only from visible html tags
+    text = ""
 
     html_doc = parse_html(html_text)
-		if html_doc
-			text = clean_html(html_doc)
+    if html_doc
+      text = clean_html(html_doc)
     else
       log.error "match_html: failed to parse html document\n#{html_text}"
-		end
+    end
 
     return text
   end
 
 
-	def clean_html(html_doc)
+  def clean_html(html_doc)
     body_text = ""
-		body_elements = html_doc.xpath(
+    body_elements = html_doc.xpath(
       '//p | //h1 | //h2 | //h3 | //h4 | //h5 | //h6 | //em | //strong | //b | //td | //pre
       | //li[not(@id) and not(@class) and not(a)] | //section//section[@class="project-info"]
       | //blockquote | //textarea'
     ).to_a
 
-		#extract text from html tag and separate them by space
-		body_elements.each {|el| body_text += ' ' + el.text.to_s}
+    #extract text from html tag and separate them by space
+    body_elements.each {|el| body_text += ' ' + el.text.to_s}
 
     #REMOVE XML CDATA like opensource.org pages has
     body_text = body_text.to_s.strip
@@ -245,17 +247,17 @@ class LicenseMatcher
       body_text = html_doc.xpath('//body').text.to_s.strip
     end
 
-		return body_text
-	end
+    return body_text
+  end
 
-	def parse_html(html_text)
+  def parse_html(html_text)
     begin
       return Nokogiri.HTML(safe_encode(html_text))
     rescue Exception => e
       log.error "failed to parse html doc: \n #{html_text}"
       return nil
     end
-	end
+  end
 
 
   # Transforms document into TF-IDF matrix used for comparition
@@ -282,6 +284,30 @@ class LicenseMatcher
     ( norm > 0 ? length / norm : 0.0)
   end
 
+  #combines results of text match and rules match
+  def rank_text_and_rules_matches(text_results, rules_results)
+    scores = [] # list of tuple <spdx_id, score>
+    #for each text_results
+    t_scores = text_results.reduce([]) {|acc, i| acc << i[1]; acc}
+    t_max = t_scores.max
+
+    r_total = rules_results.reduce(0) {|acc, i| acc += i[3];  acc}
+    
+    text_results.to_a.each do |t|
+      #find match in rules results and calc rankscore
+      lic_id = t[0].downcase
+      r = rules_results.to_a.find {|x| x[0].downcase == lic_id }
+      next if r.nil? #there was no matching rules
+      
+      t_score = t[1] #score of confidence
+      r_score = r[3] #length of match
+
+      score = (t_score / t_max) * (r_score / r_total)
+      scores << [lic_id, score]
+    end
+
+    scores.sort {|a, b| a[1] <=> b[1]}
+  end
 
   def read_json_file(file_path)
     JSON.parse(File.read(file_path), {symbolize_names: true})
@@ -302,7 +328,8 @@ class LicenseMatcher
   def process_spdx_item(lic)
     url_index = {}
     lic_id = lic[:id].to_s.strip.downcase
-    return url_index if lic_id.nil?
+
+    return url_index if lic_id.empty?
 
     lic[:links].to_a.each {|x| url_index[x[:url]] = lic_id }
     lic[:text].to_a.each {|x| url_index[x[:url]] = lic_id }
@@ -317,7 +344,7 @@ class LicenseMatcher
 
     docs = file_names.reduce([]) do |acc, file_name|
       content = File.read("#{files_path}/#{file_name}")
-      txt = safe_encode(content)
+      txt = preprocess_text content
       if txt
         acc << TfIdfSimilarity::Document.new(txt, :id => file_name)
       else
@@ -343,23 +370,23 @@ class LicenseMatcher
     return ""
   end
 
-	# combines SPDX rules with custom handwritten rules
-	def init_rules(license_json_doc)
-		rules = {}
-		rules = build_rules_from_spdx_json(license_json_doc)
-		
-		get_custom_rules.each do |spdx_id, custom_rules_array|
-			spdx_id = spdx_id.to_s.strip.downcase
+  # combines SPDX rules with custom handwritten rules
+  def init_rules(license_json_doc)
+    rules = {}
+    rules = build_rules_from_spdx_json(license_json_doc)
+    
+    get_custom_rules.each do |spdx_id, custom_rules_array|
+      spdx_id = spdx_id.to_s.strip.downcase
 
-			if rules.has_key?(spdx_id)
-				rules[spdx_id].concat custom_rules_array
-			else
-				rules[spdx_id] = custom_rules_array
-			end
-		end
+      if rules.has_key?(spdx_id)
+        rules[spdx_id].concat custom_rules_array
+      else
+        rules[spdx_id] = custom_rules_array
+      end
+    end
 
-		rules
-	end
+    rules
+  end
 
 
   # builds regex rules based on the LicenseJSON file
@@ -369,7 +396,7 @@ class LicenseMatcher
 
     sorted_spdx_json = spdx_json.sort_by {|x|  x[:id]}
     sorted_spdx_json.each do |spdx_item|
-			spdx_id = spdx_item[:id].to_s.downcase.strip
+      spdx_id = spdx_item[:id].to_s.downcase.strip
       spdx_rules[spdx_id] = build_spdx_item_rules(spdx_item)
     end
 
@@ -383,13 +410,13 @@ class LicenseMatcher
     spdx_item[:links].to_a.each do |link|
       lic_url = link[:url].to_s.strip.gsub(/https?:\/\//i, '').gsub(/www\./, '').gsub(/\./, '\\.') #normalizes urls in the file
 
-			rules << Regexp.new("\\b[\\(]?https?:\/\/(www\.)?#{lic_url}[\/]?[\\)]?\\b".gsub(/\s+/, ''), Regexp::IGNORECASE)
+      rules << Regexp.new("\\b[\\(]?https?:\/\/(www\.)?#{lic_url}[\/]?[\\)]?\\b".gsub(/\s+/, ''), Regexp::IGNORECASE)
     end
 
     #include also links to license texts
     spdx_item[:text].to_a.each do |link|
       lic_url = link[:url].to_s.strip.gsub(/https?:\/\//i, '').gsub(/www\./, '').gsub(/\./, '\\.') #normalizes urls in the file
-			rules << Regexp.new("\\b[\\(]?https?:\/\/(www\.)?#{lic_url}[\/]?[\\)]?\\b".gsub(/\s+/, ''), Regexp::IGNORECASE)
+      rules << Regexp.new("\\b[\\(]?https?:\/\/(www\.)?#{lic_url}[\/]?[\\)]?\\b".gsub(/\s+/, ''), Regexp::IGNORECASE)
     end
 
     
@@ -403,10 +430,10 @@ class LicenseMatcher
 
     rules << Regexp.new("\\b#{spdx_name}\\b", Regexp::IGNORECASE)
     
-    spdx_id = spdx_item[:id].to_s.gsub(/-clause/, '').strip
     #use spdx_id in full-text match if it's uniq and doest ambiquity like MIT, Fair, Glide
+    spdx_id = spdx_item[:id].to_s.strip.downcase
     if spdx_id.match /[\d|-]|ware\z/
-  		rules << Regexp.new("\\b[\\(]?#{spdx_id}[\\)]?\\b".gsub(/\s+/, '\\s').gsub(/\./, '\\.'), Regexp::IGNORECASE)
+      rules << Regexp.new("\\b[\\(]?#{spdx_id}[\\)]?\\b".gsub(/\s+/, '\\s').gsub(/\./, '\\.'), Regexp::IGNORECASE)
     else
       rules << Regexp.new("\\A[\\(]?#{spdx_id}[\\)]?\\b", Regexp::IGNORECASE)
     end
@@ -519,15 +546,15 @@ class LicenseMatcher
                          ],
       'BitTorrent-1.1' => [/\bBitTorrent\sOpen\sSource\sLicense\b/i],
       "0BSD"          => [/\A0BSD\s*\z/i],
-      "BSD-2"  				=> [
+      "BSD-2-CLAUSE"  => [
                           /\bBSD[-|_|\s]?v?2\b/i, /^FREEBSD\b/i, /^OPENBSD\b/i,
                           /\bBSDLv2\b/i
                          ],
-      "BSD-3"  				=> [/\bBSD[-|_|\s]?v?3\b/i, /\bBSD[-|\s]3[-\s]CLAUSE\b/i,
+      "BSD-3-CLAUSE"  => [/\bBSD[-|_|\s]?v?3\b/i, /\bBSD[-|\s]3[-\s]CLAUSE\b/i,
                           /\bBDS[-|_|\s]3[-|\s]CLAUSE\b/i,
                           /\bthree-clause\sBSD\slicen[s|c]e\b/i,
                           /\ABDS\s*\z/i, /^various\/BSDish\s*$/],
-      "BSD-4"  				=> [
+      "BSD-4-CLAUSE"  => [
                           /\bBSD[-|_|\s]?v?4/i, /\ABSD\s*\z/i, /\ABSD\s+LI[s|c]EN[S|C]E\s*\z/i,
                           /\bBSD-4-CLAUSE\b/i,
                           /\bhttps?:\/\/en\.wikipedia\.org\/wiki\/BSD_licenses\b/i
@@ -625,6 +652,7 @@ class LicenseMatcher
                             /\bCommon\sPublic\sAttribution\sLicense\s1\.0\b/i,
                             /[\(]?\bCPAL\b[\)]?/i
                           ],
+      "CUSTOM"        => [ /\bCUSTOM\s+LICENSE\b/i ],
       "DBAD"          => [
                           /\bDONT\sBE\sA\sDICK\b/i, /\ADBAD\s*\z/i,
                           /\bdbad[-|\s|\_]license\b/i, /\ADBAD-1\s*\z/i,
@@ -715,11 +743,12 @@ class LicenseMatcher
                          ],
       "LGPL-2.1"      => [
                           /\bLGPL[-|\s|_]?v?2\.1\b/i,
+                          /\bLesser\sGeneral\sPublic\sLicense\s+\(LGPL\)\s+Version\s+2\.1\b/i,
                           /\bLESSER\sGENERAL\sPUBLIC\sLICENSE[\,]?\sVersion\s2\.1[\,]?\b/i,
                           /\bLESSER\sGENERAL\sPUBLIC\sLICENSE[\,]?\sv?2\.1\b/i
                          ],
       "LGPL-3.0"      => [/\bLGPL[-|\s|_]?v?3\.0\b/i, /\bLGPL[-|\s|_]?v?3[\+]?\b/i, 
-													/\bLGLP[\s|-|v]?3\.0\b/i, /^LPLv3\s*$/, /\bLPGL[-|\s|_]?v?3[\+]?\b/i, 
+                          /\bLGLP[\s|-|v]?3\.0\b/i, /^LPLv3\s*$/, /\bLPGL[-|\s|_]?v?3[\+]?\b/i, 
                           /\bLESSER\s+GENERAL\s+PUBLIC\s+License\s+[v]?3\b/i,
                           /\bLesser\sGeneral\sPublic\sLicense\sv?\.?\s+3\.0\b/i,
                           /\bhttps?:\/\/www\.gnu\.org\/copyleft\/lesser.html\b/i,

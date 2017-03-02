@@ -23,11 +23,19 @@ class LicenseCrawler < Versioneye::Crawl
     nil
   end
 
-  def self.parse_url url_text
-    return URI.parse(url_text).to_s.strip
+  def self.to_uri url_text
+    URI.parse url_text.to_s.strip
 
   rescue
     logger.error "Not valid url: #{url_text}"
+    nil
+  end
+
+  def self.parse_url url_text
+    uri = to_uri url_text
+    return nil if uri.nil?
+      
+    uri.to_s.strip
   end
 
   # it fetches license file from url and then tries to match it with
@@ -58,7 +66,7 @@ class LicenseCrawler < Versioneye::Crawl
   end
 
 
-  def self.process_license( license, lic_matcher, url_cache, min_confidence = 0.9, update = false )
+  def self.process_license( license, lic_matcher, url_cache, min_confidence, update )
     the_url = parse_url(license[:url])
     if the_url.to_s.empty?
       logger.error "#{license.to_s} - not valid url #{license[:url]}"
@@ -82,13 +90,19 @@ class LicenseCrawler < Versioneye::Crawl
 
     if score >= min_confidence
 			#licenseID == downcased SPDX_ID
-      license.spdx_id = lic_matcher.to_spdx_id(lic_id)
+      spdx_id = lic_matcher.to_spdx_id(lic_id)
+      license.name = spdx_id
+      license.spdx_id = spdx_id
       license.comments = "#{license.language}_license_crawler_update"
-      license.save if update
-      logger.info "\tprocess_license: updated #{license.to_s} SPDX ID #{license.spdx_id} from #{the_url}"
+      res = license.save if update
+      if res
+        logger.info "\tprocess_license: updated #{license.to_s} SPDX ID #{license.spdx_id} from #{the_url}"
+      end
+
     else
       logger.info "\tprocess_license: -- too low confidence #{score} for #{license.spdx_id}: #{the_url}"
     end
+
     return 0
   rescue => e
     logger.error "process_license: ERROR in process_license - #{e.message}"
