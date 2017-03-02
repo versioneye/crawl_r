@@ -4,7 +4,7 @@ require 'csv'
 #builds version index from git logs
 class GitVersionIndex
   attr_reader :dir, :tree
-  
+
   A_DEFAULT_VERSION = '0.0.0'
 
   def initialize(repo_path, logger = nil)
@@ -55,7 +55,7 @@ class GitVersionIndex
     repo_idx = @repo.index
     tree = @repo.lookup(commit_sha).tree
     return if tree.nil?
-    
+
     repo_idx.read_tree(tree)
     #filter out license files
     file_names = tree.to_a.reduce([]) do |acc, f|
@@ -85,8 +85,8 @@ class GitVersionIndex
     walker.each do |commit_obj|
       commit = process_commit_log(commit_obj)
       commit_tag = find_latest_parent_tag(@tree, commit)
-      
-      #add tag into tag commit index 
+
+      #add tag into tag commit index
       if commit_tag
         @tree[commit_tag][:shas] << commit[:sha]
         @tree[commit_tag][:commits] << commit
@@ -112,7 +112,7 @@ class GitVersionIndex
       commited_at: commit_obj.committer[:time],
       message: commit_obj.message,
       parents: commit_obj.parents.map(&:oid)
-    } 
+    }
   end
 
   #finds latest tag by it's parents
@@ -121,7 +121,7 @@ class GitVersionIndex
 
     #find tags where the commit sha or its' parent shas belong
     tag_tree.each_pair do |tag, tag_doc|
-      checkable_shas = [the_commit[:sha]] + the_commit[:parents].to_a 
+      checkable_shas = [the_commit[:sha]] + the_commit[:parents].to_a
       matching_shas = tag_doc[:shas].intersection(checkable_shas)
       parent_tags << tag unless matching_shas.empty?
     end
@@ -168,7 +168,7 @@ class GitVersionIndex
     versions = []
 
     @tree.each_pair do |label, dt|
-      label = label.to_s.gsub(/\A[r|v]/i, '')
+      label = label.to_s.strip.gsub(/\A[r|v]/i, '')
       semver = SemVer.parse(label)
       if semver.nil?
         @logger.warn "to_versions: failed to parse label `#{label}` as semver"
@@ -198,7 +198,7 @@ class GitVersionIndex
       end
     end
     versions
-  
+
   rescue Exception => e
     @logger.error e.backtrace.join('\n')
     return nil

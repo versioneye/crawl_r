@@ -10,6 +10,7 @@ class GodepCrawler < Versioneye::Crawl
   A_MAX_QUEUE_SIZE     = 500
   A_MAX_WAIT_TIME      = 180
   A_CLONERS_N          = 3
+  MIN_MATCH_CONFIDENCE = 0.9
 
   def self.logger
     if !defined?(@@log) || @@log.nil?
@@ -44,7 +45,7 @@ class GodepCrawler < Versioneye::Crawl
       return false
     end
 
-    @@license_matcher = LicenseMatcher.new 'data/licenses/texts/plain'
+    @@license_matcher = LicenseMatcher.new
 
     package_ids.to_a.each {|pkg_id| crawl_one(pkg_id) }
     logger.info "crawl_products: done"
@@ -173,7 +174,11 @@ class GodepCrawler < Versioneye::Crawl
   def self.match_licenses(license_files)
     license_files.reduce([]) do |acc, commit_file|
       license_candidates = @@license_matcher.match_text commit_file[:content]
-      acc << license_candidates.first[0] if license_candidates
+      if license_candidates.to_a.size > 0
+        lic_id, score = license_candidates.first
+        acc << @@license_matcher.to_spdx_id(lic_id) if score >= MIN_MATCH_CONFIDENCE
+      end
+
       acc
     end
   end
@@ -186,20 +191,23 @@ class GodepCrawler < Versioneye::Crawl
     lic
   end
 
+  #finds or creates product and updates information
   def self.init_product(pkg_id, pkg_dt)
-    prod = Product.where(language: A_LANGUAGE_GO, prod_type: A_TYPE_GODEP, prod_key: pkg_id).first
-    return prod if prod
+    prod = Product.where(
+      language: A_LANGUAGE_GO,
+      prod_type: A_TYPE_GODEP,
+      prod_key: pkg_id
+    ).first_or_create
 
-    Product.create({
-      prod_key: pkg_id,
+    prod.update({
       name: pkg_dt[:Name],
       name_downcase: pkg_dt[:Name].to_s.downcase,
-      prod_type: A_TYPE_GODEP,
-      language: A_LANGUAGE_GO,
       downloads: (pkg_dt[:StarCount] + pkg_dt[:StaticRank] + 1), #TODO: add rank field for the Product model
       description: pkg_dt[:Description],
       group_id: pkg_dt[:ProjectURL] #one repo may include many GOdep packages ~ AWS stuff and used for passing urls to cloning process
     })
+
+    prod
   end
 
   def self.create_dependencies(pkg_id, dependencies, test_dependencies)
