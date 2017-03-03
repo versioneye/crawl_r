@@ -1,4 +1,4 @@
-require 'spec_helper' 
+require 'spec_helper'
 require 'json'
 
 describe LicenseMatcher do
@@ -20,7 +20,9 @@ describe LicenseMatcher do
       #-- does it match urls
       lic["links"].to_a.each do |link|
         p "    #-- url: #{link["url"]}"
-        expect(lm.match_rules(link["url"])[0][0]).to eq(spdx_id)
+        res = lm.match_rules(link["url"])
+        expect(res).not_to be_empty
+        expect(res[0][0]).to eq(spdx_id)
         expect(lm.match_rules("aaaa " + link["url"] + " vnvnnv")[0][0]).to eq(spdx_id)
       end
 

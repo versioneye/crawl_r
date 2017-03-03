@@ -44,7 +44,6 @@ RSpec.configure do |config|
     end
   end
 
-
   # Include FactoryGirl into test DSL
   config.include FactoryGirl::Syntax::Methods
 

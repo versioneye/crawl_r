@@ -3,7 +3,8 @@ source "http://rubygems.org"
 gem 'versioneye-core'    , :git => 'https://github.com/versioneye/versioneye-core.git', :tag => 'v11.7.5'
 # gem 'versioneye-core'    , :path => "~/workspace/versioneye/versioneye-core"
 
-gem 'rufus-scheduler', '3.3.1'
+gem 'rugged', '0.24.0'
+gem 'rufus-scheduler', '3.2.1'
 
 # rubygems for text similarities
 gem 'narray', '0.6.1.2'
