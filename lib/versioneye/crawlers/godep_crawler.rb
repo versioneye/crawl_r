@@ -1,6 +1,7 @@
 require 'timeout'
 require 'rugged'
 require 'time'
+require 'digest'
 
 class GodepCrawler < Versioneye::Crawl
 
@@ -22,6 +23,7 @@ class GodepCrawler < Versioneye::Crawl
   #crawls all the packages got from go-search index
   def self.crawl_all
     @@license_matcher = LicenseMatcher.new
+    @@license_cache   = ActiveSupport::Cache::MemoryStore.new(expires_in: 2.minutes)
 
     all_pkgs = fetch_package_index
     if all_pkgs.to_a.empty?
@@ -46,6 +48,7 @@ class GodepCrawler < Versioneye::Crawl
     end
 
     @@license_matcher = LicenseMatcher.new
+    @@license_cache   = ActiveSupport::Cache::MemoryStore.new(expires_in: 2.minutes)
 
     package_ids.to_a.each {|pkg_id| crawl_one(pkg_id) }
     logger.info "crawl_products: done"
@@ -173,7 +176,11 @@ class GodepCrawler < Versioneye::Crawl
 
   def self.match_licenses(license_files)
     license_files.reduce([]) do |acc, commit_file|
-      license_candidates = @@license_matcher.match_text commit_file[:content]
+      file_md5 = Digest::MD5.hexdigest commit_file[:content]
+      license_candidates = @@license_cache.fetch(file_md5) do
+        @@license_matcher.match_text commit_file[:content]
+      end
+
       if license_candidates.to_a.size > 0
         lic_id, score = license_candidates.first
         acc << @@license_matcher.to_spdx_id(lic_id) if score >= MIN_MATCH_CONFIDENCE

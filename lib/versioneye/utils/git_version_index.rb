@@ -177,6 +177,11 @@ class GitVersionIndex
 
       dt[:commits].to_a.each do |c|
         is_version_commit = @sha_tag_idx.has_key?(  c[:sha] ) #if it's tagged commit, then it's stable release
+        pre_tag = if (label =~ /0\.0\.0/).nil?
+                    false
+                  else
+                    true
+                  end
 
         version = if semver
                     prefer = true
@@ -189,7 +194,7 @@ class GitVersionIndex
         versions << Version.new({
           version: version,
           tag: ( is_version_commit ? label : nil ),
-          status: ( is_version_commit ? "STABLE" : "PRERELEASE" ),
+          status: ( is_version_commit && !pre_tag ? "STABLE" : "PRERELEASE" ),
           released_at: c[:commited_at],
           sha1: c[:sha],
           md5: c[:short_sha],
