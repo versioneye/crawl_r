@@ -63,13 +63,13 @@ describe GodepCrawler do
   after do
     Product.delete_all
 
-    FakeWeb.allow_net_connect = true 
+    FakeWeb.allow_net_connect = true
     FakeWeb.clean_registry
 
     system('rm -rf tmp/*') #remove cloned repos
   end
 
- 
+
   context "fetch-package-index" do
     it "returns the correct list of package ids " do
       res = GodepCrawler.fetch_package_index
@@ -91,16 +91,16 @@ describe GodepCrawler do
 
   describe "crawl_all" do
     it "saves new products" do
-      res = Timeout::timeout(10) { GodepCrawler.crawl_all }
+      res = GodepCrawler.crawl_all
       expect(res).to be_truthy
 
       expect(Product.all.count).to eq(2)
-      
+
       prod1 = Product.find_by(prod_key: package1['Package'], prod_type: 'Godep')
       expect(prod1).not_to be_nil
       expect(prod1[:name]).to eq(package1['Name'])
       expect(prod1.versions.size).to be > 10
-     
+
       p Dependency.where(prod_type: 'Godep', prod_key: prod1.prod_key).to_a
 
       deps = prod1.all_dependencies('*').to_a

@@ -163,7 +163,7 @@ class GodepCrawler < Versioneye::Crawl
       t2 = (Time.now.to_f * 1000).to_i
       logger.info "add_version_licenses: match_licenses took                |#{t2 - t1}ms"
 
-      license_ids.each {|spdx_id| create_single_license(version[:version], the_prod, spdx_id)}
+      license_ids.to_a.each {|spdx_id| create_single_license(version[:version], the_prod, spdx_id)}
       t3 = (Time.now.to_f * 1000).to_i
       logger.info "add_version_licenses: creating a new license model took  |#{t3 - t2}ms"
     end
@@ -184,6 +184,8 @@ class GodepCrawler < Versioneye::Crawl
   end
 
   def self.create_single_license(version_label, the_prod, spdx_id)
+    return if spdx_id.to_s.empty?
+
     version_label = the_prod[:version] if version_label.nil? or version_label == 'head'
 
     lic = License.find_or_create(the_prod[:language], the_prod[:prod_key], version_label, spdx_id, the_prod[:group_id])
