@@ -31,10 +31,6 @@ RSpec.configure do |config|
 
   config.before(:each) do
     FakeWeb.clean_registry
-<<<<<<< HEAD
-
-    DatabaseCleaner.clean
-=======
     FakeWeb.allow_net_connect = true
 
     WebMock.enable!
@@ -42,20 +38,11 @@ RSpec.configure do |config|
 
     DatabaseCleaner.clean
 
->>>>>>> master
     models = Mongoid.models
     models.each do |model|
       model.all.each(&:delete)
     end
   end
-
-<<<<<<< HEAD
-  config.before(:each) do
-    FakeWeb.clean_registry
-    DatabaseCleaner.clean
-  end
-=======
->>>>>>> master
 
   # Include FactoryGirl into test DSL
   config.include FactoryGirl::Syntax::Methods
