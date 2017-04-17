@@ -78,7 +78,7 @@ module Versioneye
       Versioneye::Log.instance.log
     end
 
-    
+
     def self.parse_url url_text
       uri = URI.parse(url_text)
 
@@ -168,7 +168,6 @@ module Versioneye
       )
       lic_db.save
       lic_db
-
     end
 
 
