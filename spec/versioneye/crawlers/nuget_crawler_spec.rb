@@ -31,7 +31,7 @@ describe NugetCrawler do
           "commitTimeStamp":"2015-02-02T06:39:53.9553899Z",
           "count": 1}
         ]
-      }' 
+      }'
   }
   let(:page0_json){
     '{"@id": "https://api.nuget.org/v3/catalog0/page0.json",
@@ -125,7 +125,7 @@ describe NugetCrawler do
         ]
     }'
   }
- 
+
   describe 'is_same_date' do
     it "compares 2 datestring correctly" do
       expect(
@@ -187,6 +187,8 @@ describe NugetCrawler do
 
       expect(License.count).to eq(2)
       expect( Product.count ).to eq(2)
+      expect(Artefact.count).to eq(2)
+
       product = Product.first
 
       expect(product.prod_key).to eq('Adam.JSGenerator')

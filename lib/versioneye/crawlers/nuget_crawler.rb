@@ -17,24 +17,12 @@ class NugetCrawler < Versioneye::Crawl
     @@log
   end
 
-
-  def self.fetch_json( url )
-    res = HTTParty.get(url)
-    if res.code != 200
-      self.logger.error "Failed to fetch JSON doc from: #{url} - #{res}"
-      return nil
-    end
-    JSON.parse(res.body, {symbolize_names: true})
-  end
-
-
   def self.parse_date_string( dt_txt )
     DateTime.parse dt_txt
   rescue
     logger.error "Failed to parse datetime from string: `#{dt_txt}`"
     return nil
   end
-
 
   def self.is_same_date(dt_txt1, dt_txt2)
     return false if dt_txt1.to_s.empty? or dt_txt2.to_s.empty?
@@ -46,7 +34,6 @@ class NugetCrawler < Versioneye::Crawl
     dt1.strftime('%Y-%m-%d') == dt2.strftime('%Y-%m-%d')
   end
 
-
   def self.crawl_last_x_days( x_days = 10 )
     x_days.times.each do |xd|
       today = DateTime.now
@@ -54,7 +41,6 @@ class NugetCrawler < Versioneye::Crawl
       crawl( xday.strftime("%F") )
     end
   end
-
 
   # crawls all the items if date_txt is nil
   # otherwise will only crawl catalogs published on the date_txt
@@ -77,7 +63,6 @@ class NugetCrawler < Versioneye::Crawl
     logger.info "NugetCrawler: done."
   end
 
-
   def self.crawl_catalog_pages(item_list)
     if item_list.nil? or item_list.empty?
       self.logger.warn "crawl_catalog_items: The list of Nuget catalog was empty."
@@ -86,7 +71,6 @@ class NugetCrawler < Versioneye::Crawl
 
     item_list.to_a.each { |the_page| crawl_catalog_page(the_page) }
   end
-
 
   def self.crawl_catalog_page(the_page)
     if the_page.nil?
@@ -104,7 +88,6 @@ class NugetCrawler < Versioneye::Crawl
 
     page_items[:items].to_a.each {|the_package| crawl_package(the_package) }
   end
-
 
   def self.crawl_package( the_package )
     if the_package.nil?
@@ -148,6 +131,7 @@ class NugetCrawler < Versioneye::Crawl
       update_release_date product, product_doc
     end
 
+    upsert_artefact(product, version_number)
     product
   end
 
@@ -197,14 +181,18 @@ class NugetCrawler < Versioneye::Crawl
       })
     end
 
+    sha_algo = doc[:packageHashAlgorithm].to_s.strip.downcase
     product.update({
       prod_key_dc: doc[:id].to_s.downcase,
       name: doc[:id],
       name_downcase: doc[:id].to_s.downcase,
+      version: doc[:version].to_s.strip, #ps: expect that crawler works from earliest to latest
       description: ( doc[:description] or doc[:summary] ),
-      sha256: doc[:packageHash],
+      sha256: (sha_algo == 'sha256') ? doc[:packageHash] : nil,
+      sha512: (sha_algo == 'sha512') ? doc[:packageHash] : nil,
       tags: doc[:tags].to_a
     })
+
     product.save
     product
   end
@@ -362,4 +350,27 @@ class NugetCrawler < Versioneye::Crawl
     }).save
   end
 
+
+  def self.upsert_artefact(product, version)
+    artefact = Artefact.where(
+      language: product[:language],
+      prod_key: product[:prod_key],
+      version: version
+    ).first_or_create
+
+    sha_val, sha_algo = if product[:sha512]
+                          [product[:sha512], 'sha512']
+                        else
+                          [product[:sha256], 'sha256']
+                        end
+
+    artefact.update({
+      packaging: 'nupkg',
+      prod_type: product[:prod_type],
+      sha_value: sha_val,
+      sha_method: sha_algo
+    })
+
+    artefact.save
+  end
 end
