@@ -182,11 +182,11 @@ class NugetCrawler < Versioneye::Crawl
     end
 
     sha_algo = doc[:packageHashAlgorithm].to_s.strip.downcase
+    #nb! Product.version is set by another background worker
     product.update({
       prod_key_dc: doc[:id].to_s.downcase,
       name: doc[:id],
       name_downcase: doc[:id].to_s.downcase,
-      version: doc[:version].to_s.strip, #ps: expect that crawler works from earliest to latest
       description: ( doc[:description] or doc[:summary] ),
       sha256: (sha_algo == 'sha256') ? doc[:packageHash] : nil,
       sha512: (sha_algo == 'sha512') ? doc[:packageHash] : nil,
