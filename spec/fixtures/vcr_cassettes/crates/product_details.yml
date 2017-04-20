@@ -1,0 +1,45 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://crates.io/api/v1/crates/nanomsg?api_key=WjhtyLC8AGqJzqfPymZvfbp3dJZMu3bL
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Connection:
+      - keep-alive
+      Server:
+      - nginx
+      Date:
+      - Thu, 20 Apr 2017 14:11:16 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Set-Cookie:
+      - cargo_session=--3Mz45cH3itfVkmY41+nVjWRm9+0=; HttpOnly; Secure; Path=/
+      Strict-Transport-Security:
+      - max-age=31536000
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: ASCII-8BIT
+      string: '{"categories":[{"category":"Network programming","crates_cnt":39,"created_at":"2017-01-17T19:13:05Z","description":"Crates
+        dealing with higher-level network protocols such as FTP, HTTP, or SSH, or
+        lower-level network protocols such as TCP or UDP.","id":"network-programming","slug":"network-programming"}],"crate":{"badges":[{"attributes":{"branch":"","repository":"blabaere/nanomsg.rs","service":""},"badge_type":"appveyor"},{"attributes":{"branch":"","repository":"blabaere/nanomsg.rs"},"badge_type":"travis-ci"}],"categories":["network-programming"],"created_at":"2014-12-08T02:08:06Z","description":"A
+        high-level, Rust idiomatic wrapper around nanomsg.","documentation":"https://github.com/thehydroimpulse/nanomsg.rs","downloads":4365,"exact_match":false,"homepage":"https://github.com/thehydroimpulse/nanomsg.rs","id":"nanomsg","keywords":["binding","network","sub","pub","nanomsg"],"license":"MIT","links":{"owners":"/api/v1/crates/nanomsg/owners","reverse_dependencies":"/api/v1/crates/nanomsg/reverse_dependencies","version_downloads":"/api/v1/crates/nanomsg/downloads","versions":null},"max_version":"0.6.2","name":"nanomsg","repository":"https://github.com/thehydroimpulse/nanomsg.rs","updated_at":"2017-04-19T20:27:27Z","versions":[50723,40905,28431,21273,18445,17384,13574,9014,8236,7190,4944,940,924]},"keywords":[{"crates_cnt":21,"created_at":"2014-11-20T20:07:58Z","id":"binding","keyword":"binding"},{"crates_cnt":45,"created_at":"2014-11-23T06:47:40Z","id":"network","keyword":"network"},{"crates_cnt":1,"created_at":"2014-12-08T02:08:06Z","id":"sub","keyword":"sub"},{"crates_cnt":1,"created_at":"2014-12-08T02:08:06Z","id":"pub","keyword":"pub"},{"crates_cnt":4,"created_at":"2014-12-08T02:08:06Z","id":"nanomsg","keyword":"nanomsg"}],"versions":[{"crate":"nanomsg","created_at":"2017-04-19T20:27:27Z","dl_path":"/api/v1/crates/nanomsg/0.6.2/download","downloads":9,"features":{"bundled":["nanomsg-sys/bundled"],"no_anl":["nanomsg-sys/no_anl"]},"id":50723,"links":{"authors":"/api/v1/crates/nanomsg/0.6.2/authors","dependencies":"/api/v1/crates/nanomsg/0.6.2/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.6.2/downloads"},"num":"0.6.2","updated_at":"2017-04-19T20:27:27Z","yanked":false},{"crate":"nanomsg","created_at":"2016-12-27T08:40:00Z","dl_path":"/api/v1/crates/nanomsg/0.6.1/download","downloads":508,"features":{"bundled":["nanomsg-sys/bundled"]},"id":40905,"links":{"authors":"/api/v1/crates/nanomsg/0.6.1/authors","dependencies":"/api/v1/crates/nanomsg/0.6.1/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.6.1/downloads"},"num":"0.6.1","updated_at":"2016-12-27T08:40:00Z","yanked":false},{"crate":"nanomsg","created_at":"2016-06-10T20:03:55Z","dl_path":"/api/v1/crates/nanomsg/0.6.0/download","downloads":930,"features":{},"id":28431,"links":{"authors":"/api/v1/crates/nanomsg/0.6.0/authors","dependencies":"/api/v1/crates/nanomsg/0.6.0/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.6.0/downloads"},"num":"0.6.0","updated_at":"2016-06-10T20:03:55Z","yanked":false},{"crate":"nanomsg","created_at":"2016-01-24T22:07:58Z","dl_path":"/api/v1/crates/nanomsg/0.5.0/download","downloads":1234,"features":{},"id":21273,"links":{"authors":"/api/v1/crates/nanomsg/0.5.0/authors","dependencies":"/api/v1/crates/nanomsg/0.5.0/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.5.0/downloads"},"num":"0.5.0","updated_at":"2016-01-24T22:07:58Z","yanked":false},{"crate":"nanomsg","created_at":"2015-11-23T12:10:09Z","dl_path":"/api/v1/crates/nanomsg/0.4.2/download","downloads":340,"features":{},"id":18445,"links":{"authors":"/api/v1/crates/nanomsg/0.4.2/authors","dependencies":"/api/v1/crates/nanomsg/0.4.2/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.4.2/downloads"},"num":"0.4.2","updated_at":"2015-12-16T00:01:56Z","yanked":false},{"crate":"nanomsg","created_at":"2015-10-29T22:13:45Z","dl_path":"/api/v1/crates/nanomsg/0.4.1/download","downloads":189,"features":{},"id":17384,"links":{"authors":"/api/v1/crates/nanomsg/0.4.1/authors","dependencies":"/api/v1/crates/nanomsg/0.4.1/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.4.1/downloads"},"num":"0.4.1","updated_at":"2015-12-11T23:54:29Z","yanked":false},{"crate":"nanomsg","created_at":"2015-07-23T05:54:44Z","dl_path":"/api/v1/crates/nanomsg/0.4.0/download","downloads":330,"features":{},"id":13574,"links":{"authors":"/api/v1/crates/nanomsg/0.4.0/authors","dependencies":"/api/v1/crates/nanomsg/0.4.0/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.4.0/downloads"},"num":"0.4.0","updated_at":"2015-12-11T23:54:29Z","yanked":false},{"crate":"nanomsg","created_at":"2015-04-18T20:45:03Z","dl_path":"/api/v1/crates/nanomsg/0.3.4/download","downloads":257,"features":{},"id":9014,"links":{"authors":"/api/v1/crates/nanomsg/0.3.4/authors","dependencies":"/api/v1/crates/nanomsg/0.3.4/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.3.4/downloads"},"num":"0.3.4","updated_at":"2015-12-15T00:03:39Z","yanked":false},{"crate":"nanomsg","created_at":"2015-04-06T18:57:47Z","dl_path":"/api/v1/crates/nanomsg/0.3.3/download","downloads":117,"features":{},"id":8236,"links":{"authors":"/api/v1/crates/nanomsg/0.3.3/authors","dependencies":"/api/v1/crates/nanomsg/0.3.3/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.3.3/downloads"},"num":"0.3.3","updated_at":"2015-12-11T23:54:29Z","yanked":false},{"crate":"nanomsg","created_at":"2015-03-26T06:51:10Z","dl_path":"/api/v1/crates/nanomsg/0.3.2/download","downloads":117,"features":{},"id":7190,"links":{"authors":"/api/v1/crates/nanomsg/0.3.2/authors","dependencies":"/api/v1/crates/nanomsg/0.3.2/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.3.2/downloads"},"num":"0.3.2","updated_at":"2015-12-11T23:54:29Z","yanked":false},{"crate":"nanomsg","created_at":"2015-02-12T20:20:32Z","dl_path":"/api/v1/crates/nanomsg/0.3.1/download","downloads":111,"features":{},"id":4944,"links":{"authors":"/api/v1/crates/nanomsg/0.3.1/authors","dependencies":"/api/v1/crates/nanomsg/0.3.1/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.3.1/downloads"},"num":"0.3.1","updated_at":"2015-12-11T23:54:29Z","yanked":false},{"crate":"nanomsg","created_at":"2014-12-08T16:21:01Z","dl_path":"/api/v1/crates/nanomsg/0.3.0/download","downloads":124,"features":{},"id":940,"links":{"authors":"/api/v1/crates/nanomsg/0.3.0/authors","dependencies":"/api/v1/crates/nanomsg/0.3.0/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.3.0/downloads"},"num":"0.3.0","updated_at":"2015-12-11T23:54:29Z","yanked":false},{"crate":"nanomsg","created_at":"2014-12-08T02:08:06Z","dl_path":"/api/v1/crates/nanomsg/0.2.0/download","downloads":99,"features":{},"id":924,"links":{"authors":"/api/v1/crates/nanomsg/0.2.0/authors","dependencies":"/api/v1/crates/nanomsg/0.2.0/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.2.0/downloads"},"num":"0.2.0","updated_at":"2015-12-11T23:54:29Z","yanked":false}]}'
+    http_version: 
+  recorded_at: Thu, 20 Apr 2017 14:11:16 GMT
+recorded_with: VCR 3.0.3
