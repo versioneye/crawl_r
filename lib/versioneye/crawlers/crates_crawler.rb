@@ -1,6 +1,7 @@
 class CratesCrawler < Versioneye::Crawl
 
-  API_URL = "https://crates.io/api/v1"
+  API_HOST  = "https://crates.io"
+  API_URL   = "https://crates.io/api/v1"
 
   def self.logger
     if !defined?(@@log) || @@log.nil?
@@ -57,49 +58,199 @@ class CratesCrawler < Versioneye::Crawl
 
     product_doc = fetch_product_details product_id
     if product_doc.nil?
-      logger.error "Failed to fetch product details for #{product_id}"
+      logger.error "crawl_product_details: Failed to fetch product details for #{product_id}"
       return
     end
 
     product_db = upsert_product(product_doc[:crate])
+    unless product_db
+      logger.error "crawl_product_details: failed to save product #{product_doc[:crate]}"
+      return
+    end
+
     product_doc[:versions].each do |version_doc|
-      crawl_version_details(product_db, version_doc)
+      version_db = upsert_version(product_db, version_doc)
+      unless version_db
+        logger.error "crawl_product_details: failed to save version data #{product_db} #{version_doc}"
+        next
+      end
+
+      upsert_version_licenses(product_db, version_db[:version], product_doc[:license])
+      upsert_product_links(product_db, version_db[:version], product_doc[:crate])
+      upsert_version_archive(product_db, version_db[:version], version_doc[:dl_path])
+
+      #create download and version_links
+      crawl_version_details(product_db, version_db)
+    end
+
+    #crawl owners details
+    owners = fetch_product_owners(api_key, product_db[:prod_key])
+    owners.to_a.each do |owner_doc|
+      upsert_product_owners(product_db, owner_doc)
     end
 
     #TODO: create_newest, create_notifications
 
   end
 
-  def self.crawl_version_details(product_db, version_doc)
+  def self.crawl_version_details(api_key, product_db, version_db)
+    version = version_db[:version]
+    unless version
+      logger.error "crawl_version_details: product version has no version label #{product_db} #{version_db}"
+      return
+    end
+
+    logger.info "crawl_version_details: fetching version details for #{product_db[:prod_key]} - #{version}"
     #crawl dependencies
-    #create_download
-    #create_versionlinks
-    #create_license
-    #create_author / owners
+    dep_docs = fetch_version_dependencies(api_key, product_db[:prod_key], version)
+    dep_docs.to_a.each do |dep_doc|
+      upsert_product_dependency(product_db, version_db, dep_doc)
+    end
 
-
+    authors = fetch_version_authors(api_key, product_db[:prod_key], version)
   end
 
+  #-- persistance helpers
+
   def self.upsert_product(product_doc)
+    prod_key = product_doc[:id].to_s.strip.downcase
     product_db = Product.where(
       language: 'rust', #TODO replace with Product::A_LANGUAGE_RUST
       prod_type: 'crates', #TODO replace with Product::A_TYPE_CRATES
-      prod_key: product_doc[:id],
-    ).first_or_create
+      prod_key: prod_key
+    ).first_or_initialize
 
     product_db.update(
-      name_downcase: product_doc[:id].to_s.downcase,
-      prod_key_dc: product_doc[:id].downcase,
-      tags: product_doc[:categories].to_a
+      name: product_doc[:id],
+      name_downcase: prod_key,
+      prod_key_dc: prod_key,
+      tags: product_doc[:categories].to_a + product_doc[:keywords].to_a
     );
 
+    product_db.save
     product_db
   end
 
   def self.upsert_version(product_db, version_doc)
+    version_label = version_doc[:num].to_s.strip
+    version_db = product_db.versions.where(version: version_label).first_or_initialize
 
+    dt = DateTime.parse version_doc[:updated_at]
+    status = version_doc[:yanked] ? 'yanked' : ''
+    version_db.update(
+      status: status,
+      released_string: version_doc[:updated_at],
+      released_at: dt
+    )
+    version_db.save
+    version_db
   end
 
+  def self.upsert_product_owner(product_db, owner_doc)
+    owner_id = Author.encode_name(owner_doc[:name])
+    owner = Author.where(name_id: owner_id).first_or_initialize
+    owner.update(
+      name: owner_doc[:name].to_s,
+      email: owner_doc[:email].to_s,
+      homepage: owner_doc[:url],
+      role: 'owner'
+    )
+
+    owner.save
+    owner.add_product(
+      product_db.id, product_db[:language], product_db[:prod_key]
+    )
+
+    owner
+  end
+
+  def self.upsert_version_licenses(product_db, version, license_label)
+    licenses = license_label.to_s.strip.split('/')
+    licenses.to_a.each do |license|
+      self.upsert_version_license(product_db, version, license)
+    end
+
+    licenses
+  end
+
+  def self.upsert_version_license(product_db, version_label, license_name)
+    lic_db = License.where(
+      language: product_db[:language],
+      prod_key: product_db[:prod_key],
+      version: version_label,
+      name: license_name
+    ).first_or_create
+
+    lic_db.update(source: 'crates')
+    lic_db.save
+
+    lic_db
+  end
+
+  def self.upsert_product_dependency(product_db, version_id, dep_doc)
+    dep_db = Dependency.where(
+      language: product_db[:language],
+      prod_key: product_db[:prod_key],
+      prod_version: version_id,
+      dep_prod_key: dep_doc[:crate_id],
+    ).first_or_create
+
+    scope = if dep_doc[:optional]
+              Dependency::A_SCOPE_OPTIONAL
+            elsif dep_doc[:target] == 'test'
+              Dependency::A_SCOPE_TEST
+            else
+              Dependency::A_SCOPE_COMPILE
+            end
+
+    dep_db.update(
+      prod_type: product_db[:prod_type],
+      version: dep_doc[:req],
+      name: dep_doc[:crate_id],
+      scope: scope
+    )
+
+    dep_db
+  end
+
+  def self.upsert_product_links(product_db, version_id, product_doc)
+    link1 = upsert_version_link(product_db, version_id, "homepage", product_doc[:homepage])
+    link2 = upsert_version_link(product_db, version_id, "documentation", product_doc[:documentation])
+    link3 = upsert_version_link(product_db, version_id, "repo", product_doc[:repository])
+
+    [link1, link2, link3]
+  end
+
+  def self.upsert_version_link(product_db, version_id, name, url)
+    url_db = Versionlink.where(
+      language: product_db[:language],
+      prod_key: product_db[:prod_key],
+      version_id: version_id,
+      name: name
+    ).first_or_create
+
+    url_db.update(link: url)
+    url_db.save
+    url_db
+  end
+
+  def self.upsert_version_archive(product_db, version_id, dl_path)
+    pkg_name = "#{product_db[:prod_key]}-#{version_id}.crate"
+    url = "#{API_HOST}/#{dl_path}"
+
+    url_db = Versionarchive.where(
+      language: product_db[:language],
+      prod_key: product_db[:prod_key],
+      version_id: version_id,
+      name: pkg_name
+    ).first_or_create
+
+    url_db.update(link: url)
+    url_db.save
+    url_db
+  end
+
+  #-- functions that fetch data over internet
   #origins of the urls
   #https://github.com/rust-lang/crates.io/blob/master/src/lib.rs
   def self.fetch_product_list(api_key, page_nr, per_page = 100)
@@ -113,5 +264,16 @@ class CratesCrawler < Versioneye::Crawl
     fetch_json resource_url
   end
 
+  def self.fetch_product_owners(api_key, product_id)
+    resource_url = "#{API_URL}/crates/#{product_id}/owners?api_key=#{api_key}"
+    res = fetch_json resource_url
+    res[:users] if res
+  end
+
+  def self.fetch_version_dependencies(api_key, product_id, version)
+    resource_url = "#{API_URL}/crates/#{product_id}/#{version}/dependencies"
+    res = fetch_json resource_url
+    res[:dependencies].to_a if res
+  end
 
 end

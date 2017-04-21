@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://crates.io/api/v1/crates/yibberish-blaberish-0001?api_key=WjhtyLC8AGqJzqfPymZvfbp3dJZMu3bL
+    uri: https://crates.io/api/v1/crates/nanomsg/0.6.0/dependencies
     body:
       encoding: US-ASCII
       string: ''
@@ -15,26 +15,28 @@ http_interactions:
       - Ruby
   response:
     status:
-      code: 404
-      message: Not Found
+      code: 200
+      message: OK
     headers:
       Connection:
       - keep-alive
       Server:
       - nginx
       Date:
-      - Thu, 20 Apr 2017 14:11:17 GMT
+      - Fri, 21 Apr 2017 10:34:39 GMT
       Content-Type:
       - application/json; charset=utf-8
       Content-Length:
-      - '35'
+      - '354'
       Set-Cookie:
       - cargo_session=--3Mz45cH3itfVkmY41+nVjWRm9+0=; HttpOnly; Secure; Path=/
+      Strict-Transport-Security:
+      - max-age=31536000
       Via:
       - 1.1 vegur
     body:
       encoding: UTF-8
-      string: '{"errors":[{"detail":"Not Found"}]}'
+      string: '{"dependencies":[{"crate_id":"libc","default_features":true,"downloads":0,"features":[],"id":89992,"kind":"normal","optional":false,"req":"^0.2.11","target":null,"version_id":28431},{"crate_id":"nanomsg-sys","default_features":true,"downloads":0,"features":[],"id":89993,"kind":"normal","optional":false,"req":"^0.6.0","target":null,"version_id":28431}]}'
     http_version: 
-  recorded_at: Thu, 20 Apr 2017 14:11:17 GMT
+  recorded_at: Fri, 21 Apr 2017 10:34:40 GMT
 recorded_with: VCR 3.0.3
