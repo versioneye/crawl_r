@@ -41,7 +41,6 @@ class CratesCrawler < Versioneye::Crawl
       end
 
       page_nr += 1
-      break if page_nr != 1 #TODO: just for test run
     end
 
     logger.info "crawl_product_list: crawled #{page_nr} pages and #{n} products"
@@ -96,8 +95,9 @@ class CratesCrawler < Versioneye::Crawl
       upsert_product_owner(product_db, owner_doc)
     end
 
-    #TODO: create_newest, create_notifications
+    logger.info "crawl_product_details: add #{product_db}"
 
+    ProductService.update_version_data product_db
     product_db
   end
 
@@ -113,6 +113,8 @@ class CratesCrawler < Versioneye::Crawl
     dep_docs = fetch_version_dependencies(api_key, product_db[:prod_key], version)
     dep_docs.to_a.each do |dep_doc|
       upsert_product_dependency(product_db, version_db, dep_doc)
+      CrawlerUtils.create_newest(product_db, version, logger)
+      CrawlerUtils.create_notifications(product_db, version, logger)
     end
   end
 
@@ -131,8 +133,8 @@ class CratesCrawler < Versioneye::Crawl
       name_downcase: prod_key,
       prod_key_dc: prod_key,
       version: product_doc[:max_version],
-      tags: product_doc[:categories].to_a + product_doc[:keywords].to_a
-      download: product_doc[:downloads].to_i
+      tags: product_doc[:categories].to_a + product_doc[:keywords].to_a,
+      downloads: product_doc[:downloads].to_i
     );
 
     product_db.save
