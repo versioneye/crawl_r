@@ -25,22 +25,26 @@ class CratesCrawler < Versioneye::Crawl
 
 
   def self.crawl_product_list(api_key, page_nr = 1, per_page = 100)
-    logger.info "going to crawl product list from #{page_nr}, per_page: #{per_page} "
+    logger.info "going to crawl product list from #{page_nr}, per_page: #{per_page}"
+
+    n = 0
     loop do
       products = fetch_product_list(api_key, page_nr, per_page)
-      if products.empty?
+      if products.to_a.empty?
         logger.info "Stopping crawl_product_list after #{page_nr} due empty response"
         break
       end
 
       products.to_a.each do |product|
         crawl_product_details api_key, product[:id], product[:max_version]
+        n += 1
       end
 
       page_nr += 1
     end
 
-    logger.info "Done with crawling product lists"
+    logger.info "crawl_product_list: crawled #{page_nr} pages and #{n} products"
+    n
   end
 
   def self.crawl_product_details(api_key, product_id, latest_version, ignore_existing = true)

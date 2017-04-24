@@ -287,6 +287,27 @@ describe CratesCrawler do
   let(:deps_url){
     %r|https://crates\.io/api/v1/crates/nanomsg/.+/dependencies|
   }
+  let(:product_list_url){
+    %r|https://crates\.io/api/v1/crates\?|
+  }
+
+  let(:product_list_json){
+    '{"crates": [
+        {"description": null,
+        "documentation": null,
+        "downloads": 1032,
+        "id": "nanomsg",
+        "max_version": "0.6.2",
+        "name": "nanomsg",
+        "repository": null,
+        "updated_at": "2015-12-11T23:56:40Z",
+        "versions": null}
+    ]}'
+  }
+
+  let(:empty_list_json){
+    '{"crates":[],"meta":{"total":0}}'
+  }
 
   let(:owners_json){
     '{
@@ -442,6 +463,59 @@ describe CratesCrawler do
     it "ignores crawling when existing latest version of product is same" do
       res = CratesCrawler.crawl_product_details(api_key, 'nanomsg', version1)
       expect(res).to be_nil
+    end
+  end
+
+  context "crawl_product_list" do
+    before do
+      FakeWeb.clean_registry
+      FakeWeb.allow_net_connect = false
+    end
+
+    after do
+      FakeWeb.allow_net_connect = true
+    end
+
+    it "crawl products on the first page and stops as second page is empty" do
+      FakeWeb.register_uri :get, product_url, body: product_json
+      FakeWeb.register_uri :get, deps_url, body: deps_json
+      FakeWeb.register_uri :get, owners_url, body: owners_json
+
+
+      FakeWeb.register_uri(
+        :get, product_list_url,
+        [
+          {body: product_list_json, status: [200, "OK"]},
+          {body: empty_list_json, status: [404, "Not found"]}
+        ]
+      )
+      n = CratesCrawler.crawl_product_list(api_key)
+      expect(n).to eq(1)
+
+      prod_db = Product.where(
+        prod_type: Project::A_TYPE_CRATES,
+        prod_key: product1[:prod_key]
+      ).first
+      expect(prod_db).not_to be_nil
+      expect(prod_db[:prod_key]).to eq(product1[:prod_key])
+      expect(prod_db[:version]).to eq('0.6.2')
+
+      expect(License.all.count).to eq(13)
+      lic = License.where(
+        language: product1[:language],
+        prod_key: product1[:prod_key]
+      ).first
+      expect(lic).not_to be_nil
+      expect(lic[:name]).to eq('MIT')
+
+      expect(Dependency.all.count).to eq(26) #13 versions * 2 deps each
+      dep = Dependency.where(dep_prod_key: 'libc').first
+      expect(dep).not_to be_nil
+      expect(dep[:prod_key]).to eq(product1[:prod_key])
+      expect(dep[:language]).to eq(product1[:language])
+      expect(dep[:prod_version]).to eq('0.6.2')
+      expect(dep[:version]).to eq('^0.2.11')
+
     end
   end
 end
