@@ -103,8 +103,8 @@ describe CratesCrawler do
         product_db = CratesCrawler.upsert_product(res[:crate])
 
         expect(Product.all.count).to eq(1)
-        expect(product_db[:language]).to eq('rust')
-        expect(product_db[:prod_type]).to eq('crates')
+        expect(product_db[:language]).to eq(Product::A_LANGUAGE_RUST)
+        expect(product_db[:prod_type]).to eq(Project::A_TYPE_CRATES)
         expect(product_db[:prod_key]).to eq(prod1_id)
         expect(product_db[:tags].size).to eq(6)
       end
@@ -265,6 +265,183 @@ describe CratesCrawler do
         expect(url_db[:link]).to eq(dl_link)
 
       end
+    end
+  end
+
+  let(:product1){
+    Product.new(
+      language: Product::A_LANGUAGE_RUST,
+      prod_type: Project::A_TYPE_CRATES,
+      prod_key: 'nanomsg',
+      name: 'nanomsg',
+      version: '0.6.0'
+    )
+  }
+
+  let(:product_url){
+    %r|https://crates\.io/api/v1/crates/nanomsg\?|
+  }
+  let(:owners_url){
+    %r|https://crates\.io/api/v1/crates/nanomsg/owners|
+  }
+  let(:deps_url){
+    %r|https://crates\.io/api/v1/crates/nanomsg/.+/dependencies|
+  }
+
+  let(:owners_json){
+    '{
+      "users": [
+        {
+          "avatar": "https://avatars.githubusercontent.com/u/565790?v=3",
+          "email": "dnfagnan@gmail.com",
+          "id": 2,
+          "kind": "user",
+          "login": "thehydroimpulse",
+          "name": "Daniel Fagnan",
+          "url": "https://github.com/thehydroimpulse"
+        },
+        {
+          "avatar": "https://avatars0.githubusercontent.com/u/9447137?v=3",
+          "email": null,
+          "id": 303,
+          "kind": "user",
+          "login": "blabaere",
+          "name": "Benoît Labaere",
+          "url": "https://github.com/blabaere"
+        }
+      ]
+    }'
+  }
+
+  let(:deps_json){
+  '{"dependencies":[
+    {"crate_id":"libc","default_features":true,"downloads":0,"features":[],
+      "id":89992,"kind":"normal","optional":false,"req":"^0.2.11","target":null,
+      "version_id":28431},
+    {"crate_id":"nanomsg-sys","default_features":true,"downloads":0,"features":[],
+      "id":89993,"kind":"normal","optional":false,"req":"^0.6.0","target":null,
+      "version_id":28431}]}'
+  }
+
+  let(:product_json){
+
+  '{"crate": {
+    "categories":["network-programming"],
+    "created_at":"2014-12-08T02:08:06Z",
+    "description":"A high-level, Rust idiomatic wrapper around nanomsg.",
+    "documentation":"https://github.com/thehydroimpulse/nanomsg.rs",
+    "downloads":4365,"exact_match":false,
+    "homepage":"https://github.com/thehydroimpulse/nanomsg.rs",
+    "id":"nanomsg","keywords":["binding","network","sub","pub","nanomsg"],
+    "license":"MIT", "max_version":"0.6.2","name":"nanomsg",
+    "repository":"https://github.com/thehydroimpulse/nanomsg.rs",
+    "updated_at":"2017-04-19T20:27:27Z"
+  },
+  "versions":[
+    {"crate":"nanomsg","created_at":"2017-04-19T20:27:27Z","dl_path":"/api/v1/crates/nanomsg/0.6.2/download","downloads":9,"features":{"bundled":["nanomsg-sys/bundled"],"no_anl":["nanomsg-sys/no_anl"]},"id":50723,"links":{"authors":"/api/v1/crates/nanomsg/0.6.2/authors","dependencies":"/api/v1/crates/nanomsg/0.6.2/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.6.2/downloads"},"num":"0.6.2","updated_at":"2017-04-19T20:27:27Z","yanked":false},
+  {"crate":"nanomsg","created_at":"2016-12-27T08:40:00Z","dl_path":"/api/v1/crates/nanomsg/0.6.1/download","downloads":508,"features":{"bundled":["nanomsg-sys/bundled"]},"id":40905,"links":{"authors":"/api/v1/crates/nanomsg/0.6.1/authors","dependencies":"/api/v1/crates/nanomsg/0.6.1/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.6.1/downloads"},"num":"0.6.1","updated_at":"2016-12-27T08:40:00Z","yanked":false},
+  {"crate":"nanomsg","created_at":"2016-06-10T20:03:55Z","dl_path":"/api/v1/crates/nanomsg/0.6.0/download","downloads":930,"features":{},"id":28431,"links":{"authors":"/api/v1/crates/nanomsg/0.6.0/authors","dependencies":"/api/v1/crates/nanomsg/0.6.0/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.6.0/downloads"},"num":"0.6.0","updated_at":"2016-06-10T20:03:55Z","yanked":false},
+  {"crate":"nanomsg","created_at":"2016-01-24T22:07:58Z","dl_path":"/api/v1/crates/nanomsg/0.5.0/download","downloads":1234,"features":{},"id":21273,"links":{"authors":"/api/v1/crates/nanomsg/0.5.0/authors","dependencies":"/api/v1/crates/nanomsg/0.5.0/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.5.0/downloads"},"num":"0.5.0","updated_at":"2016-01-24T22:07:58Z","yanked":false},
+  {"crate":"nanomsg","created_at":"2015-11-23T12:10:09Z","dl_path":"/api/v1/crates/nanomsg/0.4.2/download","downloads":340,"features":{},"id":18445,"links":{"authors":"/api/v1/crates/nanomsg/0.4.2/authors","dependencies":"/api/v1/crates/nanomsg/0.4.2/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.4.2/downloads"},"num":"0.4.2","updated_at":"2015-12-16T00:01:56Z","yanked":false},
+  {"crate":"nanomsg","created_at":"2015-10-29T22:13:45Z","dl_path":"/api/v1/crates/nanomsg/0.4.1/download","downloads":189,"features":{},"id":17384,"links":{"authors":"/api/v1/crates/nanomsg/0.4.1/authors","dependencies":"/api/v1/crates/nanomsg/0.4.1/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.4.1/downloads"},"num":"0.4.1","updated_at":"2015-12-11T23:54:29Z","yanked":false},
+  {"crate":"nanomsg","created_at":"2015-07-23T05:54:44Z","dl_path":"/api/v1/crates/nanomsg/0.4.0/download","downloads":330,"features":{},"id":13574,"links":{"authors":"/api/v1/crates/nanomsg/0.4.0/authors","dependencies":"/api/v1/crates/nanomsg/0.4.0/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.4.0/downloads"},"num":"0.4.0","updated_at":"2015-12-11T23:54:29Z","yanked":false},
+  {"crate":"nanomsg","created_at":"2015-04-18T20:45:03Z","dl_path":"/api/v1/crates/nanomsg/0.3.4/download","downloads":257,"features":{},"id":9014,"links":{"authors":"/api/v1/crates/nanomsg/0.3.4/authors","dependencies":"/api/v1/crates/nanomsg/0.3.4/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.3.4/downloads"},"num":"0.3.4","updated_at":"2015-12-15T00:03:39Z","yanked":false},
+  {"crate":"nanomsg","created_at":"2015-04-06T18:57:47Z","dl_path":"/api/v1/crates/nanomsg/0.3.3/download","downloads":117,"features":{},"id":8236,"links":{"authors":"/api/v1/crates/nanomsg/0.3.3/authors","dependencies":"/api/v1/crates/nanomsg/0.3.3/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.3.3/downloads"},"num":"0.3.3","updated_at":"2015-12-11T23:54:29Z","yanked":false},
+  {"crate":"nanomsg","created_at":"2015-03-26T06:51:10Z","dl_path":"/api/v1/crates/nanomsg/0.3.2/download","downloads":117,"features":{},"id":7190,"links":{"authors":"/api/v1/crates/nanomsg/0.3.2/authors","dependencies":"/api/v1/crates/nanomsg/0.3.2/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.3.2/downloads"},"num":"0.3.2","updated_at":"2015-12-11T23:54:29Z","yanked":false},
+  {"crate":"nanomsg","created_at":"2015-02-12T20:20:32Z","dl_path":"/api/v1/crates/nanomsg/0.3.1/download","downloads":111,"features":{},"id":4944,"links":{"authors":"/api/v1/crates/nanomsg/0.3.1/authors","dependencies":"/api/v1/crates/nanomsg/0.3.1/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.3.1/downloads"},"num":"0.3.1","updated_at":"2015-12-11T23:54:29Z","yanked":false},
+  {"crate":"nanomsg","created_at":"2014-12-08T16:21:01Z","dl_path":"/api/v1/crates/nanomsg/0.3.0/download","downloads":124,"features":{},"id":940,"links":{"authors":"/api/v1/crates/nanomsg/0.3.0/authors","dependencies":"/api/v1/crates/nanomsg/0.3.0/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.3.0/downloads"},"num":"0.3.0","updated_at":"2015-12-11T23:54:29Z","yanked":false},
+  {"crate":"nanomsg","created_at":"2014-12-08T02:08:06Z","dl_path":"/api/v1/crates/nanomsg/0.2.0/download","downloads":99,"features":{},"id":924,"links":{"authors":"/api/v1/crates/nanomsg/0.2.0/authors","dependencies":"/api/v1/crates/nanomsg/0.2.0/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.2.0/downloads"},"num":"0.2.0","updated_at":"2015-12-11T23:54:29Z","yanked":false}]}'
+  }
+
+  context "crawl_version_details" do
+    before do
+      product1.versions << Version.new(version: '0.6.0')
+      product1.save
+
+      FakeWeb.allow_net_connect = false
+    end
+
+    after do
+      FakeWeb.clean_registry
+      FakeWeb.allow_net_connect = true
+    end
+
+    it "fetches and saves correct version releated data" do
+      FakeWeb.register_uri(:get, deps_url, body: deps_json)
+      version_db = product1.versions.first
+      CratesCrawler.crawl_version_details(api_key, product1, version_db)
+
+      deps = Dependency.where(
+        prod_type: Project::A_TYPE_CRATES,
+        prod_key: product1[:prod_key]
+      ).to_a
+
+      expect(deps.size).to eq(2)
+      expect(deps[0][:language]).to eq(Product::A_LANGUAGE_RUST)
+      expect(deps[0][:name]).to eq('libc')
+      expect(deps[0][:version]).to eq('^0.2.11')
+      expect(deps[0][:scope]).to eq(Dependency::A_SCOPE_COMPILE)
+
+      expect(deps[1][:language]).to eq(Product::A_LANGUAGE_RUST)
+      expect(deps[1][:name]).to eq('nanomsg-sys')
+      expect(deps[1][:version]).to eq('^0.6.0')
+      expect(deps[1][:scope]).to eq(Dependency::A_SCOPE_COMPILE)
+
+    end
+
+    it "returns nil if version_db models has no version label" do
+      version_db = product1.versions.first
+      version_db[:version] = nil
+      expect(
+        CratesCrawler.crawl_version_details(api_key, product1, version_db)
+      ).to be_nil
+    end
+  end
+
+  context "crawl_product_details" do
+    before do
+      Product.delete_all
+      FakeWeb.allow_net_connect = false
+    end
+
+    after do
+      FakeWeb.clean_registry
+      FakeWeb.allow_net_connect = true
+    end
+
+    it "fetches and saves corretly all details of the product" do
+      FakeWeb.register_uri :get, product_url, body: product_json
+      FakeWeb.register_uri :get, deps_url, body: deps_json
+      FakeWeb.register_uri :get, owners_url, body: owners_json
+
+      prod_db = CratesCrawler.crawl_product_details(
+        api_key, 'nanomsg', '0.6.2', false
+      )
+
+      expect(prod_db).not_to be_nil
+      expect(prod_db[:prod_key]).to eq(product1[:prod_key])
+      expect(prod_db[:version]).to eq('0.6.2')
+
+      expect(License.all.count).to eq(13)
+      lic = License.where(
+        language: product1[:language],
+        prod_key: product1[:prod_key]
+      ).first
+      expect(lic).not_to be_nil
+      expect(lic[:name]).to eq('MIT')
+
+      expect(Dependency.all.count).to eq(26) #13 versions * 2 deps each
+      dep = Dependency.where(dep_prod_key: 'libc').first
+      expect(dep).not_to be_nil
+      expect(dep[:prod_key]).to eq(product1[:prod_key])
+      expect(dep[:language]).to eq(product1[:language])
+      expect(dep[:prod_version]).to eq('0.6.2')
+      expect(dep[:version]).to eq('^0.2.11')
+    end
+
+    it "ignores crawling when existing latest version of product is same" do
+      res = CratesCrawler.crawl_product_details(api_key, 'nanomsg', version1)
+      expect(res).to be_nil
     end
   end
 end

@@ -14,7 +14,7 @@ class CratesCrawler < Versioneye::Crawl
     api_key = api_key.to_s.strip
 
     if api_key.empty?
-      logger.error "CRATES_API_KEY is not set - will stop crawler"
+      logger.error "crates api_key is not set - will stop crawler"
       return
     end
 
@@ -45,8 +45,8 @@ class CratesCrawler < Versioneye::Crawl
 
   def self.crawl_product_details(api_key, product_id, latest_version, ignore_existing = true)
     product_exists = Product.where(
-      language: 'rust', #TODO replace with Product::A_LANGUAGE_RUST
-      prod_type: 'crates', #TODO replace with Product::A_TYPE_CRATES
+      language: Product::A_LANGUAGE_RUST,
+      prod_type: Project::A_TYPE_CRATES,
       prod_key: product_id,
       version: latest_version
     ).first
@@ -56,7 +56,7 @@ class CratesCrawler < Versioneye::Crawl
       return
     end
 
-    product_doc = fetch_product_details product_id
+    product_doc = fetch_product_details api_key, product_id
     if product_doc.nil?
       logger.error "crawl_product_details: Failed to fetch product details for #{product_id}"
       return
@@ -68,6 +68,7 @@ class CratesCrawler < Versioneye::Crawl
       return
     end
 
+    product_license = product_doc[:crate][:license].to_s
     product_doc[:versions].each do |version_doc|
       version_db = upsert_version(product_db, version_doc)
       unless version_db
@@ -75,22 +76,23 @@ class CratesCrawler < Versioneye::Crawl
         next
       end
 
-      upsert_version_licenses(product_db, version_db[:version], product_doc[:license])
+      upsert_version_licenses(product_db, version_db[:version], product_license)
       upsert_product_links(product_db, version_db[:version], product_doc[:crate])
       upsert_version_archive(product_db, version_db[:version], version_doc[:dl_path])
 
       #create download and version_links
-      crawl_version_details(product_db, version_db)
+      crawl_version_details(api_key, product_db, version_db)
     end
 
     #crawl owners details
     owners = fetch_product_owners(api_key, product_db[:prod_key])
     owners.to_a.each do |owner_doc|
-      upsert_product_owners(product_db, owner_doc)
+      upsert_product_owner(product_db, owner_doc)
     end
 
     #TODO: create_newest, create_notifications
 
+    product_db
   end
 
   def self.crawl_version_details(api_key, product_db, version_db)
@@ -106,8 +108,6 @@ class CratesCrawler < Versioneye::Crawl
     dep_docs.to_a.each do |dep_doc|
       upsert_product_dependency(product_db, version_db, dep_doc)
     end
-
-    authors = fetch_version_authors(api_key, product_db[:prod_key], version)
   end
 
   #-- persistance helpers
@@ -115,8 +115,8 @@ class CratesCrawler < Versioneye::Crawl
   def self.upsert_product(product_doc)
     prod_key = product_doc[:id].to_s.strip.downcase
     product_db = Product.where(
-      language: 'rust', #TODO replace with Product::A_LANGUAGE_RUST
-      prod_type: 'crates', #TODO replace with Product::A_TYPE_CRATES
+      language: Product::A_LANGUAGE_RUST,
+      prod_type: Project::A_TYPE_CRATES,
       prod_key: prod_key
     ).first_or_initialize
 
@@ -124,6 +124,7 @@ class CratesCrawler < Versioneye::Crawl
       name: product_doc[:id],
       name_downcase: prod_key,
       prod_key_dc: prod_key,
+      version: product_doc[:max_version],
       tags: product_doc[:categories].to_a + product_doc[:keywords].to_a
     );
 
@@ -164,16 +165,18 @@ class CratesCrawler < Versioneye::Crawl
     owner
   end
 
-  def self.upsert_version_licenses(product_db, version, license_label)
+  def self.upsert_version_licenses(product_db, version_label, license_label)
     licenses = license_label.to_s.strip.split('/')
     licenses.to_a.each do |license|
-      self.upsert_version_license(product_db, version, license)
+      self.upsert_version_license(product_db, version_label, license)
     end
 
     licenses
   end
 
   def self.upsert_version_license(product_db, version_label, license_name)
+    license_name = license_name.to_s.strip
+
     lic_db = License.where(
       language: product_db[:language],
       prod_key: product_db[:prod_key],
