@@ -41,6 +41,7 @@ class CratesCrawler < Versioneye::Crawl
       end
 
       page_nr += 1
+      break if page_nr != 1 #TODO: just for test run
     end
 
     logger.info "crawl_product_list: crawled #{page_nr} pages and #{n} products"
@@ -56,10 +57,11 @@ class CratesCrawler < Versioneye::Crawl
     ).first
 
     if product_exists and ignore_existing
-      logger.info "ignoring #{product_db} as it already exists on database and has no new releases"
+      logger.info "crawl_product_details: #{product_exists} has no new releases"
       return
     end
 
+    logger.info "crawl_product_details: fetching #{product_id} - #{latest_version}"
     product_doc = fetch_product_details api_key, product_id
     if product_doc.nil?
       logger.error "crawl_product_details: Failed to fetch product details for #{product_id}"
@@ -130,6 +132,7 @@ class CratesCrawler < Versioneye::Crawl
       prod_key_dc: prod_key,
       version: product_doc[:max_version],
       tags: product_doc[:categories].to_a + product_doc[:keywords].to_a
+      download: product_doc[:downloads].to_i
     );
 
     product_db.save
@@ -140,11 +143,11 @@ class CratesCrawler < Versioneye::Crawl
     version_label = version_doc[:num].to_s.strip
     version_db = product_db.versions.where(version: version_label).first_or_initialize
 
-    dt = DateTime.parse version_doc[:updated_at]
+    dt = DateTime.parse version_doc[:created_at]
     status = version_doc[:yanked] ? 'yanked' : ''
     version_db.update(
       status: status,
-      released_string: version_doc[:updated_at],
+      released_string: version_doc[:created_at],
       released_at: dt
     )
     version_db.save
@@ -152,10 +155,20 @@ class CratesCrawler < Versioneye::Crawl
   end
 
   def self.upsert_product_owner(product_db, owner_doc)
-    owner_id = Author.encode_name(owner_doc[:name])
+    owner_name = if owner_doc[:name].nil?
+                   owner_doc[:login]
+                 else
+                   owner_doc[:name]
+                 end
+    if owner_name.nil?
+      logger.warn "upsert_product_owner: no owner for #{product_db}"
+      return
+    end
+
+    owner_id = Author.encode_name(owner_name)
     owner = Author.where(name_id: owner_id).first_or_initialize
     owner.update(
-      name: owner_doc[:name].to_s,
+      name: owner_name,
       email: owner_doc[:email].to_s,
       homepage: owner_doc[:url],
       role: 'owner'
