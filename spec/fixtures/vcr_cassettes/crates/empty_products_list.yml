@@ -1,0 +1,42 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://crates.io/api/v1/crates?api_key=WjhtyLC8AGqJzqfPymZvfbp3dJZMu3bL&page=99999&per_page=100
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Connection:
+      - keep-alive
+      Server:
+      - nginx
+      Date:
+      - Thu, 20 Apr 2017 14:01:00 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '32'
+      Set-Cookie:
+      - cargo_session=--3Mz45cH3itfVkmY41+nVjWRm9+0=; HttpOnly; Secure; Path=/
+      Strict-Transport-Security:
+      - max-age=31536000
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: UTF-8
+      string: '{"crates":[],"meta":{"total":0}}'
+    http_version: 
+  recorded_at: Thu, 20 Apr 2017 14:01:00 GMT
+recorded_with: VCR 3.0.3

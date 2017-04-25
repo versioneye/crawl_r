@@ -1,0 +1,42 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://crates.io/api/v1/crates/nanomsg/0.6.0/dependencies
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Connection:
+      - keep-alive
+      Server:
+      - nginx
+      Date:
+      - Fri, 21 Apr 2017 10:34:39 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '354'
+      Set-Cookie:
+      - cargo_session=--3Mz45cH3itfVkmY41+nVjWRm9+0=; HttpOnly; Secure; Path=/
+      Strict-Transport-Security:
+      - max-age=31536000
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: UTF-8
+      string: '{"dependencies":[{"crate_id":"libc","default_features":true,"downloads":0,"features":[],"id":89992,"kind":"normal","optional":false,"req":"^0.2.11","target":null,"version_id":28431},{"crate_id":"nanomsg-sys","default_features":true,"downloads":0,"features":[],"id":89993,"kind":"normal","optional":false,"req":"^0.6.0","target":null,"version_id":28431}]}'
+    http_version: 
+  recorded_at: Fri, 21 Apr 2017 10:34:40 GMT
+recorded_with: VCR 3.0.3
