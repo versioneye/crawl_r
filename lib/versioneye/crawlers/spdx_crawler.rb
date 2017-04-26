@@ -3,7 +3,7 @@ require 'json'
 
 class SpdxCrawler
   DEFAULT_LICENSE_PATH = 'data/spdx_licenses'
-  SPDX_URI = "https://spdx.org/licenses/"  
+  SPDX_URI = "https://spdx.org/licenses/"
 
   def self.logger
     if !defined?(@@log) || @@log.nil?
@@ -39,7 +39,7 @@ class SpdxCrawler
     #spdx list contains license files with same content as parent
     #aka cross-checking each file gives conflicting 1.0 scores with other
     blacklist = Set.new [
-      'bsd-3-clause-attribution', 'mpl-2.0-no-copyleft-exception', 
+      'bsd-3-clause-attribution', 'mpl-2.0-no-copyleft-exception',
       'bsd-4-clause-uc', 'oldap-2.2.2'
     ]
 
@@ -58,7 +58,7 @@ class SpdxCrawler
           file.write(txt)
         end
       else
-        logger.error "Failed to pull license text from the #{lic_url}"  
+        logger.error "Failed to pull license text from the #{lic_url}"
       end
     end
   end
