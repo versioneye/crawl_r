@@ -1,7 +1,9 @@
 require 'spec_helper'
 
 describe CratesCrawler do
-  let(:api_key){ ENV['CRATES_API_KEY'].to_s }
+  let(:env){ Settings.instance.environment }
+  let(:api_key){ GlobalSetting.get(env, 'cratesio_api_key') }
+
   let(:prod1_id){ 'nanomsg' }
   let(:version1){ '0.6.0' }
   let(:owner1_doc){
@@ -232,7 +234,7 @@ describe CratesCrawler do
         link1, _ = CratesCrawler.upsert_product_links(
           product_db, version1, res[:crate]
         )
-        expect(Versionlink.all.count).to eq(3)
+        expect(Versionlink.all.count).to eq(4)
         expect(link1[:language]).to eq(product_db[:language])
         expect(link1[:prod_key]).to eq(product_db[:prod_key])
         expect(link1[:version_id]).to eq(version1)

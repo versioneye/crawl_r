@@ -23,7 +23,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 21 Apr 2017 10:34:39 GMT
+      - Wed, 26 Apr 2017 08:25:41 GMT
       Content-Type:
       - application/json; charset=utf-8
       Content-Length:
@@ -38,5 +38,5 @@ http_interactions:
       encoding: UTF-8
       string: '{"dependencies":[{"crate_id":"libc","default_features":true,"downloads":0,"features":[],"id":89992,"kind":"normal","optional":false,"req":"^0.2.11","target":null,"version_id":28431},{"crate_id":"nanomsg-sys","default_features":true,"downloads":0,"features":[],"id":89993,"kind":"normal","optional":false,"req":"^0.6.0","target":null,"version_id":28431}]}'
     http_version: 
-  recorded_at: Fri, 21 Apr 2017 10:34:40 GMT
+  recorded_at: Wed, 26 Apr 2017 08:25:43 GMT
 recorded_with: VCR 3.0.3

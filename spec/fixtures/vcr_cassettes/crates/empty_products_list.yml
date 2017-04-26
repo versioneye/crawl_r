@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://crates.io/api/v1/crates?api_key=WjhtyLC8AGqJzqfPymZvfbp3dJZMu3bL&page=99999&per_page=100
+    uri: https://crates.io/api/v1/crates?api_key=&page=99999&per_page=100
     body:
       encoding: US-ASCII
       string: ''
@@ -23,7 +23,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 20 Apr 2017 14:01:00 GMT
+      - Wed, 26 Apr 2017 08:25:39 GMT
       Content-Type:
       - application/json; charset=utf-8
       Content-Length:
@@ -38,5 +38,5 @@ http_interactions:
       encoding: UTF-8
       string: '{"crates":[],"meta":{"total":0}}'
     http_version: 
-  recorded_at: Thu, 20 Apr 2017 14:01:00 GMT
+  recorded_at: Wed, 26 Apr 2017 08:25:42 GMT
 recorded_with: VCR 3.0.3
