@@ -197,7 +197,6 @@ class CratesCrawler < Versioneye::Crawl
       name: owner_id
     ).first_or_initialize
     owner.update(
-      name: owner_name,
       email: owner_doc[:email].to_s,
       homepage: owner_doc[:url],
       role: 'owner'
@@ -205,6 +204,10 @@ class CratesCrawler < Versioneye::Crawl
 
     owner.save
     owner
+  rescue => e
+    self.logger.error "ERROR in upsert_product_owner: #{e.message}"
+    self.logger.error e.backtrace.join("\n")
+    nil
   end
 
 
