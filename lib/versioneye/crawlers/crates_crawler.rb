@@ -77,6 +77,10 @@ class CratesCrawler < Versioneye::Crawl
 
     ProductService.update_version_data product_db
     product_db
+  rescue => e
+    self.logger.error "ERROR in crawl_package: #{e.message}"
+    self.logger.error e.backtrace.join("\n")
+    nil
   end
 
 
