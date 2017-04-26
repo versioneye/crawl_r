@@ -277,10 +277,10 @@ class CratesCrawler < Versioneye::Crawl
       language: product_db[:language],
       prod_key: product_db[:prod_key],
       version_id: version_id,
-      name: name
+      link: url
     ).first_or_create
 
-    url_db.update(link: url)
+    url_db.update(name: name)
     url_db.save
     url_db
   end
