@@ -10,10 +10,13 @@ class CratesCrawler < Versioneye::Crawl
     @@log
   end
 
-  def self.crawl(api_key)
-    api_key = api_key.to_s.strip
+  def self.crawl( api_key = nil )
+    if api_key.to_s.empty?
+      env     = Settings.instance.environment
+      api_key = GlobalSetting.get env, 'cratesio_api_key'
+    end
 
-    if api_key.empty?
+    if api_key.to_s.empty?
       logger.error "crates api_key is not set - will stop crawler"
       return
     end
