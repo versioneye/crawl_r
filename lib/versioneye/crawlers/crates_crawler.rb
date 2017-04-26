@@ -12,10 +12,15 @@ class CratesCrawler < Versioneye::Crawl
   end
 
 
+  def self.fetch_api_key
+    env     = Settings.instance.environment
+    GlobalSetting.get env, 'cratesio_api_key'
+  end
+
+
   def self.crawl( api_key = nil )
     if api_key.to_s.empty?
-      env     = Settings.instance.environment
-      api_key = GlobalSetting.get env, 'cratesio_api_key'
+      api_key = fetch_api_key
     end
 
     if api_key.to_s.empty?
@@ -41,7 +46,7 @@ class CratesCrawler < Versioneye::Crawl
       end
 
       products.to_a.each do |product|
-        crawl_product_details api_key, product[:id], product[:max_version]
+        crawl_package product[:id], api_key
         n += 1
       end
 
@@ -53,17 +58,18 @@ class CratesCrawler < Versioneye::Crawl
   end
 
 
-  def self.crawl_product_details(api_key, product_id, latest_version, ignore_existing = true)
-    logger.info "crawl_product_details: fetching #{product_id} - #{latest_version}"
+  def self.crawl_package(product_id, api_key = nil, ignore_existing = true)
+    logger.info "crawl_package: fetching #{product_id}"
+    api_key     = fetch_api_key if api_key.to_s.empty?
     product_doc = fetch_product_details api_key, product_id
     if product_doc.nil?
-      logger.error "crawl_product_details: Failed to fetch product details for #{product_id}"
+      logger.error "crawl_package: Failed to fetch product details for #{product_id}"
       return
     end
 
     product_db = upsert_product(product_doc[:crate])
     if product_db.nil?
-      logger.error "crawl_product_details: failed to save product #{product_doc[:crate]}"
+      logger.error "crawl_package: failed to save product #{product_doc[:crate]}"
       return
     end
 
@@ -80,13 +86,13 @@ class CratesCrawler < Versioneye::Crawl
     product_doc[:versions].each do |version_doc|
       version_num = version_doc[:num].to_s.strip
       if !product_db.version_by_number( version_num ).nil? && ignore_existing
-        logger.info "crawl_product_details: #{product_db.prod_key}:#{version_num} exist already"
+        logger.info "process_versions: #{product_db.prod_key}:#{version_num} exist already"
         next
       end
 
       version_db = upsert_version(product_db, version_doc)
       if version_db.nil?
-        logger.error "crawl_product_details: failed to save version data #{product_db} #{version_doc}"
+        logger.error "process_versions: failed to save version data #{product_db} #{version_doc}"
         next
       end
 

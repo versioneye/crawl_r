@@ -161,6 +161,13 @@ namespace :versioneye do
       end
     end
 
+    value = '1 7 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        CratesCrawlProducer.new '::crates::'
+      end
+    end
+
     value = '1 11 * * *'
     if !value.to_s.empty?
       scheduler.cron value do
@@ -190,6 +197,14 @@ namespace :versioneye do
   end
 
   # ***** Crawler Tasks *****
+
+  desc "crawl Crates for Rust"
+  task :crawl_crates do
+    puts "START to crawle Rust repository crates.io"
+    RubyCrawl.new
+    CratesCrawler.crawl
+    puts "---"
+  end
 
   desc "crawl Chef"
   task :crawl_chef do
@@ -350,6 +365,14 @@ namespace :versioneye do
     puts "START CommonCrawlWorker"
     RubyCrawl.new
     CommonCrawlWorker.new.work
+    puts "---"
+  end
+
+  desc "Start CratesCrawlWorker"
+  task :crates_crawl_worker do
+    puts "START CratesCrawlWorker"
+    RubyCrawl.new
+    CratesCrawlWorker.new.work
     puts "---"
   end
 
