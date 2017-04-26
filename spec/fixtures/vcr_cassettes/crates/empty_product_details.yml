@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://crates.io/api/v1/crates/yibberish-blaberish-0001?api_key=WjhtyLC8AGqJzqfPymZvfbp3dJZMu3bL
+    uri: https://crates.io/api/v1/crates/yibberish-blaberish-0001?api_key=
     body:
       encoding: US-ASCII
       string: ''
@@ -23,7 +23,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 21 Apr 2017 15:35:14 GMT
+      - Wed, 26 Apr 2017 08:25:40 GMT
       Content-Type:
       - application/json; charset=utf-8
       Content-Length:
@@ -36,5 +36,5 @@ http_interactions:
       encoding: UTF-8
       string: '{"errors":[{"detail":"Not Found"}]}'
     http_version: 
-  recorded_at: Fri, 21 Apr 2017 15:35:15 GMT
+  recorded_at: Wed, 26 Apr 2017 08:25:43 GMT
 recorded_with: VCR 3.0.3

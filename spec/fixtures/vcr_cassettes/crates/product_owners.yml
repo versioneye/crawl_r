@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://crates.io/api/v1/crates/nanomsg/owners?api_key=WjhtyLC8AGqJzqfPymZvfbp3dJZMu3bL
+    uri: https://crates.io/api/v1/crates/nanomsg/owners?api_key=
     body:
       encoding: US-ASCII
       string: ''
@@ -23,7 +23,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 24 Apr 2017 14:11:32 GMT
+      - Wed, 26 Apr 2017 08:25:41 GMT
       Content-Type:
       - application/json; charset=utf-8
       Content-Length:
@@ -47,5 +47,5 @@ http_interactions:
         IiwibG9naW4iOiJibGFiYWVyZSIsIm5hbWUiOiJCZW5vw650IExhYmFlcmUi
         LCJ1cmwiOiJodHRwczovL2dpdGh1Yi5jb20vYmxhYmFlcmUifV19
     http_version: 
-  recorded_at: Mon, 24 Apr 2017 14:11:33 GMT
+  recorded_at: Wed, 26 Apr 2017 08:25:44 GMT
 recorded_with: VCR 3.0.3

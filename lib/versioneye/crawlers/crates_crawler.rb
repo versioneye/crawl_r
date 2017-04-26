@@ -236,11 +236,16 @@ class CratesCrawler < Versioneye::Crawl
   end
 
   def self.upsert_product_links(product_db, version_id, product_doc)
-    link1 = upsert_version_link(product_db, version_id, "homepage", product_doc[:homepage])
-    link2 = upsert_version_link(product_db, version_id, "documentation", product_doc[:documentation])
-    link3 = upsert_version_link(product_db, version_id, "repo", product_doc[:repository])
+    links = []
+    links << upsert_version_link(product_db, version_id, "homepage", product_doc[:homepage])
+    links << upsert_version_link(product_db, version_id, "documentation", product_doc[:documentation])
+    links << upsert_version_link(product_db, version_id, "repo", product_doc[:repository])
 
-    [link1, link2, link3]
+    #link to Crates page
+    crates_url = "#{API_HOST}/#{product_db[:prod_key]}/#{version_id}"
+    links << upsert_version_link(product_db, version_id, "Crates", crates_url)
+
+    links
   end
 
   def self.upsert_version_link(product_db, version_id, name, url)
