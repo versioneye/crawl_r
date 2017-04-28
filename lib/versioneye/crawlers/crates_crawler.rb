@@ -109,6 +109,9 @@ class CratesCrawler < Versioneye::Crawl
       CrawlerUtils.create_newest( product_db, version_db.version, logger )
       CrawlerUtils.create_notifications( product_db, version_db.version, logger )
     end
+
+    product_db.reload
+    product_db
   end
 
 
@@ -194,9 +197,11 @@ class CratesCrawler < Versioneye::Crawl
       language: product_db[:language],
       prod_key: product_db[:prod_key],
       version: version_num,
-      name: owner_id
+      developer: owner_id
     ).first_or_initialize
+
     owner.update(
+      name: owner_name,
       email: owner_doc[:email].to_s,
       homepage: owner_doc[:url],
       role: 'owner'
@@ -271,8 +276,8 @@ class CratesCrawler < Versioneye::Crawl
     links << upsert_version_link( product_db, version_id, "Documentation", product_doc[:documentation] )
     links << upsert_version_link( product_db, version_id, "Repository", product_doc[:repository] )
 
-    # link to Crates page
-    crates_url = "#{API_HOST}/#{product_db[:prod_key]}/#{version_id}"
+    # link to Crates page: https://crates.io/crates/serde/1.0.1
+    crates_url = "#{API_HOST}/crates/#{product_db[:prod_key]}/#{version_id}"
     links << upsert_version_link(product_db, version_id, "Crates Page", crates_url)
 
     links
@@ -284,10 +289,10 @@ class CratesCrawler < Versioneye::Crawl
       language: product_db[:language],
       prod_key: product_db[:prod_key],
       version_id: version_id,
-      link: url
+      name: name
     ).first_or_create
 
-    url_db.update(name: name)
+    url_db.update(link: url)
     url_db.save
     url_db
   end

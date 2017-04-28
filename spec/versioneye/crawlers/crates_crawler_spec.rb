@@ -145,9 +145,9 @@ describe CratesCrawler do
         product_db = CratesCrawler.upsert_product(res[:crate])
         expect(Product.all.count).to eq(1)
 
-        owner_db = CratesCrawler.upsert_product_owner(product_db, owner1_doc)
-        expect(Author.all.count).to eq(1)
-        expect(owner_db[:name_id]).to eq('daniel_fagnan')
+        owner_db = CratesCrawler.upsert_product_owner(product_db, owner1_doc, '1.0')
+        expect(Developer.all.count).to eq(1)
+        expect(owner_db[:developer]).to eq('daniel_fagnan')
         expect(owner_db[:name]).to eq(owner1_doc[:name])
         expect(owner_db[:role]).to eq('owner')
         expect(owner_db[:homepage]).to eq(owner1_doc[:url])
@@ -231,14 +231,14 @@ describe CratesCrawler do
         product_db = CratesCrawler.upsert_product(res[:crate])
         expect(Product.all.count).to eq(1)
 
-        link1, _ = CratesCrawler.upsert_product_links(
+        link1, _ = CratesCrawler.upsert_version_links(
           product_db, version1, res[:crate]
         )
         expect(Versionlink.all.count).to eq(4)
         expect(link1[:language]).to eq(product_db[:language])
         expect(link1[:prod_key]).to eq(product_db[:prod_key])
         expect(link1[:version_id]).to eq(version1)
-        expect(link1[:name]).to eq('homepage')
+        expect(link1[:name]).to eq('Homepage')
         expect(link1[:link]).to eq(res[:crate][:homepage])
       end
     end
@@ -376,7 +376,7 @@ describe CratesCrawler do
   {"crate":"nanomsg","created_at":"2014-12-08T02:08:06Z","dl_path":"/api/v1/crates/nanomsg/0.2.0/download","downloads":99,"features":{},"id":924,"links":{"authors":"/api/v1/crates/nanomsg/0.2.0/authors","dependencies":"/api/v1/crates/nanomsg/0.2.0/dependencies","version_downloads":"/api/v1/crates/nanomsg/0.2.0/downloads"},"num":"0.2.0","updated_at":"2015-12-11T23:54:29Z","yanked":false}]}'
   }
 
-  context "crawl_version_details" do
+  context "crawl_dependencies" do
     before do
       product1.versions << Version.new(version: '0.6.0')
       product1.save
@@ -392,7 +392,7 @@ describe CratesCrawler do
     it "fetches and saves correct version releated data" do
       FakeWeb.register_uri(:get, deps_url, body: deps_json)
       version_db = product1.versions.first
-      CratesCrawler.crawl_version_details(api_key, product1, version_db)
+      CratesCrawler.crawl_dependencies(product1, version_db, api_key)
 
       deps = Dependency.where(
         prod_type: Project::A_TYPE_CRATES,
@@ -416,12 +416,12 @@ describe CratesCrawler do
       version_db = product1.versions.first
       version_db[:version] = nil
       expect(
-        CratesCrawler.crawl_version_details(api_key, product1, version_db)
+        CratesCrawler.crawl_dependencies(product1, version_db, api_key)
       ).to be_nil
     end
   end
 
-  context "crawl_product_details" do
+  context "process_versions" do
     before do
       Product.delete_all
       FakeWeb.allow_net_connect = false
@@ -437,13 +437,14 @@ describe CratesCrawler do
       FakeWeb.register_uri :get, deps_url, body: deps_json
       FakeWeb.register_uri :get, owners_url, body: owners_json
 
-      prod_db = CratesCrawler.crawl_product_details(
-        api_key, 'nanomsg', '0.6.2', false
+      product_doc = JSON.parse(product_json, symbolize_names: true)
+      prod_db = CratesCrawler.process_versions(
+        product1, product_doc, api_key, false
       )
 
       expect(prod_db).not_to be_nil
       expect(prod_db[:prod_key]).to eq(product1[:prod_key])
-      expect(prod_db[:version]).to eq('0.6.2')
+      expect(prod_db[:version]).to eq('0.6.0')
 
       expect(License.all.count).to eq(13)
       lic = License.where(
@@ -463,8 +464,12 @@ describe CratesCrawler do
     end
 
     it "ignores crawling when existing latest version of product is same" do
-      res = CratesCrawler.crawl_product_details(api_key, 'nanomsg', version1)
-      expect(res).to be_nil
+
+      product_doc = JSON.parse(product_json, symbolize_names: true)
+      res = CratesCrawler.process_versions(
+        product1, product_doc, api_key, true
+      )
+      expect(res).not_to be_nil #it will return same product model
     end
   end
 
