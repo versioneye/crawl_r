@@ -137,7 +137,7 @@ class CratesCrawler < Versioneye::Crawl
     prod_key_dc = prod_key.downcase
     product_db = Product.where(
       language: Product::A_LANGUAGE_RUST,
-      prod_type: Project::A_TYPE_CRATES,
+      prod_type: Project::A_TYPE_CARGO,
       prod_key: prod_key
     ).first_or_initialize
 
@@ -245,7 +245,7 @@ class CratesCrawler < Versioneye::Crawl
 
   def self.upsert_product_dependency(product_db, version_id, dep_doc)
     dep_db = Dependency.where(
-      prod_type: Project::A_TYPE_CRATES,
+      prod_type: Project::A_TYPE_CARGO,
       language: product_db.language,
       prod_key: product_db.prod_key,
       prod_version: version_id,

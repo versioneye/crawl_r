@@ -106,7 +106,7 @@ describe CratesCrawler do
 
         expect(Product.all.count).to eq(1)
         expect(product_db[:language]).to eq(Product::A_LANGUAGE_RUST)
-        expect(product_db[:prod_type]).to eq(Project::A_TYPE_CRATES)
+        expect(product_db[:prod_type]).to eq(Project::A_TYPE_CARGO)
         expect(product_db[:prod_key]).to eq(prod1_id)
         expect(product_db[:tags].size).to eq(6)
       end
@@ -273,7 +273,7 @@ describe CratesCrawler do
   let(:product1){
     Product.new(
       language: Product::A_LANGUAGE_RUST,
-      prod_type: Project::A_TYPE_CRATES,
+      prod_type: Project::A_TYPE_CARGO,
       prod_key: 'nanomsg',
       name: 'nanomsg',
       version: '0.6.0'
@@ -395,7 +395,7 @@ describe CratesCrawler do
       CratesCrawler.crawl_dependencies(product1, version_db, api_key)
 
       deps = Dependency.where(
-        prod_type: Project::A_TYPE_CRATES,
+        prod_type: Project::A_TYPE_CARGO,
         prod_key: product1[:prod_key]
       ).to_a
 
@@ -500,7 +500,7 @@ describe CratesCrawler do
       expect(n).to eq(1)
 
       prod_db = Product.where(
-        prod_type: Project::A_TYPE_CRATES,
+        prod_type: Project::A_TYPE_CARGO,
         prod_key: product1[:prod_key]
       ).first
       expect(prod_db).not_to be_nil
