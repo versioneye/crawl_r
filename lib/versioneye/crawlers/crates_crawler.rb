@@ -2,7 +2,7 @@ class CratesCrawler < Versioneye::Crawl
 
   API_HOST  = "https://crates.io"
   API_URL   = "https://crates.io/api/v1"
-
+  A_TYPE_CARGO = 'Cargo'
 
   def self.logger
     if !defined?(@@log) || @@log.nil?
@@ -109,6 +109,9 @@ class CratesCrawler < Versioneye::Crawl
       CrawlerUtils.create_newest( product_db, version_db.version, logger )
       CrawlerUtils.create_notifications( product_db, version_db.version, logger )
     end
+
+    product_db.reload
+    product_db
   end
 
 
@@ -134,7 +137,7 @@ class CratesCrawler < Versioneye::Crawl
     prod_key_dc = prod_key.downcase
     product_db = Product.where(
       language: Product::A_LANGUAGE_RUST,
-      prod_type: Project::A_TYPE_CRATES,
+      prod_type: A_TYPE_CARGO,
       prod_key: prod_key
     ).first_or_initialize
 
@@ -196,6 +199,7 @@ class CratesCrawler < Versioneye::Crawl
       version: version_num,
       name: owner_id
     ).first_or_initialize
+
     owner.update(
       email: owner_doc[:email].to_s,
       homepage: owner_doc[:url],
@@ -240,7 +244,7 @@ class CratesCrawler < Versioneye::Crawl
 
   def self.upsert_product_dependency(product_db, version_id, dep_doc)
     dep_db = Dependency.where(
-      prod_type: Project::A_TYPE_CRATES,
+      prod_type: A_TYPE_CARGO,
       language: product_db.language,
       prod_key: product_db.prod_key,
       prod_version: version_id,
@@ -271,8 +275,8 @@ class CratesCrawler < Versioneye::Crawl
     links << upsert_version_link( product_db, version_id, "Documentation", product_doc[:documentation] )
     links << upsert_version_link( product_db, version_id, "Repository", product_doc[:repository] )
 
-    # link to Crates page
-    crates_url = "#{API_HOST}/#{product_db[:prod_key]}/#{version_id}"
+    # link to Crates page: https://crates.io/crates/serde/1.0.1
+    crates_url = "#{API_HOST}/crates/#{product_db[:prod_key]}/#{version_id}"
     links << upsert_version_link(product_db, version_id, "Crates Page", crates_url)
 
     links
@@ -284,10 +288,10 @@ class CratesCrawler < Versioneye::Crawl
       language: product_db[:language],
       prod_key: product_db[:prod_key],
       version_id: version_id,
-      link: url
+      link: url.to_s.strip
     ).first_or_create
 
-    url_db.update(name: name)
+    url_db.update(name: name.to_s.strip)
     url_db.save
     url_db
   end
