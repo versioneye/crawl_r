@@ -2,7 +2,7 @@ class CratesCrawler < Versioneye::Crawl
 
   API_HOST  = "https://crates.io"
   API_URL   = "https://crates.io/api/v1"
-
+  A_TYPE_CARGO = 'Cargo'
 
   def self.logger
     if !defined?(@@log) || @@log.nil?
@@ -137,7 +137,7 @@ class CratesCrawler < Versioneye::Crawl
     prod_key_dc = prod_key.downcase
     product_db = Product.where(
       language: Product::A_LANGUAGE_RUST,
-      prod_type: Project::A_TYPE_CARGO,
+      prod_type: A_TYPE_CARGO,
       prod_key: prod_key
     ).first_or_initialize
 
@@ -245,7 +245,7 @@ class CratesCrawler < Versioneye::Crawl
 
   def self.upsert_product_dependency(product_db, version_id, dep_doc)
     dep_db = Dependency.where(
-      prod_type: Project::A_TYPE_CARGO,
+      prod_type: A_TYPE_CARGO,
       language: product_db.language,
       prod_key: product_db.prod_key,
       prod_version: version_id,
@@ -289,10 +289,10 @@ class CratesCrawler < Versioneye::Crawl
       language: product_db[:language],
       prod_key: product_db[:prod_key],
       version_id: version_id,
-      name: name
+      link: url.to_s.strip
     ).first_or_create
 
-    url_db.update(link: url)
+    url_db.update(name: name.to_s.strip)
     url_db.save
     url_db
   end
