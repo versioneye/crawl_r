@@ -147,8 +147,7 @@ describe CratesCrawler do
 
         owner_db = CratesCrawler.upsert_product_owner(product_db, owner1_doc, '1.0')
         expect(Developer.all.count).to eq(1)
-        expect(owner_db[:developer]).to eq('daniel_fagnan')
-        expect(owner_db[:name]).to eq(owner1_doc[:name])
+        expect(owner_db[:name]).to eq('daniel_fagnan')
         expect(owner_db[:role]).to eq('owner')
         expect(owner_db[:homepage]).to eq(owner1_doc[:url])
         expect(owner_db[:email]).to eq(owner1_doc[:email])

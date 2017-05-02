@@ -197,11 +197,10 @@ class CratesCrawler < Versioneye::Crawl
       language: product_db[:language],
       prod_key: product_db[:prod_key],
       version: version_num,
-      developer: owner_id
+      name: owner_id
     ).first_or_initialize
 
     owner.update(
-      name: owner_name,
       email: owner_doc[:email].to_s,
       homepage: owner_doc[:url],
       role: 'owner'
