@@ -19,6 +19,7 @@ module Versioneye
     require './lib/versioneye/crawlers/pom_crawler'
     require './lib/versioneye/crawlers/phpeye_crawler'
     require './lib/versioneye/crawlers/nuget_crawler'
+    require './lib/versioneye/crawlers/godep_crawler'
     require './lib/versioneye/crawlers/cpan_crawler'
     require './lib/versioneye/crawlers/crates_crawler'
 
@@ -41,6 +42,9 @@ module Versioneye
     require './lib/versioneye/crawlers/bower/bower_versions_crawler'
     require './lib/versioneye/crawlers/bower/bower_tag_crawler'
     require './lib/versioneye/crawlers/bower/bower_starter'
+
+
+    require './lib/versioneye/utils/git_version_index'
 
     require './lib/versioneye/producers/producer'
     require './lib/versioneye/producers/common_crawl_producer'

@@ -5,6 +5,9 @@ gem 'versioneye-core'    , :git => 'https://github.com/versioneye/versioneye-cor
 
 gem 'rufus-scheduler', '3.4.0'
 
+# rubygems to manipulated go git-repos
+gem 'rugged', '~> 0.25'
+
 # rubygems for text similarities
 gem 'narray', '0.6.1.2'
 gem 'tf-idf-similarity', '0.1.6'
