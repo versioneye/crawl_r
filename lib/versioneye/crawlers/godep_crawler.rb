@@ -25,7 +25,7 @@ class GodepCrawler < Versioneye::Crawl
 
     all_pkgs = fetch_package_index
     if all_pkgs.to_a.empty?
-      logger.error "crawl_all: failed to retrieve packages for #{A_GODEP_REGISTRY_URL}"
+      logger.error "crawl_all: failed to retrieve packages at #{A_GODEP_REGISTRY_URL}"
       return false
     end
 
@@ -79,13 +79,7 @@ class GodepCrawler < Versioneye::Crawl
       return false
     end
 
-    # process product versions and update the latest version
     the_prod.versions = versions #NB: it replaces old versions;
-    latest = VersionService.newest_version(versions)
-    if latest
-      the_prod[:version] = latest.version
-    end
-
     #read license data from the repo
     add_version_licenses(the_prod, repo_idx)
 
@@ -95,6 +89,9 @@ class GodepCrawler < Versioneye::Crawl
     else
       logger.error "crawl_one: failed to save #{pkg_id} - #{the_prod.errors.full_messages}"
     end
+
+    # process product versions and update the latest version
+    ProductService.update_version_data( the_prod )
 
     res
   rescue => e
@@ -123,7 +120,7 @@ class GodepCrawler < Versioneye::Crawl
   end
 
   def self.fetch_package_index
-    fetch_json "#{A_GODEP_REGISTRY_URL}?action=packages"
+    fetch_json "#{A_GODEP_REGISTRY_URL}?action=packages", 180
   end
 
   def self.fetch_package_detail(pkg_id)
@@ -174,6 +171,7 @@ class GodepCrawler < Versioneye::Crawl
 
   def self.match_licenses(license_files)
     license_files.reduce([]) do |acc, commit_file|
+      # try to re-use already detected results - next commit has probably same license
       file_md5 = Digest::MD5.hexdigest commit_file[:content]
       license_candidates = @@license_cache.fetch(file_md5) do
         @@license_matcher.match_text commit_file[:content]
@@ -209,7 +207,7 @@ class GodepCrawler < Versioneye::Crawl
     prod.update({
       name: pkg_dt[:Name],
       name_downcase: pkg_dt[:Name].to_s.downcase,
-      downloads: (pkg_dt[:StarCount] + pkg_dt[:StaticRank] + 1), #TODO: add rank field for the Product model
+      downloads: (pkg_dt[:StarCount] + pkg_dt[:StaticRank] + 1),
       description: pkg_dt[:Description],
       group_id: pkg_dt[:ProjectURL] #one repo may include many GOdep packages ~ AWS stuff and used for passing urls to cloning process
     })
@@ -233,7 +231,7 @@ class GodepCrawler < Versioneye::Crawl
       prod_type: Project::A_TYPE_GODEP,
       language: Product::A_LANGUAGE_GO,
       prod_key: pkg_id,
-      prod_version: '*', #no idea until we process  #TODO: update task to use latest version?
+      prod_version: '*',
       dep_prod_key: dep_id,
       scope: the_scope,
       version: '*'
@@ -246,7 +244,11 @@ class GodepCrawler < Versioneye::Crawl
   end
 
   def self.create_version_link(prod, url, name = "Repository")
-    link = Versionlink.where(language: Product::A_LANGUAGE_GO, prod_type: Project::A_TYPE_GODEP, name: name).first
+    link = Versionlink.where(
+      language: Product::A_LANGUAGE_GO,
+      prod_type: Project::A_TYPE_GODEP,
+      link: url
+    ).first
     return link if link
 
     Versionlink.create_versionlink prod.language, prod.prod_key, nil, url, name
