@@ -196,6 +196,7 @@ class GitVersionIndex
           tag: ( is_version_commit ? label : nil ),
           status: ( is_version_commit && !pre_tag ? "STABLE" : "PRERELEASE" ),
           released_at: c[:commited_at],
+          released_string: c[:commited_at].to_s,
           sha1: c[:sha],
           md5: c[:short_sha],
           prefer_global: prefer

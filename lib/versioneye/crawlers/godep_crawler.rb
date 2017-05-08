@@ -191,7 +191,10 @@ class GodepCrawler < Versioneye::Crawl
 
     version_label = the_prod[:version] if version_label.nil? or version_label == 'head'
 
-    lic = License.find_or_create(the_prod[:language], the_prod[:prod_key], version_label, spdx_id, the_prod[:group_id])
+    lic = License.find_or_create(
+      the_prod[:language], the_prod[:prod_key], version_label,
+      spdx_id, the_prod[:group_id]
+    )
     logger.debug "create_single_license: add #{spdx_id} license to the #{the_prod[:prod_key]}/#{version_label}"
     lic
   end
