@@ -11,6 +11,7 @@ module Versioneye
     require './lib/versioneye/crawlers/cocoapods_podspec_parser'
     require './lib/versioneye/crawlers/crawler_utils'
     require './lib/versioneye/crawlers/github_crawler'
+    require './lib/versioneye/crawlers/github_version_fetcher'
     require './lib/versioneye/crawlers/github_version_crawler'
     require './lib/versioneye/crawlers/npm_crawler'
     require './lib/versioneye/crawlers/license_crawler'

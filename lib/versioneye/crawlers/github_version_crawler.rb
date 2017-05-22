@@ -2,14 +2,12 @@ class GithubVersionCrawler < Versioneye::Crawl
 
   include HTTParty
 
-
   def self.logger
     if !defined?(@@log) || @@log.nil?
       @@log = Versioneye::DynLog.new("log/github_version_crawler.log", 10).log
     end
     @@log
   end
-
 
   # Crawle Release dates for Objective-C packages
   def self.crawl(language = Product::A_LANGUAGE_OBJECTIVEC, empty_release_dates = true, desc = true )
@@ -21,14 +19,17 @@ class GithubVersionCrawler < Versioneye::Crawl
 
   def self.products( language, empty_release_dates, desc = true )
     products = Mongoid::Criteria.new(Product)
+    qparams = { :prod_type => Project::A_TYPE_COCOAPODS, :language => language }
     if empty_release_dates
-      products = Product.where({ :prod_type => Project::A_TYPE_COCOAPODS, :language => language, 'versions.released_at' => nil })
-    else
-      products = Product.where({ :prod_type => Project::A_TYPE_COCOAPODS, :language => language }) if !empty_release_dates
+      qparams['versions.released_at'] = nil
     end
 
-    products = products.desc(:name) if desc
-    products = products.asc(:name)  if !desc
+    products = Product.where(qparams)
+    products = if desc
+                products.desc(:name)
+               else
+                products.asc(:name)
+               end
 
     products.no_timeout
   end
@@ -99,10 +100,8 @@ class GithubVersionCrawler < Versioneye::Crawl
     tags_data  = tags_for_repo owner_repo
     return nil if tags_data.nil? || tags_data.empty?
 
-    tags_data.tap do |t_data|
-      t_data.each do |tag|
-        process_tag( versions, tag, owner_repo )
-      end
+    tags_data.each do |tag|
+      process_tag( versions, tag, owner_repo )
     end
     versions
   rescue => e
@@ -130,7 +129,7 @@ class GithubVersionCrawler < Versioneye::Crawl
     nil
   end
 
-
+  #NB! deprecated - it doesnt allow use it to crawl user data or switch keys
   def self.fetch_commit_date( owner_repo, sha )
     return nil unless owner_repo
     api = OctokitApi.client
@@ -143,11 +142,18 @@ class GithubVersionCrawler < Versioneye::Crawl
   end
 
 
+  #NB! deprecated - it only returns first page of tags
+  # use GithubVersionFetcher.new().fetch_all_repo_tags(owner, repo)
+  #
+  # params:
+  # owner_repo - hashmap, {owner: "versioneye", repo: "versioneye-core"}
   def self.tags_for_repo( owner_repo )
     return nil unless owner_repo
-    repo = repo_data owner_repo
-    tags = repo.rels[:tags]
-    tags.get.data
+
+    api = OctokitApi.client
+    repo = repo_data owner_repo, api
+    repo.rels[:tags].get.data
+
   rescue => e
     logger.error e.message
     logger.error e.backtrace.join("\n")
@@ -155,8 +161,9 @@ class GithubVersionCrawler < Versioneye::Crawl
   end
 
 
-  def self.repo_data owner_repo
-    api  = OctokitApi.client
+  def self.repo_data owner_repo, api = nil
+    api  ||= OctokitApi.client
+
     root = api.root
     root.rels[:repository].get(:uri => owner_repo).data
   end
