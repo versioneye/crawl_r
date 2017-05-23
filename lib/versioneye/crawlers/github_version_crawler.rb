@@ -1,3 +1,5 @@
+require 'semverly'
+
 class GithubVersionCrawler < Versioneye::Crawl
 
   include HTTParty
@@ -16,6 +18,105 @@ class GithubVersionCrawler < Versioneye::Crawl
     end
   end
 
+  # pulls and updates product versions from Github tags
+  # params:
+  #   api_client - initialized GithubVersionFetcher with own auth keys
+  #   product    - Product model to update
+  #   repo_owner - string, the name of github account
+  #   repo_name  - string, the name of github repo
+  def self.crawl_for_product(api_client, product, repo_owner, repo_name)
+    if api_client.check_limit_or_pause == 0
+      logger.error "crawl_for_product: hit ratelimit #{repo_owner}/#{repo_name} for #{product}"
+      return
+    end
+
+    # fetch repo tags and attach commit dates
+    tags = api_client.fetch_all_repo_tags(repo_owner, repo_name)
+    tags.to_a.map do |tag|
+      tag_date = crawl_tag_commit_date(
+        api_client, repo_owner, repo_name, tag[:commit][:sha]
+      )
+
+      tag[:created_at] = if tag_date
+                          tag_date
+                         else
+                          logger.error "crawl_for_product: failed to crawl all the commit dates for #{repo_owner}/#{repo_name}"
+                          nil
+                         end
+    end
+
+    # save product versions
+    product.versions = []
+    tags.to_a.each do |tag|
+      upsert_product_version(product, tag)
+    end
+
+    if product.save
+      product.reload
+      ProductService.update_version_data( product )
+
+      logger.info "crawl_for_product: #{product} has now #{product.versions.size} version"
+      true
+    else
+      logger.error "crawl_for_product: failed to save updated #{product}"
+      logger.error "  reason: #{product.errors.full_messages.to_sentence}"
+      false
+    end
+
+  rescue => e
+    logger.error e.message
+    logger.error e.backtrace.join("\n")
+    false
+  end
+
+  def self.crawl_tag_commit_date(api_client, repo_owner, repo_name, commit_sha)
+    if api_client.check_limit_or_pause == 0
+      logger.error "crawl_tag_commit_date: hit ratelimit for #{repo_owner}/#{repo_name} - #{commit_sha}"
+      return
+    end
+
+    logger.info "crawl_tag_commit_date:  fetching commit date for #{repo_owner}/#{repo_name}:#{commit_sha}"
+    commit_details = api_client.fetch_commit_details(repo_owner, repo_name, commit_sha)
+    return if commit_details.nil?
+
+
+    commit_details[:commit][:committer][:date]
+  end
+
+  # processes Tag and updates/inserts Product version
+  # NB! it saves only valid SEMVER versions
+  #
+  # params:
+  #   tag - Hashmap with response from Github tags endpoint
+  #         expected structure: {name: String, created_at: String, commit: {:sha}}
+  def self.upsert_product_version(product, tag)
+    semver_label = process_version_label(tag[:name])
+    if semver_label.to_s.empty?
+      logger.warn "upsert_product_version: ignoring non-valid semver #{tag[:name]} for #{product}"
+      return
+    end
+
+    ver = product.versions.where(version: semver_label).first_or_initialize
+    ver.update(
+      tag: tag[:name],
+      status: 'stable',
+      released_at: tag[:created_at],
+      released_string: tag[:created_at].to_s,
+      commit_sha: tag[:commit][:sha].to_s
+    )
+
+    ver
+  end
+
+  def self.process_version_label(label)
+    label = label.to_s.gsub(/\s+/, '').to_s.strip
+
+    semver = SemVer.parse(label)
+    return "" if semver.nil?
+    semver.to_s
+  end
+
+  #--- old stuff waiting for refactoring
 
   def self.products( language, empty_release_dates, desc = true )
     products = Mongoid::Criteria.new(Product)

@@ -32,7 +32,6 @@ class GithubVersionFetcher < Versioneye::Crawl
   def initialize(login_data = nil, use_env_logins = true)
     init_logger
 
-
     login_data ||= get_login_from_settings if use_env_logins
     @api = Octokit::Client::new(login_data)
   end
@@ -148,6 +147,7 @@ class GithubVersionFetcher < Versioneye::Crawl
     log.warn("hit Github rate limit - will wait and retry to continue #{task_name} later")
     n_tries = 0
     while true do
+      n_tries += 1
       if n_tries >= A_MAX_RETRY
         logger.error "fetch_all_repo_tags: no more re-tries left for #{owner}/#{repo}"
         break

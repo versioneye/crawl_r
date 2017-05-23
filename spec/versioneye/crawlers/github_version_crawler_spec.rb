@@ -88,7 +88,50 @@ describe GithubVersionCrawler, :vcr do
       versions.should_not be_nil
       versions.length.should eq(4)
     end
+  end
 
+  let(:test_product){
+    Product.new(
+      language: Product::A_LANGUAGE_RUBY,
+      prod_type: Project::A_TYPE_RUBYGEMS,
+      prod_key: 'versioneye-security',
+      name: 'versioneye-security'
+    )
+  }
+  let(:test_sha){
+    '5785e698f8ab12c8c531d7de0a92f80ccfad710e'
+  }
+
+  context "crawl_for_product" do
+    before do
+      test_product.versions = []
+      test_product.versions << Version.new(version: '1.1.1')
+      test_product.save
+    end
+
+
+    it "crawls correct versions for `versioneye/versioneye-core`" do
+      VCR.use_cassette('github/crawl_versions/product_versions') do
+        api_client = GithubVersionFetcher.new #uses keys from Settings.json
+
+        expect(test_product.versions.size).to eq(1)
+        res = GithubVersionCrawler.crawl_for_product(
+          api_client, test_product, 'versioneye', 'versioneye-security'
+        )
+
+        test_product.reload
+        expect(res).to be_truthy
+        expect(test_product.versions.size).to eq(9)
+
+        #it saves data from tag response correctly
+        tag_ver = test_product.versions.where(version: '1.1.1').first
+        expect(tag_ver).not_to be_nil
+        expect(tag_ver[:tag]).to eq('v1.1.1')
+        expect(tag_ver[:status]).to eq('stable')
+        expect(tag_ver[:commit_sha]).to eq(test_sha)
+        expect(tag_ver[:released_string]).to eq("2016-07-04 09:38:25 UTC")
+      end
+    end
   end
 
 end
