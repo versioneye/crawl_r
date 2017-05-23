@@ -32,18 +32,7 @@ class GithubVersionCrawler < Versioneye::Crawl
 
     # fetch repo tags and attach commit dates
     tags = api_client.fetch_all_repo_tags(repo_owner, repo_name)
-    tags.to_a.map do |tag|
-      tag_date = crawl_tag_commit_date(
-        api_client, repo_owner, repo_name, tag[:commit][:sha]
-      )
-
-      tag[:created_at] = if tag_date
-                          tag_date
-                         else
-                          logger.error "crawl_for_product: failed to crawl all the commit dates for #{repo_owner}/#{repo_name}"
-                          nil
-                         end
-    end
+    tags = attach_commit_date(api_client, repo_owner, repo_name, tags)
 
     # save product versions
     product.versions = []
@@ -69,7 +58,26 @@ class GithubVersionCrawler < Versioneye::Crawl
     false
   end
 
-  def self.crawl_tag_commit_date(api_client, repo_owner, repo_name, commit_sha)
+  # It fetches and attaches commit date for each Tag
+  # Tags api doesnt return commit date
+  def self.attach_commit_date(api_client, repo_owner, repo_name, tags)
+    tags.to_a.map do |tag|
+      tag_date = fetch_tag_commit_date(
+        api_client, repo_owner, repo_name, tag[:commit][:sha]
+      )
+
+      if tag_date
+        tag[:created_at] = tag_date
+      else
+        logger.error "crawl_for_product: failed to crawl all the commit dates for #{repo_owner}/#{repo_name}"
+      end
+
+    end
+
+    tags
+  end
+
+  def self.fetch_tag_commit_date(api_client, repo_owner, repo_name, commit_sha)
     if api_client.check_limit_or_pause == 0
       logger.error "crawl_tag_commit_date: hit ratelimit for #{repo_owner}/#{repo_name} - #{commit_sha}"
       return
