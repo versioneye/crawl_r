@@ -24,7 +24,7 @@ class GithubVersionFetcher < Versioneye::Crawl
   # initialize crawler instance
   # params:
   #   login-data - hashmap with valid Octokit login data,
-  #                examples: {accesss_login: String},
+  #                examples: {access_login: String},
   #                          {login: String, password: String}
   #                          {client_id: String, client_secret: String}
   #
@@ -167,12 +167,12 @@ class GithubVersionFetcher < Versioneye::Crawl
 
   def get_login_from_settings
     confs = Settings.instance
-    if !confs.github_client_id.empty?
+    if !confs.github_client_id.to_s.empty?
       {
         client_id: confs.github_client_id.to_s,
         client_secret: confs.github_client_secret.to_s
       }
-    elsif !confs.github_pass.empty?
+    elsif !confs.github_pass..to_s.empty?
       {
         login: confs.github_user.to_s,
         password: confs.github_pass.to_s
