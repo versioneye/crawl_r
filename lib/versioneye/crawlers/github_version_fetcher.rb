@@ -96,7 +96,7 @@ class GithubVersionFetcher < Versioneye::Crawl
 
     while true do
       if rels.nil? or rels[:next].nil?
-        logger.warn "fetch_all_repo_tags: no pagination data"
+        logger.warn "paginate_rels: no pagination data"
         break
       end
 
@@ -106,10 +106,10 @@ class GithubVersionFetcher < Versioneye::Crawl
         break
       end
 
-      logger.info "fetch_all_repo_tags: reading page: #{n}"
+      logger.info "paginate_rels: reading page: #{n}"
       res = rels[:next].get(:query => {per_page: 100})
       if res.nil?
-        logger.info "fetch_all_repo_tags: got no response for #{owner}/#{repo} page.#{n}"
+        logger.info "paginate_rels: got no response for page.#{n}"
         break
       end
 
@@ -117,7 +117,7 @@ class GithubVersionFetcher < Versioneye::Crawl
       rels = res.rels
 
       if rels.nil? or rels[:next].nil?
-        logger.info "We are done with fetching tags"
+        logger.info "paginate_rels: we are done with paginating related sources"
         break
       end
 
