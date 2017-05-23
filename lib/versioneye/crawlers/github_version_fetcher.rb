@@ -12,6 +12,7 @@ class GithubVersionFetcher < Versioneye::Crawl
   A_MAX_PAGES = 2048
   A_RETRY_TIMEOUT = 60
   A_MAX_RETRY = 10
+  A_PER_PAGE  = 100
 
   def init_logger
     if !defined?(@log) || @log.nil?
@@ -45,7 +46,7 @@ class GithubVersionFetcher < Versioneye::Crawl
     repo = fetch_repo owner, repo
     return if repo.nil?
 
-    res = repo.rels[:tags].get(query: {per_page: 100})
+    res = repo.rels[:tags].get(query: {per_page: A_PER_PAGE})
     return if res.nil?
 
     #fetch the first page of repos
@@ -107,7 +108,7 @@ class GithubVersionFetcher < Versioneye::Crawl
       end
 
       logger.info "paginate_rels: reading page: #{n}"
-      res = rels[:next].get(:query => {per_page: 100})
+      res = rels[:next].get(:query => {per_page: A_PER_PAGE})
       if res.nil?
         logger.info "paginate_rels: got no response for page.#{n}"
         break
