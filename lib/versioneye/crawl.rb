@@ -133,7 +133,7 @@ module Versioneye
 
     # updates or adds a new detected licenses for the product
     # params:
-    #   prod_dt - {language: Str, prod_key: Str, version: Str, url: Str}
+    #   prod_dt - {language: Str, prod_key: Str, version: Str}
     #   matches - [[spdx_id, confidence, url]]
     #   min_confidence - 0.9
     def self.save_license_updates(prod_dt, matches, min_confidence, comment = "")
@@ -159,14 +159,17 @@ module Versioneye
     def self.upsert_license_data(language, prod_key, version, spdx_id, url, comment)
       prod_licenses = License.where(language: language, prod_key: prod_key, version: version)
       lic_db = prod_licenses.where(name: 'Nuget Unknown').first #try to update unknown license
-      lic_db = prod_licenses.where(name: /Unknown/i).first  unless lic_db #try to update existing Unknown license
-      lic_db = prod_licenses.where(spdx_id: spdx_id).first unless lic_db #try to upate existing
-      lic_db = prod_licenses.first_or_create unless lic_db #create a new model if no matches
+      lic_db ||= prod_licenses.where(name: /Unknown/i).first #try to update existing Unknown license
+      lic_db ||= prod_licenses.where(spdx_id: spdx_id).first #try to upate existing
+
+      #create a new model if no matches
+      lic_db ||= License.new(language: language, prod_key: prod_key, version: version, spdx_id: spdx_id)
 
       lic_db.update(
         name: spdx_id,
-        spdx_id: spdx_id,
+        spdx_id: spdx_id, # change spdx_id for Unknown license
         url: url,
+        source:  url,
         comments: comment
       )
       lic_db.save
