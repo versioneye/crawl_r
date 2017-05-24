@@ -172,7 +172,7 @@ class GithubVersionFetcher < Versioneye::Crawl
         client_id: confs.github_client_id.to_s,
         client_secret: confs.github_client_secret.to_s
       }
-    elsif !confs.github_pass..to_s.empty?
+    elsif !confs.github_pass.to_s.empty?
       {
         login: confs.github_user.to_s,
         password: confs.github_pass.to_s
