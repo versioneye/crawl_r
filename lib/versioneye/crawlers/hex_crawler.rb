@@ -1,6 +1,8 @@
+require 'time'
+
 class HexCrawler < Versioneye::Crawl
   A_API_URL = 'https://hex.pm/api'
-  A_MAX_PAGE = 10000 #TODO: increase when Elixir has more than 1M packages
+  A_MAX_PAGE = 10000 # 10_000 * 100 packages, it used to stop rogue loops
 
   #TODO: use constants from the core
   A_TYPE_HEX = 'Hex'
@@ -13,13 +15,14 @@ class HexCrawler < Versioneye::Crawl
     @@log
   end
 
-  def self.crawl_product_list(page_nr = 1, per_page = 100, async = false)
+  # it crawl all the products from the list
+  def self.crawl(page_nr = 1, per_page = 100)
     logger.info "crawl_product_list: fetching products on the page.#{page_nr}"
 
     n = 0
     loop do
       if page_nr > A_MAX_PAGE
-        log.error "crawl_product_list: too deep product list tree #{A_MAX_PAGE}"
+        log.error "crawl_product_list: hit the limit of max_pages at #{A_MAX_PAGE}"
         break
       end
 
@@ -31,7 +34,7 @@ class HexCrawler < Versioneye::Crawl
 
       products.each do |product_doc|
         prod_db = save_product(product_doc)
-        crawl_product_details(prod_db, product_db, async)
+        crawl_product_details(prod_db, product_doc)
         n += 1
       end
 
@@ -42,48 +45,99 @@ class HexCrawler < Versioneye::Crawl
     n
   end
 
-  def self.crawl_product_details(prod_db, product_doc, async)
+  def self.crawl_product_details(prod_db, product_doc, skip_existing = true)
+    #TODO: return if product has no changes
+    existing_versions = prod_db.versions.to_a.map(&:version).to_set
     version_labels = product_doc[:releases].to_a.reduce([]) do |acc, r|
-      acc << r[:version]
+      if !existing_versions.include?(r[:version]) or skip_existing == false
+        acc << r[:version]
+      end
+
       acc
     end
 
-    #fire ASYNC tasks
-    if async
-      #HexOwnerProducer.new prod_name[:name]
-      #version_labels.each do |version|
-      #   HexVersionProducer.new(prod_db[:prod_key], version
-      #end
-    else
-      crawl_product_owners(prod_db[:prod_key])
-      version_labels.each do |version|
-        crawl_product_version(prod_db[:prod_key], version)
-      end
+    if version_labels.empty?
+      logger.info "crawl_product: skipping #{prod_db} - no new versions"
+      return prod_db
     end
+
+    crawl_product_owners(prod_db[:prod_key])
+    version_labels.each do |version|
+      crawl_product_version(prod_db[:prod_key], version)
+    end
+
+    ProductService.update_version_data(prod_db)
+
+    prod_db
   end
 
   def self.crawl_product_owners(prod_key)
-    #TODO: finish
+    logger.info "crawl_product_owners: pulling owners for #{prod_key}"
+
+    owners = fetch_product_owners(prod_key)
+    return if owners.nil?
+
+    owners.to_a.each do |owner_doc|
+      upsert_product_owner(prod_key, owner_doc)
+    end
   end
 
-  #-- persistance helpers
+  def self.crawl_product_version(prod_key, version)
+    logger.info "crawl_product_version: fetching #{prod_key} => #{version}"
+
+    version_doc = fetch_product_version(prod_key, version)
+    return if version_doc.nil?
+
+    save_product_version(prod_key, version_doc)
+  end
+
+#-- persistance helpers
+
+
   def self.save_product(product_doc)
     prod_db = upsert_product(product_doc)
 
+    meta = product_doc[:meta]
+    if meta.nil?
+      log.error "save_product: product response has no meta details: #{product_doc}"
+      return prod_db
+    end
+
     # save product urls
-    product_doc[:meta][:links].each do |name, url|
+    meta[:links].to_a.each do |name, url|
       upsert_product_link(prod_db, name, url)
     end
 
     # save product licenses
-    product_doc[:meta][:licenses].each do |spdx_id|
+    meta[:licenses].to_a.each do |spdx_id|
       upsert_product_license(prod_db, spdx_id)
     end
 
     #add product developers
-    product_doc[:meta][:developers].each do |spdx_name|
-      upsert_product_developer(prod_db, owner_name)
+    meta[:maintainers].to_a.each do |owner_name|
+      upsert_product_maintainer(prod_db, owner_name.to_s)
     end
+
+    prod_db.reload
+    prod_db
+  end
+
+  def self.save_product_version(prod_key, version_doc)
+    prod_db = Product.where(
+      language: A_LANGUAGE_ELIXIR,
+      prod_key: prod_key
+    ).first
+
+    if prod_db.nil?
+      logger.error "save_product_version: found no such product `#{prod_key}`"
+      return
+    end
+
+    upsert_version(prod_db, version_doc)
+    version_doc[:requirements].to_a.each do |dep_id, dep_doc|
+      upsert_dependency(prod_db, version_doc[:version], dep_doc)
+    end
+
   end
 
   def self.upsert_product(product_doc)
@@ -103,11 +157,56 @@ class HexCrawler < Versioneye::Crawl
     prod_db
   end
 
+  def self.upsert_version(prod_db, version_doc)
+    logger.info "save_product_version: saving version details #{prod_db} => #{version_doc[:version]}"
+
+    version_db = prod_db.versions.where(
+      version: version_doc[:version]
+    ).first_or_initialize
+
+    status = if version_doc[:retirement]
+               "deprecated"
+             else
+               "stable"
+             end
+
+    release_dt = DateTime.parse version_doc[:inserted_at]
+
+    version_db.update(
+      status: status,
+      released_at: release_dt,
+      released_string: release_dt.to_s
+    )
+
+    version_db
+  end
+
+  def self.upsert_dependency(prod_db, prod_version, dep_doc)
+    dep_db = Dependency.where(
+      language: prod_db[:language],
+      prod_type: prod_db[:prod_type],
+      prod_key: prod_db[:prod_key],
+      prod_version: prod_version,
+      dep_prod_key: dep_doc[:app]
+    ).first_or_initialize
+
+    dep_scope = (dep_doc[:optional] == true) ? Dependency::A_SCOPE_OPTIONAL : Dependency::A_SCOPE_RUNTIME
+
+    dep_db.update(
+      name: dep_doc[:app],
+      scope: dep_scope,
+      version: dep_doc[:requirement]
+    )
+
+    dep_db.save
+    dep_db
+  end
+
   def self.upsert_product_link(prod_db, name, url)
     url_db = Versionlink.where(
       language: prod_db[:language],
       prod_key: prod_db[:prod_key],
-      url: url.to_s.strip
+      link: url.to_s.strip
     ).first_or_create
 
     url_db.update(
@@ -121,11 +220,55 @@ class HexCrawler < Versioneye::Crawl
   def self.upsert_product_license(prod_db, spdx_id)
     return if spdx_id.to_s.empty?
 
-    License.where(
+    lic = License.where(
       language: prod_db[:language],
       prod_key: prod_db[:prod_key],
-      spdx_id: spdx_id.to_s.strip
+      name: spdx_id.to_s.strip
     ).first_or_create
+
+    if lic.errors.full_messages.size > 0
+      logger.error "Failed to save license #{spdx_id} for #{prod_db}"
+      logger.error "\tReason: #{lic.errors.full_messages.to_sentence}"
+      return
+    end
+
+    lic
+  end
+
+  # saves product authors and maintainers
+  def self.upsert_product_maintainer(prod_db, dev_name)
+    dev_name = dev_name.to_s.strip
+
+    dev = Developer.where(
+      language: prod_db[:language],
+      prod_key: prod_db[:prod_key],
+      name: dev_name
+    ).first_or_create
+
+    dev.update(to_author: true)
+    dev.save
+
+    dev
+  end
+
+  #save people who manage releases
+  def self.upsert_product_owner(prod_key, owner_doc)
+    dev_name = owner_doc[:full_name]
+    dev_name ||= owner_doc[:username]
+
+    dev = Developer.where(
+      language: A_LANGUAGE_ELIXIR,
+      prod_key: prod_key,
+      email: owner_doc[:email]
+    ).first_or_create
+
+    dev.update(
+      name: dev_name,
+      role: "owner",
+      contributor: true
+    )
+
+    dev
   end
 
   #-- fetcher functions
@@ -137,6 +280,11 @@ class HexCrawler < Versioneye::Crawl
   def self.fetch_product_details(pkg_id)
     pkg_id = pkg_id.to_s.strip
     fetch_json "#{A_API_URL}/packages/#{pkg_id}"
+  end
+
+  def self.fetch_product_owners(pkg_id)
+    pkg_id = pkg_id.to_s.strip
+    fetch_json "#{A_API_URL}/packages/#{pkg_id}/owners"
   end
 
   def self.fetch_product_version(pkg_id, version_label)
