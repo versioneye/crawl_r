@@ -354,7 +354,8 @@ class NugetCrawler < Versioneye::Crawl
   def self.upsert_artefact(product, version)
     if product.sha512
       upsert_artefact_sha product, version, product.sha512, 'sha512'
-    else
+    end
+    if product.sha256
       upsert_artefact_sha product, version, product.sha256, 'sha256'
     end
   end
