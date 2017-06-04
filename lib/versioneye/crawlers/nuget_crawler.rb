@@ -352,25 +352,25 @@ class NugetCrawler < Versioneye::Crawl
 
 
   def self.upsert_artefact(product, version)
-    artefact = Artefact.where(
-      language: product[:language],
-      prod_key: product[:prod_key],
-      version: version
-    ).first_or_create
+    if product.sha512
+      upsert_artefact_sha product, version, product.sha512, 'sha512'
+    else
+      upsert_artefact_sha product, version, product.sha256, 'sha256'
+    end
+  end
 
-    sha_val, sha_algo = if product[:sha512]
-                          [product[:sha512], 'sha512']
-                        else
-                          [product[:sha256], 'sha256']
-                        end
 
-    artefact.update({
-      packaging: 'nupkg',
-      prod_type: product[:prod_type],
-      sha_value: sha_val,
-      sha_method: sha_algo
-    })
-
+  def self.upsert_artefact_sha(product, version, sha, sha_method)
+    artefact = Artefact.find_or_create_by(
+                  :language   => product.language,
+                  :prod_key   => product.prod_key,
+                  :version    => version,
+                  :prod_type  => product.prod_type,
+                  :packaging  => 'nupkg'
+                  :sha_value  => sha,
+                  :sha_method => sha_method )
     artefact.save
   end
+
+
 end
