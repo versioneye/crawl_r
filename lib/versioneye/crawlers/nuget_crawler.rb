@@ -366,7 +366,7 @@ class NugetCrawler < Versioneye::Crawl
                   :prod_key   => product.prod_key,
                   :version    => version,
                   :prod_type  => product.prod_type,
-                  :packaging  => 'nupkg'
+                  :packaging  => 'nupkg',
                   :sha_value  => sha,
                   :sha_method => sha_method )
     artefact.save
