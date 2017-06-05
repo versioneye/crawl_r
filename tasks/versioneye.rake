@@ -198,6 +198,14 @@ namespace :versioneye do
 
   # ***** Crawler Tasks *****
 
+  desc "crawl GoSearch for Go"
+  task :crawl_gosearch do
+    puts "START to crawle Rust repository crates.io"
+    RubyCrawl.new
+    GoSearchCrawler.crawl
+    puts "---"
+  end
+
   desc "crawl Crates for Rust"
   task :crawl_crates do
     puts "START to crawle Rust repository crates.io"
