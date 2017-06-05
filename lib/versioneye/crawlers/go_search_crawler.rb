@@ -34,7 +34,7 @@ class GoSearchCrawler < Versioneye::Crawl
     end
 
     prod = upsert_product(pkg_id, pkg_dt)
-    create_dependencies(pkg_id, pkg_dt[:Imports], pkg_dt[:TestImports])
+    create_dependencies(pkg_id, prod.version, pkg_dt[:Imports], pkg_dt[:TestImports])
     create_version_link(prod, pkg_dt[:ProjectURL])
 
     prod.save
@@ -63,7 +63,8 @@ class GoSearchCrawler < Versioneye::Crawl
       name_downcase: pkg_dt[:Name].to_s.downcase,
       downloads: (pkg_dt[:StarCount] + pkg_dt[:StaticRank] + 1),
       description: pkg_dt[:Synopsis],
-      repo_name: to_repo_name(pkg_id)
+      repo_name: to_repo_name(pkg_id),
+      version: 'default_branch'
     })
 
     prod.save
@@ -84,20 +85,20 @@ class GoSearchCrawler < Versioneye::Crawl
     "#{host}/#{owner}/#{repo}"
   end
 
-  def self.create_dependencies(pkg_id, dependencies, test_dependencies)
+  def self.create_dependencies(pkg_id, version, dependencies, test_dependencies)
     deps = []
     dependencies.to_a.each do |dep_id|
-      deps << create_dependency(pkg_id, dep_id, Dependency::A_SCOPE_COMPILE)
+      deps << create_dependency(pkg_id, version, dep_id, Dependency::A_SCOPE_COMPILE)
     end
 
     test_dependencies.to_a.each do |dep_id|
-      deps << create_dependency(pkg_id, dep_id, Dependency::A_SCOPE_DEVELOPMENT)
+      deps << create_dependency(pkg_id, version, dep_id, Dependency::A_SCOPE_DEVELOPMENT)
     end
 
     deps
   end
 
-  def self.create_dependency(pkg_id, dep_id, the_scope)
+  def self.create_dependency(pkg_id, version, dep_id, the_scope)
     dep = Dependency.where(prod_type: Project::A_TYPE_GODEP, prod_key: pkg_id, dep_prod_key: dep_id).first
     return dep if dep
 
@@ -105,7 +106,7 @@ class GoSearchCrawler < Versioneye::Crawl
       prod_type: Project::A_TYPE_GODEP,
       language: Product::A_LANGUAGE_GO,
       prod_key: pkg_id,
-      prod_version: '*',
+      prod_version: version,
       dep_prod_key: dep_id,
       scope: the_scope,
       version: '*'
