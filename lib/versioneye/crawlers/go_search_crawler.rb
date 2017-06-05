@@ -121,6 +121,7 @@ class GoSearchCrawler < Versioneye::Crawl
     link = Versionlink.where(
       language: Product::A_LANGUAGE_GO,
       prod_type: Project::A_TYPE_GODEP,
+      prod_key: prod.prod_key,
       link: url
     ).first
     return link if link
