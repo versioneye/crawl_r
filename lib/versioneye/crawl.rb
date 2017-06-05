@@ -21,6 +21,7 @@ module Versioneye
     require './lib/versioneye/crawlers/nuget_crawler'
     require './lib/versioneye/crawlers/cpan_crawler'
     require './lib/versioneye/crawlers/crates_crawler'
+    require './lib/versioneye/crawlers/go_search_crawler'
     require './lib/versioneye/crawlers/hex_crawler'
 
     require './lib/versioneye/crawlers/php/packagist_crawler'
