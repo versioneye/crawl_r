@@ -34,8 +34,8 @@ class GoSearchCrawler < Versioneye::Crawl
     end
 
     prod = upsert_product(pkg_id, pkg_dt)
-    create_dependencies(pkg_id, pkg_dt[:Imports], pkg_dt[:testImports])
-    create_version_link(prod, pkg_dt[:projectURL])
+    create_dependencies(pkg_id, pkg_dt[:Imports], pkg_dt[:TestImports])
+    create_version_link(prod, pkg_dt[:ProjectURL])
 
     prod.save
     prod
@@ -126,7 +126,8 @@ class GoSearchCrawler < Versioneye::Crawl
     ).first
     return link if link
 
-    Versionlink.create_versionlink prod.language, prod.prod_key, nil, url, name
+    logger.info "versionlink: creating version link for #{prod} - #{name}: #{url}"
+    Versionlink.create_project_link(prod.language, prod.prod_key, url, name)
   end
 
 end
