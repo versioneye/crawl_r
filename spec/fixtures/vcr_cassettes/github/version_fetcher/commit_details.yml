@@ -1,0 +1,116 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.github.com/repos/versioneye/versioneye-core/commits/a0f89001eaffed655eab55bd6a463bcddbe5b5ba
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 4.7.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Mon, 22 May 2017 16:55:12 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '60'
+      X-Ratelimit-Remaining:
+      - '53'
+      X-Ratelimit-Reset:
+      - '1495474855'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      Etag:
+      - W/"46ed5dfb5ef461f5003432ab6e0d129f"
+      Last-Modified:
+      - Fri, 19 May 2017 11:51:01 GMT
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - C12F:15875:5263787:6246309:592317F0
+    body:
+      encoding: ASCII-8BIT
+      string: '{"sha":"a0f89001eaffed655eab55bd6a463bcddbe5b5ba","commit":{"author":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2017-05-19T11:51:01Z"},"committer":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2017-05-19T11:51:01Z"},"message":"Improve
+        JSPM parsing","tree":{"sha":"97bf5491e47df948200b20d020cf4c7864c2b93e","url":"https://api.github.com/repos/versioneye/versioneye-core/git/trees/97bf5491e47df948200b20d020cf4c7864c2b93e"},"url":"https://api.github.com/repos/versioneye/versioneye-core/git/commits/a0f89001eaffed655eab55bd6a463bcddbe5b5ba","comment_count":0},"url":"https://api.github.com/repos/versioneye/versioneye-core/commits/a0f89001eaffed655eab55bd6a463bcddbe5b5ba","html_url":"https://github.com/versioneye/versioneye-core/commit/a0f89001eaffed655eab55bd6a463bcddbe5b5ba","comments_url":"https://api.github.com/repos/versioneye/versioneye-core/commits/a0f89001eaffed655eab55bd6a463bcddbe5b5ba/comments","author":{"login":"reiz","id":652130,"avatar_url":"https://avatars3.githubusercontent.com/u/652130?v=3","gravatar_id":"","url":"https://api.github.com/users/reiz","html_url":"https://github.com/reiz","followers_url":"https://api.github.com/users/reiz/followers","following_url":"https://api.github.com/users/reiz/following{/other_user}","gists_url":"https://api.github.com/users/reiz/gists{/gist_id}","starred_url":"https://api.github.com/users/reiz/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/reiz/subscriptions","organizations_url":"https://api.github.com/users/reiz/orgs","repos_url":"https://api.github.com/users/reiz/repos","events_url":"https://api.github.com/users/reiz/events{/privacy}","received_events_url":"https://api.github.com/users/reiz/received_events","type":"User","site_admin":false},"committer":{"login":"reiz","id":652130,"avatar_url":"https://avatars3.githubusercontent.com/u/652130?v=3","gravatar_id":"","url":"https://api.github.com/users/reiz","html_url":"https://github.com/reiz","followers_url":"https://api.github.com/users/reiz/followers","following_url":"https://api.github.com/users/reiz/following{/other_user}","gists_url":"https://api.github.com/users/reiz/gists{/gist_id}","starred_url":"https://api.github.com/users/reiz/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/reiz/subscriptions","organizations_url":"https://api.github.com/users/reiz/orgs","repos_url":"https://api.github.com/users/reiz/repos","events_url":"https://api.github.com/users/reiz/events{/privacy}","received_events_url":"https://api.github.com/users/reiz/received_events","type":"User","site_admin":false},"parents":[{"sha":"7dca965530f833111476c2518168adffb01c67d5","url":"https://api.github.com/repos/versioneye/versioneye-core/commits/7dca965530f833111476c2518168adffb01c67d5","html_url":"https://github.com/versioneye/versioneye-core/commit/7dca965530f833111476c2518168adffb01c67d5"}],"stats":{"total":29,"additions":20,"deletions":9},"files":[{"sha":"8f1d5c7a8c1f363c55852ca989cde75129e4c143","filename":"lib/versioneye/parsers/jspm_parser.rb","status":"modified","additions":1,"deletions":1,"changes":2,"blob_url":"https://github.com/versioneye/versioneye-core/blob/a0f89001eaffed655eab55bd6a463bcddbe5b5ba/lib/versioneye/parsers/jspm_parser.rb","raw_url":"https://github.com/versioneye/versioneye-core/raw/a0f89001eaffed655eab55bd6a463bcddbe5b5ba/lib/versioneye/parsers/jspm_parser.rb","contents_url":"https://api.github.com/repos/versioneye/versioneye-core/contents/lib/versioneye/parsers/jspm_parser.rb?ref=a0f89001eaffed655eab55bd6a463bcddbe5b5ba","patch":"@@
+        -61,7 +61,7 @@ def parse_dependencies(project, deps, scope, default_registry
+        = nil)\n \n \n   def parse_dependency(project, pkg_id, dep_line, scope, default_registry)\n-    github_match
+        = dep_line[0..5].match(/\\Agithub:(.*)(@.*)/i)\n+    github_match = dep_line.to_s.strip.match(/\\Agithub:(.*)(@.*)/i)\n     if
+        github_match\n       version_label = \"github#{github_match[2]}\"\n       product
+        = nil"},{"sha":"6fbbd3318d034f228e21ec95b960bc82590238d4","filename":"lib/versioneye/parsers/package_parser.rb","status":"modified","additions":1,"deletions":1,"changes":2,"blob_url":"https://github.com/versioneye/versioneye-core/blob/a0f89001eaffed655eab55bd6a463bcddbe5b5ba/lib/versioneye/parsers/package_parser.rb","raw_url":"https://github.com/versioneye/versioneye-core/raw/a0f89001eaffed655eab55bd6a463bcddbe5b5ba/lib/versioneye/parsers/package_parser.rb","contents_url":"https://api.github.com/repos/versioneye/versioneye-core/contents/lib/versioneye/parsers/package_parser.rb?ref=a0f89001eaffed655eab55bd6a463bcddbe5b5ba","patch":"@@
+        -52,7 +52,7 @@ def parse_content( content, token = nil )\n     if data.has_key?(''jspm'')\n       log.info
+        \"going to parse child JSPM project dependencies\"\n       jspm_parser = JspmParser.new\n-      #JSPM
+        parser expects that all the fields are keywords\n+      # JSPM parser expects
+        that all the fields are keywords\n       symbolized_doc = JSON.parse(content,
+        symbolize_names: true)\n       child_project = jspm_parser.parse_project_doc(symbolized_doc,
+        project.id.to_s)\n       if child_project"},{"sha":"48ad47e14adab10c51a414b708d9b82d8e059e4d","filename":"lib/versioneye/version.rb","status":"modified","additions":1,"deletions":1,"changes":2,"blob_url":"https://github.com/versioneye/versioneye-core/blob/a0f89001eaffed655eab55bd6a463bcddbe5b5ba/lib/versioneye/version.rb","raw_url":"https://github.com/versioneye/versioneye-core/raw/a0f89001eaffed655eab55bd6a463bcddbe5b5ba/lib/versioneye/version.rb","contents_url":"https://api.github.com/repos/versioneye/versioneye-core/contents/lib/versioneye/version.rb?ref=a0f89001eaffed655eab55bd6a463bcddbe5b5ba","patch":"@@
+        -1,3 +1,3 @@\n module Versioneye\n-  VERSION = ''11.12.7''\n+  VERSION = ''11.12.8''\n
+        end"},{"sha":"91f5864666668123ddbc1df1f9329cf2c329f325","filename":"scripts/runtests_local.sh","status":"modified","additions":1,"deletions":1,"changes":2,"blob_url":"https://github.com/versioneye/versioneye-core/blob/a0f89001eaffed655eab55bd6a463bcddbe5b5ba/scripts/runtests_local.sh","raw_url":"https://github.com/versioneye/versioneye-core/raw/a0f89001eaffed655eab55bd6a463bcddbe5b5ba/scripts/runtests_local.sh","contents_url":"https://api.github.com/repos/versioneye/versioneye-core/contents/scripts/runtests_local.sh?ref=a0f89001eaffed655eab55bd6a463bcddbe5b5ba","patch":"@@
+        -4,7 +4,7 @@ echo \"Going to run all specs\"\n export RAILS_ENV=\"test\"\n
+        echo \"Rails mode: $RAILS_ENV\"\n \n-rspec\n+rspec spec/versioneye/parsers/jspm_parser_spec.rb\n
+        \n export RAILS_ENV=\"development\"\n echo \"Rails mode: $RAILS_ENV\""},{"sha":"ae2a604734c1593f6a24c0292bf13dfd2c321af2","filename":"spec/fixtures/files/npm/package_jspm.json","status":"modified","additions":2,"deletions":1,"changes":3,"blob_url":"https://github.com/versioneye/versioneye-core/blob/a0f89001eaffed655eab55bd6a463bcddbe5b5ba/spec/fixtures/files/npm/package_jspm.json","raw_url":"https://github.com/versioneye/versioneye-core/raw/a0f89001eaffed655eab55bd6a463bcddbe5b5ba/spec/fixtures/files/npm/package_jspm.json","contents_url":"https://api.github.com/repos/versioneye/versioneye-core/contents/spec/fixtures/files/npm/package_jspm.json?ref=a0f89001eaffed655eab55bd6a463bcddbe5b5ba","patch":"@@
+        -2,7 +2,8 @@\n   \"jspm\": {\n     \"name\": \"jspm-react-component\",\n     \"dependencies\":
+        {\n-      \"react-dom\": \"npm:react-dom@^0.14.6\"\n+      \"react-dom\":
+        \"npm:react-dom@^0.14.6\",\n+      \"typhonjs-core-utils\": \"github:typhonjs-common/typhonjs-core-utils@master\"\n     },\n     \"devDependencies\":
+        {\n       \"plugin-babel\": \"npm:systemjs-plugin-babel@^0.0.5\","},{"sha":"c9f7e4ce46b175e1c71dbd1d844bc6d0140a7dda","filename":"spec/versioneye/parsers/jspm_parser_spec.rb","status":"modified","additions":14,"deletions":4,"changes":18,"blob_url":"https://github.com/versioneye/versioneye-core/blob/a0f89001eaffed655eab55bd6a463bcddbe5b5ba/spec/versioneye/parsers/jspm_parser_spec.rb","raw_url":"https://github.com/versioneye/versioneye-core/raw/a0f89001eaffed655eab55bd6a463bcddbe5b5ba/spec/versioneye/parsers/jspm_parser_spec.rb","contents_url":"https://api.github.com/repos/versioneye/versioneye-core/contents/spec/versioneye/parsers/jspm_parser_spec.rb?ref=a0f89001eaffed655eab55bd6a463bcddbe5b5ba","patch":"@@
+        -54,7 +54,7 @@\n     it \"parses correctly test file\" do\n       proj = parser.parse_content
+        test_content\n       expect(proj).not_to be_nil\n-      expect(proj.dependencies.size).to
+        eq(4)\n+      expect(proj.dependencies.size).to eq(5)\n \n       dep1 = proj.dependencies[0]\n       expect(dep1[:name]).to
+        eq(react_dom[:name])\n@@ -67,6 +67,17 @@\n       expect(dep1[:outdated]).to
+        be_falsey\n \n       dep2 = proj.dependencies[1]\n+      expect(dep2[:name]).to
+        eq(\"typhonjs-core-utils\")\n+      expect(dep2[:prod_key]).to be_nil\n+      expect(dep2[:ext_link]).to
+        eq(\"https://github.com/typhonjs-common/typhonjs-core-utils\")\n+      expect(dep2[:language]).to
+        eq( Product::A_LANGUAGE_NODEJS )\n+      expect(dep2[:scope]).to eq( Dependency::A_SCOPE_COMPILE
+        )\n+      expect(dep2[:version_requested]).to eq(''github@master'')\n+      expect(dep2[:version_label]).to
+        eq(''github@master'')\n+      expect(dep2[:comperator]).to eq(''='')\n+      expect(dep2[:outdated]).to
+        be_falsey\n+\n+      dep2 = proj.dependencies[2]\n       expect(dep2[:name]).to
+        eq(plugin_babel[:name])\n       expect(dep2[:prod_key]).to eq(plugin_babel[:prod_key])\n       expect(dep2[:language]).to
+        eq(plugin_babel[:language])\n@@ -76,7 +87,7 @@\n       expect(dep2[:comperator]).to
+        eq(''^'')\n       expect(dep2[:outdated]).to be_truthy\n \n-      dep3 = proj.dependencies[2]\n+      dep3
+        = proj.dependencies[3]\n       expect(dep3[:name]).to eq(''systemjs-hot-reloader'')\n       expect(dep3[:prod_key]).to
+        be_nil\n       expect(dep3[:language]).to eq(plugin_babel[:language])\n@@
+        -86,7 +97,7 @@\n       expect(dep3[:comperator]).to eq(''='')\n       expect(dep3[:outdated]).to
+        be_falsey\n \n-      dep4 = proj.dependencies[3]\n+      dep4 = proj.dependencies[4]\n       expect(dep4[:name]).to
+        eq(core_js[:name])\n       expect(dep4[:prod_key]).to eq(core_js[:prod_key])\n       expect(dep4[:language]).to
+        eq(core_js[:language])\n@@ -95,7 +106,6 @@\n       expect(dep4[:version_label]).to
+        eq(''^1.2.0'')\n       expect(dep4[:comperator]).to eq(''^'')\n       expect(dep4[:outdated]).to
+        be_falsey\n-\n     end\n   end\n "}]}'
+    http_version: 
+  recorded_at: Mon, 22 May 2017 16:55:13 GMT
+recorded_with: VCR 3.0.3
