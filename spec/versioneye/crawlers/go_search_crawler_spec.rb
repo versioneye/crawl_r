@@ -91,7 +91,7 @@ describe GoSearchCrawler do
 
   context "crawl_all" do
     it "saves new products" do
-      res = GoSearchCrawler.crawl_all
+      res = GoSearchCrawler.crawl
       expect(res).to be_truthy
 
       expect(Product.all.count).to eq(2)
@@ -105,9 +105,20 @@ describe GoSearchCrawler do
       expect(deps[0].prod_key).to eq( package1['Package']  )
       expect(deps[0].dep_prod_key).to eq( package1['Imports'].first )
 
+      expect(Versionlink.all.size).to eq(2)
+
+      link_db = Versionlink.where(prod_key: prod1[:prod_key]).first
+      expect(link_db).not_to be_nil
+      expect(link_db[:link]).to eq(package1['ProjectURL'])
+
       prod2 = Product.find_by(prod_key: package2['Package'], prod_type: 'Godep')
       expect(prod2).not_to be_nil
       expect(prod2[:name]).to eq(package2['Name'])
+
+      link_db = Versionlink.where(prod_key: prod2[:prod_key]).first
+      expect(link_db).not_to be_nil
+      expect(link_db[:link]).to eq(package2['ProjectURL'])
+
 
     end
   end
