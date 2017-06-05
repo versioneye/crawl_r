@@ -72,7 +72,6 @@ class GosearchVersionWorker < Worker
     if user.github_token
       {access_login: user.github_token}
     end
-    nil
   end
 
 end
