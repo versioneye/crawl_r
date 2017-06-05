@@ -10,8 +10,8 @@ class GoSearchCrawler < Versioneye::Crawl
     @@log
   end
 
-  #crawls all the packages got from go-search index
-  def self.crawl_all
+  # crawls all the packages got from go-search index
+  def self.crawl
     logger.info "Fetching a list of Go packages"
     all_pkgs = fetch_package_index
     if all_pkgs.to_a.empty?
@@ -24,8 +24,8 @@ class GoSearchCrawler < Versioneye::Crawl
     true
   end
 
-  #fetches package details from go-search,
-  def self.crawl_package(pkg_id)
+  # fetches package details from go-search,
+  def self.crawl_package( pkg_id )
     logger.info "Fetching details for #{pkg_id}"
     pkg_dt = fetch_package_detail pkg_id
     if pkg_dt.nil?
@@ -49,7 +49,7 @@ class GoSearchCrawler < Versioneye::Crawl
     fetch_json "#{A_GOSEARCH_URL}?action=package&id=#{pkg_id}"
   end
 
-  #finds or creates product and updates information
+  # finds or creates product and updates information
   def self.upsert_product(pkg_id, pkg_dt)
     prod = Product.where(
       language: Product::A_LANGUAGE_GO,
@@ -57,7 +57,7 @@ class GoSearchCrawler < Versioneye::Crawl
       prod_key: pkg_id
     ).first_or_initialize
 
-    #update github_name
+    # update github_name
     prod.update({
       name: pkg_dt[:Name],
       name_downcase: pkg_dt[:Name].to_s.downcase,
