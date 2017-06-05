@@ -63,7 +63,7 @@ module Versioneye
     require './lib/versioneye/workers/bower_crawl_worker'
     require './lib/versioneye/workers/nuget_crawl_worker'
     require './lib/versioneye/workers/crates_crawl_worker'
-    require './lib/versioneye/workers/version_crawler_worker'
+    require './lib/versioneye/workers/gosearch_version_worker'
 
     require './lib/versioneye/utils/license_matcher'
     require './lib/versioneye/utils/python_license_detector'

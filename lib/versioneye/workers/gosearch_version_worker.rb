@@ -1,5 +1,5 @@
-class VersionCrawlerWorker < Worker
-  A_QUEUE_NAME = 'version_crawl'
+class GosearchVersionWorker < Worker
+  A_QUEUE_NAME = 'gosearch_version_crawl'
 
   attr_reader :name
 
@@ -62,15 +62,17 @@ class VersionCrawlerWorker < Worker
     log.error "#{@name} - failed to process #{message} "
     log.error e.message
     log.error e.backtrace.join("\n")
-
   end
+
 
   def get_auth_by_email(user_email)
     user = User.find_by_email user_email.to_s
-    return if user.nil?
+    return nil if user.nil?
 
     if user.github_token
       {access_login: user.github_token}
     end
+    nil
   end
+
 end

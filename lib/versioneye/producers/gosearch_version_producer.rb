@@ -1,7 +1,8 @@
 class GosearchVersionProducer < Producer
-  A_QUEUE_NAME = 'version_crawl'
+  A_QUEUE_NAME = 'gosearch_version_crawl'
 
   attr_reader :name
+
 
   # params:
   #   msg - output of GosearchVersionProducer.build_message(pkg_id)
@@ -26,6 +27,7 @@ class GosearchVersionProducer < Producer
     log.error e.backtrace.join("\n")
   end
 
+
   # builds valid message for Go package
   # for accepted format check VersionCrawlerWorker.process_work
   def self.build_message(prod_key, user_email = nil, login = nil)
@@ -39,7 +41,6 @@ class GosearchVersionProducer < Producer
       log.error "Found no such Go package: #{prod_key}"
       return
     end
-
 
     domain, owner, repo, _ = gopkg[:repo_name].split('/', 4)
     unless domain =~ /github/i
