@@ -39,7 +39,8 @@ class GithubVersionCrawler < Versioneye::Crawl
 
     # save product versions
     tags.to_a.each do |tag|
-      upsert_product_version(product, tag)
+      version = upsert_product_version(product, tag)
+      # TODO check license. RR or TG.
     end
 
     if product.save
@@ -73,7 +74,6 @@ class GithubVersionCrawler < Versioneye::Crawl
       else
         logger.error "crawl_for_product: failed to crawl all the commit dates for #{repo_owner}/#{repo_name}"
       end
-
     end
 
     tags
@@ -100,15 +100,15 @@ class GithubVersionCrawler < Versioneye::Crawl
   #   tag - Hashmap with response from Github tags endpoint
   #         expected structure: {name: String, created_at: String, commit: {:sha}}
   def self.upsert_product_version(product, tag)
-    semver_label = process_version_label(tag[:name])
+    semver_label = process_version_label( tag[:name] )
     if semver_label.to_s.empty?
       logger.warn "upsert_product_version: ignoring non-valid semver #{tag[:name]} for #{product.prod_key}"
-      return
+      return nil
     end
 
     if !product.version_by_number( tag[:name] ).nil?
       logger.warn "Version #{tag[:name]} for #{product.prod_key} exist already."
-      return
+      return nil
     end
 
     ver = product.versions.where(version: semver_label).first_or_initialize
