@@ -65,4 +65,5 @@ class GosearchVersionProducer < Producer
 
     msg
   end
+
 end
