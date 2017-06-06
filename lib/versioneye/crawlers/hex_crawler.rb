@@ -44,8 +44,8 @@ class HexCrawler < Versioneye::Crawl
     n
   end
 
+
   def self.crawl_product_details(prod_db, product_doc, skip_existing = true)
-    # TODO: return if product has no changes
     existing_versions = prod_db.versions.to_a.map(&:version).to_set
     version_labels = product_doc[:releases].to_a.reduce([]) do |acc, r|
       if !existing_versions.include?(r[:version]) or skip_existing == false
@@ -60,26 +60,15 @@ class HexCrawler < Versioneye::Crawl
       return prod_db
     end
 
-    crawl_product_owners(prod_db[:prod_key])
     version_labels.each do |version|
-      crawl_product_version(prod_db[:prod_key], version)
+      crawl_product_version(prod_db.prod_key, version)
+      prod_db.version = version
+      prod_db.save
     end
 
     ProductService.update_version_data(prod_db)
 
     prod_db
-  end
-
-
-  def self.crawl_product_owners(prod_key)
-    logger.info "crawl_product_owners: pulling owners for #{prod_key}"
-
-    owners = fetch_product_owners(prod_key)
-    return if owners.nil?
-
-    owners.to_a.each do |owner_doc|
-      upsert_product_owner(prod_key, owner_doc)
-    end
   end
 
 
@@ -98,6 +87,8 @@ class HexCrawler < Versioneye::Crawl
   def self.save_product(product_doc)
     prod_db = upsert_product(product_doc)
 
+    crawl_product_owners( prod_db[:prod_key] )
+
     meta = product_doc[:meta]
     if meta.nil?
       log.error "save_product: product response has no meta information for #{product_doc[:name]}"
@@ -114,7 +105,7 @@ class HexCrawler < Versioneye::Crawl
       upsert_product_license(prod_db, license_name)
     end
 
-    #add product developers
+    # add product developers
     meta[:maintainers].to_a.each do |owner_name|
       upsert_product_maintainer(prod_db, owner_name.to_s)
     end
@@ -123,23 +114,66 @@ class HexCrawler < Versioneye::Crawl
     prod_db
   end
 
-  def self.save_product_version(prod_key, version_doc)
-    prod_db = Product.where(
-      language: Product::A_LANGUAGE_ELIXIR,
-      prod_key: prod_key
-    ).first
 
+  def self.crawl_product_owners(prod_key)
+    logger.info "crawl_product_owners: pulling owners for #{prod_key}"
+
+    owners = fetch_product_owners(prod_key)
+    return if owners.nil?
+
+    owners.to_a.each do |owner_doc|
+      upsert_product_owner(prod_key, owner_doc)
+    end
+  end
+
+
+  def self.save_product_version(prod_key, version_doc)
+    prod_db = Product.fetch_product Product::A_LANGUAGE_ELIXIR, prod_key
     if prod_db.nil?
       logger.error "save_product_version: found no such product `#{prod_key}`"
       return
     end
 
     upsert_version(prod_db, version_doc)
+
+    # Dependencies
     version_doc[:requirements].to_a.each do |dep_id, dep_doc|
       upsert_dependency(prod_db, version_doc[:version], dep_doc)
     end
-
   end
+
+
+  def self.upsert_version(prod_db, version_doc)
+    logger.info "save_product_version: saving version details #{prod_db} => #{version_doc[:version]}"
+
+    prod_db.add_version version_doc[:version].to_s
+    version_db = prod_db.version_by_number version_doc[:version].to_s
+
+    status = if version_doc[:retirement]
+               "deprecated"
+             else
+               "stable"
+             end
+
+
+    version_db.update(
+      status: status,
+      released_at: parse_date(version_doc),
+      released_string: version_doc[:inserted_at].to_s,
+      downloads: version_doc[:downloads]
+    )
+
+    version_db
+  end
+
+
+  def self.parse_date version_doc
+    DateTime.parse version_doc[:inserted_at]
+  rescue => e
+    logger.error e.message
+    nil
+  end
+
 
   def self.upsert_product(product_doc)
     prod_db = Product.where(
@@ -159,40 +193,17 @@ class HexCrawler < Versioneye::Crawl
     prod_db
   end
 
-  def self.upsert_version(prod_db, version_doc)
-    logger.info "save_product_version: saving version details #{prod_db} => #{version_doc[:version]}"
-
-    version_db = prod_db.versions.where(
-      version: version_doc[:version]
-    ).first_or_initialize
-
-    status = if version_doc[:retirement]
-               "deprecated"
-             else
-               "stable"
-             end
-
-    release_dt = DateTime.parse version_doc[:inserted_at]
-
-    version_db.update(
-      status: status,
-      released_at: release_dt,
-      released_string: release_dt.to_s
-    )
-
-    version_db
-  end
 
   def self.upsert_dependency(prod_db, prod_version, dep_doc)
     dep_db = Dependency.where(
-      language: prod_db[:language],
-      prod_type: prod_db[:prod_type],
-      prod_key: prod_db[:prod_key],
+      language: prod_db.language,
+      prod_type: prod_db.prod_type,
+      prod_key: prod_db.prod_key,
       prod_version: prod_version,
       dep_prod_key: dep_doc[:app]
     ).first_or_initialize
 
-    dep_scope = (dep_doc[:optional] == true) ? Dependency::A_SCOPE_OPTIONAL : Dependency::A_SCOPE_RUNTIME
+    dep_scope = (dep_doc[:optional] == true) ? Dependency::A_SCOPE_OPTIONAL : Dependency::A_SCOPE_COMPILE
 
     dep_db.update(
       name: dep_doc[:app],
@@ -203,6 +214,7 @@ class HexCrawler < Versioneye::Crawl
     dep_db.save
     dep_db
   end
+
 
   def self.upsert_product_link(prod_db, name, url)
     url_db = Versionlink.where(
@@ -238,6 +250,7 @@ class HexCrawler < Versioneye::Crawl
     lic
   end
 
+
   # saves product authors and maintainers
   def self.upsert_product_maintainer(prod_db, dev_name)
     dev_name = dev_name.to_s.strip
@@ -259,7 +272,8 @@ class HexCrawler < Versioneye::Crawl
     dev
   end
 
-  #save people who manage releases
+
+  # save people who manage releases
   def self.upsert_product_owner(prod_key, owner_doc)
     dev_name = owner_doc[:full_name]
     dev_name ||= owner_doc[:username]
@@ -267,19 +281,26 @@ class HexCrawler < Versioneye::Crawl
     dev = Developer.where(
       language: Product::A_LANGUAGE_ELIXIR,
       prod_key: prod_key,
-      email: owner_doc[:email]
+      name: dev_name
     ).first_or_create
 
-    dev.update(
-      name: dev_name,
-      role: "owner",
-      contributor: true
-    )
+    dev.email = owner_doc[:email]
+    dev.role = "owner"
+    dev.contributor = true
+
+    begin
+      owner_doc[:handles][:twitter]
+      owner_doc[:handles][:github]
+    rescue => e
+      logger.error "Failed to store handles in upsert_product_owner() " + e.message
+    end
 
     dev
   end
 
+
   #-- fetcher functions
+
   def self.fetch_product_list(page_nr, per_page = 100)
     page_nr ||= 1
     fetch_json "#{A_API_URL}/packages?page=#{page_nr}&per_page=#{per_page}"
@@ -299,4 +320,5 @@ class HexCrawler < Versioneye::Crawl
     pkg_id = pkg_id.to_s.strip
     fetch_json "#{A_API_URL}/packages/#{pkg_id}/releases/#{version_label}"
   end
+
 end
