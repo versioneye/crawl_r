@@ -24,9 +24,11 @@ class GithubVersionFetcher < Versioneye::Crawl
   # initialize crawler instance
   # params:
   #   login-data - hashmap with valid Octokit login data,
-  #                examples: {access_login: String},
-  #                          {login: String, password: String}
-  #                          {client_id: String, client_secret: String}
+  #     examples:
+  #       {access_token: String}, # oauth token
+  #       {access_login: String}, # alternative naming for access_token
+  #       {login: String, password: String} #user password and username
+  #       {client_id: String, client_secret: String} # app login
   #
   #  use_env_logins - boolean, if true, it will use auth keys from settings
   #                   if it didnt get login data from user or crawler
@@ -131,6 +133,10 @@ class GithubVersionFetcher < Versioneye::Crawl
 
 
     results
+
+  rescue
+    logger.error "failed to paginate data from the page.#{n}"
+    return []
   end
 
 
@@ -157,12 +163,16 @@ class GithubVersionFetcher < Versioneye::Crawl
       remaining = @api.rate_limit[:remaining].to_i
       if remaining < A_MINIMUM_RATE_LIMIT and allow_pauses == true
         logger.info "fetch_all_repo_tags: will wait a bit"
-        sleep  A_RETRY_TIMEOUT
+        sleep  n_times * A_RETRY_TIMEOUT # after each failure will wait longer
         next #try again
       end
     end
 
     remaining
+
+  rescue
+    logger.error "check_limit_or_pause: failed to check api-limit"
+    return 0
   end
 
   def get_login_from_settings
