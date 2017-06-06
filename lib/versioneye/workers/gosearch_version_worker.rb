@@ -70,7 +70,7 @@ class GosearchVersionWorker < Worker
     return nil if user.nil?
 
     if user.github_token
-      {access_login: user.github_token}
+      {access_token: user.github_token}
     end
   end
 
