@@ -241,17 +241,21 @@ class HexCrawler < Versioneye::Crawl
   # saves product authors and maintainers
   def self.upsert_product_maintainer(prod_db, dev_name)
     dev_name = dev_name.to_s.strip
+    dev_email = nil
 
-    # TODO dev_name can contain an email address like "Serge Danzanvilliers <serge.danzanvilliers@gmail.com>".
-    # TODO that must be parsed before.
+    match = dev_name.match(/(.*)<(.*)>/i)
+    if match
+      dev_name = match[1]
+      dev_email = match[2]
+    end
 
     dev = Developer.where(
       language: prod_db[:language],
       prod_key: prod_db[:prod_key],
       name: dev_name
     ).first_or_create
+    dev.email = dev_email
     dev.save
-
     dev
   end
 
