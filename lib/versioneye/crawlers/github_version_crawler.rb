@@ -4,6 +4,7 @@ class GithubVersionCrawler < Versioneye::Crawl
 
   include HTTParty
 
+
   def self.logger
     if !defined?(@@log) || @@log.nil?
       @@log = Versioneye::DynLog.new("log/github_version_crawler.log", 10).log
@@ -11,12 +12,14 @@ class GithubVersionCrawler < Versioneye::Crawl
     @@log
   end
 
+
   # Crawle Release dates for Objective-C packages
   def self.crawl(language = Product::A_LANGUAGE_OBJECTIVEC, empty_release_dates = true, desc = true )
     products(language, empty_release_dates, desc).each do |product|
       add_version_to_product( product )
     end
   end
+
 
   # pulls and updates product versions from Github tags
   # params:
@@ -35,7 +38,6 @@ class GithubVersionCrawler < Versioneye::Crawl
     tags = attach_commit_date(api_client, repo_owner, repo_name, tags)
 
     # save product versions
-    product.versions = []
     tags.to_a.each do |tag|
       upsert_product_version(product, tag)
     end
@@ -51,12 +53,12 @@ class GithubVersionCrawler < Versioneye::Crawl
       logger.error "  reason: #{product.errors.full_messages.to_sentence}"
       false
     end
-
   rescue => e
     logger.error e.message
     logger.error e.backtrace.join("\n")
     false
   end
+
 
   # It fetches and attaches commit date for each Tag
   # Tags api doesnt return commit date
@@ -100,7 +102,12 @@ class GithubVersionCrawler < Versioneye::Crawl
   def self.upsert_product_version(product, tag)
     semver_label = process_version_label(tag[:name])
     if semver_label.to_s.empty?
-      logger.warn "upsert_product_version: ignoring non-valid semver #{tag[:name]} for #{product}"
+      logger.warn "upsert_product_version: ignoring non-valid semver #{tag[:name]} for #{product.prod_key}"
+      return
+    end
+
+    if !product.version_by_number( tag[:name] ).nil?
+      logger.warn "Version #{tag[:name]} for #{product.prod_key} exist already."
       return
     end
 
@@ -251,7 +258,7 @@ class GithubVersionCrawler < Versioneye::Crawl
   end
 
 
-  #NB! deprecated - it only returns first page of tags
+  # NB! deprecated - it only returns first page of tags
   # use GithubVersionFetcher.new().fetch_all_repo_tags(owner, repo)
   #
   # params:
