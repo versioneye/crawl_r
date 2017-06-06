@@ -46,28 +46,17 @@ class HexCrawler < Versioneye::Crawl
 
 
   def self.crawl_product_details(prod_db, product_doc, skip_existing = true)
-    existing_versions = prod_db.versions.to_a.map(&:version).to_set
-    version_labels = product_doc[:releases].to_a.reduce([]) do |acc, r|
-      if !existing_versions.include?(r[:version]) or skip_existing == false
-        acc << r[:version]
-      end
+    return nil if product_doc[:releases].nil? || product_doc[:releases].empty?
 
-      acc
-    end
+    product_doc[:releases].each do |release|
+      version = release[:version]
+      next if prod_db.version_by_number(version)
 
-    if version_labels.empty?
-      logger.info "crawl_product: skipping #{prod_db} - no new versions"
-      return prod_db
-    end
-
-    version_labels.each do |version|
       crawl_product_version(prod_db.prod_key, version)
       prod_db.version = version
       prod_db.save
     end
-
     ProductService.update_version_data(prod_db)
-
     prod_db
   end
 
