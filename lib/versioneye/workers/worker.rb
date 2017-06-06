@@ -40,7 +40,7 @@ class Worker
     multi_log " [*] #{worker_name} waiting for messages in #{queue_name}. To exit press CTRL+C"
 
     begin
-      queue.subscribe(ack: true, block: true) do |delivery_info, properties, message|
+      queue.subscribe(manual_ack: true, block: true) do |delivery_info, properties, message|
         multi_log " [x] #{worker_name} received #{message}"
 
         process_work message
