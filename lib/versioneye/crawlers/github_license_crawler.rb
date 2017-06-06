@@ -9,6 +9,7 @@ class GithubLicenseCrawler < Versioneye::Crawl
     @@log
   end
 
+
   def self.is_github_url(uri)
     false if uri.to_s.empty?
 
@@ -27,6 +28,7 @@ class GithubLicenseCrawler < Versioneye::Crawl
 
     parse_url("#{GITHUB_URL}/#{owner}/#{repo}")
   end
+
 
   def self.crawl_licenses(licenses, update = false)
     lm = LicenseMatcher.new
@@ -49,6 +51,7 @@ class GithubLicenseCrawler < Versioneye::Crawl
     [n, n_match]
   end
 
+
   def self.crawl_versionlinks(links, update = false)
     lm = LicenseMatcher.new
     url_cache = ActiveSupport::Cache::MemoryStore.new(expires_in: 2.minutes)
@@ -69,6 +72,7 @@ class GithubLicenseCrawler < Versioneye::Crawl
 
     [n, n_match]
   end
+
 
   # matches spdx ids found in the div.overall-summary container on the github repo page
   def self.crawl_repo_page(lm, url_cache, prod_dt, update = false, min_confidence = 0.9)
@@ -93,6 +97,7 @@ class GithubLicenseCrawler < Versioneye::Crawl
 
     true
   end
+
 
   def self.fetch_and_process_page(lm, link_uri)
     summary_text = fetch_overall_summary link_uri
@@ -130,5 +135,6 @@ class GithubLicenseCrawler < Versioneye::Crawl
 
     body_text.gsub(/\s+/, ' ')
   end
+
 
 end
