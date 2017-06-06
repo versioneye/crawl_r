@@ -1,12 +1,10 @@
 require 'time'
 
 class HexCrawler < Versioneye::Crawl
+
   A_API_URL = 'https://hex.pm/api'
   A_MAX_PAGE = 10000 # 10_000 * 100 packages, it used to stop rogue loops
 
-  #TODO: use constants from the core
-  A_TYPE_HEX = 'Hex'
-  A_LANGUAGE_ELIXIR = "Elixir"
 
   def self.logger
     if !defined?(@@log) || @@log.nil?
@@ -14,6 +12,7 @@ class HexCrawler < Versioneye::Crawl
     end
     @@log
   end
+
 
   # it crawl all the products from the list
   def self.crawl(page_nr = 1, per_page = 100)
@@ -46,7 +45,7 @@ class HexCrawler < Versioneye::Crawl
   end
 
   def self.crawl_product_details(prod_db, product_doc, skip_existing = true)
-    #TODO: return if product has no changes
+    # TODO: return if product has no changes
     existing_versions = prod_db.versions.to_a.map(&:version).to_set
     version_labels = product_doc[:releases].to_a.reduce([]) do |acc, r|
       if !existing_versions.include?(r[:version]) or skip_existing == false
@@ -71,6 +70,7 @@ class HexCrawler < Versioneye::Crawl
     prod_db
   end
 
+
   def self.crawl_product_owners(prod_key)
     logger.info "crawl_product_owners: pulling owners for #{prod_key}"
 
@@ -82,6 +82,7 @@ class HexCrawler < Versioneye::Crawl
     end
   end
 
+
   def self.crawl_product_version(prod_key, version)
     logger.info "crawl_product_version: fetching #{prod_key} => #{version}"
 
@@ -91,15 +92,15 @@ class HexCrawler < Versioneye::Crawl
     save_product_version(prod_key, version_doc)
   end
 
-#-- persistance helpers
 
+#-- persistance helpers
 
   def self.save_product(product_doc)
     prod_db = upsert_product(product_doc)
 
     meta = product_doc[:meta]
     if meta.nil?
-      log.error "save_product: product response has no meta details: #{product_doc}"
+      log.error "save_product: product response has no meta information for #{product_doc[:name]}"
       return prod_db
     end
 
@@ -109,8 +110,8 @@ class HexCrawler < Versioneye::Crawl
     end
 
     # save product licenses
-    meta[:licenses].to_a.each do |spdx_id|
-      upsert_product_license(prod_db, spdx_id)
+    meta[:licenses].to_a.each do |license_name|
+      upsert_product_license(prod_db, license_name)
     end
 
     #add product developers
@@ -124,7 +125,7 @@ class HexCrawler < Versioneye::Crawl
 
   def self.save_product_version(prod_key, version_doc)
     prod_db = Product.where(
-      language: A_LANGUAGE_ELIXIR,
+      language: Product::A_LANGUAGE_ELIXIR,
       prod_key: prod_key
     ).first
 
@@ -142,13 +143,14 @@ class HexCrawler < Versioneye::Crawl
 
   def self.upsert_product(product_doc)
     prod_db = Product.where(
-      language: A_LANGUAGE_ELIXIR,
-      prod_type: A_TYPE_HEX,
-      prod_key: product_doc[:name],
-      name: product_doc[:name]
+      language: Product::A_LANGUAGE_ELIXIR,
+      prod_type: Project::A_TYPE_HEX,
+      prod_key: product_doc[:name]
     ).first_or_create
 
     prod_db.update(
+      name: product_doc[:name],
+      prod_key_dc: product_doc[:name].to_s.downcase,
       description: product_doc[:meta][:description],
       downloads: product_doc[:downloads][:all].to_i
     )
@@ -217,17 +219,18 @@ class HexCrawler < Versioneye::Crawl
     url_db
   end
 
-  def self.upsert_product_license(prod_db, spdx_id)
-    return if spdx_id.to_s.empty?
+
+  def self.upsert_product_license(prod_db, license_name)
+    return if license_name.to_s.empty?
 
     lic = License.where(
       language: prod_db[:language],
       prod_key: prod_db[:prod_key],
-      name: spdx_id.to_s.strip
+      name: license_name.to_s.strip
     ).first_or_create
 
     if lic.errors.full_messages.size > 0
-      logger.error "Failed to save license #{spdx_id} for #{prod_db}"
+      logger.error "Failed to save license #{license_name} for #{prod_db}"
       logger.error "\tReason: #{lic.errors.full_messages.to_sentence}"
       return
     end
@@ -239,13 +242,14 @@ class HexCrawler < Versioneye::Crawl
   def self.upsert_product_maintainer(prod_db, dev_name)
     dev_name = dev_name.to_s.strip
 
+    # TODO dev_name can contain an email address like "Serge Danzanvilliers <serge.danzanvilliers@gmail.com>".
+    # TODO that must be parsed before.
+
     dev = Developer.where(
       language: prod_db[:language],
       prod_key: prod_db[:prod_key],
       name: dev_name
     ).first_or_create
-
-    dev.update(to_author: true)
     dev.save
 
     dev
@@ -257,7 +261,7 @@ class HexCrawler < Versioneye::Crawl
     dev_name ||= owner_doc[:username]
 
     dev = Developer.where(
-      language: A_LANGUAGE_ELIXIR,
+      language: Product::A_LANGUAGE_ELIXIR,
       prod_key: prod_key,
       email: owner_doc[:email]
     ).first_or_create
