@@ -1,6 +1,6 @@
 require 'octokit'
 
-# this is helper class for versionCrawler
+# This is helper class for VersionCrawler
 # it only includes functions to retrieve data by sharing same client
 # between multiple request and skip creating a new API client like old version
 # NB! it leaves all the persistance related questions to crawler
@@ -134,7 +134,7 @@ class GithubVersionFetcher < Versioneye::Crawl
   end
 
 
-  # checks request limits and will processing until rate limits are changed or
+  # Checks request limits and will processing until rate limits are changed or
   # runs out of time it's allowed to re-check
   #
   # use for combined requests and Crawler functions
