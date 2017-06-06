@@ -11,7 +11,7 @@ class GoSearchCrawler < Versioneye::Crawl
   end
 
   # crawls all the packages got from go-search index
-  def self.crawl
+  def self.crawl( crawl_tags = true )
     logger.info "Fetching a list of Go packages"
     all_pkgs = fetch_package_index
     if all_pkgs.to_a.empty?
@@ -19,13 +19,13 @@ class GoSearchCrawler < Versioneye::Crawl
       return false
     end
 
-    all_pkgs.to_a.each {|pkg_id| crawl_package(pkg_id) }
+    all_pkgs.to_a.each {|pkg_id| crawl_package(pkg_id, crawl_tags) }
     logger.info "crawl_all: done"
     true
   end
 
   # fetches package details from go-search,
-  def self.crawl_package( pkg_id )
+  def self.crawl_package( pkg_id, crawl_tags = true )
     logger.info "Fetching details for #{pkg_id}"
     pkg_dt = fetch_package_detail pkg_id
     if pkg_dt.nil?
@@ -36,8 +36,10 @@ class GoSearchCrawler < Versioneye::Crawl
     prod = upsert_product(pkg_id, pkg_dt)
     create_dependencies(pkg_id, prod.version, pkg_dt[:Imports], pkg_dt[:TestImports])
     create_version_link(prod, pkg_dt[:ProjectURL])
-
     prod.save
+    if crawl_tags
+      trigger_tag_crawl prod
+    end
     prod
   end
 
@@ -129,6 +131,16 @@ class GoSearchCrawler < Versioneye::Crawl
 
     logger.info "versionlink: creating version link for #{prod} - #{name}: #{url}"
     Versionlink.create_project_link(prod.language, prod.prod_key, url, name)
+  end
+
+
+  def self.trigger_tag_crawl prod
+    user = user_with_gh_token
+    msg = GosearchVersionProducer.build_message prod.prod_key, user.email
+    GosearchVersionProducer.new msg
+  rescue => e
+    log.error "ERROR in trigger_tag_crawl " + e.message
+    log.error e.backtrace.join("\n")
   end
 
 end

@@ -64,6 +64,21 @@ class Worker
   end
 
 
+  def user_with_gh_token
+    user = nil
+    random = Random.new
+    ri = random.rand(3000)
+    if ri.to_i < 1000
+      user = User.find_by_email "reiz@versioneye.com"
+    elsif ri.to_i >= 1000 && ri.to_i < 2000
+      user = User.find_by_email "robert@versioneye.com"
+    else
+      user = User.find_by_email "robert.reiz.81@gmail.com"
+    end
+    user
+  end
+
+
   private
 
 

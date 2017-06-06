@@ -8,7 +8,7 @@ require 'octokit'
 class GithubVersionFetcher < Versioneye::Crawl
   attr_reader :api, :logger
 
-  A_MINIMUM_RATE_LIMIT = 5
+  A_MINIMUM_RATE_LIMIT = 50
   A_MAX_PAGES = 2048
   A_RETRY_TIMEOUT = 60
   A_MAX_RETRY = 10
