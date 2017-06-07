@@ -6,8 +6,8 @@ class HexCrawler < Versioneye::Crawl
   A_MAX_PAGE = 10000 # 10_000 * 100 packages, it used to stop rogue loops
   A_API_LIMIT = 100
   A_TIMEOUT  = 10
-  A_MAX_RETRIES = 10
-  A_MIN_REMAINING = 3
+  A_MAX_RETRIES = 12
+  A_MIN_REMAINING = 5
 
   @@remaining = 0 # be pessimistic and make it check before fetching content
 
@@ -38,7 +38,9 @@ class HexCrawler < Versioneye::Crawl
 
       products.each do |product_doc|
         prod_db = save_product(product_doc)
-        crawl_product_details(prod_db, product_doc)
+
+        crawl_product_owners( prod_db[:prod_key] )
+        crawl_product_versions(prod_db, product_doc[:releases])
         n += 1
       end
 
@@ -50,10 +52,10 @@ class HexCrawler < Versioneye::Crawl
   end
 
 
-  def self.crawl_product_details(prod_db, product_doc, skip_existing = true)
-    return nil if product_doc[:releases].nil? || product_doc[:releases].empty?
+  def self.crawl_product_versions(prod_db, releases, skip_existing = true)
+    return nil if releases.nil? || releases.empty?
 
-    product_doc[:releases].each do |release|
+    releases.to_a.each do |release|
       version = release[:version]
       next if prod_db.version_by_number(version)
 
@@ -61,6 +63,7 @@ class HexCrawler < Versioneye::Crawl
       prod_db.version = version
       prod_db.save
     end
+
     ProductService.update_version_data(prod_db)
     prod_db
   end
@@ -80,8 +83,6 @@ class HexCrawler < Versioneye::Crawl
 
   def self.save_product(product_doc)
     prod_db = upsert_product(product_doc)
-
-    crawl_product_owners( prod_db[:prod_key] )
 
     meta = product_doc[:meta]
     if meta.nil?
@@ -292,7 +293,7 @@ class HexCrawler < Versioneye::Crawl
     dev
   end
 
-  #checks request limits and will sleep until re-try * A_TIMEOUT is over
+  # Checks request limits and will sleep until re-try * A_TIMEOUT is over
   # it will not use X-RateLimit-Reset value as syncing epochs
   # over timezone adds unnecessary complexity, it simpler to re-try after pause
   def self.check_request_limit(times = 1)

@@ -100,7 +100,7 @@ describe GoSearchCrawler do
       expect(prod1).not_to be_nil
       expect(prod1[:name]).to eq(package1['Name'])
 
-      deps = prod1.all_dependencies('*').to_a
+      deps = prod1.all_dependencies.to_a
       expect(deps.size).to eq(1)
       expect(deps[0].prod_key).to eq( package1['Package']  )
       expect(deps[0].dep_prod_key).to eq( package1['Imports'].first )

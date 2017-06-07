@@ -168,6 +168,13 @@ namespace :versioneye do
       end
     end
 
+    value = '1 8 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        HexCrawlProducer.new '::hex::'
+      end
+    end
+
     value = '1 11 * * *'
     if !value.to_s.empty?
       scheduler.cron value do
@@ -373,6 +380,14 @@ namespace :versioneye do
     puts "START CommonCrawlWorker"
     RubyCrawl.new
     CommonCrawlWorker.new.work
+    puts "---"
+  end
+
+  desc "Start HexCrawlWorker"
+  task :hex_crawl_worker do
+    puts "START HexCrawlWorker"
+    RubyCrawl.new
+    HexCrawlWorker.new.work
     puts "---"
   end
 

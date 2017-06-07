@@ -3,8 +3,8 @@ require 'spec_helper'
 describe HexCrawler do
   let(:prod1){
     Product.new(
-      language: HexCrawler::A_LANGUAGE_ELIXIR,
-      prod_type: HexCrawler::A_TYPE_HEX,
+      language: Product::A_LANGUAGE_ELIXIR,
+      prod_type: Project::A_TYPE_HEX,
       prod_key: 'abacus',
       name: 'abacus'
     )
@@ -12,8 +12,8 @@ describe HexCrawler do
 
   let(:prod2){
     Product.new(
-      language: HexCrawler::A_LANGUAGE_ELIXIR,
-      prod_type: HexCrawler::A_TYPE_HEX,
+      language: Product::A_LANGUAGE_ELIXIR,
+      prod_type: Project::A_TYPE_HEX,
       prod_key: 'anilixir',
       name: 'anilixir'
     )
@@ -21,8 +21,8 @@ describe HexCrawler do
 
   let(:prod3){
      Product.new(
-      language: HexCrawler::A_LANGUAGE_ELIXIR,
-      prod_type: HexCrawler::A_TYPE_HEX,
+      language: Product::A_LANGUAGE_ELIXIR,
+      prod_type: Project::A_TYPE_HEX,
       prod_key: 'cowboy',
       name: 'cowboy',
       version: '1.1.2'
@@ -31,8 +31,8 @@ describe HexCrawler do
 
   let(:prod4){
     Product.new(
-      language: HexCrawler::A_LANGUAGE_ELIXIR,
-      prod_type: HexCrawler::A_TYPE_HEX,
+      language: Product::A_LANGUAGE_ELIXIR,
+      prod_type: Project::A_TYPE_HEX,
       prod_key: 'aatree',
       name: 'aatree',
       version: '0.1.0'
@@ -103,7 +103,7 @@ describe HexCrawler do
       expect(dep_db[:dep_prod_key]).to eq(dep_doc[:app])
       expect(dep_db[:name]).to eq(dep_doc[:app])
       expect(dep_db[:version]).to eq(dep_doc[:requirement])
-      expect(dep_db[:scope]).to eq(Dependency::A_SCOPE_RUNTIME)
+      expect(dep_db[:scope]).to eq(Dependency::A_SCOPE_COMPILE)
     end
   end
 
@@ -181,6 +181,8 @@ describe HexCrawler do
   context "save_product" do
     it "saves all relevant information from product json doc" do
       expect(Product.all.size).to eq(0)
+      Developer.delete_all
+      expect(Developer.all.size).to eq(0)
 
       HexCrawler.save_product(product_doc)
 
@@ -222,7 +224,7 @@ describe HexCrawler do
 
         expect( res ).not_to be_nil
         expect(res.size).to eq(100)
-        expect(res[0][:name]).to eq(prod1[:name])
+        expect(res[0][:name]).to eq('aatree')
       end
     end
 
@@ -232,7 +234,7 @@ describe HexCrawler do
 
         expect( res ).not_to be_nil
         expect( res.size ).to eq(100)
-        expect(res[0][:name]).to eq(prod2[:name])
+        expect(res[0][:name]).to eq('analyze')
       end
     end
   end
