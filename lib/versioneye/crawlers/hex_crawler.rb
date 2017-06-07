@@ -4,7 +4,12 @@ class HexCrawler < Versioneye::Crawl
 
   A_API_URL = 'https://hex.pm/api'
   A_MAX_PAGE = 10000 # 10_000 * 100 packages, it used to stop rogue loops
+  A_API_LIMIT = 100
+  A_TIMEOUT  = 10
+  A_MAX_RETRIES = 10
+  A_MIN_REMAINING = 3
 
+  @@remaining = A_API_LIMIT
 
   def self.logger
     if !defined?(@@log) || @@log.nil?
@@ -21,7 +26,7 @@ class HexCrawler < Versioneye::Crawl
     n = 0
     loop do
       if page_nr > A_MAX_PAGE
-        log.error "crawl_product_list: hit the limit of max_pages at #{A_MAX_PAGE}"
+        logger.error "crawl_product_list: hit the limit of max_pages at #{A_MAX_PAGE}"
         break
       end
 
@@ -287,25 +292,68 @@ class HexCrawler < Versioneye::Crawl
     dev
   end
 
+  #checks request limits and will sleep until re-try * A_TIMEOUT is over
+  # it will not use X-RateLimit-Reset value as syncing epochs
+  # over timezone adds unnecessary complexity, it simpler to re-try after pause
+  def self.check_request_limit(times = 1)
+    if times > A_MAX_RETRIES
+      logger.error "check_request_limit: run out of re-tries. will stop execution"
+      exit
+    end
+
+    @@remaining -= 1 #decrease global counter, so every fetcher will make it go down
+
+    # avoid wasting requests when there's enough luck
+    if @@remaining > A_MIN_REMAINING
+      logger.info "check_request_limit: #{@@remaining} request left"
+      return
+    end
+
+    #if there's not enough
+    res = HTTParty.head A_API_URL
+    if res and res.code >= 200 and res.code < 300
+      remaining = res.headers["x-ratelimit-remaining"].to_i
+    else
+      # after API error, expect that we run out of luck
+      remaining = 0
+    end
+
+    @@remaining = remaining # memorize the new value
+
+    if remaining < A_MIN_REMAINING
+      total_timeout = times * A_TIMEOUT #it will wait longer after each re-try
+      logger.info "check_request_limit: will pause for #{total_timeout} seconds"
+      sleep total_timeout
+      check_request_limit(times + 1)
+    end
+  end
+
 
   #-- fetcher functions
-
   def self.fetch_product_list(page_nr, per_page = 100)
+    check_request_limit
+
     page_nr ||= 1
     fetch_json "#{A_API_URL}/packages?page=#{page_nr}&per_page=#{per_page}"
   end
 
   def self.fetch_product_details(pkg_id)
+    check_request_limit
+
     pkg_id = pkg_id.to_s.strip
     fetch_json "#{A_API_URL}/packages/#{pkg_id}"
   end
 
   def self.fetch_product_owners(pkg_id)
+    check_request_limit
+
     pkg_id = pkg_id.to_s.strip
     fetch_json "#{A_API_URL}/packages/#{pkg_id}/owners"
   end
 
   def self.fetch_product_version(pkg_id, version_label)
+    check_request_limit
+
     pkg_id = pkg_id.to_s.strip
     fetch_json "#{A_API_URL}/packages/#{pkg_id}/releases/#{version_label}"
   end
