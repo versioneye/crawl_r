@@ -6,8 +6,8 @@ class HexCrawler < Versioneye::Crawl
   A_MAX_PAGE = 10000 # 10_000 * 100 packages, it used to stop rogue loops
   A_API_LIMIT = 100
   A_TIMEOUT  = 10
-  A_MAX_RETRIES = 10
-  A_MIN_REMAINING = 3
+  A_MAX_RETRIES = 12
+  A_MIN_REMAINING = 5
 
   @@remaining = 0 # be pessimistic and make it check before fetching content
 
