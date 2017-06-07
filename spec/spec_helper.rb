@@ -6,6 +6,7 @@ SimpleCov.start do
   add_filter "/spec"
 end
 
+require 'ruby_crawl'
 require 'rspec/autorun'
 require 'mongoid'
 require 'database_cleaner'
@@ -17,7 +18,7 @@ require 'vcr'
 require 'webmock/rspec'
 require 'fakeweb'
 
-require 'ruby_crawl'
+require 'versioneye-core'
 
 require 'versioneye/domain_factories/product_factory'
 require 'versioneye/domain_factories/user_factory'
