@@ -182,6 +182,7 @@ describe HexCrawler do
     it "saves all relevant information from product json doc" do
       expect(Product.all.size).to eq(0)
       Developer.delete_all
+      expect(Developer.all.size).to eq(0)
 
       HexCrawler.save_product(product_doc)
 
@@ -223,7 +224,7 @@ describe HexCrawler do
 
         expect( res ).not_to be_nil
         expect(res.size).to eq(100)
-        expect(res[0][:name]).to eq(prod1[:name])
+        expect(res[0][:name]).to eq('aatree')
       end
     end
 
@@ -233,7 +234,7 @@ describe HexCrawler do
 
         expect( res ).not_to be_nil
         expect( res.size ).to eq(100)
-        expect(res[0][:name]).to eq(prod2[:name])
+        expect(res[0][:name]).to eq('analyze')
       end
     end
   end
