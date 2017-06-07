@@ -1,0 +1,55 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://hex.pm/api/packages/cowboy/releases/1.1.2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Connection:
+      - keep-alive
+      Server:
+      - Cowboy
+      Date:
+      - Wed, 07 Jun 2017 12:30:03 GMT
+      Content-Length:
+      - '268'
+      Content-Type:
+      - application/vnd.hex+json; charset=utf-8
+      Cache-Control:
+      - public, max-age=60
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Ratelimit-Limit:
+      - '100'
+      X-Ratelimit-Remaining:
+      - '95'
+      X-Ratelimit-Reset:
+      - '1496838660'
+      Etag:
+      - b2f83f8b5e9d5c72078b96208f30a31f
+      Last-Modified:
+      - Mon, 06 Feb 2017 11:30:33 GMT
+      Vary:
+      - accept, accept-encoding, accept-encoding
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: ASCII-8BIT
+      string: '{"version":"1.1.2","url":"https://hex.pm/api/packages/cowboy/releases/1.1.2","updated_at":"2017-02-06T11:30:33.105636Z","retirement":null,"requirements":{"ranch":{"requirement":"~>
+        1.3.2","optional":false,"app":"ranch"},"cowlib":{"requirement":"~> 1.0.2","optional":false,"app":"cowlib"}},"package_url":"https://hex.pm/api/packages/cowboy","meta":{"elixir":null,"build_tools":["rebar3"],"app":"cowboy"},"inserted_at":"2017-02-06T11:30:33.105625Z","has_docs":false,"downloads":369698}'
+    http_version: 
+  recorded_at: Wed, 07 Jun 2017 12:30:04 GMT
+recorded_with: VCR 3.0.3

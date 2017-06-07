@@ -1,0 +1,99 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://hex.pm/api/packages/cowboy
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Connection:
+      - keep-alive
+      Server:
+      - Cowboy
+      Date:
+      - Wed, 07 Jun 2017 12:30:03 GMT
+      Content-Length:
+      - '626'
+      Content-Type:
+      - application/vnd.hex+json; charset=utf-8
+      Cache-Control:
+      - public, max-age=60
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Ratelimit-Limit:
+      - '100'
+      X-Ratelimit-Remaining:
+      - '96'
+      X-Ratelimit-Reset:
+      - '1496838660'
+      Etag:
+      - e467f4d0b9112c0e8cd8aba9fc9b4393
+      Last-Modified:
+      - Sat, 11 Mar 2017 19:21:26 GMT
+      Vary:
+      - accept, accept-encoding, accept-encoding
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        eyJ1cmwiOiJodHRwczovL2hleC5wbS9hcGkvcGFja2FnZXMvY293Ym95Iiwi
+        dXBkYXRlZF9hdCI6IjIwMTctMDMtMTFUMTk6MjE6MjYuNDM3MDY5WiIsInJl
+        bGVhc2VzIjpbeyJ2ZXJzaW9uIjoiMS4xLjIiLCJ1cmwiOiJodHRwczovL2hl
+        eC5wbS9hcGkvcGFja2FnZXMvY293Ym95L3JlbGVhc2VzLzEuMS4yIiwidXBk
+        YXRlZF9hdCI6IjIwMTctMDItMDZUMTE6MzA6MzMuMTA1NjM2WiIsImluc2Vy
+        dGVkX2F0IjoiMjAxNy0wMi0wNlQxMTozMDozMy4xMDU2MjVaIn0seyJ2ZXJz
+        aW9uIjoiMS4xLjEiLCJ1cmwiOiJodHRwczovL2hleC5wbS9hcGkvcGFja2Fn
+        ZXMvY293Ym95L3JlbGVhc2VzLzEuMS4xIiwidXBkYXRlZF9hdCI6IjIwMTct
+        MDItMDZUMTE6MTc6MzEuMTI5Mzc0WiIsImluc2VydGVkX2F0IjoiMjAxNy0w
+        Mi0wNlQxMToxNzozMS4xMjkzNjZaIn0seyJ2ZXJzaW9uIjoiMS4xLjAiLCJ1
+        cmwiOiJodHRwczovL2hleC5wbS9hcGkvcGFja2FnZXMvY293Ym95L3JlbGVh
+        c2VzLzEuMS4wIiwidXBkYXRlZF9hdCI6IjIwMTctMDItMDJUMTQ6MjE6MDku
+        MTIxNzIwWiIsImluc2VydGVkX2F0IjoiMjAxNy0wMi0wMlQxNDoyMTowOS4x
+        MjE3MTFaIn0seyJ2ZXJzaW9uIjoiMS4wLjQiLCJ1cmwiOiJodHRwczovL2hl
+        eC5wbS9hcGkvcGFja2FnZXMvY293Ym95L3JlbGVhc2VzLzEuMC40IiwidXBk
+        YXRlZF9hdCI6IjIwMTUtMTEtMTdUMDI6MTU6MDkuODIwNzQyWiIsImluc2Vy
+        dGVkX2F0IjoiMjAxNS0xMS0xN1QwMjoxNTowOS44MjA3MjlaIn0seyJ2ZXJz
+        aW9uIjoiMS4wLjMiLCJ1cmwiOiJodHRwczovL2hleC5wbS9hcGkvcGFja2Fn
+        ZXMvY293Ym95L3JlbGVhc2VzLzEuMC4zIiwidXBkYXRlZF9hdCI6IjIwMTUt
+        MDktMTNUMjM6MDM6MDcuOTg5NzA2WiIsImluc2VydGVkX2F0IjoiMjAxNS0w
+        OS0xM1QyMzowMzowNy45ODk2OTFaIn0seyJ2ZXJzaW9uIjoiMS4wLjIiLCJ1
+        cmwiOiJodHRwczovL2hleC5wbS9hcGkvcGFja2FnZXMvY293Ym95L3JlbGVh
+        c2VzLzEuMC4yIiwidXBkYXRlZF9hdCI6IjIwMTUtMDctMDJUMjM6MjY6MTku
+        NDc0NzE3WiIsImluc2VydGVkX2F0IjoiMjAxNS0wNy0wMlQyMzoyNjowOC4w
+        MDAwMDBaIn0seyJ2ZXJzaW9uIjoiMS4wLjEiLCJ1cmwiOiJodHRwczovL2hl
+        eC5wbS9hcGkvcGFja2FnZXMvY293Ym95L3JlbGVhc2VzLzEuMC4xIiwidXBk
+        YXRlZF9hdCI6IjIwMTUtMDctMDJUMTQ6MDY6MTkuODE5ODEyWiIsImluc2Vy
+        dGVkX2F0IjoiMjAxNS0wNy0wMlQxNDowNDo0Ni4yMjI0MzJaIn0seyJ2ZXJz
+        aW9uIjoiMS4wLjAiLCJ1cmwiOiJodHRwczovL2hleC5wbS9hcGkvcGFja2Fn
+        ZXMvY293Ym95L3JlbGVhc2VzLzEuMC4wIiwidXBkYXRlZF9hdCI6IjIwMTUt
+        MDQtMjZUMTU6MjY6MDEuNjc1ODE5WiIsImluc2VydGVkX2F0IjoiMjAxNC0w
+        OC0wMVQxNjoxMTowMC4wMDAwMDBaIn1dLCJvd25lcnMiOlt7InVzZXJuYW1l
+        IjoiZXJpY21qIiwidXJsIjoiaHR0cHM6Ly9oZXgucG0vYXBpL3VzZXJzL2Vy
+        aWNtaiIsImVtYWlsIjoiZXJpYy5tZWFkb3dzLmpvbnNzb25AZ21haWwuY29t
+        In0seyJ1c2VybmFtZSI6Impvc2V2YWxpbSIsInVybCI6Imh0dHBzOi8vaGV4
+        LnBtL2FwaS91c2Vycy9qb3NldmFsaW0iLCJlbWFpbCI6Impvc2UudmFsaW1A
+        Z21haWwuY29tIn0seyJ1c2VybmFtZSI6ImdhemxlciIsInVybCI6Imh0dHBz
+        Oi8vaGV4LnBtL2FwaS91c2Vycy9nYXpsZXIiLCJlbWFpbCI6ImdhemxlckBn
+        bWFpbC5jb20ifV0sIm5hbWUiOiJjb3dib3kiLCJtZXRhIjp7Im1haW50YWlu
+        ZXJzIjpbIkxvw69jIEhvZ3VpbiJdLCJsaW5rcyI6eyJHaXRIdWIiOiJodHRw
+        czovL2dpdGh1Yi5jb20vbmluZW5pbmVzL2Nvd2JveSJ9LCJsaWNlbnNlcyI6
+        WyJJU0MiXSwiZGVzY3JpcHRpb24iOiJTbWFsbCwgZmFzdCwgbW9kdWxhciBI
+        VFRQIHNlcnZlci4ifSwiaW5zZXJ0ZWRfYXQiOiIyMDE0LTA4LTAxVDE2OjEw
+        OjU4LjAwMDAwMFoiLCJkb3dubG9hZHMiOnsid2VlayI6MzUyMzYsImRheSI6
+        NjU4OSwiYWxsIjoyODA2MDkyfX0=
+    http_version: 
+  recorded_at: Wed, 07 Jun 2017 12:30:04 GMT
+recorded_with: VCR 3.0.3

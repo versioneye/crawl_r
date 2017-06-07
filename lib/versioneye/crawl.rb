@@ -11,6 +11,7 @@ module Versioneye
     require './lib/versioneye/crawlers/cocoapods_podspec_parser'
     require './lib/versioneye/crawlers/crawler_utils'
     require './lib/versioneye/crawlers/github_crawler'
+    require './lib/versioneye/crawlers/github_version_fetcher'
     require './lib/versioneye/crawlers/github_version_crawler'
     require './lib/versioneye/crawlers/npm_crawler'
     require './lib/versioneye/crawlers/license_crawler'
@@ -21,6 +22,8 @@ module Versioneye
     require './lib/versioneye/crawlers/nuget_crawler'
     require './lib/versioneye/crawlers/cpan_crawler'
     require './lib/versioneye/crawlers/crates_crawler'
+    require './lib/versioneye/crawlers/go_search_crawler'
+    require './lib/versioneye/crawlers/hex_crawler'
 
     require './lib/versioneye/crawlers/php/packagist_crawler'
     require './lib/versioneye/crawlers/php/packagist_license_crawler'
@@ -50,6 +53,8 @@ module Versioneye
     require './lib/versioneye/producers/bower_crawl_producer'
     require './lib/versioneye/producers/nuget_crawl_producer'
     require './lib/versioneye/producers/crates_crawl_producer'
+    require './lib/versioneye/producers/hex_crawl_producer'
+    require './lib/versioneye/producers/gosearch_version_producer'
 
     require './lib/versioneye/workers/worker'
     require './lib/versioneye/workers/common_crawl_worker'
@@ -59,6 +64,8 @@ module Versioneye
     require './lib/versioneye/workers/bower_crawl_worker'
     require './lib/versioneye/workers/nuget_crawl_worker'
     require './lib/versioneye/workers/crates_crawl_worker'
+    require './lib/versioneye/workers/hex_crawl_worker'
+    require './lib/versioneye/workers/gosearch_version_worker'
 
     require './lib/versioneye/utils/license_matcher'
     require './lib/versioneye/utils/python_license_detector'
