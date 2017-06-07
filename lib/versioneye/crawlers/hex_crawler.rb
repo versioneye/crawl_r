@@ -9,7 +9,7 @@ class HexCrawler < Versioneye::Crawl
   A_MAX_RETRIES = 10
   A_MIN_REMAINING = 3
 
-  @@remaining = A_API_LIMIT
+  @@remaining = 0 # be pessimistic and make it check before fetching content
 
   def self.logger
     if !defined?(@@log) || @@log.nil?
