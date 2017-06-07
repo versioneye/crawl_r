@@ -38,7 +38,9 @@ class HexCrawler < Versioneye::Crawl
 
       products.each do |product_doc|
         prod_db = save_product(product_doc)
-        crawl_product_details(prod_db, product_doc)
+
+        crawl_product_owners( prod_db[:prod_key] )
+        crawl_product_versions(prod_db, product_doc[:releases])
         n += 1
       end
 
@@ -50,12 +52,10 @@ class HexCrawler < Versioneye::Crawl
   end
 
 
-  def self.crawl_product_details(prod_db, product_doc, skip_existing = true)
-    return nil if product_doc[:releases].nil? || product_doc[:releases].empty?
+  def self.crawl_product_versions(prod_db, releases, skip_existing = true)
+    return nil if releases.nil? || releases.empty?
 
-    crawl_product_owners( prod_db[:prod_key] )
-
-    product_doc[:releases].each do |release|
+    releases.to_a.each do |release|
       version = release[:version]
       next if prod_db.version_by_number(version)
 
@@ -63,6 +63,7 @@ class HexCrawler < Versioneye::Crawl
       prod_db.version = version
       prod_db.save
     end
+
     ProductService.update_version_data(prod_db)
     prod_db
   end
