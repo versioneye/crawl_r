@@ -1,0 +1,1218 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.github.com/rate_limit
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 4.7.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Tue, 23 May 2017 12:40:01 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '60'
+      X-Ratelimit-Remaining:
+      - '60'
+      X-Ratelimit-Reset:
+      - '1495546801'
+      Cache-Control:
+      - no-cache
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      Vary:
+      - Accept-Encoding
+      X-Served-By:
+      - 77fbfb53269bbb85f82f23584d59f7c1
+      X-Github-Request-Id:
+      - D208:4589:35F373F:3E4EB8D:59242DA0
+    body:
+      encoding: ASCII-8BIT
+      string: '{"resources":{"core":{"limit":60,"remaining":60,"reset":1495546801},"search":{"limit":10,"remaining":10,"reset":1495543261},"graphql":{"limit":0,"remaining":0,"reset":1495546801}},"rate":{"limit":60,"remaining":60,"reset":1495546801}}'
+    http_version: 
+  recorded_at: Tue, 23 May 2017 12:40:01 GMT
+- request:
+    method: get
+    uri: https://api.github.com/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 4.7.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Tue, 23 May 2017 12:40:01 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '60'
+      X-Ratelimit-Remaining:
+      - '59'
+      X-Ratelimit-Reset:
+      - '1495546801'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      Etag:
+      - W/"2124aafe60d24524ad58f9fad9808ca3"
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - D209:458A:5917CB4:6707E27:59242DA1
+    body:
+      encoding: ASCII-8BIT
+      string: '{"current_user_url":"https://api.github.com/user","current_user_authorizations_html_url":"https://github.com/settings/connections/applications{/client_id}","authorizations_url":"https://api.github.com/authorizations","code_search_url":"https://api.github.com/search/code?q={query}{&page,per_page,sort,order}","commit_search_url":"https://api.github.com/search/commits?q={query}{&page,per_page,sort,order}","emails_url":"https://api.github.com/user/emails","emojis_url":"https://api.github.com/emojis","events_url":"https://api.github.com/events","feeds_url":"https://api.github.com/feeds","followers_url":"https://api.github.com/user/followers","following_url":"https://api.github.com/user/following{/target}","gists_url":"https://api.github.com/gists{/gist_id}","hub_url":"https://api.github.com/hub","issue_search_url":"https://api.github.com/search/issues?q={query}{&page,per_page,sort,order}","issues_url":"https://api.github.com/issues","keys_url":"https://api.github.com/user/keys","notifications_url":"https://api.github.com/notifications","organization_repositories_url":"https://api.github.com/orgs/{org}/repos{?type,page,per_page,sort}","organization_url":"https://api.github.com/orgs/{org}","public_gists_url":"https://api.github.com/gists/public","rate_limit_url":"https://api.github.com/rate_limit","repository_url":"https://api.github.com/repos/{owner}/{repo}","repository_search_url":"https://api.github.com/search/repositories?q={query}{&page,per_page,sort,order}","current_user_repositories_url":"https://api.github.com/user/repos{?type,page,per_page,sort}","starred_url":"https://api.github.com/user/starred{/owner}{/repo}","starred_gists_url":"https://api.github.com/gists/starred","team_url":"https://api.github.com/teams","user_url":"https://api.github.com/users/{user}","user_organizations_url":"https://api.github.com/user/orgs","user_repositories_url":"https://api.github.com/users/{user}/repos{?type,page,per_page,sort}","user_search_url":"https://api.github.com/search/users?q={query}{&page,per_page,sort,order}"}'
+    http_version: 
+  recorded_at: Tue, 23 May 2017 12:40:02 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/versioneye/versioneye-security
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 4.7.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Tue, 23 May 2017 12:40:02 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '60'
+      X-Ratelimit-Remaining:
+      - '58'
+      X-Ratelimit-Reset:
+      - '1495546801'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      Etag:
+      - W/"f22c9135a4df7f5649eec20008e4143b"
+      Last-Modified:
+      - Tue, 09 May 2017 11:28:01 GMT
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Served-By:
+      - 626ed3a9050b8faa02ef5f3c540b508d
+      X-Github-Request-Id:
+      - D20A:4589:35F387B:3E4ED22:59242DA2
+    body:
+      encoding: ASCII-8BIT
+      string: '{"id":44393965,"name":"versioneye-security","full_name":"versioneye/versioneye-security","owner":{"login":"versioneye","id":3974102,"avatar_url":"https://avatars0.githubusercontent.com/u/3974102?v=3","gravatar_id":"","url":"https://api.github.com/users/versioneye","html_url":"https://github.com/versioneye","followers_url":"https://api.github.com/users/versioneye/followers","following_url":"https://api.github.com/users/versioneye/following{/other_user}","gists_url":"https://api.github.com/users/versioneye/gists{/gist_id}","starred_url":"https://api.github.com/users/versioneye/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/versioneye/subscriptions","organizations_url":"https://api.github.com/users/versioneye/orgs","repos_url":"https://api.github.com/users/versioneye/repos","events_url":"https://api.github.com/users/versioneye/events{/privacy}","received_events_url":"https://api.github.com/users/versioneye/received_events","type":"Organization","site_admin":false},"private":false,"html_url":"https://github.com/versioneye/versioneye-security","description":"Security
+        Crawler for VersionEye","fork":false,"url":"https://api.github.com/repos/versioneye/versioneye-security","forks_url":"https://api.github.com/repos/versioneye/versioneye-security/forks","keys_url":"https://api.github.com/repos/versioneye/versioneye-security/keys{/key_id}","collaborators_url":"https://api.github.com/repos/versioneye/versioneye-security/collaborators{/collaborator}","teams_url":"https://api.github.com/repos/versioneye/versioneye-security/teams","hooks_url":"https://api.github.com/repos/versioneye/versioneye-security/hooks","issue_events_url":"https://api.github.com/repos/versioneye/versioneye-security/issues/events{/number}","events_url":"https://api.github.com/repos/versioneye/versioneye-security/events","assignees_url":"https://api.github.com/repos/versioneye/versioneye-security/assignees{/user}","branches_url":"https://api.github.com/repos/versioneye/versioneye-security/branches{/branch}","tags_url":"https://api.github.com/repos/versioneye/versioneye-security/tags","blobs_url":"https://api.github.com/repos/versioneye/versioneye-security/git/blobs{/sha}","git_tags_url":"https://api.github.com/repos/versioneye/versioneye-security/git/tags{/sha}","git_refs_url":"https://api.github.com/repos/versioneye/versioneye-security/git/refs{/sha}","trees_url":"https://api.github.com/repos/versioneye/versioneye-security/git/trees{/sha}","statuses_url":"https://api.github.com/repos/versioneye/versioneye-security/statuses/{sha}","languages_url":"https://api.github.com/repos/versioneye/versioneye-security/languages","stargazers_url":"https://api.github.com/repos/versioneye/versioneye-security/stargazers","contributors_url":"https://api.github.com/repos/versioneye/versioneye-security/contributors","subscribers_url":"https://api.github.com/repos/versioneye/versioneye-security/subscribers","subscription_url":"https://api.github.com/repos/versioneye/versioneye-security/subscription","commits_url":"https://api.github.com/repos/versioneye/versioneye-security/commits{/sha}","git_commits_url":"https://api.github.com/repos/versioneye/versioneye-security/git/commits{/sha}","comments_url":"https://api.github.com/repos/versioneye/versioneye-security/comments{/number}","issue_comment_url":"https://api.github.com/repos/versioneye/versioneye-security/issues/comments{/number}","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/{+path}","compare_url":"https://api.github.com/repos/versioneye/versioneye-security/compare/{base}...{head}","merges_url":"https://api.github.com/repos/versioneye/versioneye-security/merges","archive_url":"https://api.github.com/repos/versioneye/versioneye-security/{archive_format}{/ref}","downloads_url":"https://api.github.com/repos/versioneye/versioneye-security/downloads","issues_url":"https://api.github.com/repos/versioneye/versioneye-security/issues{/number}","pulls_url":"https://api.github.com/repos/versioneye/versioneye-security/pulls{/number}","milestones_url":"https://api.github.com/repos/versioneye/versioneye-security/milestones{/number}","notifications_url":"https://api.github.com/repos/versioneye/versioneye-security/notifications{?since,all,participating}","labels_url":"https://api.github.com/repos/versioneye/versioneye-security/labels{/name}","releases_url":"https://api.github.com/repos/versioneye/versioneye-security/releases{/id}","deployments_url":"https://api.github.com/repos/versioneye/versioneye-security/deployments","created_at":"2015-10-16T15:27:51Z","updated_at":"2017-05-09T11:28:01Z","pushed_at":"2017-05-16T13:04:46Z","git_url":"git://github.com/versioneye/versioneye-security.git","ssh_url":"git@github.com:versioneye/versioneye-security.git","clone_url":"https://github.com/versioneye/versioneye-security.git","svn_url":"https://github.com/versioneye/versioneye-security","homepage":"https://www.versioneye.com","size":173,"stargazers_count":7,"watchers_count":7,"language":"Ruby","has_issues":true,"has_projects":true,"has_downloads":true,"has_wiki":true,"has_pages":false,"forks_count":4,"mirror_url":null,"open_issues_count":1,"forks":4,"open_issues":1,"watchers":7,"default_branch":"master","permissions":{"admin":false,"push":false,"pull":true},"organization":{"login":"versioneye","id":3974102,"avatar_url":"https://avatars0.githubusercontent.com/u/3974102?v=3","gravatar_id":"","url":"https://api.github.com/users/versioneye","html_url":"https://github.com/versioneye","followers_url":"https://api.github.com/users/versioneye/followers","following_url":"https://api.github.com/users/versioneye/following{/other_user}","gists_url":"https://api.github.com/users/versioneye/gists{/gist_id}","starred_url":"https://api.github.com/users/versioneye/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/versioneye/subscriptions","organizations_url":"https://api.github.com/users/versioneye/orgs","repos_url":"https://api.github.com/users/versioneye/repos","events_url":"https://api.github.com/users/versioneye/events{/privacy}","received_events_url":"https://api.github.com/users/versioneye/received_events","type":"Organization","site_admin":false},"network_count":4,"subscribers_count":3}'
+    http_version: 
+  recorded_at: Tue, 23 May 2017 12:40:02 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/versioneye/versioneye-security/tags?per_page=100
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 4.7.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Tue, 23 May 2017 12:40:03 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '60'
+      X-Ratelimit-Remaining:
+      - '57'
+      X-Ratelimit-Reset:
+      - '1495546801'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      Etag:
+      - W/"2002eb568e209eab9e3fb794eb689a84"
+      Last-Modified:
+      - Tue, 09 May 2017 11:28:01 GMT
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Served-By:
+      - 52437fedc85beec8da3449496900fb9a
+      X-Github-Request-Id:
+      - D20B:458B:7EE8E6B:92D7357:59242DA2
+    body:
+      encoding: ASCII-8BIT
+      string: '[{"name":"v1.3.0","zipball_url":"https://api.github.com/repos/versioneye/versioneye-security/zipball/v1.3.0","tarball_url":"https://api.github.com/repos/versioneye/versioneye-security/tarball/v1.3.0","commit":{"sha":"c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877"}},{"name":"v1.2.1","zipball_url":"https://api.github.com/repos/versioneye/versioneye-security/zipball/v1.2.1","tarball_url":"https://api.github.com/repos/versioneye/versioneye-security/tarball/v1.2.1","commit":{"sha":"764e054c8c6e40401ffbe446c4cb235ce8f553ff","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/764e054c8c6e40401ffbe446c4cb235ce8f553ff"}},{"name":"v1.2.0","zipball_url":"https://api.github.com/repos/versioneye/versioneye-security/zipball/v1.2.0","tarball_url":"https://api.github.com/repos/versioneye/versioneye-security/tarball/v1.2.0","commit":{"sha":"5980954680afef7913a296241b3321391c7c6167","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/5980954680afef7913a296241b3321391c7c6167"}},{"name":"v1.1.1","zipball_url":"https://api.github.com/repos/versioneye/versioneye-security/zipball/v1.1.1","tarball_url":"https://api.github.com/repos/versioneye/versioneye-security/tarball/v1.1.1","commit":{"sha":"5785e698f8ab12c8c531d7de0a92f80ccfad710e","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/5785e698f8ab12c8c531d7de0a92f80ccfad710e"}},{"name":"v1.1.0","zipball_url":"https://api.github.com/repos/versioneye/versioneye-security/zipball/v1.1.0","tarball_url":"https://api.github.com/repos/versioneye/versioneye-security/tarball/v1.1.0","commit":{"sha":"f8c1fecedb3286743b50807a06856a6ab6967194","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/f8c1fecedb3286743b50807a06856a6ab6967194"}},{"name":"v1.0.2","zipball_url":"https://api.github.com/repos/versioneye/versioneye-security/zipball/v1.0.2","tarball_url":"https://api.github.com/repos/versioneye/versioneye-security/tarball/v1.0.2","commit":{"sha":"0ca54747c9579c2427d1331eb4f3b7bf40d06143","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/0ca54747c9579c2427d1331eb4f3b7bf40d06143"}},{"name":"v1.0.1","zipball_url":"https://api.github.com/repos/versioneye/versioneye-security/zipball/v1.0.1","tarball_url":"https://api.github.com/repos/versioneye/versioneye-security/tarball/v1.0.1","commit":{"sha":"38f1ded5f5bfff172256f952c544ebc1cb8b76f5","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/38f1ded5f5bfff172256f952c544ebc1cb8b76f5"}},{"name":"v1.0.0","zipball_url":"https://api.github.com/repos/versioneye/versioneye-security/zipball/v1.0.0","tarball_url":"https://api.github.com/repos/versioneye/versioneye-security/tarball/v1.0.0","commit":{"sha":"09a1c57dc74926a31792e3988315135278461c89","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/09a1c57dc74926a31792e3988315135278461c89"}},{"name":"v0.1.1","zipball_url":"https://api.github.com/repos/versioneye/versioneye-security/zipball/v0.1.1","tarball_url":"https://api.github.com/repos/versioneye/versioneye-security/tarball/v0.1.1","commit":{"sha":"d4127068129bc56abb40ca1af96ff04b14acca94","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/d4127068129bc56abb40ca1af96ff04b14acca94"}}]'
+    http_version: 
+  recorded_at: Tue, 23 May 2017 12:40:03 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/versioneye/versioneye-security/commits/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 4.7.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Tue, 23 May 2017 12:40:04 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '60'
+      X-Ratelimit-Remaining:
+      - '56'
+      X-Ratelimit-Reset:
+      - '1495546801'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      Etag:
+      - W/"4a626f1884a064cca686d01582e58562"
+      Last-Modified:
+      - Wed, 03 Aug 2016 14:35:53 GMT
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Served-By:
+      - 7efb7ae49588ef0269c6a1c1bd3721d9
+      X-Github-Request-Id:
+      - D20C:458B:7EE8F4B:92D7463:59242DA3
+    body:
+      encoding: ASCII-8BIT
+      string: '{"sha":"c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877","commit":{"author":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-08-03T14:35:53Z"},"committer":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-08-03T14:35:53Z"},"message":"Add
+        Snyk","tree":{"sha":"165321c5fef4fc0b1d2563969dea09f340e387e1","url":"https://api.github.com/repos/versioneye/versioneye-security/git/trees/165321c5fef4fc0b1d2563969dea09f340e387e1"},"url":"https://api.github.com/repos/versioneye/versioneye-security/git/commits/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877","comment_count":0},"url":"https://api.github.com/repos/versioneye/versioneye-security/commits/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877","html_url":"https://github.com/versioneye/versioneye-security/commit/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877","comments_url":"https://api.github.com/repos/versioneye/versioneye-security/commits/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877/comments","author":{"login":"reiz","id":652130,"avatar_url":"https://avatars3.githubusercontent.com/u/652130?v=3","gravatar_id":"","url":"https://api.github.com/users/reiz","html_url":"https://github.com/reiz","followers_url":"https://api.github.com/users/reiz/followers","following_url":"https://api.github.com/users/reiz/following{/other_user}","gists_url":"https://api.github.com/users/reiz/gists{/gist_id}","starred_url":"https://api.github.com/users/reiz/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/reiz/subscriptions","organizations_url":"https://api.github.com/users/reiz/orgs","repos_url":"https://api.github.com/users/reiz/repos","events_url":"https://api.github.com/users/reiz/events{/privacy}","received_events_url":"https://api.github.com/users/reiz/received_events","type":"User","site_admin":false},"committer":{"login":"reiz","id":652130,"avatar_url":"https://avatars3.githubusercontent.com/u/652130?v=3","gravatar_id":"","url":"https://api.github.com/users/reiz","html_url":"https://github.com/reiz","followers_url":"https://api.github.com/users/reiz/followers","following_url":"https://api.github.com/users/reiz/following{/other_user}","gists_url":"https://api.github.com/users/reiz/gists{/gist_id}","starred_url":"https://api.github.com/users/reiz/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/reiz/subscriptions","organizations_url":"https://api.github.com/users/reiz/orgs","repos_url":"https://api.github.com/users/reiz/repos","events_url":"https://api.github.com/users/reiz/events{/privacy}","received_events_url":"https://api.github.com/users/reiz/received_events","type":"User","site_admin":false},"parents":[{"sha":"b32d824c810459a7f7c64bc6e2dfcccce07a71a6","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/b32d824c810459a7f7c64bc6e2dfcccce07a71a6","html_url":"https://github.com/versioneye/versioneye-security/commit/b32d824c810459a7f7c64bc6e2dfcccce07a71a6"}],"stats":{"total":86,"additions":82,"deletions":4},"files":[{"sha":"e8bde28e0bc31fb10d4e1444ffde3bd24e9f7bf1","filename":"Gemfile","status":"modified","additions":1,"deletions":1,"changes":2,"blob_url":"https://github.com/versioneye/versioneye-security/blob/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877/Gemfile","raw_url":"https://github.com/versioneye/versioneye-security/raw/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877/Gemfile","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/Gemfile?ref=c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877","patch":"@@
+        -3,7 +3,7 @@ source \"http://rubygems.org\"\n gem ''bundler'' , ''~> 1.12.0''\n
+        gem ''syck''    , ''1.1.0''\n \n-gem ''versioneye-core''    , :git => ''https://github.com/versioneye/versioneye-core.git'',
+        :tag => ''v9.7.10''\n+gem ''versioneye-core''    , :git => ''https://github.com/versioneye/versioneye-core.git'',
+        :tag => ''v9.7.15''\n # gem ''versioneye-core''    , :path => \"~/workspace/versioneye/versioneye-core\"\n
+        \n gem ''rufus-scheduler'', ''3.2.1''"},{"sha":"7a4a7efa06142d1afde72f70e27c19654c14b3ce","filename":"Gemfile.lock","status":"modified","additions":3,"deletions":3,"changes":6,"blob_url":"https://github.com/versioneye/versioneye-security/blob/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877/Gemfile.lock","raw_url":"https://github.com/versioneye/versioneye-security/raw/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877/Gemfile.lock","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/Gemfile.lock?ref=c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877","patch":"@@
+        -1,9 +1,9 @@\n GIT\n   remote: https://github.com/versioneye/versioneye-core.git\n-  revision:
+        4002980cc15a6f48f6143e6cf53431f4c9ecb7fd\n-  tag: v9.7.10\n+  revision: 2fe4245e6b2189bd916e138e8ecb65535a64c21b\n+  tag:
+        v9.7.15\n   specs:\n-    versioneye-core (9.7.10)\n+    versioneye-core (9.7.15)\n       actionmailer
+        (~> 4.2.6)\n       aws-sdk (~> 2.4.0)\n       bundler (~> 1.12.5)"},{"sha":"dae1484e7063a153236811048daafb3cc04cca14","filename":"README.md","status":"modified","additions":1,"deletions":0,"changes":1,"blob_url":"https://github.com/versioneye/versioneye-security/blob/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877/README.md","raw_url":"https://github.com/versioneye/versioneye-security/raw/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877/README.md","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/README.md?ref=c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877","patch":"@@
+        -11,6 +11,7 @@ Currently this projects has data fetchers for:\n  - PHP ([SensioLabs
+        DB](https://github.com/FriendsOfPHP/security-advisories.git))\n  - PHP Magento
+        ([Magento Security Advisory](https://github.com/Cotya/magento-security-advisories.git))\n  -
+        Node.JS ([NodeSecurity](https://nodesecurity.io/))\n+ - Node.JS ([Snyk](https://snyk.io/))\n
+        \n ## Start the backend services for VersionEye\n "},{"sha":"214259d7398397033bf12303ec00117fe4992155","filename":"lib/versioneye-security.rb","status":"modified","additions":1,"deletions":0,"changes":1,"blob_url":"https://github.com/versioneye/versioneye-security/blob/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877/lib/versioneye-security.rb","raw_url":"https://github.com/versioneye/versioneye-security/raw/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877/lib/versioneye-security.rb","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/lib/versioneye-security.rb?ref=c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877","patch":"@@
+        -9,6 +9,7 @@\n require ''./lib/versioneye/java_security_crawler''\n require
+        ''./lib/versioneye/python_security_crawler''\n require ''./lib/versioneye/node_security_crawler''\n+require
+        ''./lib/versioneye/snyk_security_crawler''\n \n require ''./lib/versioneye/producers/producer''\n
+        require ''./lib/versioneye/producers/security_producer''"},{"sha":"f711cb96bfbfba39775400ca4a6b9be15b99dfea","filename":"lib/versioneye/snyk_security_crawler.rb","status":"added","additions":70,"deletions":0,"changes":70,"blob_url":"https://github.com/versioneye/versioneye-security/blob/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877/lib/versioneye/snyk_security_crawler.rb","raw_url":"https://github.com/versioneye/versioneye-security/raw/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877/lib/versioneye/snyk_security_crawler.rb","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/lib/versioneye/snyk_security_crawler.rb?ref=c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877","patch":"@@
+        -0,0 +1,70 @@\n+class SnykSecurityCrawler < NodeSecurityCrawler\n+\n+\n+  def
+        self.logger\n+    if !defined?(@@log) || @@log.nil?\n+      @@log = Versioneye::DynLog.new(\"log/snyk_security.log\",
+        10).log\n+    end\n+    @@log\n+  end\n+\n+\n+  def self.crawl\n+    meassure_exec{
+        perform_crawl }\n+  end\n+\n+\n+  def self.perform_crawl\n+    url = ''https://raw.githubusercontent.com/Snyk/vulndb/snapshots/master/snapshot.json''\n+    index
+        = JSON.parse HttpService.fetch_response(url).body\n+    index[\"npm\"].keys.each
+        do |key|\n+      svs = index[\"npm\"][key]\n+      parse_svs key, svs\n+    end\n+  end\n+\n+\n+  def
+        self.parse_svs package_name, svs\n+    return nil if svs.to_a.empty?\n+\n+    svs.each
+        do |sec_issue|\n+      sv = fetch_sv_with sec_issue\n+      update_sv sv,
+        sec_issue\n+      mark_affected_versions sv\n+    end\n+  rescue => e\n+    self.logger.error
+        \"ERROR in parse_package Message: #{e.message}\"\n+    self.logger.error e.backtrace.join(\"\\n\")\n+  end\n+\n+\n+  def
+        self.update_sv sv, sec_issue\n+    sv.source         = ''snyk''\n+    sv.summary        =
+        sec_issue[''title'']\n+    sv.description    = sec_issue[''description'']\n+    sv.author         =
+        sec_issue[''credit''].to_a.join(\", \")\n+    sv.cvss_v3        = sec_issue[''CVSSv3'']\n+    sv.severity       =
+        sec_issue[''severity'']\n+    sv.cve            = sec_issue[''identifiers''][''CVE''].first\n+    sv.cves           =
+        sec_issue[''identifiers''][''CVE'']\n+    sv.cwes           = sec_issue[''identifiers''][''CWE'']\n+    sv.nsp            =
+        sec_issue[''identifiers''][''NSP'']\n+    sv.publish_date   = sec_issue[''publish_date'']\n+    sv.affected_versions_string
+        = sec_issue[''semver''][''vulnerable'']\n+    sv.patched_versions_string  =
+        sec_issue[''semver''][''unaffected'']\n+    sv.publish_date  = sec_issue[''disclosureTime'']\n+    sv.save\n+  end\n+\n+\n+  def
+        self.fetch_sv_with sec_issue, language = Product::A_LANGUAGE_NODEJS\n+    prod_key
+        = sec_issue[\"moduleName\"]\n+    name_id  = sec_issue[\"id\"]\n+    sv =
+        SecurityVulnerability.where(:language => language, :prod_key => prod_key,
+        :name_id => name_id ).first\n+    return sv if sv\n+\n+    SecurityVulnerability.new(:language
+        => language, :prod_key => prod_key, :name_id => name_id )\n+  end\n+\n+\n+end"},{"sha":"8f771abd6b1440c0cf715a4b3dfb7f474db2e11f","filename":"lib/versioneye/workers/security_worker.rb","status":"modified","additions":2,"deletions":0,"changes":2,"blob_url":"https://github.com/versioneye/versioneye-security/blob/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877/lib/versioneye/workers/security_worker.rb","raw_url":"https://github.com/versioneye/versioneye-security/raw/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877/lib/versioneye/workers/security_worker.rb","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/lib/versioneye/workers/security_worker.rb?ref=c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877","patch":"@@
+        -40,6 +40,8 @@ def process_work message\n       PythonSecurityCrawler.crawl\n     elsif
+        message.eql?(''node_security'')\n       NodeSecurityCrawler.crawl\n+    elsif
+        message.eql?(''snyk_security'')\n+      SnykSecurityCrawler.crawl\n     end\n   rescue
+        => e\n     log.error e.message"},{"sha":"60f1f8087d3e1f76a7d8db61a1bffb17d2cc13a8","filename":"tasks/versioneye.rake","status":"modified","additions":4,"deletions":0,"changes":4,"blob_url":"https://github.com/versioneye/versioneye-security/blob/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877/tasks/versioneye.rake","raw_url":"https://github.com/versioneye/versioneye-security/raw/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877/tasks/versioneye.rake","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/tasks/versioneye.rake?ref=c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877","patch":"@@
+        -33,6 +33,10 @@ namespace :versioneye do\n       SecurityProducer.new \"node_security\"\n     end\n
+        \n+    scheduler.every ''60m'' do\n+      SecurityProducer.new \"snyk_security\"\n+    end\n+\n     scheduler.join\n     while
+        1 == 1\n       p \"keep alive rake task\""}]}'
+    http_version: 
+  recorded_at: Tue, 23 May 2017 12:40:04 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/versioneye/versioneye-security/commits/764e054c8c6e40401ffbe446c4cb235ce8f553ff
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 4.7.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Tue, 23 May 2017 12:40:04 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '60'
+      X-Ratelimit-Remaining:
+      - '55'
+      X-Ratelimit-Reset:
+      - '1495546801'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      Etag:
+      - W/"fdc28508c84a13a882e050cf2086456e"
+      Last-Modified:
+      - Wed, 27 Jul 2016 11:14:28 GMT
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Served-By:
+      - 49aa99f015c25437a7443c4d3a58cd17
+      X-Github-Request-Id:
+      - D20D:458A:5917F7C:6708168:59242DA4
+    body:
+      encoding: ASCII-8BIT
+      string: '{"sha":"764e054c8c6e40401ffbe446c4cb235ce8f553ff","commit":{"author":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-07-27T11:14:28Z"},"committer":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-07-27T11:14:28Z"},"message":"Update
+        Gems","tree":{"sha":"a18e7cd04c9e91b6ae723f193681bf25bf9969c2","url":"https://api.github.com/repos/versioneye/versioneye-security/git/trees/a18e7cd04c9e91b6ae723f193681bf25bf9969c2"},"url":"https://api.github.com/repos/versioneye/versioneye-security/git/commits/764e054c8c6e40401ffbe446c4cb235ce8f553ff","comment_count":0},"url":"https://api.github.com/repos/versioneye/versioneye-security/commits/764e054c8c6e40401ffbe446c4cb235ce8f553ff","html_url":"https://github.com/versioneye/versioneye-security/commit/764e054c8c6e40401ffbe446c4cb235ce8f553ff","comments_url":"https://api.github.com/repos/versioneye/versioneye-security/commits/764e054c8c6e40401ffbe446c4cb235ce8f553ff/comments","author":{"login":"reiz","id":652130,"avatar_url":"https://avatars3.githubusercontent.com/u/652130?v=3","gravatar_id":"","url":"https://api.github.com/users/reiz","html_url":"https://github.com/reiz","followers_url":"https://api.github.com/users/reiz/followers","following_url":"https://api.github.com/users/reiz/following{/other_user}","gists_url":"https://api.github.com/users/reiz/gists{/gist_id}","starred_url":"https://api.github.com/users/reiz/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/reiz/subscriptions","organizations_url":"https://api.github.com/users/reiz/orgs","repos_url":"https://api.github.com/users/reiz/repos","events_url":"https://api.github.com/users/reiz/events{/privacy}","received_events_url":"https://api.github.com/users/reiz/received_events","type":"User","site_admin":false},"committer":{"login":"reiz","id":652130,"avatar_url":"https://avatars3.githubusercontent.com/u/652130?v=3","gravatar_id":"","url":"https://api.github.com/users/reiz","html_url":"https://github.com/reiz","followers_url":"https://api.github.com/users/reiz/followers","following_url":"https://api.github.com/users/reiz/following{/other_user}","gists_url":"https://api.github.com/users/reiz/gists{/gist_id}","starred_url":"https://api.github.com/users/reiz/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/reiz/subscriptions","organizations_url":"https://api.github.com/users/reiz/orgs","repos_url":"https://api.github.com/users/reiz/repos","events_url":"https://api.github.com/users/reiz/events{/privacy}","received_events_url":"https://api.github.com/users/reiz/received_events","type":"User","site_admin":false},"parents":[{"sha":"5980954680afef7913a296241b3321391c7c6167","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/5980954680afef7913a296241b3321391c7c6167","html_url":"https://github.com/versioneye/versioneye-security/commit/5980954680afef7913a296241b3321391c7c6167"}],"stats":{"total":33,"additions":16,"deletions":17},"files":[{"sha":"24cb3c5c1e966449c016c83f1265cd0edf90b25a","filename":"Gemfile","status":"modified","additions":1,"deletions":1,"changes":2,"blob_url":"https://github.com/versioneye/versioneye-security/blob/764e054c8c6e40401ffbe446c4cb235ce8f553ff/Gemfile","raw_url":"https://github.com/versioneye/versioneye-security/raw/764e054c8c6e40401ffbe446c4cb235ce8f553ff/Gemfile","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/Gemfile?ref=764e054c8c6e40401ffbe446c4cb235ce8f553ff","patch":"@@
+        -3,7 +3,7 @@ source \"http://rubygems.org\"\n gem ''bundler'' , ''~> 1.12.0''\n
+        gem ''syck''    , ''1.1.0''\n \n-gem ''versioneye-core''    , :git => ''https://github.com/versioneye/versioneye-core.git'',
+        :tag => ''v8.26.10''\n+gem ''versioneye-core''    , :git => ''https://github.com/versioneye/versioneye-core.git'',
+        :tag => ''v9.6.0''\n # gem ''versioneye-core''    , :path => \"~/workspace/versioneye/versioneye-core\"\n
+        \n gem ''rufus-scheduler'', ''3.2.1''"},{"sha":"58eb4f86e1bda54661e9dd5d62aa7022e08feeb0","filename":"Gemfile.lock","status":"modified","additions":14,"deletions":16,"changes":30,"blob_url":"https://github.com/versioneye/versioneye-security/blob/764e054c8c6e40401ffbe446c4cb235ce8f553ff/Gemfile.lock","raw_url":"https://github.com/versioneye/versioneye-security/raw/764e054c8c6e40401ffbe446c4cb235ce8f553ff/Gemfile.lock","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/Gemfile.lock?ref=764e054c8c6e40401ffbe446c4cb235ce8f553ff","patch":"@@
+        -1,28 +1,27 @@\n GIT\n   remote: https://github.com/versioneye/versioneye-core.git\n-  revision:
+        cdaf05fef2a22f4505771612ac2c6728b7dd0635\n-  tag: v8.26.10\n+  revision: 3723f9c93ff135be8f27ecb4c8757dc50e8cba91\n+  tag:
+        v9.6.0\n   specs:\n-    versioneye-core (8.26.10)\n+    versioneye-core (9.6.0)\n       actionmailer
+        (~> 4.2.6)\n-      aws-sdk (~> 2.3.0)\n+      aws-sdk (~> 2.4.0)\n       bundler
+        (~> 1.12.5)\n       bunny (~> 2.4.0)\n       cocoapods-core (~> 0.39.0)\n       dalli
+        (~> 2.7.0)\n       etcd (~> 0.3.0)\n       httparty (~> 0.13.1)\n-      kgio
+        (~> 2.10.0)\n       mongoid (~> 5.1.0)\n       naturalsorter (~> 3.0.14)\n-      net-ldap
+        (~> 0.14.0)\n+      net-ldap (~> 0.15.0)\n       nokogiri (~> 1.6.8)\n       oauth
+        (~> 0.5.0)\n       octokit (~> 4.3.0)\n       pdfkit (~> 0.8.0)\n       persistent_httparty
+        (~> 0.1.0)\n       semverly (~> 1.0.0)\n-      stripe (~> 1.44.0)\n+      stripe
+        (~> 1.48.0)\n       tire (~> 0.6.2)\n       will_paginate_mongoid (= 2.0.1)\n       wkhtmltopdf-binary
+        (~> 0.9.9.1)\n@@ -64,12 +63,12 @@ GEM\n     addressable (2.4.0)\n     amq-protocol
+        (2.0.1)\n     ansi (1.5.0)\n-    aws-sdk (2.3.22)\n-      aws-sdk-resources
+        (= 2.3.22)\n-    aws-sdk-core (2.3.22)\n+    aws-sdk (2.4.3)\n+      aws-sdk-resources
+        (= 2.4.3)\n+    aws-sdk-core (2.4.3)\n       jmespath (~> 1.0)\n-    aws-sdk-resources
+        (2.3.22)\n-      aws-sdk-core (= 2.3.22)\n+    aws-sdk-resources (2.4.3)\n+      aws-sdk-core
+        (= 2.4.3)\n     bson (4.1.1)\n     builder (3.2.2)\n     bunny (2.4.0)\n@@
+        -134,7 +133,6 @@ GEM\n     jmespath (1.3.1)\n     json (1.8.3)\n     jwt (1.5.4)\n-    kgio
+        (2.10.0)\n     loofah (2.0.3)\n       nokogiri (>= 1.5.9)\n     mail (2.6.4)\n@@
+        -155,7 +153,7 @@ GEM\n     multipart-post (2.0.0)\n     nap (1.1.0)\n     naturalsorter
+        (3.0.14)\n-    net-ldap (0.14.0)\n+    net-ldap (0.15.0)\n     netrc (0.11.0)\n     nokogiri
+        (1.6.8)\n       mini_portile2 (~> 2.1.0)\n@@ -228,8 +226,8 @@ GEM\n       json
+        (>= 1.8, < 3)\n       simplecov-html (~> 0.10.0)\n     simplecov-html (0.10.0)\n-    stripe
+        (1.44.0)\n-      rest-client (~> 1.4)\n+    stripe (1.48.0)\n+      rest-client
+        (>= 1.4, < 3.0)\n     syck (1.1.0)\n     thread_safe (0.3.5)\n     tire (0.6.2)"},{"sha":"9863fb70808cf5df2c123558c887a42179980b49","filename":"lib/versioneye-security.rb","status":"modified","additions":1,"deletions":0,"changes":1,"blob_url":"https://github.com/versioneye/versioneye-security/blob/764e054c8c6e40401ffbe446c4cb235ce8f553ff/lib/versioneye-security.rb","raw_url":"https://github.com/versioneye/versioneye-security/raw/764e054c8c6e40401ffbe446c4cb235ce8f553ff/lib/versioneye-security.rb","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/lib/versioneye-security.rb?ref=764e054c8c6e40401ffbe446c4cb235ce8f553ff","patch":"@@
+        -8,6 +8,7 @@\n require ''./lib/versioneye/ruby_security_crawler''\n require
+        ''./lib/versioneye/java_security_crawler''\n require ''./lib/versioneye/python_security_crawler''\n+require
+        ''./lib/versioneye/node_security_crawler''\n \n require ''./lib/versioneye/producers/producer''\n
+        require ''./lib/versioneye/producers/security_producer''"}]}'
+    http_version: 
+  recorded_at: Tue, 23 May 2017 12:40:04 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/versioneye/versioneye-security/commits/5980954680afef7913a296241b3321391c7c6167
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 4.7.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Tue, 23 May 2017 12:40:05 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '60'
+      X-Ratelimit-Remaining:
+      - '54'
+      X-Ratelimit-Reset:
+      - '1495546801'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      Etag:
+      - W/"8b80174529cd11a6bb44cabf7c45f920"
+      Last-Modified:
+      - Wed, 27 Jul 2016 11:04:54 GMT
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Served-By:
+      - e14705a23c085afeff5e104b1fc3922a
+      X-Github-Request-Id:
+      - D20E:458A:5918042:6708271:59242DA5
+    body:
+      encoding: ASCII-8BIT
+      string: '{"sha":"5980954680afef7913a296241b3321391c7c6167","commit":{"author":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-07-27T11:04:54Z"},"committer":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-07-27T11:04:54Z"},"message":"Add
+        NodeSecurityCrawler","tree":{"sha":"9ace0f9b58eed2bba36df4688b250ed53ebcfd91","url":"https://api.github.com/repos/versioneye/versioneye-security/git/trees/9ace0f9b58eed2bba36df4688b250ed53ebcfd91"},"url":"https://api.github.com/repos/versioneye/versioneye-security/git/commits/5980954680afef7913a296241b3321391c7c6167","comment_count":0},"url":"https://api.github.com/repos/versioneye/versioneye-security/commits/5980954680afef7913a296241b3321391c7c6167","html_url":"https://github.com/versioneye/versioneye-security/commit/5980954680afef7913a296241b3321391c7c6167","comments_url":"https://api.github.com/repos/versioneye/versioneye-security/commits/5980954680afef7913a296241b3321391c7c6167/comments","author":{"login":"reiz","id":652130,"avatar_url":"https://avatars3.githubusercontent.com/u/652130?v=3","gravatar_id":"","url":"https://api.github.com/users/reiz","html_url":"https://github.com/reiz","followers_url":"https://api.github.com/users/reiz/followers","following_url":"https://api.github.com/users/reiz/following{/other_user}","gists_url":"https://api.github.com/users/reiz/gists{/gist_id}","starred_url":"https://api.github.com/users/reiz/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/reiz/subscriptions","organizations_url":"https://api.github.com/users/reiz/orgs","repos_url":"https://api.github.com/users/reiz/repos","events_url":"https://api.github.com/users/reiz/events{/privacy}","received_events_url":"https://api.github.com/users/reiz/received_events","type":"User","site_admin":false},"committer":{"login":"reiz","id":652130,"avatar_url":"https://avatars3.githubusercontent.com/u/652130?v=3","gravatar_id":"","url":"https://api.github.com/users/reiz","html_url":"https://github.com/reiz","followers_url":"https://api.github.com/users/reiz/followers","following_url":"https://api.github.com/users/reiz/following{/other_user}","gists_url":"https://api.github.com/users/reiz/gists{/gist_id}","starred_url":"https://api.github.com/users/reiz/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/reiz/subscriptions","organizations_url":"https://api.github.com/users/reiz/orgs","repos_url":"https://api.github.com/users/reiz/repos","events_url":"https://api.github.com/users/reiz/events{/privacy}","received_events_url":"https://api.github.com/users/reiz/received_events","type":"User","site_admin":false},"parents":[{"sha":"6d0261109d42689a52cdb5881d620c40d912fc82","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/6d0261109d42689a52cdb5881d620c40d912fc82","html_url":"https://github.com/versioneye/versioneye-security/commit/6d0261109d42689a52cdb5881d620c40d912fc82"}],"stats":{"total":115,"additions":115,"deletions":0},"files":[{"sha":"047969bdaf6f8346819b3f3d3a029f78984b172f","filename":"lib/versioneye/node_security_crawler.rb","status":"added","additions":93,"deletions":0,"changes":93,"blob_url":"https://github.com/versioneye/versioneye-security/blob/5980954680afef7913a296241b3321391c7c6167/lib/versioneye/node_security_crawler.rb","raw_url":"https://github.com/versioneye/versioneye-security/raw/5980954680afef7913a296241b3321391c7c6167/lib/versioneye/node_security_crawler.rb","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/lib/versioneye/node_security_crawler.rb?ref=5980954680afef7913a296241b3321391c7c6167","patch":"@@
+        -0,0 +1,93 @@\n+class NodeSecurityCrawler < CommonSecurity\n+\n+\n+  def self.logger\n+    if
+        !defined?(@@log) || @@log.nil?\n+      @@log = Versioneye::DynLog.new(\"log/node_security.log\",
+        10).log\n+    end\n+    @@log\n+  end\n+\n+\n+  def self.crawl\n+    meassure_exec{
+        perform_crawl }\n+  end\n+\n+\n+  def self.perform_crawl\n+    url = ''https://api.nodesecurity.io/advisories''\n+    index
+        = JSON.parse HttpService.fetch_response(url).body\n+    index[\"results\"].each
+        do |sec_issue|\n+      parse_issue sec_issue\n+    end\n+  end\n+\n+\n+  def
+        self.parse_issue sec_issue\n+    sv = fetch_sv_with sec_issue\n+    update_sv
+        sv, sec_issue\n+    mark_affected_versions sv\n+  rescue => e\n+    self.logger.error
+        \"ERROR in parse_issue Message: #{e.message}\"\n+    self.logger.error e.backtrace.join(\"\\n\")\n+  end\n+\n+\n+  def
+        self.update_sv sv, sec_issue\n+    nodesec_id        = sec_issue[''id'']\n+    sv.source         =
+        ''nodesecurity''\n+    sv.name_id        = \"nodesecurity_#{nodesec_id}\"\n+    sv.author         =
+        sec_issue[''author'']\n+    sv.summary        = sec_issue[''title'']\n+    sv.description    =
+        sec_issue[''overview'']\n+    sv.recommendation = sec_issue[''recommendation'']\n+    sv.cves           =
+        sec_issue[''cves'']\n+    sv.cve            = sv.cves.first if !sv.cves.empty?\n+    sv.cvss_v2        =
+        sec_issue[''cvss_score'']\n+    sv.cvss_vector    = sec_issue[''cvss_vector'']\n+    sv.publish_date   =
+        sec_issue[''publish_date'']\n+    sv.affected_versions_string = sec_issue[''vulnerable_versions'']\n+    sv.patched_versions_string  =
+        sec_issue[''patched_versions'']\n+    sv.save\n+  end\n+\n+\n+  def self.mark_affected_versions
+        sv\n+    product = sv.product\n+    return nil if product.nil?\n+\n+    affected_versions
+        = VersionService.from_ranges( product.versions, sv.affected_versions_string.gsub(\"||\",
+        \",\") )\n+    patched_versions  = VersionService.from_ranges( product.versions,
+        sv.patched_versions_string.gsub(\"||\", \",\") )\n+\n+    # TODO\n+    # affected.each
+        do |version_expr|\n+    #   if version_expr.match(/,/)\n+    #     sps    =
+        version_expr.split(\",\")\n+    #     condi  = sps[0]\n+    #     start  =
+        sps[1]\n+    #     start  = \"#{start}.\" if start.match(/-\\z/).nil?\n+    #     subset
+        = VersionService.versions_start_with( product.versions, start )\n+    #     affected_versions
+        += VersionService.from_ranges( subset, condi )\n+    #     next\n+    #   end\n+    #   affected_versions
+        += VersionService.from_ranges( product.versions, version_expr )\n+    # end\n+\n+    mark_versions(
+        sv, product, affected_versions )\n+  end\n+\n+\n+  def self.fetch_sv_with
+        sec_issue\n+    language    = Product::A_LANGUAGE_NODEJS\n+    prod_key    =
+        sec_issue[\"module_name\"]\n+    legacy_slug = sec_issue[\"legacy_slug\"]\n+    sv
+        = SecurityVulnerability.where(:language => language, :prod_key => prod_key,
+        :name_id => legacy_slug ).first\n+    return sv if sv\n+\n+    node_id = sec_issue[\"id\"]\n+    name_id
+        = \"nodesecurity_#{node_id}\"\n+    fetch_sv language, prod_key, name_id\n+  end\n+\n+\n+end"},{"sha":"6fbc25c6a8dcc3e0effdd13f9c04b23ab05b05f2","filename":"lib/versioneye/workers/security_worker.rb","status":"modified","additions":2,"deletions":0,"changes":2,"blob_url":"https://github.com/versioneye/versioneye-security/blob/5980954680afef7913a296241b3321391c7c6167/lib/versioneye/workers/security_worker.rb","raw_url":"https://github.com/versioneye/versioneye-security/raw/5980954680afef7913a296241b3321391c7c6167/lib/versioneye/workers/security_worker.rb","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/lib/versioneye/workers/security_worker.rb?ref=5980954680afef7913a296241b3321391c7c6167","patch":"@@
+        -38,6 +38,8 @@ def process_work message\n       JavaSecurityCrawler.crawl\n     elsif
+        message.eql?(''python_security'')\n       PythonSecurityCrawler.crawl\n+    elsif
+        message.eql?(''node_security'')\n+      NodeSecurityCrawler.crawl\n     end\n   rescue
+        => e\n     log.error e.message"},{"sha":"dd82f5ee74b05e1ffc687346dbe723dfea59e1a8","filename":"tasks/versioneye.rake","status":"modified","additions":20,"deletions":0,"changes":20,"blob_url":"https://github.com/versioneye/versioneye-security/blob/5980954680afef7913a296241b3321391c7c6167/tasks/versioneye.rake","raw_url":"https://github.com/versioneye/versioneye-security/raw/5980954680afef7913a296241b3321391c7c6167/tasks/versioneye.rake","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/tasks/versioneye.rake?ref=5980954680afef7913a296241b3321391c7c6167","patch":"@@
+        -29,6 +29,10 @@ namespace :versioneye do\n       SecurityProducer.new \"python_security\"\n     end\n
+        \n+    scheduler.every ''60m'' do\n+      SecurityProducer.new \"node_security\"\n+    end\n+\n     scheduler.join\n     while
+        1 == 1\n       p \"keep alive rake task\"\n@@ -71,4 +75,20 @@ namespace :versioneye
+        do\n     puts \"---\"\n   end\n \n+  desc \"Start PythonSecurityCrawler\"\n+  task
+        :crawl_python_security do\n+    puts \"START PythonSecurityCrawler\"\n+    VersioneyeSecurity.new\n+    PythonSecurityCrawler.crawl\n+    puts
+        \"---\"\n+  end\n+\n+  desc \"Start NodeSecurityCrawler\"\n+  task :crawl_node_security
+        do\n+    puts \"START NodeSecurityCrawler\"\n+    VersioneyeSecurity.new\n+    NodeSecurityCrawler.crawl\n+    puts
+        \"---\"\n+  end\n+\n end"}]}'
+    http_version: 
+  recorded_at: Tue, 23 May 2017 12:40:05 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/versioneye/versioneye-security/commits/5785e698f8ab12c8c531d7de0a92f80ccfad710e
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 4.7.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Tue, 23 May 2017 12:40:06 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '60'
+      X-Ratelimit-Remaining:
+      - '53'
+      X-Ratelimit-Reset:
+      - '1495546801'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      Etag:
+      - W/"f6b378aec79a9d4ff51589fc9916d00f"
+      Last-Modified:
+      - Mon, 04 Jul 2016 09:38:25 GMT
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Served-By:
+      - 49aa99f015c25437a7443c4d3a58cd17
+      X-Github-Request-Id:
+      - D20F:458B:7EE91E4:92D7776:59242DA5
+    body:
+      encoding: ASCII-8BIT
+      string: '{"sha":"5785e698f8ab12c8c531d7de0a92f80ccfad710e","commit":{"author":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-07-04T09:38:25Z"},"committer":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-07-04T09:38:25Z"},"message":"Update
+        License to AGPL-3.0","tree":{"sha":"f0dad807ddc5374464e8c996fae8dc95d86a0195","url":"https://api.github.com/repos/versioneye/versioneye-security/git/trees/f0dad807ddc5374464e8c996fae8dc95d86a0195"},"url":"https://api.github.com/repos/versioneye/versioneye-security/git/commits/5785e698f8ab12c8c531d7de0a92f80ccfad710e","comment_count":0},"url":"https://api.github.com/repos/versioneye/versioneye-security/commits/5785e698f8ab12c8c531d7de0a92f80ccfad710e","html_url":"https://github.com/versioneye/versioneye-security/commit/5785e698f8ab12c8c531d7de0a92f80ccfad710e","comments_url":"https://api.github.com/repos/versioneye/versioneye-security/commits/5785e698f8ab12c8c531d7de0a92f80ccfad710e/comments","author":{"login":"reiz","id":652130,"avatar_url":"https://avatars3.githubusercontent.com/u/652130?v=3","gravatar_id":"","url":"https://api.github.com/users/reiz","html_url":"https://github.com/reiz","followers_url":"https://api.github.com/users/reiz/followers","following_url":"https://api.github.com/users/reiz/following{/other_user}","gists_url":"https://api.github.com/users/reiz/gists{/gist_id}","starred_url":"https://api.github.com/users/reiz/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/reiz/subscriptions","organizations_url":"https://api.github.com/users/reiz/orgs","repos_url":"https://api.github.com/users/reiz/repos","events_url":"https://api.github.com/users/reiz/events{/privacy}","received_events_url":"https://api.github.com/users/reiz/received_events","type":"User","site_admin":false},"committer":{"login":"reiz","id":652130,"avatar_url":"https://avatars3.githubusercontent.com/u/652130?v=3","gravatar_id":"","url":"https://api.github.com/users/reiz","html_url":"https://github.com/reiz","followers_url":"https://api.github.com/users/reiz/followers","following_url":"https://api.github.com/users/reiz/following{/other_user}","gists_url":"https://api.github.com/users/reiz/gists{/gist_id}","starred_url":"https://api.github.com/users/reiz/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/reiz/subscriptions","organizations_url":"https://api.github.com/users/reiz/orgs","repos_url":"https://api.github.com/users/reiz/repos","events_url":"https://api.github.com/users/reiz/events{/privacy}","received_events_url":"https://api.github.com/users/reiz/received_events","type":"User","site_admin":false},"parents":[{"sha":"f8c1fecedb3286743b50807a06856a6ab6967194","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/f8c1fecedb3286743b50807a06856a6ab6967194","html_url":"https://github.com/versioneye/versioneye-security/commit/f8c1fecedb3286743b50807a06856a6ab6967194"}],"stats":{"total":2,"additions":1,"deletions":1},"files":[{"sha":"251d9f89c02ffd28b2b5c074eb9e7686c8e32388","filename":"LICENSE.md","status":"renamed","additions":0,"deletions":0,"changes":0,"blob_url":"https://github.com/versioneye/versioneye-security/blob/5785e698f8ab12c8c531d7de0a92f80ccfad710e/LICENSE.md","raw_url":"https://github.com/versioneye/versioneye-security/raw/5785e698f8ab12c8c531d7de0a92f80ccfad710e/LICENSE.md","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/LICENSE.md?ref=5785e698f8ab12c8c531d7de0a92f80ccfad710e","previous_filename":"LICENSE.txt"},{"sha":"55bbb3a0d0b4d28f50af2f77229dd97b521806e1","filename":"versioneye-security.gemspec","status":"modified","additions":1,"deletions":1,"changes":2,"blob_url":"https://github.com/versioneye/versioneye-security/blob/5785e698f8ab12c8c531d7de0a92f80ccfad710e/versioneye-security.gemspec","raw_url":"https://github.com/versioneye/versioneye-security/raw/5785e698f8ab12c8c531d7de0a92f80ccfad710e/versioneye-security.gemspec","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/versioneye-security.gemspec?ref=5785e698f8ab12c8c531d7de0a92f80ccfad710e","patch":"@@
+        -11,7 +11,7 @@ Gem::Specification.new do |s|\n   s.required_rubygems_version
+        = Gem::Requirement.new(\">= 0\") if s.respond_to? :required_rubygems_version=\n   s.require_paths
+        = [\"lib\"]\n   s.authors = [\"reiz\"]\n-  s.license = \"MIT\"\n+  s.license
+        = \"AGPL-3.0\"\n   s.date = \"2014-05-25\"\n   s.description = \"VersionEye
+        crawlers implemented in Ruby\"\n   s.email = \"robert.reiz.81@gmail.com\""}]}'
+    http_version: 
+  recorded_at: Tue, 23 May 2017 12:40:06 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/versioneye/versioneye-security/commits/f8c1fecedb3286743b50807a06856a6ab6967194
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 4.7.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Tue, 23 May 2017 12:40:07 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '60'
+      X-Ratelimit-Remaining:
+      - '52'
+      X-Ratelimit-Reset:
+      - '1495546801'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      Etag:
+      - W/"f9a5a648cd6d373365d8d40cfaf42f1f"
+      Last-Modified:
+      - Mon, 04 Jul 2016 09:36:35 GMT
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Served-By:
+      - a474937f3b2fa272558fa6dc951018ad
+      X-Github-Request-Id:
+      - D210:458A:59181E2:6708449:59242DA6
+    body:
+      encoding: ASCII-8BIT
+      string: '{"sha":"f8c1fecedb3286743b50807a06856a6ab6967194","commit":{"author":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-07-04T09:36:35Z"},"committer":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-07-04T09:36:35Z"},"message":"Change
+        to AGPL-3.0 license","tree":{"sha":"41486b989835b19a9232d3d906be96e52b0c9791","url":"https://api.github.com/repos/versioneye/versioneye-security/git/trees/41486b989835b19a9232d3d906be96e52b0c9791"},"url":"https://api.github.com/repos/versioneye/versioneye-security/git/commits/f8c1fecedb3286743b50807a06856a6ab6967194","comment_count":0},"url":"https://api.github.com/repos/versioneye/versioneye-security/commits/f8c1fecedb3286743b50807a06856a6ab6967194","html_url":"https://github.com/versioneye/versioneye-security/commit/f8c1fecedb3286743b50807a06856a6ab6967194","comments_url":"https://api.github.com/repos/versioneye/versioneye-security/commits/f8c1fecedb3286743b50807a06856a6ab6967194/comments","author":{"login":"reiz","id":652130,"avatar_url":"https://avatars3.githubusercontent.com/u/652130?v=3","gravatar_id":"","url":"https://api.github.com/users/reiz","html_url":"https://github.com/reiz","followers_url":"https://api.github.com/users/reiz/followers","following_url":"https://api.github.com/users/reiz/following{/other_user}","gists_url":"https://api.github.com/users/reiz/gists{/gist_id}","starred_url":"https://api.github.com/users/reiz/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/reiz/subscriptions","organizations_url":"https://api.github.com/users/reiz/orgs","repos_url":"https://api.github.com/users/reiz/repos","events_url":"https://api.github.com/users/reiz/events{/privacy}","received_events_url":"https://api.github.com/users/reiz/received_events","type":"User","site_admin":false},"committer":{"login":"reiz","id":652130,"avatar_url":"https://avatars3.githubusercontent.com/u/652130?v=3","gravatar_id":"","url":"https://api.github.com/users/reiz","html_url":"https://github.com/reiz","followers_url":"https://api.github.com/users/reiz/followers","following_url":"https://api.github.com/users/reiz/following{/other_user}","gists_url":"https://api.github.com/users/reiz/gists{/gist_id}","starred_url":"https://api.github.com/users/reiz/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/reiz/subscriptions","organizations_url":"https://api.github.com/users/reiz/orgs","repos_url":"https://api.github.com/users/reiz/repos","events_url":"https://api.github.com/users/reiz/events{/privacy}","received_events_url":"https://api.github.com/users/reiz/received_events","type":"User","site_admin":false},"parents":[{"sha":"0ca54747c9579c2427d1331eb4f3b7bf40d06143","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/0ca54747c9579c2427d1331eb4f3b7bf40d06143","html_url":"https://github.com/versioneye/versioneye-security/commit/0ca54747c9579c2427d1331eb4f3b7bf40d06143"}],"stats":{"total":41,"additions":4,"deletions":37},"files":[{"sha":"251d9f89c02ffd28b2b5c074eb9e7686c8e32388","filename":"LICENSE.txt","status":"modified","additions":2,"deletions":17,"changes":19,"blob_url":"https://github.com/versioneye/versioneye-security/blob/f8c1fecedb3286743b50807a06856a6ab6967194/LICENSE.txt","raw_url":"https://github.com/versioneye/versioneye-security/raw/f8c1fecedb3286743b50807a06856a6ab6967194/LICENSE.txt","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/LICENSE.txt?ref=f8c1fecedb3286743b50807a06856a6ab6967194","patch":"@@
+        -1,20 +1,5 @@\n Copyright (c) 2016 VersionEye GmbH\n \n-Permission is hereby
+        granted, free of charge, to any person obtaining\n-a copy of this software
+        and associated documentation files (the\n-\"Software\"), to deal in the Software
+        without restriction, including\n-without limitation the rights to use, copy,
+        modify, merge, publish,\n-distribute, sublicense, and/or sell copies of the
+        Software, and to\n-permit persons to whom the Software is furnished to do
+        so, subject to\n-the following conditions:\n+# AGPL-v3 License\n \n-The above
+        copyright notice and this permission notice shall be\n-included in all copies
+        or substantial portions of the Software.\n-\n-THE SOFTWARE IS PROVIDED \"AS
+        IS\", WITHOUT WARRANTY OF ANY KIND,\n-EXPRESS OR IMPLIED, INCLUDING BUT NOT
+        LIMITED TO THE WARRANTIES OF\n-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+        AND\n-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+        BE\n-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\n-OF
+        CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION\n-WITH
+        THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n+The contents
+        of this repository is available under the AGPL-v3 license, see the [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.en.html)
+        for full details."},{"sha":"a9a9afbbcff828bad504db3242b7abe8dbc2e42e","filename":"README.md","status":"modified","additions":2,"deletions":20,"changes":22,"blob_url":"https://github.com/versioneye/versioneye-security/blob/f8c1fecedb3286743b50807a06856a6ab6967194/README.md","raw_url":"https://github.com/versioneye/versioneye-security/raw/f8c1fecedb3286743b50807a06856a6ab6967194/README.md","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/README.md?ref=f8c1fecedb3286743b50807a06856a6ab6967194","patch":"@@
+        -101,26 +101,8 @@ Make sure that you followed the steps in the configuration
+        section, before you r\n \n All Files covered to 95.23%.\n \n-## License\n-\n-VersionEye-Core
+        is licensed under the MIT license!\n+## AGPL-v3 License\n \n Copyright (c)
+        2016 VersionEye GmbH\n \n-Permission is hereby granted, free of charge, to
+        any person obtaining a copy\n-of this software and associated documentation
+        files (the \"Software\"), to deal\n-in the Software without restriction, including
+        without limitation the rights\n-to use, copy, modify, merge, publish, distribute,
+        sublicense, and/or sell\n-copies of the Software, and to permit persons to
+        whom the Software is\n-furnished to do so, subject to the following conditions:\n-\n-The
+        above copyright notice and this permission notice shall be included in all\n-copies
+        or substantial portions of the Software.\n-\n-THE SOFTWARE IS PROVIDED \"AS
+        IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n-IMPLIED, INCLUDING BUT NOT
+        LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n-FITNESS FOR A PARTICULAR PURPOSE
+        AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n-AUTHORS OR COPYRIGHT HOLDERS
+        BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n-LIABILITY, WHETHER IN AN ACTION
+        OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n-OUT OF OR IN CONNECTION WITH
+        THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n-SOFTWARE.\n+The contents
+        of this repository is available under the AGPL-v3 license, see the [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.en.html)
+        for full details."}]}'
+    http_version: 
+  recorded_at: Tue, 23 May 2017 12:40:07 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/versioneye/versioneye-security/commits/0ca54747c9579c2427d1331eb4f3b7bf40d06143
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 4.7.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Tue, 23 May 2017 12:40:07 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '60'
+      X-Ratelimit-Remaining:
+      - '51'
+      X-Ratelimit-Reset:
+      - '1495546801'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      Etag:
+      - W/"7c66112eac11ab0399443b674fad5795"
+      Last-Modified:
+      - Mon, 04 Jul 2016 09:26:57 GMT
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Served-By:
+      - 769054b6618fd34f3638f01469b229db
+      X-Github-Request-Id:
+      - D211:458C:7B0958C:8E69FE3:59242DA7
+    body:
+      encoding: ASCII-8BIT
+      string: '{"sha":"0ca54747c9579c2427d1331eb4f3b7bf40d06143","commit":{"author":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-07-04T09:26:57Z"},"committer":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-07-04T09:26:57Z"},"message":"Update
+        Gems","tree":{"sha":"ddd2484ba909f16c74e35cbd1bf5c6c0da926d06","url":"https://api.github.com/repos/versioneye/versioneye-security/git/trees/ddd2484ba909f16c74e35cbd1bf5c6c0da926d06"},"url":"https://api.github.com/repos/versioneye/versioneye-security/git/commits/0ca54747c9579c2427d1331eb4f3b7bf40d06143","comment_count":0},"url":"https://api.github.com/repos/versioneye/versioneye-security/commits/0ca54747c9579c2427d1331eb4f3b7bf40d06143","html_url":"https://github.com/versioneye/versioneye-security/commit/0ca54747c9579c2427d1331eb4f3b7bf40d06143","comments_url":"https://api.github.com/repos/versioneye/versioneye-security/commits/0ca54747c9579c2427d1331eb4f3b7bf40d06143/comments","author":{"login":"reiz","id":652130,"avatar_url":"https://avatars3.githubusercontent.com/u/652130?v=3","gravatar_id":"","url":"https://api.github.com/users/reiz","html_url":"https://github.com/reiz","followers_url":"https://api.github.com/users/reiz/followers","following_url":"https://api.github.com/users/reiz/following{/other_user}","gists_url":"https://api.github.com/users/reiz/gists{/gist_id}","starred_url":"https://api.github.com/users/reiz/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/reiz/subscriptions","organizations_url":"https://api.github.com/users/reiz/orgs","repos_url":"https://api.github.com/users/reiz/repos","events_url":"https://api.github.com/users/reiz/events{/privacy}","received_events_url":"https://api.github.com/users/reiz/received_events","type":"User","site_admin":false},"committer":{"login":"reiz","id":652130,"avatar_url":"https://avatars3.githubusercontent.com/u/652130?v=3","gravatar_id":"","url":"https://api.github.com/users/reiz","html_url":"https://github.com/reiz","followers_url":"https://api.github.com/users/reiz/followers","following_url":"https://api.github.com/users/reiz/following{/other_user}","gists_url":"https://api.github.com/users/reiz/gists{/gist_id}","starred_url":"https://api.github.com/users/reiz/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/reiz/subscriptions","organizations_url":"https://api.github.com/users/reiz/orgs","repos_url":"https://api.github.com/users/reiz/repos","events_url":"https://api.github.com/users/reiz/events{/privacy}","received_events_url":"https://api.github.com/users/reiz/received_events","type":"User","site_admin":false},"parents":[{"sha":"6cdb2f45760624bdeab704a0f1a9f2eaa47d3ba2","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/6cdb2f45760624bdeab704a0f1a9f2eaa47d3ba2","html_url":"https://github.com/versioneye/versioneye-security/commit/6cdb2f45760624bdeab704a0f1a9f2eaa47d3ba2"}],"stats":{"total":57,"additions":28,"deletions":29},"files":[{"sha":"b5837b0a325b3925fd3fbd9d22ae95cd7ff85f09","filename":"Gemfile","status":"modified","additions":3,"deletions":3,"changes":6,"blob_url":"https://github.com/versioneye/versioneye-security/blob/0ca54747c9579c2427d1331eb4f3b7bf40d06143/Gemfile","raw_url":"https://github.com/versioneye/versioneye-security/raw/0ca54747c9579c2427d1331eb4f3b7bf40d06143/Gemfile","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/Gemfile?ref=0ca54747c9579c2427d1331eb4f3b7bf40d06143","patch":"@@
+        -3,7 +3,7 @@ source \"http://rubygems.org\"\n gem ''bundler'' , ''~> 1.12.0''\n
+        gem ''syck''    , ''1.1.0''\n \n-gem ''versioneye-core''    , :git => ''https://github.com/versioneye/versioneye-core.git'',
+        :tag => ''v8.26.9''\n+gem ''versioneye-core''    , :git => ''https://github.com/versioneye/versioneye-core.git'',
+        :tag => ''v8.26.10''\n # gem ''versioneye-core''    , :path => \"~/workspace/versioneye/versioneye-core\"\n
+        \n gem ''rufus-scheduler'', ''3.2.1''\n@@ -15,8 +15,8 @@ group :development
+        do\n end\n \n group :test do\n-  gem ''simplecov''       , ''~> 0.11.1''\n-  gem
+        ''rspec''           , ''~> 3.4.0''\n+  gem ''simplecov''       , ''~> 0.12.0''\n+  gem
+        ''rspec''           , ''~> 3.5.0''\n   gem ''rspec_junit_formatter'', ''0.2.3''\n   gem
+        ''database_cleaner'', ''~> 1.5.1''\n   gem ''factory_girl''    , ''~> 4.7.0''"},{"sha":"b49d5bc326bda7774f02463184739286c531247e","filename":"Gemfile.lock","status":"modified","additions":25,"deletions":26,"changes":51,"blob_url":"https://github.com/versioneye/versioneye-security/blob/0ca54747c9579c2427d1331eb4f3b7bf40d06143/Gemfile.lock","raw_url":"https://github.com/versioneye/versioneye-security/raw/0ca54747c9579c2427d1331eb4f3b7bf40d06143/Gemfile.lock","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/Gemfile.lock?ref=0ca54747c9579c2427d1331eb4f3b7bf40d06143","patch":"@@
+        -1,9 +1,9 @@\n GIT\n   remote: https://github.com/versioneye/versioneye-core.git\n-  revision:
+        d3137621e7a3024015f61cfcf337801cb575cd66\n-  tag: v8.26.9\n+  revision: cdaf05fef2a22f4505771612ac2c6728b7dd0635\n+  tag:
+        v8.26.10\n   specs:\n-    versioneye-core (8.26.9)\n+    versioneye-core (8.26.10)\n       actionmailer
+        (~> 4.2.6)\n       aws-sdk (~> 2.3.0)\n       bundler (~> 1.12.5)\n@@ -12,7
+        +12,6 @@ GIT\n       dalli (~> 2.7.0)\n       etcd (~> 0.3.0)\n       httparty
+        (~> 0.13.1)\n-      json (~> 1.8.0)\n       kgio (~> 2.10.0)\n       mongoid
+        (~> 5.1.0)\n       naturalsorter (~> 3.0.14)\n@@ -23,7 +22,7 @@ GIT\n       pdfkit
+        (~> 0.8.0)\n       persistent_httparty (~> 0.1.0)\n       semverly (~> 1.0.0)\n-      stripe
+        (~> 1.43.0)\n+      stripe (~> 1.44.0)\n       tire (~> 0.6.2)\n       will_paginate_mongoid
+        (= 2.0.1)\n       wkhtmltopdf-binary (~> 0.9.9.1)\n@@ -105,12 +104,12 @@ GEM\n     gene_pool
+        (1.4.1)\n       thread_safe\n     git (1.3.0)\n-    github_api (0.14.2)\n+    github_api
+        (0.14.3)\n       addressable (~> 2.4.0)\n       descendants_tracker (~> 0.0.4)\n       faraday
+        (~> 0.8, < 0.10)\n       hashie (>= 3.4)\n-      oauth2\n+      oauth2 (~>
+        1.0.0)\n     globalid (0.3.6)\n       activesupport (>= 4.1.0)\n     hashie
+        (3.4.4)\n@@ -135,7 +134,7 @@ GEM\n     jmespath (1.2.4)\n       json_pure
+        (>= 1.8.1)\n     json (1.8.3)\n-    json_pure (2.0.0)\n+    json_pure (2.0.1)\n     jwt
+        (1.5.4)\n     kgio (2.10.0)\n     loofah (2.0.3)\n@@ -164,12 +163,12 @@ GEM\n       mini_portile2
+        (~> 2.1.0)\n       pkg-config (~> 1.1.7)\n     oauth (0.5.1)\n-    oauth2
+        (1.2.0)\n+    oauth2 (1.0.0)\n       faraday (>= 0.8, < 0.10)\n       jwt
+        (~> 1.0)\n       multi_json (~> 1.3)\n       multi_xml (~> 0.5)\n-      rack
+        (>= 1.2, < 3)\n+      rack (~> 1.2)\n     octokit (4.3.0)\n       sawyer (~>
+        0.7.0, >= 0.5.3)\n     origin (2.2.0)\n@@ -198,19 +197,19 @@ GEM\n       http-cookie
+        (>= 1.0.2, < 2.0)\n       mime-types (>= 1.16, < 3.0)\n       netrc (~> 0.7)\n-    rspec
+        (3.4.0)\n-      rspec-core (~> 3.4.0)\n-      rspec-expectations (~> 3.4.0)\n-      rspec-mocks
+        (~> 3.4.0)\n-    rspec-core (3.4.4)\n-      rspec-support (~> 3.4.0)\n-    rspec-expectations
+        (3.4.0)\n+    rspec (3.5.0)\n+      rspec-core (~> 3.5.0)\n+      rspec-expectations
+        (~> 3.5.0)\n+      rspec-mocks (~> 3.5.0)\n+    rspec-core (3.5.0)\n+      rspec-support
+        (~> 3.5.0)\n+    rspec-expectations (3.5.0)\n       diff-lcs (>= 1.2.0, <
+        2.0)\n-      rspec-support (~> 3.4.0)\n-    rspec-mocks (3.4.1)\n+      rspec-support
+        (~> 3.5.0)\n+    rspec-mocks (3.5.0)\n       diff-lcs (>= 1.2.0, < 2.0)\n-      rspec-support
+        (~> 3.4.0)\n-    rspec-support (3.4.1)\n+      rspec-support (~> 3.5.0)\n+    rspec-support
+        (3.5.0)\n     rspec_junit_formatter (0.2.3)\n       builder (< 4)\n       rspec-core
+        (>= 2, < 4, != 2.12.0)\n@@ -226,12 +225,12 @@ GEM\n     shoulda-context (1.2.1)\n     shoulda-matchers
+        (2.8.0)\n       activesupport (>= 3.0.0)\n-    simplecov (0.11.2)\n+    simplecov
+        (0.12.0)\n       docile (~> 1.1.0)\n-      json (~> 1.8)\n+      json (>=
+        1.8, < 3)\n       simplecov-html (~> 0.10.0)\n     simplecov-html (0.10.0)\n-    stripe
+        (1.43.1)\n+    stripe (1.44.0)\n       rest-client (~> 1.4)\n     syck (1.1.0)\n     thread_safe
+        (0.3.5)\n@@ -266,11 +265,11 @@ DEPENDENCIES\n   factory_girl (~> 4.7.0)\n   jeweler
+        (~> 2.1.0)\n   rdoc (~> 4.2.0)\n-  rspec (~> 3.4.0)\n+  rspec (~> 3.5.0)\n   rspec_junit_formatter
+        (= 0.2.3)\n   rufus-scheduler (= 3.2.1)\n   shoulda\n-  simplecov (~> 0.11.1)\n+  simplecov
+        (~> 0.12.0)\n   syck (= 1.1.0)\n   versioneye-core!\n "}]}'
+    http_version: 
+  recorded_at: Tue, 23 May 2017 12:40:07 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/versioneye/versioneye-security/commits/38f1ded5f5bfff172256f952c544ebc1cb8b76f5
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 4.7.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Tue, 23 May 2017 12:40:08 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '60'
+      X-Ratelimit-Remaining:
+      - '50'
+      X-Ratelimit-Reset:
+      - '1495546801'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      Etag:
+      - W/"d57ede05272f413918a51fc9718b4e66"
+      Last-Modified:
+      - Fri, 06 May 2016 15:46:30 GMT
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - D212:458C:7B0965A:8E6A0D1:59242DA8
+    body:
+      encoding: ASCII-8BIT
+      string: '{"sha":"38f1ded5f5bfff172256f952c544ebc1cb8b76f5","commit":{"author":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-05-06T15:46:30Z"},"committer":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-05-06T15:46:30Z"},"message":"Update
+        gemspec","tree":{"sha":"8ead48fd271ef3e41115d377d62271fdba310ac3","url":"https://api.github.com/repos/versioneye/versioneye-security/git/trees/8ead48fd271ef3e41115d377d62271fdba310ac3"},"url":"https://api.github.com/repos/versioneye/versioneye-security/git/commits/38f1ded5f5bfff172256f952c544ebc1cb8b76f5","comment_count":0},"url":"https://api.github.com/repos/versioneye/versioneye-security/commits/38f1ded5f5bfff172256f952c544ebc1cb8b76f5","html_url":"https://github.com/versioneye/versioneye-security/commit/38f1ded5f5bfff172256f952c544ebc1cb8b76f5","comments_url":"https://api.github.com/repos/versioneye/versioneye-security/commits/38f1ded5f5bfff172256f952c544ebc1cb8b76f5/comments","author":{"login":"reiz","id":652130,"avatar_url":"https://avatars3.githubusercontent.com/u/652130?v=3","gravatar_id":"","url":"https://api.github.com/users/reiz","html_url":"https://github.com/reiz","followers_url":"https://api.github.com/users/reiz/followers","following_url":"https://api.github.com/users/reiz/following{/other_user}","gists_url":"https://api.github.com/users/reiz/gists{/gist_id}","starred_url":"https://api.github.com/users/reiz/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/reiz/subscriptions","organizations_url":"https://api.github.com/users/reiz/orgs","repos_url":"https://api.github.com/users/reiz/repos","events_url":"https://api.github.com/users/reiz/events{/privacy}","received_events_url":"https://api.github.com/users/reiz/received_events","type":"User","site_admin":false},"committer":{"login":"reiz","id":652130,"avatar_url":"https://avatars3.githubusercontent.com/u/652130?v=3","gravatar_id":"","url":"https://api.github.com/users/reiz","html_url":"https://github.com/reiz","followers_url":"https://api.github.com/users/reiz/followers","following_url":"https://api.github.com/users/reiz/following{/other_user}","gists_url":"https://api.github.com/users/reiz/gists{/gist_id}","starred_url":"https://api.github.com/users/reiz/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/reiz/subscriptions","organizations_url":"https://api.github.com/users/reiz/orgs","repos_url":"https://api.github.com/users/reiz/repos","events_url":"https://api.github.com/users/reiz/events{/privacy}","received_events_url":"https://api.github.com/users/reiz/received_events","type":"User","site_admin":false},"parents":[{"sha":"fc8033094baad598595826c9d8f5d53dae7684d6","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/fc8033094baad598595826c9d8f5d53dae7684d6","html_url":"https://github.com/versioneye/versioneye-security/commit/fc8033094baad598595826c9d8f5d53dae7684d6"}],"stats":{"total":4,"additions":2,"deletions":2},"files":[{"sha":"a8ebfff1f6e76530e63f74b32ee26e0ce5303702","filename":"ruby_crawl.gemspec","status":"modified","additions":2,"deletions":2,"changes":4,"blob_url":"https://github.com/versioneye/versioneye-security/blob/38f1ded5f5bfff172256f952c544ebc1cb8b76f5/ruby_crawl.gemspec","raw_url":"https://github.com/versioneye/versioneye-security/raw/38f1ded5f5bfff172256f952c544ebc1cb8b76f5/ruby_crawl.gemspec","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/ruby_crawl.gemspec?ref=38f1ded5f5bfff172256f952c544ebc1cb8b76f5","patch":"@@
+        -2,11 +2,11 @@\n # DO NOT EDIT THIS FILE DIRECTLY\n # Instead, edit Jeweler::Tasks
+        in Rakefile, and run ''rake gemspec''\n # -*- encoding: utf-8 -*-\n-# stub:
+        ruby_crawl 1.0.0 ruby lib\n+# stub: ruby_crawl 1.0.1 ruby lib\n \n Gem::Specification.new
+        do |s|\n   s.name = \"ruby_crawl\"\n-  s.version = \"1.0.0\"\n+  s.version
+        = \"1.0.1\"\n \n   s.required_rubygems_version = Gem::Requirement.new(\">=
+        0\") if s.respond_to? :required_rubygems_version=\n   s.require_paths = [\"lib\"]"}]}'
+    http_version: 
+  recorded_at: Tue, 23 May 2017 12:40:08 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/versioneye/versioneye-security/commits/09a1c57dc74926a31792e3988315135278461c89
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 4.7.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Tue, 23 May 2017 12:40:09 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '60'
+      X-Ratelimit-Remaining:
+      - '49'
+      X-Ratelimit-Reset:
+      - '1495546801'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      Etag:
+      - W/"22c10f0dc8a70b78c27d9a59cddd08e4"
+      Last-Modified:
+      - Fri, 04 Mar 2016 11:04:52 GMT
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Served-By:
+      - 9e60649f02cd840ee8baa9960690f79f
+      X-Github-Request-Id:
+      - D213:458B:7EE95A0:92D7BA5:59242DA8
+    body:
+      encoding: ASCII-8BIT
+      string: '{"sha":"09a1c57dc74926a31792e3988315135278461c89","commit":{"author":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-03-04T11:04:52Z"},"committer":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-03-04T11:04:52Z"},"message":"Fix
+        settings for test env. on CircleCi.","tree":{"sha":"41599829c5eca51312098417adbeffcb385e4fd1","url":"https://api.github.com/repos/versioneye/versioneye-security/git/trees/41599829c5eca51312098417adbeffcb385e4fd1"},"url":"https://api.github.com/repos/versioneye/versioneye-security/git/commits/09a1c57dc74926a31792e3988315135278461c89","comment_count":0},"url":"https://api.github.com/repos/versioneye/versioneye-security/commits/09a1c57dc74926a31792e3988315135278461c89","html_url":"https://github.com/versioneye/versioneye-security/commit/09a1c57dc74926a31792e3988315135278461c89","comments_url":"https://api.github.com/repos/versioneye/versioneye-security/commits/09a1c57dc74926a31792e3988315135278461c89/comments","author":{"login":"reiz","id":652130,"avatar_url":"https://avatars3.githubusercontent.com/u/652130?v=3","gravatar_id":"","url":"https://api.github.com/users/reiz","html_url":"https://github.com/reiz","followers_url":"https://api.github.com/users/reiz/followers","following_url":"https://api.github.com/users/reiz/following{/other_user}","gists_url":"https://api.github.com/users/reiz/gists{/gist_id}","starred_url":"https://api.github.com/users/reiz/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/reiz/subscriptions","organizations_url":"https://api.github.com/users/reiz/orgs","repos_url":"https://api.github.com/users/reiz/repos","events_url":"https://api.github.com/users/reiz/events{/privacy}","received_events_url":"https://api.github.com/users/reiz/received_events","type":"User","site_admin":false},"committer":{"login":"reiz","id":652130,"avatar_url":"https://avatars3.githubusercontent.com/u/652130?v=3","gravatar_id":"","url":"https://api.github.com/users/reiz","html_url":"https://github.com/reiz","followers_url":"https://api.github.com/users/reiz/followers","following_url":"https://api.github.com/users/reiz/following{/other_user}","gists_url":"https://api.github.com/users/reiz/gists{/gist_id}","starred_url":"https://api.github.com/users/reiz/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/reiz/subscriptions","organizations_url":"https://api.github.com/users/reiz/orgs","repos_url":"https://api.github.com/users/reiz/repos","events_url":"https://api.github.com/users/reiz/events{/privacy}","received_events_url":"https://api.github.com/users/reiz/received_events","type":"User","site_admin":false},"parents":[{"sha":"733a1500f48b40bf2fc16fa1034f9c424e30bfef","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/733a1500f48b40bf2fc16fa1034f9c424e30bfef","html_url":"https://github.com/versioneye/versioneye-security/commit/733a1500f48b40bf2fc16fa1034f9c424e30bfef"}],"stats":{"total":12,"additions":6,"deletions":6},"files":[{"sha":"684ca44202b66c1b1004c38ae1b5b84c420d6ae9","filename":"config/settings.json","status":"modified","additions":6,"deletions":6,"changes":12,"blob_url":"https://github.com/versioneye/versioneye-security/blob/09a1c57dc74926a31792e3988315135278461c89/config/settings.json","raw_url":"https://github.com/versioneye/versioneye-security/raw/09a1c57dc74926a31792e3988315135278461c89/config/settings.json","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/config/settings.json?ref=09a1c57dc74926a31792e3988315135278461c89","patch":"@@
+        -70,10 +70,10 @@\n     \"cocoapods_spec_dir\": \"/home/versioneye/cocoapods/cocoapods-specs\",\n     \"elasticsearch_product_index\":
+        \"product_test\",\n     \"elasticsearch_user_index\": \"user_test\",\n-    \"elasticsearch_addr\":
+        \"172.16.172.128\",\n-    \"elasticsearch_port\": \"9200\",\n-    \"rabbitmq_addr\":
+        \"172.16.148.134\",\n-    \"rabbitmq_port\": \"5672\",\n+    \"elasticsearch_addr\":
+        \"env_ES_PORT_9200_TCP_ADDR\",\n+    \"elasticsearch_port\": \"env_ES_PORT_9200_TCP_PORT\",\n+    \"rabbitmq_addr\":
+        \"env_RM_PORT_5672_TCP_ADDR\",\n+    \"rabbitmq_port\": \"env_RM_PORT_5672_TCP_PORT\",\n     \"github_base_url\":
+        \"https://github.com\",\n     \"github_api_url\": \"https://api.github.com\",\n     \"github_client_id\":
+        \"\",\n@@ -83,8 +83,8 @@\n     \"projects_unlimited\": false,\n     \"memcache_password\":
+        null,\n     \"memcache_username\": null,\n-    \"memcache_addr\": \"localhost\",\n-    \"memcache_port\":
+        \"11211\",\n+    \"memcache_addr\": \"env_MC_PORT_11211_TCP_ADDR\",\n+    \"memcache_port\":
+        \"env_MC_PORT_11211_TCP_PORT\",\n     \"s3_infographics_bucket\": \"veye_test_infographics\",\n     \"s3_projects_bucket\":
+        \"veye_test_projects\",\n     \"s3_receipt_bucket\": \"veye-test-receipt\","}]}'
+    http_version: 
+  recorded_at: Tue, 23 May 2017 12:40:09 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/versioneye/versioneye-security/commits/d4127068129bc56abb40ca1af96ff04b14acca94
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Octokit Ruby Gem 4.7.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Tue, 23 May 2017 12:40:09 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '60'
+      X-Ratelimit-Remaining:
+      - '48'
+      X-Ratelimit-Reset:
+      - '1495546801'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      Etag:
+      - W/"cebfb4fde040cc86fed3737e4f0707b7"
+      Last-Modified:
+      - Fri, 06 May 2016 15:45:00 GMT
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Served-By:
+      - 4537b68c46a1b65b106078b0a2578ee2
+      X-Github-Request-Id:
+      - D214:4589:35F404F:3E4F644:59242DA9
+    body:
+      encoding: ASCII-8BIT
+      string: '{"sha":"d4127068129bc56abb40ca1af96ff04b14acca94","commit":{"author":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-05-06T15:45:00Z"},"committer":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-05-06T15:45:00Z"},"message":"Update
+        gemspec","tree":{"sha":"16c7ea5f9c12c1e573bb4f408cc79822e8d1a3c2","url":"https://api.github.com/repos/versioneye/versioneye-security/git/trees/16c7ea5f9c12c1e573bb4f408cc79822e8d1a3c2"},"url":"https://api.github.com/repos/versioneye/versioneye-security/git/commits/d4127068129bc56abb40ca1af96ff04b14acca94","comment_count":0},"url":"https://api.github.com/repos/versioneye/versioneye-security/commits/d4127068129bc56abb40ca1af96ff04b14acca94","html_url":"https://github.com/versioneye/versioneye-security/commit/d4127068129bc56abb40ca1af96ff04b14acca94","comments_url":"https://api.github.com/repos/versioneye/versioneye-security/commits/d4127068129bc56abb40ca1af96ff04b14acca94/comments","author":{"login":"reiz","id":652130,"avatar_url":"https://avatars3.githubusercontent.com/u/652130?v=3","gravatar_id":"","url":"https://api.github.com/users/reiz","html_url":"https://github.com/reiz","followers_url":"https://api.github.com/users/reiz/followers","following_url":"https://api.github.com/users/reiz/following{/other_user}","gists_url":"https://api.github.com/users/reiz/gists{/gist_id}","starred_url":"https://api.github.com/users/reiz/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/reiz/subscriptions","organizations_url":"https://api.github.com/users/reiz/orgs","repos_url":"https://api.github.com/users/reiz/repos","events_url":"https://api.github.com/users/reiz/events{/privacy}","received_events_url":"https://api.github.com/users/reiz/received_events","type":"User","site_admin":false},"committer":{"login":"reiz","id":652130,"avatar_url":"https://avatars3.githubusercontent.com/u/652130?v=3","gravatar_id":"","url":"https://api.github.com/users/reiz","html_url":"https://github.com/reiz","followers_url":"https://api.github.com/users/reiz/followers","following_url":"https://api.github.com/users/reiz/following{/other_user}","gists_url":"https://api.github.com/users/reiz/gists{/gist_id}","starred_url":"https://api.github.com/users/reiz/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/reiz/subscriptions","organizations_url":"https://api.github.com/users/reiz/orgs","repos_url":"https://api.github.com/users/reiz/repos","events_url":"https://api.github.com/users/reiz/events{/privacy}","received_events_url":"https://api.github.com/users/reiz/received_events","type":"User","site_admin":false},"parents":[{"sha":"86e60d48d1872dd636ce240cbf1f9465845327b6","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/86e60d48d1872dd636ce240cbf1f9465845327b6","html_url":"https://github.com/versioneye/versioneye-security/commit/86e60d48d1872dd636ce240cbf1f9465845327b6"}],"stats":{"total":134,"additions":134,"deletions":0},"files":[{"sha":"6427c3a88d1e875560189848c8b3b1b0f4bf5534","filename":"ruby_crawl.gemspec","status":"added","additions":95,"deletions":0,"changes":95,"blob_url":"https://github.com/versioneye/versioneye-security/blob/d4127068129bc56abb40ca1af96ff04b14acca94/ruby_crawl.gemspec","raw_url":"https://github.com/versioneye/versioneye-security/raw/d4127068129bc56abb40ca1af96ff04b14acca94/ruby_crawl.gemspec","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/ruby_crawl.gemspec?ref=d4127068129bc56abb40ca1af96ff04b14acca94","patch":"@@
+        -0,0 +1,95 @@\n+# Generated by jeweler\n+# DO NOT EDIT THIS FILE DIRECTLY\n+#
+        Instead, edit Jeweler::Tasks in Rakefile, and run ''rake gemspec''\n+# -*-
+        encoding: utf-8 -*-\n+# stub: ruby_crawl 0.1.1 ruby lib\n+\n+Gem::Specification.new
+        do |s|\n+  s.name = \"ruby_crawl\"\n+  s.version = \"0.1.1\"\n+\n+  s.required_rubygems_version
+        = Gem::Requirement.new(\">= 0\") if s.respond_to? :required_rubygems_version=\n+  s.require_paths
+        = [\"lib\"]\n+  s.authors = [\"reiz\"]\n+  s.date = \"2016-05-06\"\n+  s.description
+        = \"VersionEye crawlers implemented in Ruby\"\n+  s.email = \"robert.reiz.81@gmail.com\"\n+  s.extra_rdoc_files
+        = [\n+    \"LICENSE.txt\",\n+    \"README.md\"\n+  ]\n+  s.files = [\n+    \".document\",\n+    \".ruby-version\",\n+    \"Dockerfile\",\n+    \"Gemfile\",\n+    \"Gemfile.lock\",\n+    \"LICENSE.txt\",\n+    \"README.md\",\n+    \"Rakefile\",\n+    \"VERSION\",\n+    \"circle.yml\",\n+    \"config/mongoid.yml\",\n+    \"config/mongoid.yml.ci\",\n+    \"config/settings.json\",\n+    \"lib/versioneye-security.rb\",\n+    \"lib/versioneye/common_security.rb\",\n+    \"lib/versioneye/java_security_crawler.rb\",\n+    \"lib/versioneye/php_magento_crawler.rb\",\n+    \"lib/versioneye/php_sensiolabs_crawler.rb\",\n+    \"lib/versioneye/producers/producer.rb\",\n+    \"lib/versioneye/producers/security_producer.rb\",\n+    \"lib/versioneye/python_security_crawler.rb\",\n+    \"lib/versioneye/ruby_security_crawler.rb\",\n+    \"lib/versioneye/workers/security_worker.rb\",\n+    \"lib/versioneye/workers/worker.rb\",\n+    \"log/.keep_it\",\n+    \"scripts/run_tests_local.sh\",\n+    \"spec/spec_helper.rb\",\n+    \"spec/versioneye/domain_factories/product_factory.rb\",\n+    \"spec/versioneye/domain_factories/user_factory.rb\",\n+    \"spec/versioneye/java_security_crawler_spec.rb\",\n+    \"spec/versioneye/php_magento_crawler_spec.rb\",\n+    \"spec/versioneye/php_sensiolabs_crawler_spec.rb\",\n+    \"spec/versioneye/python_security_crawler_spec.rb\",\n+    \"spec/versioneye/ruby_security_crawler_spec.rb\",\n+    \"supervisord.conf\",\n+    \"tasks/versioneye.rake\",\n+    \"versioneye-security.gemspec\"\n+  ]\n+  s.homepage
+        = \"http://github.com/reiz/ruby_crawl\"\n+  s.licenses = [\"MIT\"]\n+  s.rubygems_version
+        = \"2.4.8\"\n+  s.summary = \"VersionEye crawlers implemented in Ruby\"\n+\n+  if
+        s.respond_to? :specification_version then\n+    s.specification_version =
+        4\n+\n+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new(''1.2.0'')
+        then\n+      s.add_runtime_dependency(%q<bundler>, [\"~> 1.12.0\"])\n+      s.add_runtime_dependency(%q<syck>,
+        [\"= 1.1.0\"])\n+      s.add_runtime_dependency(%q<versioneye-core>, [\">=
+        0\"])\n+      s.add_runtime_dependency(%q<rufus-scheduler>, [\"= 3.2.0\"])\n+      s.add_development_dependency(%q<shoulda>,
+        [\">= 0\"])\n+      s.add_development_dependency(%q<rdoc>, [\"~> 4.2.0\"])\n+      s.add_development_dependency(%q<jeweler>,
+        [\"~> 2.1.0\"])\n+    else\n+      s.add_dependency(%q<bundler>, [\"~> 1.12.0\"])\n+      s.add_dependency(%q<syck>,
+        [\"= 1.1.0\"])\n+      s.add_dependency(%q<versioneye-core>, [\">= 0\"])\n+      s.add_dependency(%q<rufus-scheduler>,
+        [\"= 3.2.0\"])\n+      s.add_dependency(%q<shoulda>, [\">= 0\"])\n+      s.add_dependency(%q<rdoc>,
+        [\"~> 4.2.0\"])\n+      s.add_dependency(%q<jeweler>, [\"~> 2.1.0\"])\n+    end\n+  else\n+    s.add_dependency(%q<bundler>,
+        [\"~> 1.12.0\"])\n+    s.add_dependency(%q<syck>, [\"= 1.1.0\"])\n+    s.add_dependency(%q<versioneye-core>,
+        [\">= 0\"])\n+    s.add_dependency(%q<rufus-scheduler>, [\"= 3.2.0\"])\n+    s.add_dependency(%q<shoulda>,
+        [\">= 0\"])\n+    s.add_dependency(%q<rdoc>, [\"~> 4.2.0\"])\n+    s.add_dependency(%q<jeweler>,
+        [\"~> 2.1.0\"])\n+  end\n+end\n+"},{"sha":"ef1298ca2f9a57fc95c3d091d7e8237599f9eaf9","filename":"scripts/major.sh","status":"added","additions":13,"deletions":0,"changes":13,"blob_url":"https://github.com/versioneye/versioneye-security/blob/d4127068129bc56abb40ca1af96ff04b14acca94/scripts/major.sh","raw_url":"https://github.com/versioneye/versioneye-security/raw/d4127068129bc56abb40ca1af96ff04b14acca94/scripts/major.sh","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/scripts/major.sh?ref=d4127068129bc56abb40ca1af96ff04b14acca94","patch":"@@
+        -0,0 +1,13 @@\n+#!/bin/bash\n+\n+echo \"rake version:bump:major\"\n+rake version:bump:major\n+\n+echo
+        \"rake gemspec\"\n+rake gemspec\n+\n+echo \"git add .\"\n+git add .\n+\n+echo
+        \"git commit -m ''Update gemspec''\"\n+git commit -m ''Update gemspec''"},{"sha":"cae76bf3ac6f62a1e16603e9ac730a9a45634c31","filename":"scripts/minor.sh","status":"added","additions":13,"deletions":0,"changes":13,"blob_url":"https://github.com/versioneye/versioneye-security/blob/d4127068129bc56abb40ca1af96ff04b14acca94/scripts/minor.sh","raw_url":"https://github.com/versioneye/versioneye-security/raw/d4127068129bc56abb40ca1af96ff04b14acca94/scripts/minor.sh","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/scripts/minor.sh?ref=d4127068129bc56abb40ca1af96ff04b14acca94","patch":"@@
+        -0,0 +1,13 @@\n+#!/bin/bash\n+\n+echo \"rake version:bump:patch\"\n+rake version:bump:minor\n+\n+echo
+        \"rake gemspec\"\n+rake gemspec\n+\n+echo \"git add .\"\n+git add .\n+\n+echo
+        \"git commit -m ''Update gemspec''\"\n+git commit -m ''Update gemspec''"},{"sha":"8dfced7dd02c6b12e1199ac691214bf6ac3cb5a3","filename":"scripts/patch.sh","status":"added","additions":13,"deletions":0,"changes":13,"blob_url":"https://github.com/versioneye/versioneye-security/blob/d4127068129bc56abb40ca1af96ff04b14acca94/scripts/patch.sh","raw_url":"https://github.com/versioneye/versioneye-security/raw/d4127068129bc56abb40ca1af96ff04b14acca94/scripts/patch.sh","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/scripts/patch.sh?ref=d4127068129bc56abb40ca1af96ff04b14acca94","patch":"@@
+        -0,0 +1,13 @@\n+#!/bin/bash\n+\n+echo \"rake version:bump:patch\"\n+rake version:bump:patch\n+\n+echo
+        \"rake gemspec\"\n+rake gemspec\n+\n+echo \"git add .\"\n+git add .\n+\n+echo
+        \"git commit -m ''Update gemspec''\"\n+git commit -m ''Update gemspec''"}]}'
+    http_version: 
+  recorded_at: Tue, 23 May 2017 12:40:09 GMT
+recorded_with: VCR 3.0.3
