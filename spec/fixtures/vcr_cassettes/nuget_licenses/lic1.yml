@@ -1,0 +1,607 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://www.nuget.org/packages/Newtonsoft.Json/9.0.1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - private
+      Content-Type:
+      - text/html; charset=utf-8
+      Vary:
+      - Accept-Encoding
+      Server:
+      - Microsoft-IIS/8.5
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Strict-Transport-Security:
+      - max-age=31536000
+      Date:
+      - Wed, 15 Feb 2017 17:21:32 GMT
+      Content-Length:
+      - '8399'
+    body:
+      encoding: ASCII-8BIT
+      string: "<!DOCTYPE html>\r\n<html lang=\"en\" class=\"static \" data-root=\"/\">\r\n
+        \   <head>\r\n        <meta charset=\"utf-8\" />\r\n        <meta http-equiv=\"X-UA-Compatible\"
+        content=\"IE=edge\" />\r\n        \r\n    \r\n        <meta property=\"fb:app_id\"
+        content=\"235682883225736\" />\r\n\r\n    <meta name=\"twitter:card\" content=\"summary\">\r\n
+        \   <meta name=\"twitter:site\" content=\"@nuget\">\r\n\r\n    <meta property=\"og:title\"
+        content=\"Json.NET\" />\r\n    <meta property=\"og:type\" content=\"nugetgallery:package\"
+        />\r\n    <meta property=\"og:url\" content=\"https://nuget.org/packages/Newtonsoft.Json/\"
+        />\r\n    <meta property=\"og:description\" content=\"Json.NET is a popular
+        high-performance JSON framework for .NET\" />\r\n    <meta property=\"og:determiner\"
+        content=\"a\"/>\r\n    <meta property=\"og:image\" content=\"http://www.newtonsoft.com/content/images/nugeticon.png\"/>\r\n\r\n\r\n
+        \       \r\n    \r\n\r\n\r\n\r\n        <title>\r\n            NuGet Gallery\r\n
+        \           | Json.NET 9.0.1</title>\r\n\r\n        <link href=\"/favicon.ico\"
+        rel=\"shortcut icon\" type=\"image/x-icon\"/>\r\n        <link title=\"NuGet.org\"
+        type=\"application/opensearchdescription+xml\" href=\"/opensearch.xml\" rel=\"search\">\r\n\r\n
+        \       <link href=\"/Content/css?v=Y8rM1fBFwnJvkpYsJaCfQEYwcJlUPNRpkvHkmMagjJQ1\"
+        rel=\"stylesheet\"/>\r\n\r\n        <link href=\"/Content/font-awesome/css?v=wd5DfaIqnHRUabnWFEulonklM7qt2Vym0q5CoLo5Qbg1\"
+        rel=\"stylesheet\"/>\r\n\r\n        <!--[if IE 7]>\r\n        <link href=\"/Content/font-awesome-ie7.min.css\"
+        rel=\"stylesheet\"/>\r\n\r\n        <![endif]-->\r\n\r\n        \r\n\r\n        <script
+        src=\"/Scripts/modernizr?v=byG8dOZWsVDn1dZ9Dz1vs9imzMfHoSev0enqgT4Wvhw1\"></script>\r\n\r\n
+        \       \r\n        \r\n        \r\n                <!-- Telemetry -->\n        <script
+        type=\"text/javascript\">\n            var appInsights = window.appInsights
+        || function (config) {\n                function s(config) {\n                    t[config]
+        = function () {\n                        var i = arguments;\n                        t.queue.push(function
+        () { t[config].apply(t, i) })\n                    }\n                }\n\n
+        \               var t = { config: config }, r = document, f = window, e =
+        \"script\", o = r.createElement(e), i, u;\n                for (o.src = config.url
+        || \"//az416426.vo.msecnd.net/scripts/a/ai.0.js\", r.getElementsByTagName(e)[0].parentNode.appendChild(o),
+        t.cookie = r.cookie, t.queue = [], i = [\"Event\", \"Exception\", \"Metric\",
+        \"PageView\", \"Trace\"]; i.length;) s(\"track\" + i.pop());\n                return
+        config.disableExceptionTracking || (i = \"onerror\", s(\"_\" + i), u = f[i],
+        f[i] = function (config, r, f, e, o) {\n                    var s = u && u(config,
+        r, f, e, o);\n                    return s !== !0 && t[\"_\" + i](config,
+        r, f, e, o), s\n                }), t\n            }({\n                instrumentationKey:
+        'df3a36b9-dfba-401c-82ab-35690083be3e',\n                samplingPercentage:
+        100\n            });\n\n            window.appInsights = appInsights;\n            appInsights.trackPageView();\n
+        \       </script>\n\r\n    </head>\r\n    <body class=\"s-noclickonce\">\r\n\r\n
+        \       <div id=\"outer-wrapper\">\r\n            <div id=\"content-wrapper\">\r\n
+        \               <header class=\"main\">\r\n                    <div id=\"logo\"><a
+        href=\"/\">NuGet Gallery</a></div>\r\n                    <div id=\"header-sidebox\">\r\n
+        \                       <div id=\"searchBox\" role=\"search\">\r\n                            <form
+        action=\"/packages\" method=\"get\">\r\n                                <input
+        name=\"q\" id=\"searchBoxInput\" class=\"expanding-search\" placeholder=\"Search
+        Packages\" value=\"\" autocomplete=\"off\"  />\r\n                                <input
+        id=\"searchBoxSubmit\" type=\"submit\" value=\"Submit\" />\r\n                            </form>\r\n
+        \                       </div>\r\n                        <div class=\"user-display\">\r\n
+        \       <span class=\"welcome\">\r\n            <a href=\"/users/account/LogOn?returnUrl=%2Fpackages%2FNewtonsoft.Json%2F9.0.1\"
+        title=\"Register for an account or sign in with an existing account\">Register
+        / Sign in</a>\r\n        </span>\r\n</div>\r\n                    </div>\r\n
+        \               </header>\r\n                <nav class=\"main\">\r\n                    <ul
+        id=\"menu\" class=\"expanding-search\">\r\n\r\n    <li><a href=\"/\">Home</a></li>\r\n
+        \   <li class=\"current\"><a href=\"/packages\">Packages</a></li>\r\n    <li><a
+        href=\"/packages/manage/upload\" class=\"upload\">Upload Package</a></li>\r\n
+        \       <li><a href=\"/stats\">Statistics</a></li>\r\n        <li><a href=\"https://docs.nuget.org\">Documentation</a></li>\r\n
+        \   <li><a href=\"/downloads\">Downloads</a></li>\r\n    <li><a href=\"http://blog.nuget.org\">Blog</a></li>\r\n</ul>\r\n
+        \               </nav>\r\n                <div id=\"body\" role=\"main\">\r\n
+        \                   \r\n\r\n\r\n<div id=\"sideColumn\">\r\n    \r\n    <img
+        class=\"logo\" src=\"http://www.newtonsoft.com/content/images/nugeticon.png\"
+        alt=\"Icon for package Newtonsoft.Json\" onerror=\"this.src = 'https://nuget.org/Content/Images/packageDefaultIcon.png';\"
+        />\r\n    <div id=\"stats\">\r\n        <div class=\"stat\">\r\n            <p
+        class=\"stat-number\">47,624,505</p>\r\n            <p class=\"stat-label\">Downloads</p>\r\n
+        \       </div>\r\n        <div class=\"stat\">\r\n            <p class=\"stat-number\">3,959,351</p>\r\n
+        \           <p class=\"stat-label\">Downloads of v 9.0.1</p>\r\n        </div>\r\n
+        \       <div class=\"stat\">\r\n            <p class=\"stat-number\" title=\"47,624,505
+        downloads in 2231 days\">21,346</p>\r\n            <p class=\"stat-label\">Average
+        downloads per day</p>\r\n        </div>\r\n        <div class=\"stat\">\r\n
+        \           <p class=\"stat-number\">2016-06-22</p>\r\n            <p class=\"stat-label\">Last
+        published</p>\r\n        </div>\r\n    </div>\r\n    <nav>\r\n        <ul>\r\n
+        \               <li>\r\n                    <a href=\"http://www.newtonsoft.com/json\"
+        title=\"Visit the project site to learn more about this package\" rel=\"nofollow\">\r\n
+        \                       Project Site\r\n                    </a>\r\n                </li>\r\n
+        \                           <li><a href=\"https://raw.github.com/JamesNK/Newtonsoft.Json/master/LICENSE.md\"
+        title=\"Make sure you agree with the license\" rel=\"nofollow\">License</a></li>\r\n
+        \           <li><a href=\"/packages/Newtonsoft.Json/9.0.1/ContactOwners\"
+        title=\"Ask the package owners a question\">Contact Owners</a></li>\r\n                <li>\r\n
+        \                   <a href=\"/packages/Newtonsoft.Json/9.0.1/ReportAbuse\"
+        title=\"Report the package as abusive\">\r\n                        Report
+        Abuse\r\n                    </a>\r\n                </li>\r\n\r\n                <li><a
+        href=\"https://www.nuget.org/api/v2/package/Newtonsoft.Json/9.0.1\" title=\"Download
+        the raw nupkg file.\" rel=\"nofollow\">Download</a> <a href=\"/packages/Newtonsoft.Json/9.0.1/Download\"
+        title=\"How do I download?\">(how-to)</a></li>\r\n                <li><a class=\"s-clickonce\"
+        href=\"https://npe.codeplex.com/releases/clickonce/NuGetPackageExplorer.application?url=https://www.nuget.org/api/v2/package/Newtonsoft.Json/9.0.1/&amp;id=Newtonsoft.Json&amp;version=9.0.1\"
+        title=\"Explore the nupkg with the NuGet Package Explorer (IE only)\" rel=\"nofollow\">Open
+        in Package Explorer</a></li>\r\n\r\n                                        <li><a
+        href=\"/stats/packages/Newtonsoft.Json?groupby=Version\" title=\"Package Statistics\">Package
+        Statistics</a></li>\r\n        </ul>\r\n    </nav>\r\n\r\n    <div class=\"stat\">\r\n
+        \       <ul class=\"share-buttons\">\r\n\r\n            <li><a href=\"https://www.facebook.com/sharer/sharer.php?u=https://nuget.org/packages/Newtonsoft.Json/&t=Check+out+Newtonsoft.Json+on+%23NuGet.\"
+        target=\"_blank\" title=\"Share on Facebook\"><i class=\"icon-facebook\"></i></a></li>\r\n
+        \           <li><a href=\"https://twitter.com/intent/tweet?url=https://nuget.org/packages/Newtonsoft.Json/&text=Check+out+Newtonsoft.Json+on+%23NuGet.\"
+        target=\"_blank\" title=\"Tweet this package\"><i class=\"icon-twitter\"></i></a></li>\r\n
+        \       </ul>\r\n        <p class=\"stat-label\">Share on Social Networks</p>\r\n
+        \   </div>\r\n\r\n\r\n    \r\n            <div class=\"block\">\r\n                <h3
+        class=\"block-title\">License details</h3>\r\n                <p id=\"sonatypeHeader\">provided
+        by <a href=\"http://sonatype.com/\">Sonatype</a></p>\r\n                                                            <p
+        class=\"licenseName\">MIT</p>\r\n                                            </div>\r\n\r\n\r\n</div>\r\n<div
+        id=\"mainColumn\" role=\"main\">\r\n    \r\n<div class=\"package-page\">\r\n
+        \                   <p class=\"not-latest-message\">\r\n            There
+        is a newer prerelease version of this package available.<br /> See the version
+        list below for details.\r\n        </p>\r\n\r\n\r\n\r\n    <div class=\"package-page-heading\">\r\n
+        \       <h1 title=\"Json.NET\">Json.NET</h1>\r\n        <h2>9.0.1</h2>\r\n
+        \   </div>\r\n        <p>Json.NET is a popular high-performance JSON framework
+        for .NET</p>\r\n\r\n\r\n        <p>\r\n            To install Json.NET, run
+        the following command in the <a href=\"https://docs.nuget.org/docs/start-here/using-the-package-manager-console\">\r\n
+        \               Package Manager Console\r\n            </a>\r\n        </p>\r\n
+        \       <div class=\"nuget-badge\">\r\n            <p>\r\n                <code>\r\n
+        \                   Install-Package Newtonsoft.Json\r\n                         -Version
+        9.0.1\r\n                                    </code>\r\n            </p>\r\n
+        \       </div>\r\n\r\n\r\n    <h3>Owners</h3>\r\n        <ul class=\"owners\">\n
+        \           <li>\n                    <a class=\"owner\" href=\"/profiles/jamesnk\"
+        title=\"jamesnk\">\n<img src=\"https://secure.gravatar.com/avatar/e43cefbb045bbe6e800589876dc5677b?s=32&amp;r=g&amp;d=retro\"
+        class=\"owner-image\" height=\"32\" title=\"jamesnk\" width=\"32\" alt=\"gravatar\"
+        />                    <span class=\"owner-name\">jamesnk</span>\n    </a>\n\n
+        \           </li>\n    </ul>\n\r\n    <div title=\"These authors' works form
+        part of the package or its contents\">\r\n        <h3>Authors</h3>\r\n        <p
+        class=\"authors\">\r\n            James Newton-King\r\n        </p>\r\n    </div>\r\n
+        \           <h3>Tags</h3>\r\n        <ul class=\"tags\">\r\n                <li><a
+        href=\"/packages?q=Tags%3A%22json%22\" title=\"Search for json\">json</a></li>\r\n
+        \       </ul>\r\n            <h3>Dependencies</h3>\r\n    <ul id=\"dependencySets\">\r\n
+        \           <li>\r\n                    <h4>.NETFramework 2.0</h4>\r\n                <ul
+        class=\"dependencySet\">\r\n                        <li>\r\n                                No
+        dependencies.\r\n                        </li>\r\n                </ul>\r\n
+        \           </li>\r\n            <li>\r\n                    <h4>.NETFramework
+        3.5</h4>\r\n                <ul class=\"dependencySet\">\r\n                        <li>\r\n
+        \                               No dependencies.\r\n                        </li>\r\n
+        \               </ul>\r\n            </li>\r\n            <li>\r\n                    <h4>.NETFramework
+        4.0</h4>\r\n                <ul class=\"dependencySet\">\r\n                        <li>\r\n
+        \                               No dependencies.\r\n                        </li>\r\n
+        \               </ul>\r\n            </li>\r\n            <li>\r\n                    <h4>.NETFramework
+        4.5</h4>\r\n                <ul class=\"dependencySet\">\r\n                        <li>\r\n
+        \                               No dependencies.\r\n                        </li>\r\n
+        \               </ul>\r\n            </li>\r\n            <li>\r\n                    <h4>.NETStandard
+        1.0</h4>\r\n                <ul class=\"dependencySet\">\r\n                        <li>\r\n
+        \                               <a href=\"/packages/Microsoft.CSharp/\">Microsoft.CSharp</a>\r\n
+        \                               <span>(&gt;= 4.0.1)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.Collections/\">System.Collections</a>\r\n
+        \                               <span>(&gt;= 4.0.11)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.Diagnostics.Debug/\">System.Diagnostics.Debug</a>\r\n
+        \                               <span>(&gt;= 4.0.11)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.Dynamic.Runtime/\">System.Dynamic.Runtime</a>\r\n
+        \                               <span>(&gt;= 4.0.11)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.Globalization/\">System.Globalization</a>\r\n
+        \                               <span>(&gt;= 4.0.11)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.IO/\">System.IO</a>\r\n
+        \                               <span>(&gt;= 4.1.0)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.Linq/\">System.Linq</a>\r\n
+        \                               <span>(&gt;= 4.1.0)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.Linq.Expressions/\">System.Linq.Expressions</a>\r\n
+        \                               <span>(&gt;= 4.1.0)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.ObjectModel/\">System.ObjectModel</a>\r\n
+        \                               <span>(&gt;= 4.0.12)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.Reflection/\">System.Reflection</a>\r\n
+        \                               <span>(&gt;= 4.1.0)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.Reflection.Extensions/\">System.Reflection.Extensions</a>\r\n
+        \                               <span>(&gt;= 4.0.1)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.Resources.ResourceManager/\">System.Resources.ResourceManager</a>\r\n
+        \                               <span>(&gt;= 4.0.1)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.Runtime/\">System.Runtime</a>\r\n
+        \                               <span>(&gt;= 4.1.0)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.Runtime.Extensions/\">System.Runtime.Extensions</a>\r\n
+        \                               <span>(&gt;= 4.1.0)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.Runtime.Serialization.Primitives/\">System.Runtime.Serialization.Primitives</a>\r\n
+        \                               <span>(&gt;= 4.1.1)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.Text.Encoding/\">System.Text.Encoding</a>\r\n
+        \                               <span>(&gt;= 4.0.11)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.Text.Encoding.Extensions/\">System.Text.Encoding.Extensions</a>\r\n
+        \                               <span>(&gt;= 4.0.11)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.Text.RegularExpressions/\">System.Text.RegularExpressions</a>\r\n
+        \                               <span>(&gt;= 4.1.0)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.Threading/\">System.Threading</a>\r\n
+        \                               <span>(&gt;= 4.0.11)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.Threading.Tasks/\">System.Threading.Tasks</a>\r\n
+        \                               <span>(&gt;= 4.0.11)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.Xml.ReaderWriter/\">System.Xml.ReaderWriter</a>\r\n
+        \                               <span>(&gt;= 4.0.11)</span>\r\n                        </li>\r\n
+        \                       <li>\r\n                                <a href=\"/packages/System.Xml.XDocument/\">System.Xml.XDocument</a>\r\n
+        \                               <span>(&gt;= 4.0.11)</span>\r\n                        </li>\r\n
+        \               </ul>\r\n            </li>\r\n            <li>\r\n                    <h4>Portable
+        Class Library (.NETFramework 4.0, Silverlight 5.0, Windows 8.0, WindowsPhone
+        8.0, WindowsPhoneApp 8.1)</h4>\r\n                <ul class=\"dependencySet\">\r\n
+        \                       <li>\r\n                                No dependencies.\r\n
+        \                       </li>\r\n                </ul>\r\n            </li>\r\n
+        \           <li>\r\n                    <h4>Portable Class Library (.NETFramework
+        4.5, Windows 8.0, WindowsPhone 8.0, WindowsPhoneApp 8.1)</h4>\r\n                <ul
+        class=\"dependencySet\">\r\n                        <li>\r\n                                No
+        dependencies.\r\n                        </li>\r\n                </ul>\r\n
+        \           </li>\r\n    </ul>\r\n    <h3>Version History</h3>\r\n    <table
+        class=\"sexy-table\">\r\n        <thead>\r\n            <tr>\r\n                <th
+        class=\"first\">\r\n                    Version\r\n                </th>\r\n
+        \               <th>\r\n                    Downloads\r\n                </th>\r\n
+        \               <th class=\"last\">\r\n                    Last updated\r\n
+        \               </th>\r\n            </tr>\r\n        </thead>\r\n        <tbody>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        9.0.2-beta2\" href=\"/packages/Newtonsoft.Json/9.0.2-beta2 \">\r\n                                    Json.NET\r\n
+        \                                   9.0.2-beta2\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           31,213\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2017-01-19T07:15:40.2770000\">Thursday,
+        January 19, 2017</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow recommended\">\r\n                        <td
+        class=\"version\" title=\"Latest Stable Version\">\r\n                                <a
+        href=\"/packages/Newtonsoft.Json/9.0.1\" title=\"Json.NET 9.0.1 (this version)\">\r\n
+        \                                   Json.NET 9.0.1 (this version)\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           3,959,351\r\n                        </td>\r\n
+        \                       <td>\r\n                            <span title=\"2016-06-22T08:11:45.4900000\">Wednesday,
+        June 22, 2016</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        8.0.3\" href=\"/packages/Newtonsoft.Json/8.0.3 \">\r\n                                    Json.NET\r\n
+        \                                   8.0.3\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           3,070,916\r\n                        </td>\r\n
+        \                       <td>\r\n                            <span title=\"2016-03-14T09:03:38.6170000\">Monday,
+        March 14, 2016</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        8.0.2\" href=\"/packages/Newtonsoft.Json/8.0.2 \">\r\n                                    Json.NET\r\n
+        \                                   8.0.2\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           2,172,633\r\n                        </td>\r\n
+        \                       <td>\r\n                            <span title=\"2016-01-09T01:06:39.3900000\">Saturday,
+        January 9, 2016</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        8.0.1\" href=\"/packages/Newtonsoft.Json/8.0.1 \">\r\n                                    Json.NET\r\n
+        \                                   8.0.1\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           618,245\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2015-12-29T01:03:30.7370000\">Tuesday,
+        December 29, 2015</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        7.0.1\" href=\"/packages/Newtonsoft.Json/7.0.1 \">\r\n                                    Json.NET\r\n
+        \                                   7.0.1\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           5,170,862\r\n                        </td>\r\n
+        \                       <td>\r\n                            <span title=\"2015-06-22T12:00:36.4400000\">Monday,
+        June 22, 2015</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        6.0.8\" href=\"/packages/Newtonsoft.Json/6.0.8 \">\r\n                                    Json.NET\r\n
+        \                                   6.0.8\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           4,712,118\r\n                        </td>\r\n
+        \                       <td>\r\n                            <span title=\"2015-01-11T07:30:45.8500000\">Sunday,
+        January 11, 2015</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        6.0.7\" href=\"/packages/Newtonsoft.Json/6.0.7 \">\r\n                                    Json.NET\r\n
+        \                                   6.0.7\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           631,508\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2014-12-23T00:09:09.8870000\">Tuesday,
+        December 23, 2014</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        6.0.6\" href=\"/packages/Newtonsoft.Json/6.0.6 \">\r\n                                    Json.NET\r\n
+        \                                   6.0.6\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           2,800,158\r\n                        </td>\r\n
+        \                       <td>\r\n                            <span title=\"2014-10-24T10:57:02.8830000\">Friday,
+        October 24, 2014</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        6.0.5\" href=\"/packages/Newtonsoft.Json/6.0.5 \">\r\n                                    Json.NET\r\n
+        \                                   6.0.5\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           1,519,095\r\n                        </td>\r\n
+        \                       <td>\r\n                            <span title=\"2014-09-06T23:18:33.9870000\">Saturday,
+        September 6, 2014</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        6.0.4\" href=\"/packages/Newtonsoft.Json/6.0.4 \">\r\n                                    Json.NET\r\n
+        \                                   6.0.4\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           4,780,933\r\n                        </td>\r\n
+        \                       <td>\r\n                            <span title=\"2014-08-03T09:19:01.7030000\">Sunday,
+        August 3, 2014</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        6.0.3\" href=\"/packages/Newtonsoft.Json/6.0.3 \">\r\n                                    Json.NET\r\n
+        \                                   6.0.3\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           1,534,624\r\n                        </td>\r\n
+        \                       <td>\r\n                            <span title=\"2014-04-27T05:41:11.6130000\">Sunday,
+        April 27, 2014</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        6.0.2\" href=\"/packages/Newtonsoft.Json/6.0.2 \">\r\n                                    Json.NET\r\n
+        \                                   6.0.2\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           656,252\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2014-03-30T05:55:21.7370000\">Sunday,
+        March 30, 2014</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        6.0.1\" href=\"/packages/Newtonsoft.Json/6.0.1 \">\r\n                                    Json.NET\r\n
+        \                                   6.0.1\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           1,169,326\r\n                        </td>\r\n
+        \                       <td>\r\n                            <span title=\"2014-02-01T11:01:37.4430000\">Saturday,
+        February 1, 2014</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        5.0.8\" href=\"/packages/Newtonsoft.Json/5.0.8 \">\r\n                                    Json.NET\r\n
+        \                                   5.0.8\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           2,117,960\r\n                        </td>\r\n
+        \                       <td>\r\n                            <span title=\"2013-10-17T00:18:13.5800000\">Thursday,
+        October 17, 2013</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        5.0.7\" href=\"/packages/Newtonsoft.Json/5.0.7 \">\r\n                                    Json.NET\r\n
+        \                                   5.0.7\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           435,111\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2013-10-14T10:30:44.2370000\">Monday,
+        October 14, 2013</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        5.0.6\" href=\"/packages/Newtonsoft.Json/5.0.6 \">\r\n                                    Json.NET\r\n
+        \                                   5.0.6\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           2,008,153\r\n                        </td>\r\n
+        \                       <td>\r\n                            <span title=\"2013-06-06T03:11:18.2870000\">Thursday,
+        June 6, 2013</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        5.0.5\" href=\"/packages/Newtonsoft.Json/5.0.5 \">\r\n                                    Json.NET\r\n
+        \                                   5.0.5\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           461,956\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2013-05-08T09:22:03.6570000\">Wednesday,
+        May 8, 2013</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        5.0.4\" href=\"/packages/Newtonsoft.Json/5.0.4 \">\r\n                                    Json.NET\r\n
+        \                                   5.0.4\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           845,013\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2013-04-25T04:48:23.9670000\">Thursday,
+        April 25, 2013</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        5.0.3\" href=\"/packages/Newtonsoft.Json/5.0.3 \">\r\n                                    Json.NET\r\n
+        \                                   5.0.3\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           271,102\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2013-04-14T01:30:54.2270000\">Sunday,
+        April 14, 2013</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        5.0.2\" href=\"/packages/Newtonsoft.Json/5.0.2 \">\r\n                                    Json.NET\r\n
+        \                                   5.0.2\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           253,561\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2013-04-08T11:51:51.7530000\">Monday,
+        April 8, 2013</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        5.0.1\" href=\"/packages/Newtonsoft.Json/5.0.1 \">\r\n                                    Json.NET\r\n
+        \                                   5.0.1\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           427,375\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2013-04-07T07:19:15.4330000\">Sunday,
+        April 7, 2013</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        4.5.11\" href=\"/packages/Newtonsoft.Json/4.5.11 \">\r\n                                    Json.NET\r\n
+        \                                   4.5.11\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           4,270,517\r\n                        </td>\r\n
+        \                       <td>\r\n                            <span title=\"2012-11-20T10:02:18.9830000\">Tuesday,
+        November 20, 2012</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        4.5.10\" href=\"/packages/Newtonsoft.Json/4.5.10 \">\r\n                                    Json.NET\r\n
+        \                                   4.5.10\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           287,390\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2012-10-07T20:20:44.0330000\">Sunday,
+        October 7, 2012</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        4.5.9\" href=\"/packages/Newtonsoft.Json/4.5.9 \">\r\n                                    Json.NET\r\n
+        \                                   4.5.9\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           176,854\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2012-09-08T10:48:50.6700000\">Saturday,
+        September 8, 2012</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        4.5.8\" href=\"/packages/Newtonsoft.Json/4.5.8 \">\r\n                                    Json.NET\r\n
+        \                                   4.5.8\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           217,937\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2012-08-04T02:50:14.4370000\">Saturday,
+        August 4, 2012</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        4.5.7\" href=\"/packages/Newtonsoft.Json/4.5.7 \">\r\n                                    Json.NET\r\n
+        \                                   4.5.7\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           230,585\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2012-06-09T07:42:21.5470000\">Saturday,
+        June 9, 2012</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        4.5.6\" href=\"/packages/Newtonsoft.Json/4.5.6 \">\r\n                                    Json.NET\r\n
+        \                                   4.5.6\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           982,288\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2012-05-30T08:23:30.1930000\">Wednesday,
+        May 30, 2012</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        4.5.5\" href=\"/packages/Newtonsoft.Json/4.5.5 \">\r\n                                    Json.NET\r\n
+        \                                   4.5.5\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           65,426\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2012-05-08T09:08:45.2570000\">Tuesday,
+        May 8, 2012</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        4.5.4\" href=\"/packages/Newtonsoft.Json/4.5.4 \">\r\n                                    Json.NET\r\n
+        \                                   4.5.4\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           56,949\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2012-04-24T22:16:19.8570000\">Tuesday,
+        April 24, 2012</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        4.5.3\" href=\"/packages/Newtonsoft.Json/4.5.3 \">\r\n                                    Json.NET\r\n
+        \                                   4.5.3\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           25,144\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2012-04-13T14:02:58.7770000\">Friday,
+        April 13, 2012</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        4.5.2\" href=\"/packages/Newtonsoft.Json/4.5.2 \">\r\n                                    Json.NET\r\n
+        \                                   4.5.2\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           13,130\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2012-04-11T11:18:28.6870000\">Wednesday,
+        April 11, 2012</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        4.5.1\" href=\"/packages/Newtonsoft.Json/4.5.1 \">\r\n                                    Json.NET\r\n
+        \                                   4.5.1\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           195,017\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2012-03-20T09:12:47.3800000\">Tuesday,
+        March 20, 2012</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        4.0.8\" href=\"/packages/Newtonsoft.Json/4.0.8 \">\r\n                                    Json.NET\r\n
+        \                                   4.0.8\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           227,105\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2012-02-12T01:55:12.1670000\">Sunday,
+        February 12, 2012</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        4.0.7\" href=\"/packages/Newtonsoft.Json/4.0.7 \">\r\n                                    Json.NET\r\n
+        \                                   4.0.7\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           257,814\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2012-01-24T09:35:40.1270000\">Tuesday,
+        January 24, 2012</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        4.0.6\" href=\"/packages/Newtonsoft.Json/4.0.6 \">\r\n                                    Json.NET\r\n
+        \                                   4.0.6\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           13,181\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2012-01-23T07:56:04.6900000\">Monday,
+        January 23, 2012</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        4.0.5\" href=\"/packages/Newtonsoft.Json/4.0.5 \">\r\n                                    Json.NET\r\n
+        \                                   4.0.5\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           78,263\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2011-12-10T21:17:16.2630000\">Saturday,
+        December 10, 2011</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        4.0.4\" href=\"/packages/Newtonsoft.Json/4.0.4 \">\r\n                                    Json.NET\r\n
+        \                                   4.0.4\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           29,247\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2011-11-19T09:38:20.1430000\">Saturday,
+        November 19, 2011</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        4.0.3\" href=\"/packages/Newtonsoft.Json/4.0.3 \">\r\n                                    Json.NET\r\n
+        \                                   4.0.3\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           31,980\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2011-10-02T02:29:53.2830000\">Sunday,
+        October 2, 2011</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        4.0.2\" href=\"/packages/Newtonsoft.Json/4.0.2 \">\r\n                                    Json.NET\r\n
+        \                                   4.0.2\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           53,120\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2011-04-23T04:49:46.6770000\">Saturday,
+        April 23, 2011</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        4.0.1\" href=\"/packages/Newtonsoft.Json/4.0.1 \">\r\n                                    Json.NET\r\n
+        \                                   4.0.1\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           31,096\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2011-04-22T01:18:06.2870000\">Friday,
+        April 22, 2011</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Json.NET
+        3.5.8\" href=\"/packages/Newtonsoft.Json/3.5.8 \">\r\n                                    Json.NET\r\n
+        \                                   3.5.8\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           47,640\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2011-01-08T22:12:57.7130000\">Saturday,
+        January 8, 2011</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \       </tbody>\r\n    </table>\r\n</div>\r\n</div>\r\n\r\n<div class=\"clear-fix\"><!--Sad
+        Panda--></div>\r\n\r\n\r\n                </div>\r\n            </div>\r\n
+        \           <div id=\"layout-footer\" class=\"group\">\r\n                <footer
+        id=\"footer\">\r\n                    <ul class=\"recommended\">\r\n    <li>\r\n
+        \       <a href=\"/policies/Contact\">Contact Us</a>\r\n        <p>Got questions
+        about NuGet or the NuGet Gallery?</p>\r\n    </li>\r\n    <li>\r\n        <a
+        href=\"https://docs.nuget.org/docs/start-here/overview\">Overview</a>\r\n
+        \       <p>NuGet is a Visual Studio extension that makes it easy to add, remove,
+        and update libraries and...</p>\r\n    </li>\r\n    <li>\r\n        <a href=\"https://docs.nuget.org/docs/start-here/installing-nuget\">Install</a>\r\n
+        \       <p>NuGet can be installed and updated using the Visual Studio Extension
+        Manager. To check if your copy...</p>\r\n    </li>\r\n    <li>\r\n        <a
+        href=\"https://docs.nuget.org/docs/start-here/videos\">Videos</a>\r\n        <p>Watch
+        screencasts and presentations about anything and everything NuGet.</p>\r\n
+        \   </li>\r\n    <li>\r\n        <a href=\"https://docs.nuget.org/docs/start-here/nuget-faq\">FAQ</a>\r\n
+        \       <p>Read the Frequently Asked Questions about NuGet and see if your
+        question made the list.</p>\r\n    </li>\r\n</ul>\r\n<div class=\"license\">\r\n
+        \   <a title=\".NET Foundation\" href=\"https://www.dotnetfoundation.org\"><img
+        src=\"/Content/Logos/dnf.png\" alt=\".NET Foundation\" /></a>\r\n    <p>\r\n
+        \       &copy; 2017 .NET Foundation -\r\n        <a href=\"/policies/Terms\">Terms
+        of Use</a> -\r\n        <a href=\"/policies/Privacy\">Privacy Policy</a> -\r\n
+        \       <a href=\"/policies/About\">About the Gallery</a> -\r\n        <a
+        href=\"https://status.nuget.org\">Service status</a>\r\n    </p>\r\n    <p>\r\n
+        \       Deployed using <a href=\"http://octopusdeploy.com/\" target=\"referral\">Octopus
+        Deploy</a> | Uses <a href=\"http://fontawesome.io\" target=\"referral\">Font
+        Awesome</a> by Dave Gandy\r\n    </p>\r\n        <p id=\"releaseTag\">\n        This
+        is the NuGet Gallery\n             version 4.0.1080-bff597e5990a14bb6ca53e371313d54bec48b4a6.\n
+        \               \n                    Deployed from\n                         <a
+        href=\"https://www.github.com/NuGet/NuGetGallery/commit/2ff776c\">2ff776c</a>.\n
+        \               \n                \n                    Built on\n                        <a
+        href=\"https://www.github.com/NuGet/NuGetGallery/branches/bff597e5990a14bb6ca53e371313d54bec48b4a6\"
+        title=\"View the branch.\">bff597e5990a14bb6ca53e371313d54bec48b4a6</a>.\n
+        \               \n                 Built at <span class=\"s-localtime\" data-utc=\"2017-01-30T22:59:04.0000000Z\">2017-01-30</span>.\n\n
+        \       \n        \n        You are on NuGetGallery_IN_3.\n    </p>\n\r\n</div>\r\n
+        \               </footer>\r\n            </div>\r\n        </div>\r\n        <script
+        src=\"/Scripts/all?v=zPS5qX1mzA-T2YhgP9jgrnBlPBZCCH5VP22BmIGUsNM1\"></script>\r\n\r\n
+        \       \r\n    \r\n\r\n    </body>\r\n</html>\r\n"
+    http_version: 
+  recorded_at: Wed, 15 Feb 2017 17:21:34 GMT
+recorded_with: VCR 3.0.3

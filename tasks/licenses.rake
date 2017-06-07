@@ -114,5 +114,56 @@ namespace :versioneye do
       p "Done. Crawled #{n} pages, detected #{n_matches} licenses"
     end
 
+    desc "crawl licenses with bitbucket urls and tries to find license files from repo"
+    task :crawl_bitbucket_licenses do
+      VersioneyeCore.new
+      licenses = License.where(
+        language: Product::A_LANGUAGE_CSHARP,
+        spdx_id: nil,
+        url: /bitbucket\.org/i
+      )
+
+      p "Starting BitbucketLicenseCrawler.crawl_licenses"
+      n, n_match = BitbucketLicenseCrawler.crawl_licenses licenses, true, 0.9
+      p "Done! Crawled #{n} repos, found #{n_match} new match"
+    end
+
+    desc "crawl licenses by bitbucket versionlinks and try to find license files"
+    task :crawl_bitbucket_versionlink_licenses do
+      VersioneyeCore.new
+      bitbucket_links = Versionlink.where(
+        url: /bitbucket\.org/i
+      )
+
+      p "Starting BitbucketLicenseCrawler.crawl_version_links"
+      n, n_match = BitbucketLicenseCrawler.crawl_version_links bitbucket_links, true, 0.9
+      p "Done! Crawled #{n} repos, found #{n_match} new licenses"
+    end
+
+    desc "updates urls of moved bitbucket repos"
+    task :update_moved_bitbucket_repos do
+      VersioneyeCore.new
+      licenses = License.where(
+        language: Product::A_LANGUAGE_CSHARP,
+        url: /bitbucket/i,
+        spdx_id: nil
+      )
+    
+      n, n_moved = BitbucketLicenseCrawler.crawl_moved_pages(licenses, true)
+      p "Done! checked #{n} existing pages - #{n_moved} have beed moved."
+    end
+
+    desc "tries to get licenses for nuget packages on their release page"
+    task :crawl_unknown_nuget_licenses do
+      VersioneyeCore.new
+      licenses = License.where(
+        language: Product::A_LANGUAGE_CSHARP,
+        spdx_id: nil
+      )
+
+      n, n_lic = NugetLicenseCrawler.crawl_licenses licenses, true
+      p "Done! crawled #{n} version pages - detected license for #{n_lic}"
+    end
+
   end
 end

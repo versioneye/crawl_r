@@ -1,0 +1,303 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://www.nuget.org/packages/BabylonJS
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - private
+      Content-Type:
+      - text/html; charset=utf-8
+      Vary:
+      - Accept-Encoding
+      Server:
+      - Microsoft-IIS/8.5
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Strict-Transport-Security:
+      - max-age=31536000
+      Date:
+      - Wed, 15 Feb 2017 17:21:32 GMT
+      Content-Length:
+      - '5953'
+    body:
+      encoding: ASCII-8BIT
+      string: "<!DOCTYPE html>\r\n<html lang=\"en\" class=\"static \" data-root=\"/\">\r\n
+        \   <head>\r\n        <meta charset=\"utf-8\" />\r\n        <meta http-equiv=\"X-UA-Compatible\"
+        content=\"IE=edge\" />\r\n        \r\n    \r\n        <meta property=\"fb:app_id\"
+        content=\"235682883225736\" />\r\n\r\n    <meta name=\"twitter:card\" content=\"summary\">\r\n
+        \   <meta name=\"twitter:site\" content=\"@nuget\">\r\n\r\n    <meta property=\"og:title\"
+        content=\"Babylon.js\" />\r\n    <meta property=\"og:type\" content=\"nugetgallery:package\"
+        />\r\n    <meta property=\"og:url\" content=\"https://nuget.org/packages/BabylonJS/\"
+        />\r\n    <meta property=\"og:description\" content=\"Please read the readme.md
+        on our repo for more details: https://github.com/BabylonJS/Babylon.js/blob/master/readme.md\"
+        />\r\n    <meta property=\"og:determiner\" content=\"a\"/>\r\n    <meta property=\"og:image\"
+        content=\"http://www.babylonjs.com/Assets/logo50.png\"/>\r\n\r\n\r\n        \r\n
+        \   \r\n\r\n\r\n\r\n        <title>\r\n            NuGet Gallery\r\n            |
+        Babylon.js 2.3.1</title>\r\n\r\n        <link href=\"/favicon.ico\" rel=\"shortcut
+        icon\" type=\"image/x-icon\"/>\r\n        <link title=\"NuGet.org\" type=\"application/opensearchdescription+xml\"
+        href=\"/opensearch.xml\" rel=\"search\">\r\n\r\n        <link href=\"/Content/css?v=Y8rM1fBFwnJvkpYsJaCfQEYwcJlUPNRpkvHkmMagjJQ1\"
+        rel=\"stylesheet\"/>\r\n\r\n        <link href=\"/Content/font-awesome/css?v=wd5DfaIqnHRUabnWFEulonklM7qt2Vym0q5CoLo5Qbg1\"
+        rel=\"stylesheet\"/>\r\n\r\n        <!--[if IE 7]>\r\n        <link href=\"/Content/font-awesome-ie7.min.css\"
+        rel=\"stylesheet\"/>\r\n\r\n        <![endif]-->\r\n\r\n        \r\n\r\n        <script
+        src=\"/Scripts/modernizr?v=byG8dOZWsVDn1dZ9Dz1vs9imzMfHoSev0enqgT4Wvhw1\"></script>\r\n\r\n
+        \       \r\n        \r\n        \r\n                <!-- Telemetry -->\n        <script
+        type=\"text/javascript\">\n            var appInsights = window.appInsights
+        || function (config) {\n                function s(config) {\n                    t[config]
+        = function () {\n                        var i = arguments;\n                        t.queue.push(function
+        () { t[config].apply(t, i) })\n                    }\n                }\n\n
+        \               var t = { config: config }, r = document, f = window, e =
+        \"script\", o = r.createElement(e), i, u;\n                for (o.src = config.url
+        || \"//az416426.vo.msecnd.net/scripts/a/ai.0.js\", r.getElementsByTagName(e)[0].parentNode.appendChild(o),
+        t.cookie = r.cookie, t.queue = [], i = [\"Event\", \"Exception\", \"Metric\",
+        \"PageView\", \"Trace\"]; i.length;) s(\"track\" + i.pop());\n                return
+        config.disableExceptionTracking || (i = \"onerror\", s(\"_\" + i), u = f[i],
+        f[i] = function (config, r, f, e, o) {\n                    var s = u && u(config,
+        r, f, e, o);\n                    return s !== !0 && t[\"_\" + i](config,
+        r, f, e, o), s\n                }), t\n            }({\n                instrumentationKey:
+        'df3a36b9-dfba-401c-82ab-35690083be3e',\n                samplingPercentage:
+        100\n            });\n\n            window.appInsights = appInsights;\n            appInsights.trackPageView();\n
+        \       </script>\n\r\n    </head>\r\n    <body class=\"s-noclickonce\">\r\n\r\n
+        \       <div id=\"outer-wrapper\">\r\n            <div id=\"content-wrapper\">\r\n
+        \               <header class=\"main\">\r\n                    <div id=\"logo\"><a
+        href=\"/\">NuGet Gallery</a></div>\r\n                    <div id=\"header-sidebox\">\r\n
+        \                       <div id=\"searchBox\" role=\"search\">\r\n                            <form
+        action=\"/packages\" method=\"get\">\r\n                                <input
+        name=\"q\" id=\"searchBoxInput\" class=\"expanding-search\" placeholder=\"Search
+        Packages\" value=\"\" autocomplete=\"off\"  />\r\n                                <input
+        id=\"searchBoxSubmit\" type=\"submit\" value=\"Submit\" />\r\n                            </form>\r\n
+        \                       </div>\r\n                        <div class=\"user-display\">\r\n
+        \       <span class=\"welcome\">\r\n            <a href=\"/users/account/LogOn?returnUrl=%2Fpackages%2FBabylonJS\"
+        title=\"Register for an account or sign in with an existing account\">Register
+        / Sign in</a>\r\n        </span>\r\n</div>\r\n                    </div>\r\n
+        \               </header>\r\n                <nav class=\"main\">\r\n                    <ul
+        id=\"menu\" class=\"expanding-search\">\r\n\r\n    <li><a href=\"/\">Home</a></li>\r\n
+        \   <li class=\"current\"><a href=\"/packages\">Packages</a></li>\r\n    <li><a
+        href=\"/packages/manage/upload\" class=\"upload\">Upload Package</a></li>\r\n
+        \       <li><a href=\"/stats\">Statistics</a></li>\r\n        <li><a href=\"https://docs.nuget.org\">Documentation</a></li>\r\n
+        \   <li><a href=\"/downloads\">Downloads</a></li>\r\n    <li><a href=\"http://blog.nuget.org\">Blog</a></li>\r\n</ul>\r\n
+        \               </nav>\r\n                <div id=\"body\" role=\"main\">\r\n
+        \                   \r\n\r\n\r\n<div id=\"sideColumn\">\r\n    \r\n    <img
+        class=\"logo\" src=\"http://www.babylonjs.com/Assets/logo50.png\" alt=\"Icon
+        for package BabylonJS\" onerror=\"this.src = 'https://nuget.org/Content/Images/packageDefaultIcon.png';\"
+        />\r\n    <div id=\"stats\">\r\n        <div class=\"stat\">\r\n            <p
+        class=\"stat-number\">5,148</p>\r\n            <p class=\"stat-label\">Downloads</p>\r\n
+        \       </div>\r\n        <div class=\"stat\">\r\n            <p class=\"stat-number\">714</p>\r\n
+        \           <p class=\"stat-label\">Downloads of v 2.3.1</p>\r\n        </div>\r\n
+        \       <div class=\"stat\">\r\n            <p class=\"stat-number\" title=\"5,148
+        downloads in 1125 days\">4</p>\r\n            <p class=\"stat-label\">Average
+        downloads per day</p>\r\n        </div>\r\n        <div class=\"stat\">\r\n
+        \           <p class=\"stat-number\">2016-04-01</p>\r\n            <p class=\"stat-label\">Last
+        published</p>\r\n        </div>\r\n    </div>\r\n    <nav>\r\n        <ul>\r\n
+        \               <li>\r\n                    <a href=\"https://github.com/BabylonJS/Babylon.js\"
+        title=\"Visit the project site to learn more about this package\" rel=\"nofollow\">\r\n
+        \                       Project Site\r\n                    </a>\r\n                </li>\r\n
+        \                           <li><a href=\"https://github.com/BabylonJS/Babylon.js#apache-license-20-apache\"
+        title=\"Make sure you agree with the license\" rel=\"nofollow\">License</a></li>\r\n
+        \           <li><a href=\"/packages/BabylonJS/ContactOwners\" title=\"Ask
+        the package owners a question\">Contact Owners</a></li>\r\n                <li>\r\n
+        \                   <a href=\"/packages/BabylonJS/2.3.1/ReportAbuse\" title=\"Report
+        the package as abusive\">\r\n                        Report Abuse\r\n                    </a>\r\n
+        \               </li>\r\n\r\n                <li><a href=\"https://www.nuget.org/api/v2/package/BabylonJS/2.3.1\"
+        title=\"Download the raw nupkg file.\" rel=\"nofollow\">Download</a> <a href=\"/packages/BabylonJS/Download\"
+        title=\"How do I download?\">(how-to)</a></li>\r\n                <li><a class=\"s-clickonce\"
+        href=\"https://npe.codeplex.com/releases/clickonce/NuGetPackageExplorer.application?url=https://www.nuget.org/api/v2/package/BabylonJS/&amp;id=BabylonJS&amp;version=2.3.1\"
+        title=\"Explore the nupkg with the NuGet Package Explorer (IE only)\" rel=\"nofollow\">Open
+        in Package Explorer</a></li>\r\n\r\n                                        <li><a
+        href=\"/stats/packages/BabylonJS?groupby=Version\" title=\"Package Statistics\">Package
+        Statistics</a></li>\r\n        </ul>\r\n    </nav>\r\n\r\n    <div class=\"stat\">\r\n
+        \       <ul class=\"share-buttons\">\r\n\r\n            <li><a href=\"https://www.facebook.com/sharer/sharer.php?u=https://nuget.org/packages/BabylonJS/&t=Check+out+BabylonJS+on+%23NuGet.\"
+        target=\"_blank\" title=\"Share on Facebook\"><i class=\"icon-facebook\"></i></a></li>\r\n
+        \           <li><a href=\"https://twitter.com/intent/tweet?url=https://nuget.org/packages/BabylonJS/&text=Check+out+BabylonJS+on+%23NuGet.\"
+        target=\"_blank\" title=\"Tweet this package\"><i class=\"icon-twitter\"></i></a></li>\r\n
+        \       </ul>\r\n        <p class=\"stat-label\">Share on Social Networks</p>\r\n
+        \   </div>\r\n\r\n\r\n    \r\n            <div class=\"block\">\r\n                <h3
+        class=\"block-title\">License details</h3>\r\n                <p id=\"sonatypeHeader\">provided
+        by <a href=\"http://sonatype.com/\">Sonatype</a></p>\r\n                                                            <p
+        class=\"licenseName\">Apache-2.0</p>\r\n                                            </div>\r\n\r\n\r\n</div>\r\n<div
+        id=\"mainColumn\" role=\"main\">\r\n    \r\n<div class=\"package-page\">\r\n
+        \           \r\n\r\n\r\n    <div class=\"package-page-heading\">\r\n        <h1
+        title=\"Babylon.js\">Babylon.js</h1>\r\n        <h2>2.3.1</h2>\r\n    </div>\r\n
+        \       <p>Please read the readme.md on our repo for more details: https://github.com/BabylonJS/Babylon.js/blob/master/readme.md</p>\r\n\r\n\r\n
+        \       <p>\r\n            To install Babylon.js, run the following command
+        in the <a href=\"https://docs.nuget.org/docs/start-here/using-the-package-manager-console\">\r\n
+        \               Package Manager Console\r\n            </a>\r\n        </p>\r\n
+        \       <div class=\"nuget-badge\">\r\n            <p>\r\n                <code>\r\n
+        \                   Install-Package BabylonJS\r\n                                    </code>\r\n
+        \           </p>\r\n        </div>\r\n\r\n\r\n    <h3>Owners</h3>\r\n        <ul
+        class=\"owners\">\n            <li>\n                    <a class=\"owner\"
+        href=\"/profiles/pierlag\" title=\"pierlag\">\n<img src=\"https://secure.gravatar.com/avatar/f1413eee0c8e6b4219ebfd57e71de2a4?s=32&amp;r=g&amp;d=retro\"
+        class=\"owner-image\" height=\"32\" title=\"pierlag\" width=\"32\" alt=\"gravatar\"
+        />                    <span class=\"owner-name\">pierlag</span>\n    </a>\n\n
+        \           </li>\n            <li>\n                    <a class=\"owner\"
+        href=\"/profiles/meulta\" title=\"meulta\">\n<img src=\"https://secure.gravatar.com/avatar/18fc2ad922f1a7766a36d4407cbf6c85?s=32&amp;r=g&amp;d=retro\"
+        class=\"owner-image\" height=\"32\" title=\"meulta\" width=\"32\" alt=\"gravatar\"
+        />                    <span class=\"owner-name\">meulta</span>\n    </a>\n\n
+        \           </li>\n    </ul>\n\r\n    <div title=\"These authors' works form
+        part of the package or its contents\">\r\n        <h3>Authors</h3>\r\n        <p
+        class=\"authors\">\r\n            David CATUHE, David ROUSSET\r\n        </p>\r\n
+        \   </div>\r\n            <h3>Tags</h3>\r\n        <ul class=\"tags\">\r\n
+        \               <li><a href=\"/packages?q=Tags%3A%22html5%22\" title=\"Search
+        for html5\">html5</a></li>\r\n                <li><a href=\"/packages?q=Tags%3A%22webgl%22\"
+        title=\"Search for webgl\">webgl</a></li>\r\n                <li><a href=\"/packages?q=Tags%3A%223D%22\"
+        title=\"Search for 3D\">3D</a></li>\r\n                <li><a href=\"/packages?q=Tags%3A%22javascript%22\"
+        title=\"Search for javascript\">javascript</a></li>\r\n        </ul>\r\n            <h3>Dependencies</h3>\r\n
+        \   <p>This package has no dependencies.</p>\r\n    <h3>Version History</h3>\r\n
+        \   <table class=\"sexy-table\">\r\n        <thead>\r\n            <tr>\r\n
+        \               <th class=\"first\">\r\n                    Version\r\n                </th>\r\n
+        \               <th>\r\n                    Downloads\r\n                </th>\r\n
+        \               <th class=\"last\">\r\n                    Last updated\r\n
+        \               </th>\r\n            </tr>\r\n        </thead>\r\n        <tbody>\r\n
+        \                   <tr class=\"versionTableRow recommended\">\r\n                        <td
+        class=\"version\" title=\"Latest Stable Version\">\r\n                                <a
+        href=\"/packages/BabylonJS/2.3.1\" title=\"Babylon.js 2.3.1 (this version)\">\r\n
+        \                                   Babylon.js 2.3.1 (this version)\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           714\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2016-04-01T15:08:59.7430000\">Friday,
+        April 1, 2016</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Babylon.js
+        2.3.0\" href=\"/packages/BabylonJS/2.3.0 \">\r\n                                    Babylon.js\r\n
+        \                                   2.3.0\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           114\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2016-03-24T17:00:27.9070000\">Thursday,
+        March 24, 2016</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Babylon.js
+        2.2.0\" href=\"/packages/BabylonJS/2.2.0 \">\r\n                                    Babylon.js\r\n
+        \                                   2.2.0\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           863\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2015-10-05T15:51:41.7830000\">Monday,
+        October 5, 2015</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"Babylon.js
+        2.1.0\" href=\"/packages/BabylonJS/2.1.0 \">\r\n                                    Babylon.js\r\n
+        \                                   2.1.0\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           497\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2015-06-09T20:55:43.1100000\">Tuesday,
+        June 9, 2015</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"BabylonJS
+        1.14.0\" href=\"/packages/BabylonJS/1.14.0 \">\r\n                                    BabylonJS\r\n
+        \                                   1.14.0\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           325\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2015-01-03T14:34:37.2570000\">Saturday,
+        January 3, 2015</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"BabylonJS
+        1.13.1\" href=\"/packages/BabylonJS/1.13.1 \">\r\n                                    BabylonJS\r\n
+        \                                   1.13.1\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           502\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2014-08-10T21:39:36.0470000\">Sunday,
+        August 10, 2014</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"BabylonJS
+        1.13.0\" href=\"/packages/BabylonJS/1.13.0 \">\r\n                                    BabylonJS\r\n
+        \                                   1.13.0\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           169\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2014-08-10T21:31:22.7800000\">Sunday,
+        August 10, 2014</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"BabylonJS
+        1.12.0\" href=\"/packages/BabylonJS/1.12.0 \">\r\n                                    BabylonJS\r\n
+        \                                   1.12.0\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           476\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2014-06-23T07:58:08.2800000\">Monday,
+        June 23, 2014</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"BabylonJS
+        1.10.0\" href=\"/packages/BabylonJS/1.10.0 \">\r\n                                    BabylonJS\r\n
+        \                                   1.10.0\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           713\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2014-04-01T03:00:19.4600000\">Tuesday,
+        April 1, 2014</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"BabylonJS
+        1.9.0\" href=\"/packages/BabylonJS/1.9.0 \">\r\n                                    BabylonJS\r\n
+        \                                   1.9.0\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           208\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2014-03-12T10:05:05.5800000\">Wednesday,
+        March 12, 2014</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"BabylonJS
+        1.8.5\" href=\"/packages/BabylonJS/1.8.5 \">\r\n                                    BabylonJS\r\n
+        \                                   1.8.5\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           169\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2014-01-20T07:25:36.8530000\">Monday,
+        January 20, 2014</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \                   <tr class=\"versionTableRow\">\r\n                        <td
+        class=\"version\">\r\n                                <a title=\"BabylonJS
+        1.8.1\" href=\"/packages/BabylonJS/1.8.1 \">\r\n                                    BabylonJS\r\n
+        \                                   1.8.1\r\n                                </a>\r\n
+        \                       </td>\r\n                        <td class=\"package-version-downloads\">\r\n
+        \                           131\r\n                        </td>\r\n                        <td>\r\n
+        \                           <span title=\"2014-01-17T13:45:35.3370000\">Friday,
+        January 17, 2014</span>\r\n                        </td>\r\n                    </tr>\r\n
+        \       </tbody>\r\n    </table>\r\n</div>\r\n</div>\r\n\r\n<div class=\"clear-fix\"><!--Sad
+        Panda--></div>\r\n\r\n\r\n                </div>\r\n            </div>\r\n
+        \           <div id=\"layout-footer\" class=\"group\">\r\n                <footer
+        id=\"footer\">\r\n                    <ul class=\"recommended\">\r\n    <li>\r\n
+        \       <a href=\"/policies/Contact\">Contact Us</a>\r\n        <p>Got questions
+        about NuGet or the NuGet Gallery?</p>\r\n    </li>\r\n    <li>\r\n        <a
+        href=\"https://docs.nuget.org/docs/start-here/overview\">Overview</a>\r\n
+        \       <p>NuGet is a Visual Studio extension that makes it easy to add, remove,
+        and update libraries and...</p>\r\n    </li>\r\n    <li>\r\n        <a href=\"https://docs.nuget.org/docs/start-here/installing-nuget\">Install</a>\r\n
+        \       <p>NuGet can be installed and updated using the Visual Studio Extension
+        Manager. To check if your copy...</p>\r\n    </li>\r\n    <li>\r\n        <a
+        href=\"https://docs.nuget.org/docs/start-here/videos\">Videos</a>\r\n        <p>Watch
+        screencasts and presentations about anything and everything NuGet.</p>\r\n
+        \   </li>\r\n    <li>\r\n        <a href=\"https://docs.nuget.org/docs/start-here/nuget-faq\">FAQ</a>\r\n
+        \       <p>Read the Frequently Asked Questions about NuGet and see if your
+        question made the list.</p>\r\n    </li>\r\n</ul>\r\n<div class=\"license\">\r\n
+        \   <a title=\".NET Foundation\" href=\"https://www.dotnetfoundation.org\"><img
+        src=\"/Content/Logos/dnf.png\" alt=\".NET Foundation\" /></a>\r\n    <p>\r\n
+        \       &copy; 2017 .NET Foundation -\r\n        <a href=\"/policies/Terms\">Terms
+        of Use</a> -\r\n        <a href=\"/policies/Privacy\">Privacy Policy</a> -\r\n
+        \       <a href=\"/policies/About\">About the Gallery</a> -\r\n        <a
+        href=\"https://status.nuget.org\">Service status</a>\r\n    </p>\r\n    <p>\r\n
+        \       Deployed using <a href=\"http://octopusdeploy.com/\" target=\"referral\">Octopus
+        Deploy</a> | Uses <a href=\"http://fontawesome.io\" target=\"referral\">Font
+        Awesome</a> by Dave Gandy\r\n    </p>\r\n        <p id=\"releaseTag\">\n        This
+        is the NuGet Gallery\n             version 4.0.1080-bff597e5990a14bb6ca53e371313d54bec48b4a6.\n
+        \               \n                    Deployed from\n                         <a
+        href=\"https://www.github.com/NuGet/NuGetGallery/commit/2ff776c\">2ff776c</a>.\n
+        \               \n                \n                    Built on\n                        <a
+        href=\"https://www.github.com/NuGet/NuGetGallery/branches/bff597e5990a14bb6ca53e371313d54bec48b4a6\"
+        title=\"View the branch.\">bff597e5990a14bb6ca53e371313d54bec48b4a6</a>.\n
+        \               \n                 Built at <span class=\"s-localtime\" data-utc=\"2017-01-30T22:59:04.0000000Z\">2017-01-30</span>.\n\n
+        \       \n        \n        You are on NuGetGallery_IN_4.\n    </p>\n\r\n</div>\r\n
+        \               </footer>\r\n            </div>\r\n        </div>\r\n        <script
+        src=\"/Scripts/all?v=zPS5qX1mzA-T2YhgP9jgrnBlPBZCCH5VP22BmIGUsNM1\"></script>\r\n\r\n
+        \       \r\n    \r\n\r\n    </body>\r\n</html>\r\n"
+    http_version: 
+  recorded_at: Wed, 15 Feb 2017 17:21:35 GMT
+recorded_with: VCR 3.0.3
