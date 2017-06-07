@@ -53,6 +53,7 @@ module Versioneye
     require './lib/versioneye/producers/bower_crawl_producer'
     require './lib/versioneye/producers/nuget_crawl_producer'
     require './lib/versioneye/producers/crates_crawl_producer'
+    require './lib/versioneye/producers/hex_crawl_producer'
     require './lib/versioneye/producers/gosearch_version_producer'
 
     require './lib/versioneye/workers/worker'
@@ -63,6 +64,7 @@ module Versioneye
     require './lib/versioneye/workers/bower_crawl_worker'
     require './lib/versioneye/workers/nuget_crawl_worker'
     require './lib/versioneye/workers/crates_crawl_worker'
+    require './lib/versioneye/workers/hex_crawl_worker'
     require './lib/versioneye/workers/gosearch_version_worker'
 
     require './lib/versioneye/utils/license_matcher'
