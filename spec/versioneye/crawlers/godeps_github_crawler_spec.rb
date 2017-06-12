@@ -26,29 +26,43 @@ describe GodepsGithubCrawler do
   context "fetch_godeps" do
     it "returns a content of project file by commit_sha" do
       VCR.use_cassette('go/github/fetch_godeps_by_sha') do
-        res = GodepsGithubCrawler.fetch_godeps(k8s_repo, k8s_test_commit)
+        url = GodepsGithubCrawler.build_project_file_url(
+          GodepsGithubCrawler::A_GODEPS_PARSER, k8s_repo, k8s_test_commit
+        )
+        res = GodepsGithubCrawler.fetch_content(url)
         expect(res).not_to be_nil
       end
     end
 
     it "returns a content of project file by the branch name" do
       VCR.use_cassette('go/github/fetch_godeps_by_branch') do
-        res = GodepsGithubCrawler.fetch_godeps(k8s_repo, k8s_test_branch)
+        url = GodepsGithubCrawler.build_project_file_url(
+          GodepsGithubCrawler::A_GODEPS_PARSER, k8s_repo, k8s_test_branch
+        )
+
+        res = GodepsGithubCrawler.fetch_content(url)
         expect(res).not_to be_nil
       end
     end
 
     it "returns a content of project file by the commit tag" do
       VCR.use_cassette('go/github/fetch_godeps_by_tag') do
-        res = GodepsGithubCrawler.fetch_godeps(k8s_repo, k8s_test_tag)
+        url = GodepsGithubCrawler.build_project_file_url(
+          GodepsGithubCrawler::A_GODEPS_PARSER, k8s_repo, k8s_test_tag
+        )
+
+        res = GodepsGithubCrawler.fetch_content(url)
         expect(res).not_to be_nil
       end
     end
 
     it "returns nil for non existing repo" do
       VCR.use_cassette('go/github/fetch_nonexisting_repo') do
-        res = GodepsGithubCrawler.fetch_godeps('versioneye/golang_repo_123', 'master')
+        url = GodepsGithubCrawler.build_project_file_url(
+          GodepsGithubCrawler::A_GODEPS_PARSER, 'versioneye/golang_repo_123', 'master'
+        )
 
+        res = GodepsGithubCrawler.fetch_content(url)
         expect(res).to be_nil
       end
     end

@@ -41,10 +41,9 @@ class GodepsGithubCrawler < Versioneye::Crawl
       prod_key: prod_key
     ).first
 
-    #try first to find Godeps.json file
-    #TODO: refactor
     # fetch_project_file(godeps_url) ...
-    proj_doc = fetch_godeps(repo_fullname, version_label)
+    godeps_file_url = build_project_file_url(A_GODEPS_PARSER, repo_fullname, version_label)
+    proj_doc = fetch_content(godeps_file_url)
     if proj_doc
       deps = parse_dependencies(A_GODEPS_PARSER, proj_doc)
       save_dependencies(parent_product, version_label, deps)
@@ -121,26 +120,32 @@ class GodepsGithubCrawler < Versioneye::Crawl
     end
   end
 
-  # TODO: refactor url building to support fetching files for other Parsers
-  # tries to fetch Godeps file by commit_sha, branch or by tag,
-  def self.fetch_godeps(repo_fullname, version_label)
-    version_label = version_label.to_s.strip
-    if version_label.empty?
-      logger.error "fetch_godeps: no version_label for #{repo_fullname}"
-      return
-    end
+  # TODO: add filepath for other parsers
+  def self.build_project_file_url(parser_type, repo_fullname, version_label)
+    file_url = "#{A_RAW_CONTENT_URL}/#{repo_fullname}/#{version_label}"
 
-    file_url = "#{A_RAW_CONTENT_URL}/#{repo_fullname}/#{version_label}/Godeps/Godeps.json"
-    res = HTTParty.get file_url
+    file_path = case parser_type
+                when A_GODEPS_PARSER then 'Godeps/Godeps.json'
+                else
+                  ''
+                end
+
+    file_url + "/" + file_path
+  end
+
+  # tries to fetch project file from the url,
+  def self.fetch_content(project_file_url)
+    logger.info "fetch_content: pulling project file from #{project_file_url}"
+
+    res = HTTParty.get project_file_url
     if res.nil? or res.code < 200 or res.code > 301
-      logger.warn "fetch_godeps: found no Godeps file on #{repo_fullname}:#{version_label}"
+      logger.warn "fetch_godeps: found no Golang project file on #{project_file_url}"
       return
     end
 
     res.body
   rescue => e
-    logger.error "fetch_godeps: failed to fetch Godeps dependency file for #{repo_fullname}:#{version_label}"
-
+    logger.error "fetch_godeps: failed to fetch project file from #{project_file_url}"
     logger.error e.message
     logger.error e.backtrace.join('\n')
 
