@@ -17,27 +17,81 @@ class GodepsGithubCrawler < Versioneye::Crawl
     @@log
   end
 
-  def self.crawl_product(prod_key, commit_sha = nil, branch = nil, tag = nil)
+  # fetches project file from Github and saves dependency info from it
+  # params:
+  #   prod_key - String, product key of Golang package
+  #   version - raw version label, it can be commit_sha, branch or tag
+  # returns: boolean, for which true means it found dependencies and save them
+  def self.crawl_product(prod_key, version_label)
+    prod_key = prod_key.to_s.strip
+
+    if prod_key.empty?
+      log.error "crawl_product: cant work with empty product key"
+      return false
+    end
+
     repo_fullname = extract_reponame(prod_key)
     if repo_fullname.nil?
       logger.error "crawl_for_product: #{prod_key} is not valid product Github ID"
-      return
+      return false
     end
 
-    proj_doc = fetch_godeps(repo_fullname, commit_sha, branch, tag)
+    parent_product = Product.where(
+      language: Product::A_LANGUAGE_GO,
+      prod_key: prod_key
+    ).first
+
+    #try first to find Godeps.json file
+    #TODO: refactor
+    # fetch_project_file(godeps_url) ...
+    proj_doc = fetch_godeps(repo_fullname, version_label)
     if proj_doc
-      return extract_dependencies(A_GODEPS_PARSER, proj_doc)
+      deps = parse_dependencies(A_GODEPS_PARSER, proj_doc)
+      save_dependencies(parent_product, version_label, deps)
+      return true
     end
 
     #TODO: add other Golang files, like govendor, glide, dep
 
-    return nil
+    return false
+  end
+
+  def self.save_dependencies(parent_product, parent_version, deps)
+    deps.to_a.each {|dep| save_dependency(parent_product, parent_version, dep) }
+  end
+
+  def self.save_dependency(parent_product, parent_version, dep)
+    if parent_product.nil?
+      log.error "save_dependency: no parent product for #{dep}"
+      return false
+    end
+
+    if dep.nil?
+      log.error "save_dependency: no dependency details for #{parent_product}"
+      return false
+    end
+
+    log.info "save_dependency: adding #{dep} for #{parent_product} => #{parent_version}"
+    dep_db = Dependency.where(
+      language: parent_product[:language],
+      prod_type: parent_product[:prod_type],
+      prod_key: parent_product[:prod_key],
+      prod_version: parent_version,
+      dep_prod_key: dep[:prod_key],
+      version: dep[:version_label]
+    ).first_or_create
+
+    dep_db[:name]  = dep[:name]
+    dep_db[:scope] = dep[:scope]
+
+
+    dep_db.save
   end
 
   # pulls out list of dependencies from the project file
   # returns:
   #   list of project dependencies or nil
-  def self.extract_dependencies(parser_type, proj_doc)
+  def self.parse_dependencies(parser_type, proj_doc)
     parser = init_parser parser_type
     if parser.nil?
       logger.error "extract_dependencies: failed to create parser for file: #{parser_type}"
@@ -67,24 +121,25 @@ class GodepsGithubCrawler < Versioneye::Crawl
     end
   end
 
+  # TODO: refactor url building to support fetching files for other Parsers
   # tries to fetch Godeps file by commit_sha, branch or by tag,
-  def self.fetch_godeps(repo_fullname, commit_sha = nil, branch = nil, tag = nil)
-    commit = (commit_sha || branch || tag)
-    if commit.nil?
-      logger.error "fetch_godeps: no commit_sha or branch or tag specified for #{repo_fullname}"
+  def self.fetch_godeps(repo_fullname, version_label)
+    version_label = version_label.to_s.strip
+    if version_label.empty?
+      logger.error "fetch_godeps: no version_label for #{repo_fullname}"
       return
     end
 
-    file_url = "#{A_RAW_CONTENT_URL}/#{repo_fullname}/#{commit}/Godeps/Godeps.json"
+    file_url = "#{A_RAW_CONTENT_URL}/#{repo_fullname}/#{version_label}/Godeps/Godeps.json"
     res = HTTParty.get file_url
     if res.nil? or res.code < 200 or res.code > 301
-      logger.warn "fetch_godeps: found no Godeps file on #{repo_fullname}:#{commit}"
+      logger.warn "fetch_godeps: found no Godeps file on #{repo_fullname}:#{version_label}"
       return
     end
 
     res.body
   rescue => e
-    logger.error "fetch_godeps: failed to fetch Godeps dependency file for #{repo_fullname}:#{commit}"
+    logger.error "fetch_godeps: failed to fetch Godeps dependency file for #{repo_fullname}:#{version_label}"
 
     logger.error e.message
     logger.error e.backtrace.join('\n')
