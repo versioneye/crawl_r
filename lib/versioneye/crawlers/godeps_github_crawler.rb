@@ -3,18 +3,56 @@
 # Godeps here doesn't mean the Godeps pkg-manager, but Golang deps overall
 # as it tries to fetch all the Go pkg-manager which has parser
 
-require 'versioneye/parsers/package_parser'
-require 'versioneye/parsers/godep_parser'
-
 class GodepsGithubCrawler < Versioneye::Crawl
-  A_RAW_CONTENT_URL = 'https://raw.githubusercontent.com'
-  A_GODEPS_PARSER = 'godeps'
+  A_RAW_CONTENT_URL   = 'https://raw.githubusercontent.com'
+  A_GODEPS_PARSER     = 'godeps'
+  A_GOPKG_PARSER      = 'gopkg'
+  A_GOPKG_LOCK_PARSER = 'gopkg_lock'
+  A_GLIDE_PARSER      = 'glide'
+  A_GLIDE_LOCK_PARSER = 'glide_lock'
+  A_GOVENDOR_PARSER   = 'govendor'
+  A_GOPM_PARSER       = 'gopm'
 
   def self.logger
     if !defined?(@@log) || @@log.nil?
       @@log = Versioneye::DynLog.new("log/golang.log", 10).log
     end
     @@log
+  end
+
+  # will take list of packages from Gosearch and check number of pkg-managers
+  def self.run_experiment
+    stats = Hash.new(0)
+    p "importing package list ..."
+    pkg_ids = GoSearchCrawler.fetch_package_index
+
+    p "checking project files for each of them"
+    pkg_ids.to_a.each do |prod_key|
+      stats[:total] += 1
+
+      if (stats[:total] % 100) == 0
+        p "#-- Summary after #{stats[:total]}"
+        p stats
+        p "----------------------------------"
+      end
+
+      repo_fullname = extract_reponame(prod_key)
+      if repo_fullname.nil?
+        logger.error "crawl_for_product: #{prod_key} is not valid product Github ID"
+        stats[:not_github] += 1
+        next
+      end
+
+      stats[:is_github] += 1
+      proj_file, parser_type = fetch_supported_project_file(repo_fullname, 'master')
+      if proj_file.nil?
+        stats[:no_file] += 1
+        next
+      end
+
+      stats[:has_file] += 1
+      stats[parser_type] += 1
+    end
   end
 
   # fetches project file from Github and saves dependency info from it
@@ -41,18 +79,30 @@ class GodepsGithubCrawler < Versioneye::Crawl
       prod_key: prod_key
     ).first
 
-    # fetch_project_file(godeps_url) ...
-    godeps_file_url = build_project_file_url(A_GODEPS_PARSER, repo_fullname, version_label)
-    proj_doc = fetch_content(godeps_file_url)
+    proj_doc, parser_type = fetch_supported_project_file(repo_fullname, version_label)
     if proj_doc
-      deps = parse_dependencies(A_GODEPS_PARSER, proj_doc)
+      deps = parse_dependencies(parser_type, proj_doc)
       save_dependencies(parent_product, version_label, deps)
       return true
     end
 
-    #TODO: add other Golang files, like govendor, glide, dep
-
     return false
+  end
+
+  def self.fetch_supported_project_file(repo_fullname, version_label)
+    parser_types = [
+      A_GODEPS_PARSER, A_GOPKG_PARSER, A_GOPKG_LOCK_PARSER,
+      A_GLIDE_PARSER, A_GLIDE_LOCK_PARSER, A_GOVENDOR_PARSER,
+      A_GOPM_PARSER
+    ]
+
+    parser_types.each do |parser_type|
+      file_url = build_project_file_url(parser_type, repo_fullname, version_label)
+      proj_doc = fetch_content(file_url)
+      return [proj_doc, parser_type] if proj_doc
+    end
+
+    return []
   end
 
   def self.save_dependencies(parent_product, parent_version, deps)
@@ -114,7 +164,12 @@ class GodepsGithubCrawler < Versioneye::Crawl
 
   def self.init_parser(parser_type)
     case parser_type
-    when A_GODEPS_PARSER then GodepParser.new
+    when A_GODEPS_PARSER      then GodepParser.new
+    when A_GOPKG_PARSER       then GopkgParser.new
+    when A_GOPKG_LOCK_PARSER  then GopkgLockParser.new
+    when A_GLIDE_PARSER       then GlideParser.new
+    when A_GLIDE_LOCK_PARSER  then GlideLockParser.new
+    when A_GOVENDOR_PARSER    then GovendorParser.new
     else
       nil
     end
@@ -125,7 +180,13 @@ class GodepsGithubCrawler < Versioneye::Crawl
     file_url = "#{A_RAW_CONTENT_URL}/#{repo_fullname}/#{version_label}"
 
     file_path = case parser_type
-                when A_GODEPS_PARSER then 'Godeps/Godeps.json'
+                when A_GODEPS_PARSER      then 'Godeps/Godeps.json'
+                when A_GOPKG_PARSER       then 'Gopkg.toml'
+                when A_GOPKG_LOCK_PARSER  then 'Gopkg.lock'
+                when A_GLIDE_PARSER       then 'glide.yaml'
+                when A_GLIDE_LOCK_PARSER  then 'glide.lock'
+                when A_GOVENDOR_PARSER    then 'vendor/vendor.json'
+                when A_GOPM_PARSER        then '.gopmfile'
                 else
                   ''
                 end
