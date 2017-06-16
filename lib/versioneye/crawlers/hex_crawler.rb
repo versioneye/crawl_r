@@ -130,6 +130,8 @@ class HexCrawler < Versioneye::Crawl
     end
 
     upsert_version(prod_db, version_doc)
+    CrawlerUtils.create_newest( prod_db, version_doc[:version].to_s, logger )
+    CrawlerUtils.create_notifications( prod_db, version_doc[:version].to_s, logger )
 
     # Dependencies
     version_doc[:requirements].to_a.each do |dep_id, dep_doc|
