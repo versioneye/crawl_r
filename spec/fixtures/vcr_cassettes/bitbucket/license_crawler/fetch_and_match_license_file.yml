@@ -1,0 +1,90 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://bitbucket.org/mchaput/whoosh/raw/20f2c538262e8f656e089521a21a9fa5c8ae3394/LICENSE.txt
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Vary:
+      - Accept-Language, Cookie, Accept-Encoding
+      Cache-Control:
+      - max-age=900
+      Content-Type:
+      - text/plain
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Date:
+      - Thu, 25 May 2017 07:25:11 GMT
+      X-Served-By:
+      - app-107
+      Transfer-Encoding:
+      - chunked
+      Content-Language:
+      - en
+      Etag:
+      - '"e3e28f387d768b17b14e0b967eadc6aa"'
+      X-Static-Version:
+      - 95030025de2a
+      X-Content-Type-Options:
+      - nosniff
+      X-Render-Time:
+      - '0.0268630981445'
+      Connection:
+      - keep-alive
+      X-Request-Count:
+      - '439'
+      Last-Modified:
+      - Wed, 03 May 2017 10:13:11 GMT
+      X-Version:
+      - 95030025de2a
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Cache-Info:
+      - caching
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        Copyright 2011 Matt Chaput. All rights reserved.
+
+        Redistribution and use in source and binary forms, with or without
+        modification, are permitted provided that the following conditions are met:
+
+           1. Redistributions of source code must retain the above copyright notice,
+              this list of conditions and the following disclaimer.
+
+           2. Redistributions in binary form must reproduce the above copyright
+              notice, this list of conditions and the following disclaimer in the
+              documentation and/or other materials provided with the distribution.
+
+        THIS SOFTWARE IS PROVIDED BY MATT CHAPUT ``AS IS'' AND ANY EXPRESS OR
+        IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+        MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+        EVENT SHALL MATT CHAPUT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+        INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+        LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+        OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+        LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+        NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+        EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+        The views and conclusions contained in the software and documentation are
+        those of the authors and should not be interpreted as representing official
+        policies, either expressed or implied, of Matt Chaput.
+    http_version: 
+  recorded_at: Thu, 25 May 2017 07:25:11 GMT
+recorded_with: VCR 3.0.3
