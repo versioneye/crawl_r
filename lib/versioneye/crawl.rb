@@ -71,6 +71,8 @@ module Versioneye
     require './lib/versioneye/utils/python_license_detector'
     require './lib/versioneye/crawlers/github_license_crawler'
     require './lib/versioneye/crawlers/codeplex_license_crawler'
+    require './lib/versioneye/crawlers/bitbucket_license_crawler'
+    require './lib/versioneye/crawlers/nuget_license_crawler'
 
     def self.log
       Versioneye::Log.instance.log
