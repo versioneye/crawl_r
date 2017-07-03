@@ -186,6 +186,9 @@ class CpanCrawler < Versioneye::Crawl
     end
 
     upsert_version(prod, release_version_label, release_doc)
+    CrawlerUtils.create_newest( prod, release_version_label, logger )
+    CrawlerUtils.create_notifications( prod, release_version_label, logger )
+
 
     release_doc[:dependency].to_a.each {|dep_doc| upsert_dependency(dep_doc, prod_key, release_version_label)}
     release_doc[:resources].to_a.each do |title, url_doc|
@@ -257,7 +260,8 @@ class CpanCrawler < Versioneye::Crawl
 
   def self.upsert_developer(prod, version_label, author_doc, role = 'author')
     dev_email = author_doc[:email].first.to_s.strip
-   	dev_name = author_doc[:asciiname]
+    dev_name = author_doc[:asciiname].to_s.strip
+    dev_name = author_doc[:name].to_s.strip if dev_name.empty?
     if dev_name.empty?
       logger.error "upsert_developer: author document has no developer name"
       logger.error author_doc
