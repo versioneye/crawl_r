@@ -20,6 +20,15 @@ class Bower < Versioneye::Crawl
     Bower.logger
   end
 
+  def self.fetch_repo_details(token, repo_fullname)
+    gh = Octokit::Client::new(access_token: token)
+    gh.repo(repo_fullname)
+
+  rescue => e
+    log.error "Bower.fetch_repo_details: failed to fetch details for #{repo_fullname}"
+    log.error e.message.to_s
+    nil
+  end
 
   def self.check_request_limit(token)
     rate_limits = OctokitApi.client(token).rate_limit

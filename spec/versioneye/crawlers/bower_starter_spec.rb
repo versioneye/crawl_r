@@ -6,10 +6,15 @@ describe BowerStarter do
     it 'crawles cakephp and skips all branches' do
       Product.delete_all
       expect( Product.count ).to eq(0)
-      token = '07d9d399f1a8ff7880be12d168e48283380a9eb8'
+      token = Settings.instance.github_client_secret
+
       name = 'reactive-storage'
-      url = 'git://github.com/rmehlinger/reactive-storage.git'
-      BowerStarter.register_package name, url, token
+      url = 'git://github.com/bobtail-dev/bobtail-storage.git'
+
+      VCR.use_cassette('bower/register_package') do
+        BowerStarter.register_package(name, url, token)
+      end
+
       expect( Product.count ).to eq(1)
       expect( Dependency.count > 1 ).to be_truthy
     end
