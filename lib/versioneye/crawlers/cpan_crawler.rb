@@ -6,9 +6,10 @@ class CpanCrawler < Versioneye::Crawl
   A_SCROLL_TTL    = '2m'
 
   def self.logger
-    if !defined?(@@log)
+    if !defined?(@@log) || @@log.nil?
       @@log = Versioneye::DynLog.new("log/cpan.log", 10).log
     end
+
     @@log
   end
 
@@ -20,17 +21,16 @@ class CpanCrawler < Versioneye::Crawl
     page_nr = 1
     scroll_id = nil
     page = start_release_scroll(all, from_days_ago, to_days_ago)
-
     while page
       logger.debug "crawl_all: page.#{page_nr}"
       unless page.is_a?(Hash)
-        #quite when response was anything than Hashmap
-        log.error "crawl: got malformed response from first scroll request:\n #{page}"
+        #stop process when response was anything than Hashmap
+        logger.error "crawl: got malformed response from first scroll request:\n #{page}"
         break
       end
 
-      scroll_id = page[:_scroll_id] if page.has_key?(:_scroll_id)
-      logger.debug "crawl: new scroll_id `#{scroll_id}`"
+      scroll_id = page.fetch(:_scroll_id)
+      logger.info "crawl: new scroll_id `#{scroll_id}`"
 
       crawl_release_page(page)
       page_nr += 1
@@ -57,10 +57,14 @@ class CpanCrawler < Versioneye::Crawl
     return unless release_page[:hits].has_key?(:hits)
 
     res = release_page[:hits][:hits]
-    res.each {|hit| crawl_release(hit[:fields][:author], hit[:fields][:name]) }
+    res.each do |hit|
+      crawl_release(hit[:fields][:author], hit[:fields][:name])
+    end
   end
 
   def self.crawl_release(author_id, release_id)
+    logger.debug "\tcrawl_release: reading details for #{author_id}/#{release_id}"
+
     author_doc = fetch_author_details(author_id)
     if author_doc.nil?
       logger.error "crawl_release: failed to fetch details for the author `#{author_id}`"
@@ -73,18 +77,8 @@ class CpanCrawler < Versioneye::Crawl
       return
     end
 
-    module_id = to_module_name(release_doc[:distribution])
-    module_doc = fetch_module_details(module_id)
-    if module_doc.nil?
-      logger.warn "crawl_release: no module #{module_id} for release #{author_id}/#{release_id} - will fallback to release data."
-      module_doc = {
-        version: release_doc[:version],
-        description: release_doc[:abstract]
-      }
-    end
-
-    logger.debug "crawl_release: saving #{author_id}/#{release_id}"
-    persist_release(author_doc, release_doc, module_doc)
+    #save product and it submodules
+    persist_release(author_doc, release_doc)
   end
 
   def self.start_release_scroll(all, from_days_ago, to_days_ago)
@@ -126,63 +120,61 @@ class CpanCrawler < Versioneye::Crawl
     fetch_json release_url
   end
 
-  def self.fetch_module_details(module_id)
-    module_url = "#{A_API_URL}/module/#{module_id}"
-    fetch_json module_url
-  end
-
-
   def self.fetch_release_scroll(scroll_id)
     scroll_url = "#{A_API_URL}/_search/scroll?scroll=#{A_SCROLL_TTL}&scroll_id=#{scroll_id}"
     fetch_json scroll_url
   end
 
-  def self.persist_release(author_doc, release_doc, module_doc)
+  # it saves each Module as own product, but submodules are referring back to parent via parent_id
+  def self.persist_release(author_doc, release_doc)
+    modules = []
 
     #when package doesnt provide modules, then translate name to module name
     if release_doc[:provides].is_a?(Array) and release_doc[:provides].size > 0
       modules = release_doc[:provides]
     elsif release_doc[:provides].is_a?(Hash) and release_doc[:provides].keys.size > 0
-      modules = release_doc[:provides].keys.map{|x| x.to_s}
+      modules = release_doc[:provides].keys.map{|x| x.to_s}.to_a
     else
-      default_module = to_module_name( release_doc[:distribution] )
-      logger.debug "persist_release: using default module name #{default_module}"
-      modules = [default_module]
+      default_module = release_doc[:main_module].to_s
+      if default_module.empty?
+        default_module = to_module_name( release_doc[:distribution] )
+        logger.debug "persist_release: using default module name #{default_module}"
+      end
+
+      modules << default_module
     end
 
     #saves each module as own product
-    prods = modules.reduce([]) do |acc, prod_key|
-      acc << upsert_product(author_doc, release_doc, module_doc, prod_key)
-      acc
+    modules.to_a.each do |prod_key|
+      upsert_product(author_doc, release_doc, prod_key)
     end
-
-    prods
   end
 
-  def self.upsert_product(author_doc, release_doc, module_doc, prod_key)
+  def self.upsert_product(author_doc, release_doc, prod_key)
     prod = Product.find_or_initialize_by(language: A_LANGUAGE_PERL, prod_type: A_TYPE_CPAN, prod_key: prod_key)
 
-    release_version_label = release_doc[:version].to_s.gsub(/\Av/i, '')
-    latest_version_label  = module_doc[:version].to_s.gsub(/\Av/i, '')
+    release_version_label = release_doc[:version].to_s.gsub(/\Av/i, '').to_s.strip
     artifact_id = "#{release_doc[:author]}/#{release_doc[:name]}"
-    parent_id   = if release_doc[:main_module]
-                    release_doc[:main_module]
-                  else
-                    to_module_name(release_doc[:distribution]) #use distribution name as parent id
-                  end
+    parent_prod_key   = if release_doc[:main_module]
+                          release_doc[:main_module]
+                        else
+                          to_module_name(release_doc[:distribution]) #use distribution name as parent id
+                        end
 
     prod.update({
+      prod_key_dc: prod_key.to_s.downcase,
       name: prod_key,
+      name_downcase: name.to_s.downcase,
       group_id: release_doc[:author],       # MetaCPAN organizes packages under usernames
-      parent_id: parent_id,                 # refers to main modules
+      parent_id: parent_prod_key,           # refers to main module == parent_prod_key, not Product.id
       artifact_id: artifact_id,             # ID to get data from releases API
-      version: latest_version_label,
-			description: module_doc[:description]
+      description: release_doc[:abstract],
+      version: release_version_label        # should be overwritten by BgWorker
     })
-    if prod.save
-      logger.info "upsert_product: add new product #{prod.to_s}"
-    else
+
+    unless prod.save
       logger.warn "upsert_product: failed to save #{prod.to_s} - #{prod.errors.full_messages.to_s}"
+      return
     end
 
     upsert_version(prod, release_version_label, release_doc)
@@ -213,9 +205,9 @@ class CpanCrawler < Versioneye::Crawl
       upsert_developer(prod, release_version_label, author_doc)
     end
 
-		if release_doc.has_key?(:metadata)
-			upsert_contributors(prod, release_version_label, release_doc[:metadata][:x_contributors])
-		end
+    if release_doc.has_key?(:metadata)
+      upsert_contributors(prod, release_version_label, release_doc[:metadata][:x_contributors])
+    end
 
     prod
   end
@@ -224,10 +216,16 @@ class CpanCrawler < Versioneye::Crawl
     version_db = prod.versions.find_or_initialize_by(version: version_label)
 
     release_date = safely_to_date(release_doc[:date])
+    release_status = if release_doc[:status].to_s.downcase == 'backpan'
+                       'backpan' #it is removed from public, but still accessible from backup
+                    else
+                      release_doc[:maturity]
+                    end
+
     version_db.update({
       released_at: release_date,
       released_string: release_doc[:date],
-      status: release_doc[:maturity]
+      status: release_status
     })
 
     version_db
@@ -236,27 +234,27 @@ class CpanCrawler < Versioneye::Crawl
   def self.safely_to_date(date_txt)
     DateTime.parse date_txt
   rescue => e
-    logger.error "safely_to_date: failed to parse date string `#{date_txt}`\n#{e.message}"
+    logger.er.error "safely_to_date: failed to parse date string `#{date_txt}`\n#{e.message}"
     nil
   end
 
-	def self.upsert_contributors(prod, version_label, contributors)
-		return if contributors.nil?
+  def self.upsert_contributors(prod, version_label, contributors)
+    return if contributors.nil?
 
-		contributors.reduce([]) do |acc, contributor_line|
-			tkns = contributor_line.to_s.gsub(/\<|\>/, '').split(/\s+/)
-			next if tkns.empty?
+    contributors.reduce([]) do |acc, contributor_line|
+      tkns = contributor_line.to_s.gsub(/\<|\>/, '').split(/\s+/)
+      next if tkns.empty?
 
-			author_doc = {
-					email: [tkns.pop],
-					asciiname: tkns.join(' ')
-			}
+      author_doc = {
+        email: [tkns.pop],
+        asciiname: tkns.join(' ')
+      }
 
-			contrib = upsert_developer(prod, version_label, author_doc, 'contributor')
+      contrib = upsert_developer(prod, version_label, author_doc, 'contributor')
       acc << contrib if contrib
       acc
-		end
-	end
+    end
+  end
 
   def self.upsert_developer(prod, version_label, author_doc, role = 'author')
     dev_email = author_doc[:email].first.to_s.strip
@@ -269,21 +267,21 @@ class CpanCrawler < Versioneye::Crawl
     end
 
     author = Developer.find_or_initialize_by(
-			language: A_LANGUAGE_PERL,
-			prod_key: prod[:prod_key],
-			version: version_label,
-			name: dev_name
-		)
+      language: A_LANGUAGE_PERL,
+      prod_key: prod[:prod_key],
+      version: version_label,
+      name: dev_name
+    )
 
-		role.to_s.downcase!
+    role.to_s.downcase!
     website = (author_doc.has_key?(:website) ? author_doc[:website].first : nil)
 
     author.update({
-			organization: author_doc[:pauseid],
+      organization: author_doc[:pauseid],
       email: dev_email,
       homepage: website,
       role: role,
-			contributor: (role == 'contributor')
+      contributor: (role == 'contributor')
     })
 
     unless author.save
@@ -297,6 +295,8 @@ class CpanCrawler < Versioneye::Crawl
 
 
   def self.upsert_dependency(dep_doc, prod_key, version_label)
+    logger.debug "\tupsert_dependency: saving dependency for #{prod_key}/#{version_label} => #{dep_doc}"
+
     dep = Dependency.find_or_initialize_by(
       prod_type: A_TYPE_CPAN,
       language: A_LANGUAGE_PERL,
@@ -310,7 +310,13 @@ class CpanCrawler < Versioneye::Crawl
     dep[:version] = dep_version
     dep[:scope]   = dep_scope
 
-    dep.save
+    unless dep.save
+      log.error "\tupsert_dependency:  failed to save dep for #{prod_key}/#{version_label}"
+      log.error "\t\tdata: #{dep_doc}"
+      log.error "\t\treason: #{dep.errors.full_messages.to_sentence}"
+      return
+    end
+
     dep.update_known
     dep
   end
@@ -351,7 +357,12 @@ class CpanCrawler < Versioneye::Crawl
     lic_db[:url] = license_dt[:url]
     lic_db[:spdx_id] = license_dt[:spdx_id]
 
-    lic_db.save
+    unless lic_db.save
+      logger.error "\tupsert_version_license: failed to save license for #{prod}/#{version_label}"
+      logger.error "\treason: #{lic_db.errors.full_messages.to_sentence}"
+      return nil
+    end
+
     lic_db
   end
 
@@ -368,11 +379,11 @@ class CpanCrawler < Versioneye::Crawl
   end
 
   def self.to_module_name(dist_name)
-    dist_name.to_s.gsub(/\-/, '::')
+    dist_name.to_s.gsub(/\-|_/, '::')
   end
 
-
-	#source: http://blogs.perl.org/users/kentnl_kent_fredric/2012/05/ensure-abstract-and-license-fields-in-your-meta.html
+  # CPAN uses it's own system to unify license names
+  #source: http://blogger.perl.org/users/kentnl_kent_fredric/2012/05/ensure-abstract-and-license-fields-in-your-meta.html
   def self.match_license(license_id)
     case license_id.to_s.downcase
     when 'perl_5'
@@ -407,91 +418,92 @@ class CpanCrawler < Versioneye::Crawl
         url: 'https://spdx.org/licenses/BSD-Source-Code.html'
       }
     when 'unrestricted'
-			{
-				spdx_id: 'CC0-1.0',
-				url: 'https://creativecommons.org/publicdomain/zero/1.0/legalcode'
-			}
+      {
+        spdx_id: 'CC0-1.0',
+        url: 'https://creativecommons.org/publicdomain/zero/1.0/legalcode'
+      }
     when 'freebsd'
       {
         spdx_id: 'BSD-2-Clause',
         url: 'https://opensource.org/licenses/BSD-2-Clause'
       }
-		when 'gfdl_1_2'
+    when 'gfdl_1_2'
       {
-				spdx_id: 'GFDL-1.1',
-				url: 'https://www.gnu.org/licenses/old-licenses/fdl-1.1.txt'
-			}
+        spdx_id: 'GFDL-1.1',
+        url: 'https://www.gnu.org/licenses/old-licenses/fdl-1.1.txt'
+      }
     when 'gfdl_1_3'
-			{
-				spdx_id: 'GFDL-1.3',
-				url: 'https://www.gnu.org/licenses/fdl-1.3.txt'
-			}
+      {
+        spdx_id: 'GFDL-1.3',
+        url: 'https://www.gnu.org/licenses/fdl-1.3.txt'
+      }
     when 'gpl_1'
-			{
-				spdx_id: 'GPL-1.0',
-				url: 'https://www.gnu.org/licenses/old-licenses/gpl-1.0-standalone.html'
-			}
+      {
+        spdx_id: 'GPL-1.0',
+        url: 'https://www.gnu.org/licenses/old-licenses/gpl-1.0-standalone.html'
+      }
     when 'gpl_2'
-			{
-				spdx_id: 'GPL-2.0',
-				url: 'https://opensource.org/licenses/GPL-2.0'
-			}
+      {
+        spdx_id: 'GPL-2.0',
+        url: 'https://opensource.org/licenses/GPL-2.0'
+      }
     when 'gpl', 'gpl_3'
-			{
-				spdx_id: 'GPL-3.0',
-				url: 'https://opensource.org/licenses/GPL-3.0'
-			}
+      {
+        spdx_id: 'GPL-3.0',
+        url: 'https://opensource.org/licenses/GPL-3.0'
+      }
     when 'lgpl', 'lgpl_2_1'
-			{
-				spdx_id: 'LGPL-2.1',
-				url: 'https://opensource.org/licenses/LGPL-2.1'
-			}
+      {
+        spdx_id: 'LGPL-2.1',
+        url: 'https://opensource.org/licenses/LGPL-2.1'
+      }
     when 'lgpl_3_0'
       {
-				spdx_id: 'LGPL-3.0',
-				url: 'https://opensource.org/licenses/LGPL-3.0'
-			}
+        spdx_id: 'LGPL-3.0',
+        url: 'https://opensource.org/licenses/LGPL-3.0'
+      }
     when 'mit'
-			{
-				spdx_id: 'MIT',
-				url: 'https://opensource.org/licenses/MIT'
-			}
+      {
+        spdx_id: 'MIT',
+        url: 'https://opensource.org/licenses/MIT'
+      }
     when 'mozilla_1_0'
-			{
-				spdx_id: 'MPL-1.0',
-				url: 'https://opensource.org/licenses/MPL-1.0'
-			}
+      {
+        spdx_id: 'MPL-1.0',
+        url: 'https://opensource.org/licenses/MPL-1.0'
+      }
     when 'mozilla', 'mozilla_1_1'
-			{
-				spdx_id: 'MPL-1.1',
-				url: 'https://opensource.org/licenses/MPL-1.1'
-			}
+      {
+        spdx_id: 'MPL-1.1',
+        url: 'https://opensource.org/licenses/MPL-1.1'
+      }
     when 'openssl'
-			{
-				name: 'OpenSSL license',
-				url: 'https://www.openssl.org/source/license.txt'
-			}
+      {
+        name: 'OpenSSL license',
+        url: 'https://www.openssl.org/source/license.txt'
+      }
     when 'qpl_1_0'
-			{
-				spdx_id: 'QPL-1.0',
-				url: 'https://opensource.org/licenses/QPL-1.0'
-			}
+      {
+        spdx_id: 'QPL-1.0',
+        url: 'https://opensource.org/licenses/QPL-1.0'
+      }
     when 'ssleay'
-			{
-				name: 'Original SSLeay License',
-				url: 'http://h41379.www4.hpe.com/doc/83final/ba554_90007/apcs02.html'
-			}
-		when 'sun'
-			{
-				spdx_id: 'SISSL',
-				url: 'https://opensource.org/licenses/sisslpl'
-			}
+      {
+        name: 'Original SSLeay License',
+        url: 'http://h41379.www4.hpe.com/doc/83final/ba554_90007/apcs02.html'
+      }
+    when 'sun'
+      {
+        spdx_id: 'SISSL',
+        url: 'https://opensource.org/licenses/sisslpl'
+      }
     when 'zlib'
-			{
-				spdx_id: 'Zlib',
-				url: 'http://www.zimbra.com/legal/zimbra-public-license-1-4/'
-			}
+      {
+        spdx_id: 'Zlib',
+        url: 'http://www.zimbra.com/legal/zimbra-public-license-1-4/'
+      }
     else
+      log.warn "license_match: no match for #{license_id}"
       {
         name: 'Unknown',
         url: nil,

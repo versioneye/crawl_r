@@ -13,9 +13,6 @@ describe CpanCrawler do
   let(:release_dt){ JSON.parse(release_json, {symbolize_names: true}) }
   let(:author_json){ File.read('spec/fixtures/files/cpan/author.json') }
   let(:author_dt){ JSON.parse(author_json, {symbolize_names: true}) }
-  let(:module_json){ File.read('spec/fixtures/files/cpan/module.json') }
-  let(:module_dt){ JSON.parse(module_json, {symbolize_names: true}) }
-
   let(:page1_json){
     %Q[
       {
@@ -279,7 +276,7 @@ describe CpanCrawler do
     end
 
     it "saves a new product from release data" do
-      prod_db = CpanCrawler.upsert_product(nil, release_dt, module_dt, product1[:prod_key])
+      prod_db = CpanCrawler.upsert_product(nil, release_dt, product1[:prod_key])
 
       expect(prod_db).not_to be_nil
       expect(prod_db[:name]).to eq(product1[:name])
@@ -297,10 +294,11 @@ describe CpanCrawler do
       FakeWeb.allow_net_connect = %r[^https?://localhost]
       FakeWeb.register_uri(:post, all_releases_url, {body: page1_json})
       FakeWeb.register_uri(:get, scroll_url, body: "[]")
+      FakeWeb.register_uri(:post, scroll_url, body: "[]")
+
       FakeWeb.register_uri(:get, search_url, body: "[]")
       FakeWeb.register_uri(:get, author_url, body: author_json)
       FakeWeb.register_uri(:get, release_url, body: release_json)
-      FakeWeb.register_uri(:get, module_url, body: module_json)
       FakeWeb.register_uri(:delete, delete_scroll_url, body: "[]")
     end
 
