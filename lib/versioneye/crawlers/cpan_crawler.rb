@@ -32,7 +32,7 @@ class CpanCrawler < Versioneye::Crawl
       scroll_id = page.fetch(:_scroll_id)
       logger.info "crawl: new scroll_id `#{scroll_id}`"
 
-      crawl_release_page(page)
+      crawl_release_items(page)
       page_nr += 1
       break if page.is_a?(Hash) and page[:hits].empty?
 
@@ -45,20 +45,55 @@ class CpanCrawler < Versioneye::Crawl
     #remove scrolling session
     HTTParty.delete(
       "#{A_API_URL}/release/_search",
-      { body: "[#{scroll_id}]" }
+      { body: "[#{scroll_id}]" }.to_json
     )
   end
 
   #crawl release details for each item in the search results
-  def self.crawl_release_page(release_page)
-    logger.debug "crawl_release_page: crawling items from release_page"
+  def self.crawl_release_items(release_page)
+    logger.debug "crawl_release_items: crawling items from release_page"
     return unless release_page.is_a?(Hash)
     return unless release_page.has_key?(:hits)
     return unless release_page[:hits].has_key?(:hits)
 
     res = release_page[:hits][:hits]
     res.each do |hit|
-      crawl_release(hit[:fields][:author], hit[:fields][:name])
+      doc = hit[:fields]
+      if doc.nil? or doc.empty?
+        logger.error "crawl_release_items: search result has no fields :#{hit}"
+        next
+      end
+
+
+      # sometimes author field is mapped as array, sometimes string
+      author_id = if doc[:author].is_a?(String)
+                    doc[:author].to_s.strip
+                  elsif doc[:author].is_a?(Array)
+                    if doc[:author].size > 1
+                      logger.error "crawl_release_items: :author fields has more than 1 item #{doc[:author]}"
+                    end
+
+                    doc[:author].first
+                  else
+                    logger.error "crawl_release_items: author field has unsupported format: #{doc}"
+                  end
+      next if author_id.to_s.empty?
+
+      prod_id = if doc[:name].is_a?(String)
+                  doc[:name].to_s.strip
+                elsif doc[:name].is_a?(Array)
+                  if doc[:name].size > 1
+                    logger.error "crawl_release_items: :name field has more than 1 item #{doc[:name]}"
+                  end
+
+                  doc[:name].first
+                else
+                  logger.error "crawl_release_items: package ID has unsupported format: #{doc}"
+                end
+      next if prod_id.to_s.empty?
+
+
+      crawl_release(author_id, prod_id)
     end
   end
 
@@ -93,7 +128,7 @@ class CpanCrawler < Versioneye::Crawl
       },
       "fields"  => [ "author", "name"],
       "sort"    => [{ "date" => "asc" }],
-      "size"    => 100
+      "size"    => 5000
     }
 
     if all == false
@@ -113,16 +148,34 @@ class CpanCrawler < Versioneye::Crawl
   def self.fetch_author_details(author_id)
     author_url = "#{A_API_URL}/author/#{author_id}"
     fetch_json author_url
+
+  rescue => e
+    logger.error "fetch_author_details: failed to fetch author details from #{author_url}"
+    logger.error "reason: #{e.message}"
+    logger.error e.backtrace.join('\n')
+    nil
   end
 
   def self.fetch_release_details(author_id, release_id)
     release_url = "#{A_API_URL}/release/#{author_id}/#{release_id}"
     fetch_json release_url
+
+  rescue => e
+    logger.error "fetch_release_details: failed to fetch release details from #{release_url}"
+    logger.error "reason: #{e.message}"
+    logger.error e.backtrace.join('\n')
+    nil
   end
 
   def self.fetch_release_scroll(scroll_id)
     scroll_url = "#{A_API_URL}/_search/scroll?scroll=#{A_SCROLL_TTL}&scroll_id=#{scroll_id}"
     fetch_json scroll_url
+
+  rescue => e
+    logger.error "fetch_release_scroll: failed to fetch next batch of releases: #{scroll_url}"
+    logger.error "reason: #{e.message}"
+    logger.error e.backtrace.join('\n')
+    nil
   end
 
   # it saves each Module as own product, but submodules are referring back to parent via parent_id
@@ -150,6 +203,9 @@ class CpanCrawler < Versioneye::Crawl
     end
   end
 
+  # updates or insert new PERL package
+  # it uses module names as prod_key, because package names may include versions or release details
+  # which means some package has many different names
   def self.upsert_product(author_doc, release_doc, prod_key)
     prod = Product.find_or_initialize_by(language: A_LANGUAGE_PERL, prod_type: A_TYPE_CPAN, prod_key: prod_key)
 
@@ -503,7 +559,7 @@ class CpanCrawler < Versioneye::Crawl
         url: 'http://www.zimbra.com/legal/zimbra-public-license-1-4/'
       }
     else
-      log.warn "license_match: no match for #{license_id}"
+      logger.warn "license_match: no match for #{license_id}"
       {
         name: 'Unknown',
         url: nil,
