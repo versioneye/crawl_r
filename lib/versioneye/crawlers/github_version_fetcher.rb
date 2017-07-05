@@ -187,6 +187,8 @@ class GithubVersionFetcher < Versioneye::Crawl
         login: confs.github_user.to_s,
         password: confs.github_pass.to_s
       }
+    elsif !confs.github_client_secret.to_s.empty?
+      {access_token: confs.github_client_secret.to_s}
     else
       log.warn "No authorization data"
       nil

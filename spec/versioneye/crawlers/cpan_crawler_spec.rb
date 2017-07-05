@@ -1,12 +1,13 @@
 require 'spec_helper'
 
 describe CpanCrawler do
-  let(:all_releases_url){ "#{CpanCrawler::A_API_URL}/v0/release/_search?scroll=2m" }
-  let(:author_url){ "#{CpanCrawler::A_API_URL}/v0/author/VTI" }
-  let(:release_url){ "#{CpanCrawler::A_API_URL}/v0/release/VTI/Routes-Tiny-0.16" }
-  let(:module_url){ "#{CpanCrawler::A_API_URL}/v0/module/Routes::Tiny" }
-  let(:scroll_url){ "#{CpanCrawler::A_API_URL}/v0/release/_search?scroll=2m&scroll_id=abc123" }
-  let(:delete_scroll_url){ "#{CpanCrawler::A_API_URL}/v0/release/_search"  } 
+  let(:all_releases_url){ "#{CpanCrawler::A_API_URL}/release/_search?scroll=2m" }
+  let(:author_url){ "#{CpanCrawler::A_API_URL}/author/VTI" }
+  let(:release_url){ "#{CpanCrawler::A_API_URL}/release/VTI/Routes-Tiny-0.16" }
+  let(:module_url){ "#{CpanCrawler::A_API_URL}/module/Routes::Tiny" }
+  let(:scroll_url){ "#{CpanCrawler::A_API_URL}/release/_search?scroll=2m&scroll_id=abc123" }
+  let(:delete_scroll_url){ "#{CpanCrawler::A_API_URL}/release/_search"  }
+  let(:search_url){ "#{CpanCrawler::A_API_URL}/_search/scroll?scroll=2m&scroll_id=abc123" }
 
   let(:release_json){ File.read("spec/fixtures/files/cpan/release.json") }
   let(:release_dt){ JSON.parse(release_json, {symbolize_names: true}) }
@@ -83,7 +84,7 @@ describe CpanCrawler do
     after :each do
       License.delete_all
     end
-    
+
     it "saves a new version license" do
       expect(License.all.size).to eq(0)
       lic_db = CpanCrawler.upsert_version_license(product1, '0.16', 'artistic_2')
@@ -158,7 +159,7 @@ describe CpanCrawler do
 
     it "saves a new version link" do
       link_db = CpanCrawler.upsert_version_link(product1, '0.16', 'repo', 'ftp://a.spec')
-      
+
       expect(Versionlink.all.size).to eq(1)
       expect(link_db).not_to be_nil
       expect(link_db[:language]).to eq(product1[:language])
@@ -172,7 +173,7 @@ describe CpanCrawler do
       expect(Versionlink.all.size).to eq(0)
       link_db = CpanCrawler.upsert_version_link(product1, '0.16', 'repo', 'ftp://a.spec')
       expect(Versionlink.all.size).to eq(1)
- 
+
       link_db = CpanCrawler.upsert_version_link(product1, '0.16', 'repo', 'ftp://a.spec')
       expect(Versionlink.all.size).to eq(1)
       expect(link_db).not_to be_nil
@@ -200,7 +201,7 @@ describe CpanCrawler do
       expect(dep_db[:dep_prod_key]).to eq(dep_doc[:module])
       expect(dep_db[:version]).to eq(dep_doc[:version])
       expect(dep_db[:scope]).to eq(dep_doc[:phase])
-    end 
+    end
 
     it "doesnt save duplicates " do
       dep_doc = release_dt[:dependency].first
@@ -221,13 +222,13 @@ describe CpanCrawler do
     end
   end
 
-  context "upsert_author" do
+  context "upsert_developer" do
     after :each do
       Developer.delete_all
     end
 
     it "saves a new author correctly" do
-      author_db = CpanCrawler.upsert_author(product1, product1[:version], author_dt)
+      author_db = CpanCrawler.upsert_developer(product1, product1[:version], author_dt)
       expect(Developer.all.size).to eq(1)
       expect(author_db).not_to be_nil
 
@@ -241,10 +242,10 @@ describe CpanCrawler do
 
     it "does not save duplicate author for same version release" do
       expect(Developer.all.size).to eq(0)
-      author_db = CpanCrawler.upsert_author(product1, product1[:version], author_dt)
+      author_db = CpanCrawler.upsert_developer(product1, product1[:version], author_dt)
       expect(Developer.all.size).to eq(1)
 
-      author_db = CpanCrawler.upsert_author(product1, product1[:version], author_dt)
+      author_db = CpanCrawler.upsert_developer(product1, product1[:version], author_dt)
       expect(Developer.all.size).to eq(1)
 
       expect(author_db).not_to be_nil
@@ -287,7 +288,7 @@ describe CpanCrawler do
       expect(prod_db[:version]).to eq(product1[:version])
       expect(prod_db[:group_id]).to eq(release_dt[:author])
       expect(prod_db[:parent_id]).to eq(release_dt[:main_module])
-      
+
     end
   end
 
@@ -296,6 +297,7 @@ describe CpanCrawler do
       FakeWeb.allow_net_connect = %r[^https?://localhost]
       FakeWeb.register_uri(:post, all_releases_url, {body: page1_json})
       FakeWeb.register_uri(:get, scroll_url, body: "[]")
+      FakeWeb.register_uri(:get, search_url, body: "[]")
       FakeWeb.register_uri(:get, author_url, body: author_json)
       FakeWeb.register_uri(:get, release_url, body: release_json)
       FakeWeb.register_uri(:get, module_url, body: module_json)
@@ -305,6 +307,7 @@ describe CpanCrawler do
     after :each do
       FakeWeb.allow_net_connect = true
       Product.delete_all
+      Developer.delete_all
     end
 
     it "process first scroll, fetches 1st release, author details and saves correct results" do
@@ -315,7 +318,7 @@ describe CpanCrawler do
       prod = Product.find_by(language: 'Perl', prod_key: 'Routes::Tiny')
       expect(prod).not_to be_nil
       expect(prod[:version]).to eq(product1[:version])
-      expect(Developer.all.size).to eq(24)
+      expect(Developer.all.size).to eq(21)
       expect(Dependency.all.size).to eq(24)
 
       #it also saved other modules as products

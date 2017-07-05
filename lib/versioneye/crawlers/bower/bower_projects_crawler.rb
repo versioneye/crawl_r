@@ -1,35 +1,24 @@
+require 'octokit'
+
 class BowerProjectsCrawler < Bower
 
 
   def self.process_project task, token, skipKnownVersions = true
-    check_request_limit( token )
-    repo_response = Github.repo_info(task[:repo_fullname], token, true, task[:crawled_at])
-
-    if repo_response.nil? or repo_response.is_a?(Boolean)
-      logger.error "ERROR in process_project(..) | Did not get repo_response for #{task[:repo_fullname]}"
-      check_request_limit( token )
+    token = token.to_s.strip
+    if token.empty?
+      log.error "process_project: Github token can not be empty!"
       return false
     end
 
-    if repo_response.code == 304
-      logger.debug "ERROR in process_project(..) | no changes for #{task[:repo_fullname]}, since #{task[:crawled_at]}"
-      check_request_limit( token )
+    check_request_limit token
+
+    #fetch repo details
+    repo_info = fetch_repo_details(token, task[:repo_fullname])
+    if repo_info.nil?
+      logger.error "process_project: failed to fetch repo details for #{task}"
       return false
     end
 
-    if repo_response.body.to_s.empty?
-      logger.error "ERROR: Response body is empty for #{task[:repo_fullname]}. Response code: #{repo_response.code}"
-      check_request_limit( token )
-      return false
-    end
-
-    if repo_response.code != 200 && repo_response.code != 201
-      logger.error "ERROR in process_project(..) | cant read information for #{task[:repo_fullname]} - response body: #{repo_response.body} - response code: #{repo_response.code}"
-      check_request_limit( token )
-      return false
-    end
-
-    repo_info = JSON.parse(repo_response.body, symbolize_names: true)
     repo_info[:repo_fullname] = task[:repo_fullname]
     product = add_bower_package(task, repo_info,  token, skipKnownVersions)
     if product.nil?
@@ -41,6 +30,10 @@ class BowerProjectsCrawler < Bower
     to_version_task(task, product[:prod_key]) # add new version task when everything went oK
 
     true
+  rescue => e
+    log.error "process_project: failed to process #{task}- #{e.message.to_s}"
+    log.error e.backtrace.join('\n')
+    false
   end
 
 
@@ -165,6 +158,7 @@ class BowerProjectsCrawler < Bower
     repo_url = task[:url]
     pkg_info = nil
     supported_files = Set.new ['bower.json', 'component.json', 'module.json', 'package.json']
+
     supported_files.to_a.each do |filename|
       file_url     = "https://raw.githubusercontent.com/#{fullname}/#{branch}/#{filename}"
       project_file = read_project_file_from_url( file_url, token )
@@ -233,6 +227,5 @@ class BowerProjectsCrawler < Bower
     end
     language
   end
-
 
 end

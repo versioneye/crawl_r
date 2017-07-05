@@ -1,0 +1,3808 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks?start=0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:21 GMT
+      Etag:
+      - W/"cce585a0e5421379c77eef305afdce5c"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - e6a12509-6c6c-4918-8e06-9d690107dcfe
+      X-Runtime:
+      - '0.051337'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '447'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"start":0,"total":3326,"items":[{"cookbook_name":"1password","cookbook_maintainer":"jtimberman","cookbook_description":"Installs
+        1password","cookbook":"https://supermarket.chef.io/api/v1/cookbooks/1password"},{"cookbook_name":"301","cookbook_maintainer":"markhuge","cookbook_description":"Installs/Configures
+        301","cookbook":"https://supermarket.chef.io/api/v1/cookbooks/301"},{"cookbook_name":"7dtd","cookbook_maintainer":"gregf","cookbook_description":"Installs/Configures
+        the 7 Days To Die server","cookbook":"https://supermarket.chef.io/api/v1/cookbooks/7dtd"},{"cookbook_name":"7-zip","cookbook_maintainer":"sneal","cookbook_description":"Installs/Configures
+        the 7-zip file archiver","cookbook":"https://supermarket.chef.io/api/v1/cookbooks/7-zip"},{"cookbook_name":"abiquo","cookbook_maintainer":"nacx","cookbook_description":"Installs
+        and configures an Abiquo platform","cookbook":"https://supermarket.chef.io/api/v1/cookbooks/abiquo"},{"cookbook_name":"acadock","cookbook_maintainer":"soulou","cookbook_description":"Installs/Configures
+        acadock monitoring tool","cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock"},{"cookbook_name":"accel-ppp","cookbook_maintainer":"frostyslav","cookbook_description":"Installs/Configures
+        accel-pppd","cookbook":"https://supermarket.chef.io/api/v1/cookbooks/accel-ppp"},{"cookbook_name":"accounts","cookbook_maintainer":"vvk","cookbook_description":"System
+        Accounts management","cookbook":"https://supermarket.chef.io/api/v1/cookbooks/accounts"},{"cookbook_name":"accumulator","cookbook_maintainer":"kisoku","cookbook_description":"Installs/Configures
+        accumulator","cookbook":"https://supermarket.chef.io/api/v1/cookbooks/accumulator"},{"cookbook_name":"acd","cookbook_maintainer":"ryanh","cookbook_description":"Installs/Configures
+        acd","cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acd"}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:22 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/1password
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:22 GMT
+      Etag:
+      - W/"3d360fda65564e408b51167c97b6d17e"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - d50086d8-5c20-4bf9-b431-8d93fde529b1
+      X-Runtime:
+      - '0.018538'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '451'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"name":"1password","maintainer":"jtimberman","description":"Installs
+        1password","category":"Other","latest_version":"https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.3.0","external_url":"https://github.com/jtimberman/1password-cookbook","source_url":"https://github.com/jtimberman/1password-cookbook","issues_url":null,"average_rating":null,"created_at":"2011-02-26T05:16:12.000Z","updated_at":"2016-01-16T16:47:27.967Z","up_for_adoption":null,"deprecated":false,"versions":["https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.3.0","https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.2.1","https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.2.0","https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.1.0","https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.6","https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.4","https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.2","https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.0"],"metrics":{"downloads":{"total":6486364,"versions":{"1.0.0":1034940,"1.0.2":1034876,"1.0.4":1274841,"1.0.6":1274835,"1.1.0":1274916,"1.2.0":296336,"1.2.1":294771,"1.3.0":849}},"followers":51,"collaborators":1}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:22 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.3.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:23 GMT
+      Etag:
+      - W/"b6245e23551a1222728460d385a48bd8"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - f82a779a-c1e6-47ba-b2ed-e89531fd565c
+      X-Runtime:
+      - '0.034600'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '742'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":5743,"version":"1.3.0","published_at":"2016-01-16T16:47:28Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/1password","file":"https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.3.0/download","quality_metrics":[{"name":"Version
+        Tag","failed":false,"feedback":"passed the version tag metric."},{"name":"Contributing
+        File","failed":true,"feedback":"Failure: To pass this metric, your cookbook
+        metadata must include a source url, the source url must be in the form of
+        https://github.com/user/repo, and your repo must contain a CONTRIBUTING.md
+        file"},{"name":"Testing File","failed":true,"feedback":"Failure: To pass this
+        metric, your cookbook metadata must include a source url, the source url must
+        be in the form of https://github.com/user/repo, and your repo must contain
+        a TESTING.md file"},{"name":"License","failed":false,"feedback":"1password
+        has a recognized open source license."},{"name":"No Binaries","failed":false,"feedback":"passed
+        the No Binaries metric. Contains no obvious binaries."},{"name":"Foodcritic","failed":true,"feedback":"FC064:
+        Ensure issues_url is set in metadata: 1password/metadata.rb:1\nFC065: Ensure
+        source_url is set in metadata: 1password/metadata.rb:1\nFC066: Ensure chef_version
+        is set in metadata: 1password/metadata.rb:1\nFC069: Ensure standardized license
+        defined in metadata: 1password/metadata.rb:1\nRun with Foodcritic Version
+        11.1.0 with tags metadata,correctness ~FC031 ~FC045 and failure tags any"},{"name":"Supported
+        Platforms","failed":false,"feedback":"1password supports at least one platform."},{"name":"Collaborator
+        Number","failed":true,"feedback":"Failure: Cookbook has 1 collaborators. A
+        cookbook must have at least 2 collaborators to pass this metric."},{"name":"Publish","failed":false,"feedback":"1password
+        passed the publish metric"}],"supports":{"mac_os_x":">= 0.0.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:23 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.2.1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:24 GMT
+      Etag:
+      - W/"8f9ce956e35ace6989a05e87e5555d08"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 9a59e14a-11d7-463b-a4da-300d1df8bee5
+      X-Runtime:
+      - '0.028661'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '270'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":5677,"version":"1.2.1","published_at":"2015-03-21T17:14:03Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/1password","file":"https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.2.1/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}],"supports":{"mac_os_x":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:24 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.2.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:25 GMT
+      Etag:
+      - W/"2266a64a5e961c04db47a6ce5d794557"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 431229ac-b04c-4e7d-bdb0-6e3e79b3f1cc
+      X-Runtime:
+      - '0.023603'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '352'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":1728,"version":"1.2.0","published_at":"2015-03-20T23:42:56Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/1password","file":"https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.2.0/download","quality_metrics":[{"name":"Foodcritic","failed":true,"feedback":"FC031:
+        Cookbook without metadata file: /tmp/cook/d800b64b6b93e678580a8e4e/1password/metadata.rb:1\nFC045:
+        Consider setting cookbook name in metadata: /tmp/cook/d800b64b6b93e678580a8e4e/1password/metadata.rb:1"}],"supports":{"mac_os_x":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:25 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.1.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:26 GMT
+      Etag:
+      - W/"cc52d0217229b5b4613620ffec242da2"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 14b1ad73-7a8f-4399-aa70-c9e90071c7ac
+      X-Runtime:
+      - '0.030936'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '239'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":1758,"version":"1.1.0","published_at":"2014-06-01T01:44:30Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/1password","file":"https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.1.0/download","quality_metrics":[],"supports":{"mac_os_x":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:26 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.6
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:27 GMT
+      Etag:
+      - W/"4775d1698d0c0ca915bd424d1814f86f"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 6ffffad0-98c2-49b6-8a8e-a0ef796d76ce
+      X-Runtime:
+      - '0.036360'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '239'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":5384,"version":"1.0.6","published_at":"2012-12-29T22:40:15Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/1password","file":"https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.6/download","quality_metrics":[],"supports":{"mac_os_x":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:27 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.4
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:28 GMT
+      Etag:
+      - W/"a2cdbd3477da7590bc70acb210e62917"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - d548402f-e557-4f33-804e-31b0f9957b10
+      X-Runtime:
+      - '0.019228'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '240'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":5383,"version":"1.0.4","published_at":"2012-11-18T21:32:45Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/1password","file":"https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.4/download","quality_metrics":[],"supports":{"mac_os_x":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:28 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:28 GMT
+      Etag:
+      - W/"c0b9ad08b75d7b662f9dc477e19f7b55"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - b0e9856c-8609-4b44-94ed-8628962fcc3a
+      X-Runtime:
+      - '0.030888'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '238'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":5504,"version":"1.0.2","published_at":"2012-11-18T21:31:39Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/1password","file":"https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.2/download","quality_metrics":[],"supports":{"mac_os_x":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:29 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:29 GMT
+      Etag:
+      - W/"a0e263f69c0b6d1eb7b59de1caebb8bb"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 174972ee-2c1f-4f63-a6b6-8a46e263f53e
+      X-Runtime:
+      - '0.019983'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '239'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":1776,"version":"1.0.0","published_at":"2011-02-26T05:16:12Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/1password","file":"https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.0/download","quality_metrics":[],"supports":{"mac_os_x":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:29 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/301
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:30 GMT
+      Etag:
+      - W/"3790b4218a3341c44df993670904e5bb"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 90704425-3545-41c1-a14b-0248cbd132fb
+      X-Runtime:
+      - '0.025824'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '358'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"name":"301","maintainer":"markhuge","description":"Installs/Configures
+        301","category":"Applications","latest_version":"https://supermarket.chef.io/api/v1/cookbooks/301/versions/0.1.0","external_url":"https://github.com/markhuge/301-cookbook","source_url":"https://github.com/markhuge/301-cookbook","issues_url":"https://github.com/markhuge/301-cookbook/issues","average_rating":null,"created_at":"2015-01-22T04:12:02.493Z","updated_at":"2015-01-22T04:15:11.777Z","up_for_adoption":null,"deprecated":false,"versions":["https://supermarket.chef.io/api/v1/cookbooks/301/versions/0.1.0"],"metrics":{"downloads":{"total":486560,"versions":{"0.1.0":486560}},"followers":8,"collaborators":0}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:30 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/301/versions/0.1.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:31 GMT
+      Etag:
+      - W/"f0ae6bff0ab067837def63088e550f3a"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - fa1689c4-46bd-49ec-8b31-778e600573bf
+      X-Runtime:
+      - '0.024479'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '805'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":6849,"version":"0.1.0","published_at":"2015-01-22T04:12:02Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/301","file":"https://supermarket.chef.io/api/v1/cookbooks/301/versions/0.1.0/download","quality_metrics":[{"name":"Version
+        Tag","failed":true,"feedback":"Failure: To pass this metric, your cookbook
+        metadata must include a source url, the source url must be in the form of
+        https://github.com/user/repo, and your repo must include a tag that matches
+        this cookbook version number"},{"name":"Testing File","failed":true,"feedback":"Failure:
+        To pass this metric, your cookbook metadata must include a source url, the
+        source url must be in the form of https://github.com/user/repo, and your repo
+        must contain a TESTING.md file"},{"name":"Contributing File","failed":true,"feedback":"Failure:
+        To pass this metric, your cookbook metadata must include a source url, the
+        source url must be in the form of https://github.com/user/repo, and your repo
+        must contain a CONTRIBUTING.md file"},{"name":"Publish","failed":false,"feedback":"301
+        passed the publish metric"},{"name":"License","failed":false,"feedback":"301
+        has a recognized open source license."},{"name":"Supported Platforms","failed":true,"feedback":"301
+        should declare what platform(s) it supports."},{"name":"No Binaries","failed":false,"feedback":"passed
+        the No Binaries metric. Contains no obvious binaries."},{"name":"Foodcritic","failed":true,"feedback":"FC034:
+        Unused template variables: 301/templates/default/upstart.erb:1\nFC064: Ensure
+        issues_url is set in metadata: 301/metadata.rb:1\nFC065: Ensure source_url
+        is set in metadata: 301/metadata.rb:1\nFC066: Ensure chef_version is set in
+        metadata: 301/metadata.rb:1\nFC067: Ensure at least one platform supported
+        in metadata: 301/metadata.rb:1\nRun with Foodcritic Version 11.1.0 with tags
+        metadata,correctness ~FC031 ~FC045 and failure tags any"},{"name":"Collaborator
+        Number","failed":true,"feedback":"Failure: Cookbook has 0 collaborators. A
+        cookbook must have at least 2 collaborators to pass this metric."}],"dependencies":{"nodejs":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:31 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/7dtd
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:32 GMT
+      Etag:
+      - W/"bf37cdf29c4035490d984ccbf9c6a911"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 2ea3f31e-013b-4159-8953-43b674bbbd90
+      X-Runtime:
+      - '0.024076'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '337'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"name":"7dtd","maintainer":"gregf","description":"Installs/Configures
+        the 7 Days To Die server","category":"Other","latest_version":"https://supermarket.chef.io/api/v1/cookbooks/7dtd/versions/0.1","external_url":null,"source_url":null,"issues_url":null,"average_rating":null,"created_at":"2016-03-30T16:50:57.542Z","updated_at":"2016-03-30T16:50:57.399Z","up_for_adoption":null,"deprecated":false,"versions":["https://supermarket.chef.io/api/v1/cookbooks/7dtd/versions/0.1"],"metrics":{"downloads":{"total":265,"versions":{"0.1":265}},"followers":1,"collaborators":0}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:32 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/7dtd/versions/0.1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:33 GMT
+      Etag:
+      - W/"c186d8f11a8737454b3f4ac80b74b328"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 8a369f22-028a-45d8-a01e-e1231251f24f
+      X-Runtime:
+      - '0.039512'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '775'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2","tarball_file_size":7044,"version":"0.1","published_at":"2016-03-30T16:50:57Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/7dtd","file":"https://supermarket.chef.io/api/v1/cookbooks/7dtd/versions/0.1/download","quality_metrics":[{"name":"License","failed":true,"feedback":"7dtd
+        does not have a valid open source license.\nAcceptable licenses include Apache-2.0,
+        apachev2, Apache 2.0, MIT, mit, GPL-2.0, gplv2, GNU Public License 2.0, GPL-3.0,
+        gplv3, GNU Public License 3.0."},{"name":"Testing File","failed":true,"feedback":"Failure:
+        To pass this metric, your cookbook metadata must include a source url, the
+        source url must be in the form of https://github.com/user/repo, and your repo
+        must contain a TESTING.md file"},{"name":"Publish","failed":false,"feedback":"7dtd
+        passed the publish metric"},{"name":"Supported Platforms","failed":false,"feedback":"7dtd
+        supports at least one platform."},{"name":"Contributing File","failed":true,"feedback":"Failure:
+        To pass this metric, your cookbook metadata must include a source url, the
+        source url must be in the form of https://github.com/user/repo, and your repo
+        must contain a CONTRIBUTING.md file"},{"name":"Version Tag","failed":true,"feedback":"Failure:
+        To pass this metric, your cookbook metadata must include a source url, the
+        source url must be in the form of https://github.com/user/repo, and your repo
+        must include a tag that matches this cookbook version number"},{"name":"Collaborator
+        Number","failed":true,"feedback":"Failure: Cookbook has 0 collaborators. A
+        cookbook must have at least 2 collaborators to pass this metric."},{"name":"Foodcritic","failed":false,"feedback":"\nRun
+        with Foodcritic Version 11.1.0 with tags metadata,correctness ~FC031 ~FC045
+        and failure tags any"},{"name":"No Binaries","failed":false,"feedback":"passed
+        the No Binaries metric. Contains no obvious binaries."}],"supports":{"debian":">=
+        0.0.0","ubuntu":">= 0.0.0"},"dependencies":{"apt":">= 0.0.0","systemd":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:33 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/7-zip
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:34 GMT
+      Etag:
+      - W/"4e8f80ee1eac8323b99cdaf706f0ee0e"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - f332ff26-b16e-4b02-8755-8440b2f935c5
+      X-Runtime:
+      - '0.020384'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '423'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"name":"7-zip","maintainer":"sneal","description":"Installs/Configures
+        the 7-zip file archiver","category":"Utilities","latest_version":"https://supermarket.chef.io/api/v1/cookbooks/7-zip/versions/1.0.2","external_url":"http://github.com/opscode-cookbooks/7-zip","source_url":"http://github.com/opscode-cookbooks/7-zip","issues_url":null,"average_rating":null,"created_at":"2011-09-27T07:43:03.000Z","updated_at":"2016-03-21T21:30:40.641Z","up_for_adoption":null,"deprecated":true,"replacement":"https://supermarket.chef.io/api/v1/cookbooks/seven_zip","versions":["https://supermarket.chef.io/api/v1/cookbooks/7-zip/versions/1.0.2","https://supermarket.chef.io/api/v1/cookbooks/7-zip/versions/1.0.0"],"metrics":{"downloads":{"total":21853285,"versions":{"1.0.0":1275525,"1.0.2":20577763}},"followers":56,"collaborators":2}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:34 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/7-zip/versions/1.0.2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:35 GMT
+      Etag:
+      - W/"0b5a2a47574d6d50b68eb7e688572ab3"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 70b0e2f3-a529-4ec4-bcb5-e23b823a5635
+      X-Runtime:
+      - '0.031610'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '656'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":2143,"version":"1.0.2","published_at":"2013-09-07T21:43:38Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/7-zip","file":"https://supermarket.chef.io/api/v1/cookbooks/7-zip/versions/1.0.2/download","quality_metrics":[{"name":"Testing
+        File","failed":false,"feedback":"passed the TESTING.md file metric."},{"name":"Contributing
+        File","failed":false,"feedback":"passed the CONTRIBUTING.md file metric."},{"name":"Version
+        Tag","failed":false,"feedback":"passed the version tag metric."},{"name":"Supported
+        Platforms","failed":false,"feedback":"7-zip supports at least one platform."},{"name":"Collaborator
+        Number","failed":false,"feedback":"passed the Collaborators Metric with 2
+        collaborators."},{"name":"Foodcritic","failed":true,"feedback":"FC064: Ensure
+        issues_url is set in metadata: 7-zip/metadata.rb:1\nFC065: Ensure source_url
+        is set in metadata: 7-zip/metadata.rb:1\nFC066: Ensure chef_version is set
+        in metadata: 7-zip/metadata.rb:1\nFC069: Ensure standardized license defined
+        in metadata: 7-zip/metadata.rb:1\nRun with Foodcritic Version 11.1.0 with
+        tags metadata,correctness ~FC031 ~FC045 and failure tags any"},{"name":"License","failed":false,"feedback":"7-zip
+        has a recognized open source license."},{"name":"Publish","failed":true,"feedback":"7-zip
+        is deprecated\n"},{"name":"No Binaries","failed":false,"feedback":"passed
+        the No Binaries metric. Contains no obvious binaries."}],"supports":{"windows":">=
+        0.0.0"},"dependencies":{"windows":">= 1.2.2"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:35 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/7-zip/versions/1.0.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:36 GMT
+      Etag:
+      - W/"15f9441fbb887434f0202c767588cc9e"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 9587b0bc-61c8-4370-9e8a-feff81b18c11
+      X-Runtime:
+      - '0.035374'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '250'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":2016,"version":"1.0.0","published_at":"2011-09-27T07:43:03Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/7-zip","file":"https://supermarket.chef.io/api/v1/cookbooks/7-zip/versions/1.0.0/download","quality_metrics":[],"supports":{"windows":">=
+        0.0.0"},"dependencies":{"windows":">= 1.2.2"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:36 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/abiquo
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:36 GMT
+      Etag:
+      - W/"db0ed0ef2483c3281fafa4562d775973"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 1b3bf311-6f15-42cc-a1c5-ba0f778acfff
+      X-Runtime:
+      - '0.024978'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '579'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"name":"abiquo","maintainer":"nacx","description":"Installs and configures
+        an Abiquo platform","category":"Operating Systems & Virtualization","latest_version":"https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.11.2","external_url":"https://github.com/abiquo/abiquo-cookbook","source_url":"https://github.com/abiquo/abiquo-cookbook","issues_url":"https://github.com/abiquo/abiquo-cookbook/issues","average_rating":null,"created_at":"2014-12-19T09:44:13.138Z","updated_at":"2017-05-08T07:47:51.734Z","up_for_adoption":null,"deprecated":false,"versions":["https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.11.2","https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.11.1","https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.11.0","https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.10.1","https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.10.0","https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.9.1","https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.9.0","https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.8.0","https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.7.3","https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.7.2","https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.7.1","https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.7.0","https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.6.0","https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.5.0","https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.4.0","https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.3.4","https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.3.3","https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.3.2"],"metrics":{"downloads":{"total":1496455,"versions":{"0.10.0":33,"0.10.1":67,"0.11.0":20,"0.11.1":19,"0.11.2":47,"0.3.2":602890,"0.3.3":462342,"0.3.4":341178,"0.4.0":87139,"0.5.0":472,"0.6.0":401,"0.7.0":376,"0.7.1":400,"0.7.2":299,"0.7.3":214,"0.8.0":194,"0.9.0":158,"0.9.1":206}},"followers":2,"collaborators":2}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:37 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.11.2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:37 GMT
+      Etag:
+      - W/"869821db97684f1dd0677e1d508fe7aa"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - ae71add2-4363-4ff9-b385-a138a048082b
+      X-Runtime:
+      - '0.025067'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '776'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache-2.0","tarball_file_size":46705,"version":"0.11.2","published_at":"2017-05-08T07:47:51Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/abiquo","file":"https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.11.2/download","quality_metrics":[{"name":"No
+        Binaries","failed":false,"feedback":"passed the No Binaries metric. Contains
+        no obvious binaries."},{"name":"Supported Platforms","failed":false,"feedback":"abiquo
+        supports at least one platform."},{"name":"Collaborator Number","failed":false,"feedback":"passed
+        the Collaborators Metric with 2 collaborators."},{"name":"License","failed":false,"feedback":"abiquo
+        has a recognized open source license."},{"name":"Publish","failed":false,"feedback":"abiquo
+        passed the publish metric"},{"name":"Testing File","failed":false,"feedback":"passed
+        the TESTING.md file metric."},{"name":"Contributing File","failed":false,"feedback":"passed
+        the CONTRIBUTING.md file metric."},{"name":"Version Tag","failed":false,"feedback":"passed
+        the version tag metric."},{"name":"Foodcritic","failed":false,"feedback":"\nRun
+        with Foodcritic Version 11.1.0 with tags metadata,correctness ~FC031 ~FC045
+        and failure tags any"}],"supports":{"centos":">= 6.7","redhat":">= 6.7"},"dependencies":{"kernel-modules":"~>
+        0.1.4","sysctl":"~> 0.8.1","haproxy-ng":"~> 1.2.0","rabbitmq":"~> 4.9.0","mysql2_chef_gem":"~>
+        1.1.0","database":"~> 5.1.2","mariadb":"~> 1.0.1","redisio":"~> 2.5.0","yum-epel":"~>
+        0.6.5","yum":"~> 3.10.0","ssl_certificate":"~> 1.11.0","selinux":"~> 0.9.0","java-management":"~>
+        1.0.3","java":"~> 1.46.0","iptables":"~> 2.0.1","cassandra-dse":"~> 4.1.0","apache2":"~>
+        3.1.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:37 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.11.1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:38 GMT
+      Etag:
+      - W/"2f850cf990e28d1a7e13dcc732aa678f"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 0d4818b6-9b08-490f-8dea-c3ca1feca4c9
+      X-Runtime:
+      - '0.029455'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '868'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache-2.0","tarball_file_size":46702,"version":"0.11.1","published_at":"2017-05-08T07:34:02Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/abiquo","file":"https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.11.1/download","quality_metrics":[{"name":"No
+        Binaries","failed":false,"feedback":"passed the No Binaries metric. Contains
+        no obvious binaries."},{"name":"Version Tag","failed":true,"feedback":"Failure:
+        To pass this metric, your cookbook metadata must include a source url, the
+        source url must be in the form of https://github.com/user/repo, and your repo
+        must include a tag that matches this cookbook version number"},{"name":"Supported
+        Platforms","failed":false,"feedback":"abiquo supports at least one platform."},{"name":"Publish","failed":false,"feedback":"abiquo
+        passed the publish metric"},{"name":"Contributing File","failed":false,"feedback":"passed
+        the CONTRIBUTING.md file metric."},{"name":"Collaborator Number","failed":false,"feedback":"passed
+        the Collaborators Metric with 2 collaborators."},{"name":"Testing File","failed":false,"feedback":"passed
+        the TESTING.md file metric."},{"name":"License","failed":false,"feedback":"abiquo
+        has a recognized open source license."},{"name":"Foodcritic","failed":false,"feedback":"\nRun
+        with Foodcritic Version 10.3.1 with tags metadata,correctness ~FC031 ~FC045
+        and failure tags any"}],"supports":{"centos":">= 6.7","redhat":">= 6.7"},"dependencies":{"kernel-modules":"~>
+        0.1.4","sysctl":"~> 0.8.1","haproxy-ng":"~> 1.2.0","rabbitmq":"~> 4.9.0","mysql2_chef_gem":"~>
+        1.1.0","database":"~> 5.1.2","mariadb":"~> 1.0.1","redisio":"~> 2.5.0","yum-epel":"~>
+        0.6.5","yum":"~> 3.10.0","ssl_certificate":"~> 1.11.0","selinux":"~> 0.9.0","java-management":"~>
+        1.0.3","java":"~> 1.46.0","iptables":"~> 2.0.1","cassandra-dse":"~> 4.1.0","apache2":"~>
+        3.1.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:38 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.11.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:39 GMT
+      Etag:
+      - W/"04dc4a29843fefa9d1862b4f17065a9b"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - bdd30128-b238-4d79-a557-236cda95516e
+      X-Runtime:
+      - '0.055402'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '919'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":46018,"version":"0.11.0","published_at":"2017-05-08T06:42:45Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/abiquo","file":"https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.11.0/download","quality_metrics":[{"name":"Contributing
+        File","failed":true,"feedback":"Failure: To pass this metric, your cookbook
+        metadata must include a source url, the source url must be in the form of
+        https://github.com/user/repo, and your repo must contain a CONTRIBUTING.md
+        file"},{"name":"Publish","failed":false,"feedback":"abiquo passed the publish
+        metric"},{"name":"Testing File","failed":true,"feedback":"Failure: To pass
+        this metric, your cookbook metadata must include a source url, the source
+        url must be in the form of https://github.com/user/repo, and your repo must
+        contain a TESTING.md file"},{"name":"License","failed":false,"feedback":"abiquo
+        has a recognized open source license."},{"name":"Version Tag","failed":false,"feedback":"passed
+        the version tag metric."},{"name":"Supported Platforms","failed":false,"feedback":"abiquo
+        supports at least one platform."},{"name":"Foodcritic","failed":true,"feedback":"FC066:
+        Ensure chef_version is set in metadata: abiquo/metadata.rb:1\nFC069: Ensure
+        standardized license defined in metadata: abiquo/metadata.rb:1\nRun with Foodcritic
+        Version 10.3.1 with tags metadata,correctness ~FC031 ~FC045 and failure tags
+        any"},{"name":"Collaborator Number","failed":false,"feedback":"passed the
+        Collaborators Metric with 2 collaborators."},{"name":"No Binaries","failed":false,"feedback":"passed
+        the No Binaries metric. Contains no obvious binaries."}],"supports":{"centos":">=
+        6.7","redhat":">= 6.7"},"dependencies":{"kernel-modules":"~> 0.1.4","sysctl":"~>
+        0.8.1","haproxy-ng":"~> 1.2.0","rabbitmq":"~> 4.9.0","mysql2_chef_gem":"~>
+        1.1.0","database":"~> 5.1.2","mariadb":"~> 1.0.1","redisio":"~> 2.5.0","yum-epel":"~>
+        0.6.5","yum":"~> 3.10.0","ssl_certificate":"~> 1.11.0","selinux":"~> 0.9.0","java-management":"~>
+        1.0.3","java":"~> 1.46.0","iptables":"~> 2.0.1","cassandra-dse":"~> 4.1.0","apache2":"~>
+        3.1.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:40 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.10.1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:40 GMT
+      Etag:
+      - W/"6e20bad6b5b4747feb2c9b9123ad24d2"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 816beb75-80b9-41b2-873a-64fe549236df
+      X-Runtime:
+      - '0.021940'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '921'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":43951,"version":"0.10.1","published_at":"2017-03-06T10:03:34Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/abiquo","file":"https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.10.1/download","quality_metrics":[{"name":"Contributing
+        File","failed":true,"feedback":"Failure: To pass this metric, your cookbook
+        metadata must include a source url, the source url must be in the form of
+        http://github.com/user/repo, and your repo must contain a CONTRIBUTING.md
+        file"},{"name":"No Binaries","failed":false,"feedback":"passed the No Binaries
+        metric. Contains no obvious binaries."},{"name":"Testing File","failed":true,"feedback":"Failure:
+        To pass this metric, your cookbook metadata must include a source url, the
+        source url must be in the form of http://github.com/user/repo, and your repo
+        must contain a TESTING.md file"},{"name":"Supported Platforms","failed":false,"feedback":"abiquo
+        supports at least one platform."},{"name":"Collaborator Number","failed":false,"feedback":"passed
+        the Collaborators Metric with 2 collaborators."},{"name":"Version Tag","failed":false,"feedback":"passed
+        the version tag metric."},{"name":"Publish","failed":false,"feedback":"abiquo
+        passed the publish metric"},{"name":"License","failed":false,"feedback":"abiquo
+        has a recognized open source license."},{"name":"Foodcritic","failed":true,"feedback":"FC066:
+        Ensure chef_version is set in metadata: abiquo/metadata.rb:1\nFC069: Ensure
+        standardized license defined in metadata: abiquo/metadata.rb:1\nRun with Foodcritic
+        Version 10.3.1 with tags metadata,correctness ~FC031 ~FC045 and failure tags
+        any"}],"supports":{"centos":">= 6.7","redhat":">= 6.7"},"dependencies":{"kernel-modules":"~>
+        0.1.4","sysctl":"~> 0.8.1","haproxy-ng":"~> 1.2.0","rabbitmq":"~> 4.9.0","mysql2_chef_gem":"~>
+        1.1.0","database":"~> 5.1.2","mariadb":"~> 0.3.1","redisio":"~> 2.5.0","yum-epel":"~>
+        0.6.5","yum":"~> 3.8.2","ssl_certificate":"~> 1.11.0","selinux":"~> 0.9.0","java-management":"~>
+        1.0.3","java":"~> 1.39.0","iptables":"~> 2.0.1","cassandra-dse":"~> 4.1.0","apache2":"~>
+        3.1.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:41 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.10.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:42 GMT
+      Etag:
+      - W/"57b8ddda7feceefe37899018927b1ccd"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - a2aed950-f8c5-4042-a290-5921b6d93030
+      X-Runtime:
+      - '0.033371'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '671'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":44615,"version":"0.10.0","published_at":"2017-02-27T15:29:24Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/abiquo","file":"https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.10.0/download","quality_metrics":[{"name":"Supported
+        Platforms","failed":false,"feedback":"abiquo supports at least one platform."},{"name":"Foodcritic","failed":false,"feedback":"\nRun
+        with Foodcritic Version 8.2.0 with tags metadata,correctness ~FC031 ~FC045
+        and failure tags any"},{"name":"License","failed":false,"feedback":"abiquo
+        has a recognized open source license."},{"name":"Collaborator Number","failed":false,"feedback":"passed
+        the Collaborators Metric with 2 collaborators."},{"name":"Publish","failed":false,"feedback":"abiquo
+        passed the publish metric"}],"supports":{"centos":">= 6.7","redhat":">= 6.7"},"dependencies":{"kernel-modules":"~>
+        0.1.4","sysctl":"~> 0.8.1","haproxy-ng":"~> 1.2.0","rabbitmq":"~> 4.9.0","mysql2_chef_gem":"~>
+        1.1.0","database":"~> 5.1.2","mariadb":"~> 0.3.1","redisio":"~> 2.5.0","yum-epel":"~>
+        0.6.5","yum":"~> 3.10.0","ssl_certificate":"~> 1.11.0","selinux":"~> 0.9.0","java-management":"~>
+        1.0.3","java":"~> 1.46.0","iptables":"~> 2.0.1","cassandra-dse":"~> 4.1.0","apache2":"~>
+        3.1.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:42 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.9.1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:43 GMT
+      Etag:
+      - W/"a04bd96cab513b48496ec456fe3c7867"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 120ae494-d341-4ba2-b696-6b05f5576209
+      X-Runtime:
+      - '0.034027'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '563'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":30755,"version":"0.9.1","published_at":"2016-11-08T10:13:29Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/abiquo","file":"https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.9.1/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":"\nRun
+        with Foodcritic Version 8.0.0 with tags metadata,correctness ~FC031 ~FC045
+        and failure tags any"},{"name":"Collaborator Number","failed":false,"feedback":"passed
+        the Collaborators Metric with 2 collaborators."}],"supports":{"centos":">=
+        6.7","redhat":">= 6.7"},"dependencies":{"haproxy-ng":"~> 1.2.0","rabbitmq":"~>
+        4.9.0","mysql2_chef_gem":"~> 1.1.0","database":"~> 5.1.2","mariadb":"~> 0.3.1","redisio":"~>
+        2.5.0","yum-epel":"~> 0.6.5","yum":"~> 3.8.2","ssl_certificate":"~> 1.11.0","selinux":"~>
+        0.9.0","java-management":"~> 1.0.3","java":"~> 1.39.0","iptables":"~> 2.0.1","cassandra-dse":"~>
+        4.1.0","apache2":"~> 3.1.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:43 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.9.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:43 GMT
+      Etag:
+      - W/"7047b75c7d28ceb247c6783bceeb8d80"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 4c34a3eb-bbea-4bb7-932d-aca5d2829045
+      X-Runtime:
+      - '0.028091'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '561'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":30866,"version":"0.9.0","published_at":"2016-10-26T16:08:28Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/abiquo","file":"https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.9.0/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":"\nRun
+        with Foodcritic Version 8.0.0 with tags metadata,correctness ~FC031 ~FC045
+        and failure tags any"},{"name":"Collaborator Number","failed":false,"feedback":"passed
+        the Collaborators Metric with 2 collaborators."}],"supports":{"centos":">=
+        6.7","redhat":">= 6.7"},"dependencies":{"haproxy-ng":"~> 1.2.0","rabbitmq":"~>
+        4.9.0","mysql2_chef_gem":"~> 1.1.0","database":"~> 5.1.2","mariadb":"~> 0.3.1","redisio":"~>
+        2.5.0","yum-epel":"~> 0.6.5","yum":"~> 3.8.2","ssl_certificate":"~> 1.11.0","selinux":"~>
+        0.9.0","java-management":"~> 1.0.3","java":"~> 1.39.0","iptables":"~> 2.0.1","cassandra-dse":"~>
+        4.1.0","apache2":"~> 3.1.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:44 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.8.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:44 GMT
+      Etag:
+      - W/"c0f9ae8bf2ea15a4a3fd65e9b1058e31"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - a007a0df-2a2d-4e42-81a0-d7f3af29ba4a
+      X-Runtime:
+      - '0.021835'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '439'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":30821,"version":"0.8.0","published_at":"2016-09-05T10:06:39Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/abiquo","file":"https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.8.0/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""},{"name":"Collaborator
+        Number","failed":false,"feedback":"passed the Collaborators Metric with 2
+        collaborators."}],"supports":{"centos":">= 6.7","redhat":">= 6.7"},"dependencies":{"yum-epel":"~>
+        0.6.5","yum":"~> 3.8.2","ssl_certificate":"~> 1.11.0","selinux":"~> 0.9.0","java-management":"~>
+        1.0.3","java":"~> 1.39.0","iptables":"~> 2.0.1","cassandra-dse":"~> 4.1.0","apache2":"~>
+        3.1.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:45 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.7.3
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:45 GMT
+      Etag:
+      - W/"4962f7faa0eadc047901b06c1dbaa9eb"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - d37af190-7cff-44c0-8ee7-927af176d82a
+      X-Runtime:
+      - '0.030071'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '377'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":27855,"version":"0.7.3","published_at":"2016-05-04T09:35:59Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/abiquo","file":"https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.7.3/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}],"supports":{"centos":">=
+        6.7"},"dependencies":{"yum":"~> 3.8.2","ssl_certificate":"~> 1.11.0","selinux":"~>
+        0.9.0","java-management":"~> 1.0.3","java":"~> 1.39.0","iptables":"~> 2.0.1","cassandra-dse":"~>
+        4.1.0","apache2":"~> 3.1.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:46 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.7.2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:46 GMT
+      Etag:
+      - W/"9cc377cc00be798808b0e0f99c15906c"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - aa364f95-3a9d-474e-92e9-5ceb29aa3841
+      X-Runtime:
+      - '0.027658'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '375'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":27727,"version":"0.7.2","published_at":"2016-04-19T15:06:21Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/abiquo","file":"https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.7.2/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}],"supports":{"centos":">=
+        6.7"},"dependencies":{"yum":"~> 3.8.2","ssl_certificate":"~> 1.11.0","selinux":"~>
+        0.9.0","java-management":"~> 1.0.3","java":"~> 1.39.0","iptables":"~> 2.0.1","cassandra-dse":"~>
+        4.1.0","apache2":"~> 3.1.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:47 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.7.1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:47 GMT
+      Etag:
+      - W/"ee3b5920f7549c3b19f91bea2e9964c6"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 28568543-24c2-43d3-a6ee-b7a16bfaf0e7
+      X-Runtime:
+      - '0.041505'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '374'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":27632,"version":"0.7.1","published_at":"2016-03-01T12:07:24Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/abiquo","file":"https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.7.1/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}],"supports":{"centos":">=
+        6.7"},"dependencies":{"yum":"~> 3.8.2","ssl_certificate":"~> 1.11.0","selinux":"~>
+        0.9.0","java-management":"~> 1.0.3","java":"~> 1.39.0","iptables":"~> 2.0.1","cassandra-dse":"~>
+        4.1.0","apache2":"~> 3.1.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:47 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.7.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:48 GMT
+      Etag:
+      - W/"f388e6a9a363688b935ff67596b6daab"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 3e2a989f-19c1-416a-af8f-bb32cd3872b8
+      X-Runtime:
+      - '0.030903'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '374'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":27657,"version":"0.7.0","published_at":"2016-03-01T11:55:31Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/abiquo","file":"https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.7.0/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}],"supports":{"centos":">=
+        6.7"},"dependencies":{"yum":"~> 3.8.2","ssl_certificate":"~> 1.11.0","selinux":"~>
+        0.9.0","java-management":"~> 1.0.3","java":"~> 1.39.0","iptables":"~> 2.0.1","cassandra-dse":"~>
+        4.1.0","apache2":"~> 3.1.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:48 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.6.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:49 GMT
+      Etag:
+      - W/"e9a7a96cdca2dcb4f8c974e1ffeebd91"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 15933165-6023-4fdb-b0b0-1f1327a92fac
+      X-Runtime:
+      - '0.024002'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '377'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":25495,"version":"0.6.0","published_at":"2016-02-04T14:22:07Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/abiquo","file":"https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.6.0/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}],"supports":{"centos":">=
+        6.5"},"dependencies":{"yum":"~> 3.8.2","selinux":"~> 0.9.0","selfsigned_certificate":"~>
+        0.1.0","java-management":"~> 1.0.3","iptables":"~> 2.0.1","cassandra-dse":"~>
+        4.1.0","ark":"~> 0.9.0","apache2":"~> 3.1.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:49 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.5.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:50 GMT
+      Etag:
+      - W/"446b84a8406c7b5399071b3db9424a50"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 11218f5c-934a-421c-8781-5dabfa0af61a
+      X-Runtime:
+      - '0.023088'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '351'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":23739,"version":"0.5.0","published_at":"2015-09-08T14:53:02Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/abiquo","file":"https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.5.0/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}],"supports":{"centos":">=
+        6.5"},"dependencies":{"yum":">= 0.0.0","selinux":">= 0.0.0","selfsigned_certificate":">=
+        0.0.0","java-management":">= 0.0.0","iptables":">= 0.0.0","cassandra-dse":">=
+        0.0.0","ark":">= 0.0.0","apache2":">= 0.0.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:50 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.4.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:51 GMT
+      Etag:
+      - W/"2f037b411c8b9ca885559e6a8388c6f0"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - e9bfb259-9573-4f49-b5e5-6f1f231698fb
+      X-Runtime:
+      - '0.022870'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '341'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":19682,"version":"0.4.0","published_at":"2015-06-22T10:07:08Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/abiquo","file":"https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.4.0/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}],"supports":{"centos":">=
+        6.5"},"dependencies":{"yum":">= 0.0.0","selinux":">= 0.0.0","selfsigned_certificate":">=
+        0.0.0","java-management":">= 0.0.0","iptables":">= 0.0.0","ark":">= 0.0.0","apache2":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:51 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.3.4
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:52 GMT
+      Etag:
+      - W/"2cb9bbceaccca4930f3aac333d73bf92"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - c8ee75fc-6306-416b-8bb3-b738cea7cf1c
+      X-Runtime:
+      - '0.022628'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '342'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":19561,"version":"0.3.4","published_at":"2015-03-05T10:59:09Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/abiquo","file":"https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.3.4/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}],"supports":{"centos":">=
+        6.5"},"dependencies":{"yum":">= 0.0.0","selinux":">= 0.0.0","selfsigned_certificate":">=
+        0.0.0","java-management":">= 0.0.0","iptables":">= 0.0.0","ark":">= 0.0.0","apache2":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:52 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.3.3
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:53 GMT
+      Etag:
+      - W/"19dc7da92b8532655265963e79fe9c4b"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 9292a995-abae-4fd4-8341-400e76e11ed6
+      X-Runtime:
+      - '0.055633'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '343'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":26778,"version":"0.3.3","published_at":"2015-01-29T09:38:18Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/abiquo","file":"https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.3.3/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}],"supports":{"centos":">=
+        6.5"},"dependencies":{"yum":">= 0.0.0","selinux":">= 0.0.0","selfsigned_certificate":">=
+        0.0.0","java-management":">= 0.0.0","iptables":">= 0.0.0","ark":">= 0.0.0","apache2":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:53 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.3.2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:54 GMT
+      Etag:
+      - W/"46eef57c3235c1e2bcbc996a125f486b"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - '09a756bf-aeaf-484c-ac04-62c92d34bb19'
+      X-Runtime:
+      - '0.024410'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '341'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":28078,"version":"0.3.2","published_at":"2014-12-19T09:44:13Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/abiquo","file":"https://supermarket.chef.io/api/v1/cookbooks/abiquo/versions/0.3.2/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}],"supports":{"centos":">=
+        6.0"},"dependencies":{"yum":">= 0.0.0","selinux":">= 0.0.0","selfsigned_certificate":">=
+        0.0.0","java-management":">= 0.0.0","iptables":">= 0.0.0","ark":">= 0.0.0","apache2":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:54 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:55 GMT
+      Etag:
+      - W/"f64897c5f01ae4477f9ac0411808dbdb"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - cb0e5862-1a23-4385-994e-fe29f7f86496
+      X-Runtime:
+      - '0.039606'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '557'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"name":"acadock","maintainer":"soulou","description":"Installs/Configures
+        acadock monitoring tool","category":"Networking","latest_version":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.4.4","external_url":null,"source_url":null,"issues_url":null,"average_rating":null,"created_at":"2014-11-03T13:49:58.111Z","updated_at":"2017-04-14T15:01:20.916Z","up_for_adoption":null,"deprecated":false,"versions":["https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.4.4","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.4.3","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.4.2","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.4.1","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.4.0","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.3.6","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.3.5","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.3.4","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.3.3","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.3.2","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.3.0","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.10","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.9","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.8","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.7","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.6","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.5","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.4","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.3","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.2","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.1","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.0","https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.1.0"],"metrics":{"downloads":{"total":806214,"versions":{"0.1.0":798616,"0.2.0":428,"0.2.1":439,"0.2.10":459,"0.2.2":423,"0.2.3":442,"0.2.4":432,"0.2.5":422,"0.2.6":426,"0.2.7":425,"0.2.8":423,"0.2.9":429,"0.3.0":458,"0.3.2":405,"0.3.3":407,"0.3.4":412,"0.3.5":424,"0.3.6":558,"0.4.0":27,"0.4.1":26,"0.4.2":25,"0.4.3":24,"0.4.4":84}},"followers":2,"collaborators":0}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:55 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.4.4
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:56 GMT
+      Etag:
+      - W/"3a7edd9a0b5a0fcf35989ab1427c8510"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 197ad1c6-a135-49f1-98a9-c6d3a3f6d9e8
+      X-Runtime:
+      - '0.025677'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '736'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2568,"version":"0.4.4","published_at":"2017-04-14T15:01:20Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.4.4/download","quality_metrics":[{"name":"Publish","failed":false,"feedback":"acadock
+        passed the publish metric"},{"name":"Version Tag","failed":true,"feedback":"Failure:
+        To pass this metric, your cookbook metadata must include a source url, the
+        source url must be in the form of https://github.com/user/repo, and your repo
+        must include a tag that matches this cookbook version number"},{"name":"License","failed":false,"feedback":"acadock
+        has a recognized open source license."},{"name":"Collaborator Number","failed":true,"feedback":"Failure:
+        Cookbook has 0 collaborators. A cookbook must have at least 2 collaborators
+        to pass this metric."},{"name":"Foodcritic","failed":true,"feedback":"FC064:
+        Ensure issues_url is set in metadata: acadock/metadata.rb:1\nFC065: Ensure
+        source_url is set in metadata: acadock/metadata.rb:1\nFC066: Ensure chef_version
+        is set in metadata: acadock/metadata.rb:1\nFC067: Ensure at least one platform
+        supported in metadata: acadock/metadata.rb:1\nRun with Foodcritic Version
+        11.1.0 with tags metadata,correctness ~FC031 ~FC045 and failure tags any"},{"name":"Testing
+        File","failed":true,"feedback":"Failure: To pass this metric, your cookbook
+        metadata must include a source url, the source url must be in the form of
+        https://github.com/user/repo, and your repo must contain a TESTING.md file"},{"name":"Supported
+        Platforms","failed":true,"feedback":"acadock should declare what platform(s)
+        it supports."},{"name":"Contributing File","failed":true,"feedback":"Failure:
+        To pass this metric, your cookbook metadata must include a source url, the
+        source url must be in the form of https://github.com/user/repo, and your repo
+        must contain a CONTRIBUTING.md file"},{"name":"No Binaries","failed":false,"feedback":"passed
+        the No Binaries metric. Contains no obvious binaries."}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:56 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.4.3
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:57 GMT
+      Etag:
+      - W/"69f8dc1ba09acf13c9fca8fec3986b08"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 76866dcc-d1f0-4db4-b58e-216059a2fbd8
+      X-Runtime:
+      - '0.027536'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '741'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2578,"version":"0.4.3","published_at":"2017-04-14T14:55:32Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.4.3/download","quality_metrics":[{"name":"Version
+        Tag","failed":true,"feedback":"Failure: To pass this metric, your cookbook
+        metadata must include a source url, the source url must be in the form of
+        http://github.com/user/repo, and your repo must include a tag that matches
+        this cookbook version number"},{"name":"Collaborator Number","failed":true,"feedback":"Failure:
+        Cookbook has 0 collaborators. A cookbook must have at least 2 collaborators
+        to pass this metric."},{"name":"Publish","failed":false,"feedback":"acadock
+        passed the publish metric"},{"name":"Contributing File","failed":true,"feedback":"Failure:
+        To pass this metric, your cookbook metadata must include a source url, the
+        source url must be in the form of http://github.com/user/repo, and your repo
+        must contain a CONTRIBUTING.md file"},{"name":"Foodcritic","failed":true,"feedback":"FC064:
+        Ensure issues_url is set in metadata: acadock/metadata.rb:1\nFC065: Ensure
+        source_url is set in metadata: acadock/metadata.rb:1\nFC066: Ensure chef_version
+        is set in metadata: acadock/metadata.rb:1\nFC067: Ensure at least one platform
+        supported in metadata: acadock/metadata.rb:1\nRun with Foodcritic Version
+        10.3.1 with tags metadata,correctness ~FC031 ~FC045 and failure tags any"},{"name":"Testing
+        File","failed":true,"feedback":"Failure: To pass this metric, your cookbook
+        metadata must include a source url, the source url must be in the form of
+        http://github.com/user/repo, and your repo must contain a TESTING.md file"},{"name":"License","failed":false,"feedback":"acadock
+        has a recognized open source license."},{"name":"No Binaries","failed":false,"feedback":"passed
+        the No Binaries metric. Contains no obvious binaries."},{"name":"Supported
+        Platforms","failed":true,"feedback":"acadock should declare what platform(s)
+        it supports."}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:57 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.4.2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:58 GMT
+      Etag:
+      - W/"be45b9dce3434d32d501114f9196923a"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 345c2e9a-f193-4353-bb58-d766f5521005
+      X-Runtime:
+      - '0.033885'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '785'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2578,"version":"0.4.2","published_at":"2017-04-14T14:49:31Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.4.2/download","quality_metrics":[{"name":"Collaborator
+        Number","failed":true,"feedback":"Failure: Cookbook has 0 collaborators. A
+        cookbook must have at least 2 collaborators to pass this metric."},{"name":"Contributing
+        File","failed":true,"feedback":"Failure: To pass this metric, your cookbook
+        metadata must include a source url, the source url must be in the form of
+        http://github.com/user/repo, and your repo must contain a CONTRIBUTING.md
+        file"},{"name":"No Binaries","failed":false,"feedback":"passed the No Binaries
+        metric. Contains no obvious binaries."},{"name":"Publish","failed":false,"feedback":"acadock
+        passed the publish metric"},{"name":"Testing File","failed":true,"feedback":"Failure:
+        To pass this metric, your cookbook metadata must include a source url, the
+        source url must be in the form of http://github.com/user/repo, and your repo
+        must contain a TESTING.md file"},{"name":"Version Tag","failed":true,"feedback":"Failure:
+        To pass this metric, your cookbook metadata must include a source url, the
+        source url must be in the form of http://github.com/user/repo, and your repo
+        must include a tag that matches this cookbook version number"},{"name":"Supported
+        Platforms","failed":true,"feedback":"acadock should declare what platform(s)
+        it supports."},{"name":"Foodcritic","failed":true,"feedback":"FC009: Resource
+        attribute not recognised: acadock/recipes/default.rb:35\nFC064: Ensure issues_url
+        is set in metadata: acadock/metadata.rb:1\nFC065: Ensure source_url is set
+        in metadata: acadock/metadata.rb:1\nFC066: Ensure chef_version is set in metadata:
+        acadock/metadata.rb:1\nFC067: Ensure at least one platform supported in metadata:
+        acadock/metadata.rb:1\nRun with Foodcritic Version 10.3.1 with tags metadata,correctness
+        ~FC031 ~FC045 and failure tags any"},{"name":"License","failed":false,"feedback":"acadock
+        has a recognized open source license."}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:58 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.4.1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:59 GMT
+      Etag:
+      - W/"64e8a82da84eff4aa6f8a12ae2cbd091"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 9cb6156a-1a79-403c-bc31-b417aab04422
+      X-Runtime:
+      - '0.026519'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '746'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2625,"version":"0.4.1","published_at":"2017-04-14T14:30:16Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.4.1/download","quality_metrics":[{"name":"Contributing
+        File","failed":true,"feedback":"Failure: To pass this metric, your cookbook
+        metadata must include a source url, the source url must be in the form of
+        http://github.com/user/repo, and your repo must contain a CONTRIBUTING.md
+        file"},{"name":"Testing File","failed":true,"feedback":"Failure: To pass this
+        metric, your cookbook metadata must include a source url, the source url must
+        be in the form of http://github.com/user/repo, and your repo must contain
+        a TESTING.md file"},{"name":"Foodcritic","failed":true,"feedback":"FC064:
+        Ensure issues_url is set in metadata: acadock/metadata.rb:1\nFC065: Ensure
+        source_url is set in metadata: acadock/metadata.rb:1\nFC066: Ensure chef_version
+        is set in metadata: acadock/metadata.rb:1\nFC067: Ensure at least one platform
+        supported in metadata: acadock/metadata.rb:1\nRun with Foodcritic Version
+        10.3.1 with tags metadata,correctness ~FC031 ~FC045 and failure tags any"},{"name":"Supported
+        Platforms","failed":true,"feedback":"acadock should declare what platform(s)
+        it supports."},{"name":"Version Tag","failed":true,"feedback":"Failure: To
+        pass this metric, your cookbook metadata must include a source url, the source
+        url must be in the form of http://github.com/user/repo, and your repo must
+        include a tag that matches this cookbook version number"},{"name":"Publish","failed":false,"feedback":"acadock
+        passed the publish metric"},{"name":"License","failed":false,"feedback":"acadock
+        has a recognized open source license."},{"name":"Collaborator Number","failed":true,"feedback":"Failure:
+        Cookbook has 0 collaborators. A cookbook must have at least 2 collaborators
+        to pass this metric."},{"name":"No Binaries","failed":false,"feedback":"passed
+        the No Binaries metric. Contains no obvious binaries."}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:53:59 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.4.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:53:59 GMT
+      Etag:
+      - W/"405bd4a8a8ebf5dbcb010adb91b524a7"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 20e2a7c4-4e66-4a2b-8443-02be27fbb034
+      X-Runtime:
+      - '0.037083'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '743'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2634,"version":"0.4.0","published_at":"2017-04-13T16:15:47Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.4.0/download","quality_metrics":[{"name":"License","failed":false,"feedback":"acadock
+        has a recognized open source license."},{"name":"Version Tag","failed":true,"feedback":"Failure:
+        To pass this metric, your cookbook metadata must include a source url, the
+        source url must be in the form of http://github.com/user/repo, and your repo
+        must include a tag that matches this cookbook version number"},{"name":"Collaborator
+        Number","failed":true,"feedback":"Failure: Cookbook has 0 collaborators. A
+        cookbook must have at least 2 collaborators to pass this metric."},{"name":"Foodcritic","failed":true,"feedback":"FC064:
+        Ensure issues_url is set in metadata: acadock/metadata.rb:1\nFC065: Ensure
+        source_url is set in metadata: acadock/metadata.rb:1\nFC066: Ensure chef_version
+        is set in metadata: acadock/metadata.rb:1\nFC067: Ensure at least one platform
+        supported in metadata: acadock/metadata.rb:1\nRun with Foodcritic Version
+        10.3.1 with tags metadata,correctness ~FC031 ~FC045 and failure tags any"},{"name":"No
+        Binaries","failed":false,"feedback":"passed the No Binaries metric. Contains
+        no obvious binaries."},{"name":"Publish","failed":false,"feedback":"acadock
+        passed the publish metric"},{"name":"Testing File","failed":true,"feedback":"Failure:
+        To pass this metric, your cookbook metadata must include a source url, the
+        source url must be in the form of http://github.com/user/repo, and your repo
+        must contain a TESTING.md file"},{"name":"Supported Platforms","failed":true,"feedback":"acadock
+        should declare what platform(s) it supports."},{"name":"Contributing File","failed":true,"feedback":"Failure:
+        To pass this metric, your cookbook metadata must include a source url, the
+        source url must be in the form of http://github.com/user/repo, and your repo
+        must contain a CONTRIBUTING.md file"}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:00 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.3.6
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:00 GMT
+      Etag:
+      - W/"6a9b4f4bfd7a58a24c63164f0b4e1457"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 69b9762f-cf7a-4311-b0d2-eb7798633dc5
+      X-Runtime:
+      - '0.036238'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '737'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2612,"version":"0.3.6","published_at":"2016-01-15T15:06:10Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.3.6/download","quality_metrics":[{"name":"Version
+        Tag","failed":true,"feedback":"Failure: To pass this metric, your cookbook
+        metadata must include a source url, the source url must be in the form of
+        http://github.com/user/repo, and your repo must include a tag that matches
+        this cookbook version number"},{"name":"Foodcritic","failed":true,"feedback":"FC064:
+        Ensure issues_url is set in metadata: acadock/metadata.rb:1\nFC065: Ensure
+        source_url is set in metadata: acadock/metadata.rb:1\nFC066: Ensure chef_version
+        is set in metadata: acadock/metadata.rb:1\nFC067: Ensure at least one platform
+        supported in metadata: acadock/metadata.rb:1\nRun with Foodcritic Version
+        10.3.1 with tags metadata,correctness ~FC031 ~FC045 and failure tags any"},{"name":"Publish","failed":false,"feedback":"acadock
+        passed the publish metric"},{"name":"Collaborator Number","failed":true,"feedback":"Failure:
+        Cookbook has 0 collaborators. A cookbook must have at least 2 collaborators
+        to pass this metric."},{"name":"License","failed":false,"feedback":"acadock
+        has a recognized open source license."},{"name":"Testing File","failed":true,"feedback":"Failure:
+        To pass this metric, your cookbook metadata must include a source url, the
+        source url must be in the form of http://github.com/user/repo, and your repo
+        must contain a TESTING.md file"},{"name":"Supported Platforms","failed":true,"feedback":"acadock
+        should declare what platform(s) it supports."},{"name":"No Binaries","failed":false,"feedback":"passed
+        the No Binaries metric. Contains no obvious binaries."},{"name":"Contributing
+        File","failed":true,"feedback":"Failure: To pass this metric, your cookbook
+        metadata must include a source url, the source url must be in the form of
+        http://github.com/user/repo, and your repo must contain a CONTRIBUTING.md
+        file"}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:00 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.3.5
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:01 GMT
+      Etag:
+      - W/"167936384766c09dfe62a9c979fa1905"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - e3d3a9de-05fb-499e-8deb-6e5cb02fdd93
+      X-Runtime:
+      - '0.035700'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '238'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2611,"version":"0.3.5","published_at":"2016-01-15T14:54:26Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.3.5/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:01 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.3.4
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:02 GMT
+      Etag:
+      - W/"939c36fcbd390abbdfade8c27482c473"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 1aa0d38a-9f0d-4809-92ed-1592eca1859f
+      X-Runtime:
+      - '0.019158'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '239'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2582,"version":"0.3.4","published_at":"2016-01-15T14:35:24Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.3.4/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:02 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.3.3
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:03 GMT
+      Etag:
+      - W/"c49feaaba9d24549e92d4e709f3f0a76"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - db91206d-17af-4913-92a9-b9c4794dbcc9
+      X-Runtime:
+      - '0.019290'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '240'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2586,"version":"0.3.3","published_at":"2016-01-15T14:27:43Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.3.3/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:03 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.3.2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:04 GMT
+      Etag:
+      - W/"68df4eb68c97e362e4975bf46e260253"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 3d11c437-60db-4d82-81dd-53994bbc7ba9
+      X-Runtime:
+      - '0.019882'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '239'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2536,"version":"0.3.2","published_at":"2016-01-15T13:27:36Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.3.2/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:04 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.3.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:05 GMT
+      Etag:
+      - W/"2687d989bab243792ce187f6e11e7533"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - f000101f-64c3-46d0-898b-ce8bca0339ab
+      X-Runtime:
+      - '0.021734'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '239'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2538,"version":"0.3.0","published_at":"2015-11-04T10:52:31Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.3.0/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:05 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.10
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:05 GMT
+      Etag:
+      - W/"bdfed3aced28a6cffc58a442ae682074"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 801c53de-c2fb-4738-9624-cca0e98dfcb4
+      X-Runtime:
+      - '0.028082'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '238'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2524,"version":"0.2.10","published_at":"2015-11-03T11:20:45Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.10/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:06 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.9
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:06 GMT
+      Etag:
+      - W/"973898d43c6a2be35009ca59b88ddd38"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 49fc6ecc-8d0e-43fe-8761-0996a058e8c5
+      X-Runtime:
+      - '0.027155'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '238'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2523,"version":"0.2.9","published_at":"2015-11-02T13:59:14Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.9/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:06 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.8
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:07 GMT
+      Etag:
+      - W/"9ddfedceeafa60edbb9da4762c9fdf6c"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - d80fdaf3-671a-4b87-aa7a-e922c3bf9461
+      X-Runtime:
+      - '0.029101'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '239'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2488,"version":"0.2.8","published_at":"2015-11-02T13:53:07Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.8/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:07 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.7
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:08 GMT
+      Etag:
+      - W/"ce412864e80aab9b9397bb1bfbc1953d"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 2de89eb1-9f43-40dc-baa1-ec7f19fd3005
+      X-Runtime:
+      - '0.019550'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '239'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2471,"version":"0.2.7","published_at":"2015-11-02T13:45:55Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.7/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:08 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.6
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:09 GMT
+      Etag:
+      - W/"4dba070409963362aa734f92efe009ce"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 2aeb1f4b-aa56-40dc-b478-b1c925646d26
+      X-Runtime:
+      - '0.026473'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '239'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2471,"version":"0.2.6","published_at":"2015-11-02T13:33:46Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.6/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:09 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.5
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:10 GMT
+      Etag:
+      - W/"da5506796864125bbebe70708d87d3df"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 627d027b-d611-46da-b8e9-dd030aef6242
+      X-Runtime:
+      - '0.020855'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '239'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2436,"version":"0.2.5","published_at":"2015-11-02T13:28:09Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.5/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:10 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.4
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:11 GMT
+      Etag:
+      - W/"bf3488a3561e892cb2d27c79e64db19d"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - b3dbede3-12e5-48c9-81bb-591a576365b9
+      X-Runtime:
+      - '0.023287'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '238'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2416,"version":"0.2.4","published_at":"2015-11-02T11:09:01Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.4/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:11 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.3
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:12 GMT
+      Etag:
+      - W/"2933d0b659c7f3eb0e4b1867828afba1"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 2d4c426b-c906-4acf-8585-2b76b5c63c40
+      X-Runtime:
+      - '0.023614'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '239'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2399,"version":"0.2.3","published_at":"2015-11-02T10:57:16Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.3/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:12 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:13 GMT
+      Etag:
+      - W/"c3135ac1bd7730ff9d4de0ac7f383b0d"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 53263be0-38ab-45c4-b9c6-97921dfe7d3d
+      X-Runtime:
+      - '0.020484'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '239'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2385,"version":"0.2.2","published_at":"2015-11-02T10:46:22Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.2/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:13 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:13 GMT
+      Etag:
+      - W/"34767f83b8c20c38eeb4ab2576e05d91"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 104ecbbf-c3a8-4fae-a284-9b3328f6379b
+      X-Runtime:
+      - '0.024243'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '238'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2380,"version":"0.2.1","published_at":"2015-11-02T10:36:20Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.1/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:13 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:14 GMT
+      Etag:
+      - W/"5d4c0721d8dc2f78a0d249b71b1f1473"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - c74c1376-0650-4a1f-84c6-952aef1d94f6
+      X-Runtime:
+      - '0.026660'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '239'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2356,"version":"0.2.0","published_at":"2015-11-02T09:50:17Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.2.0/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:14 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.1.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:15 GMT
+      Etag:
+      - W/"3add210013a151a9b88148273697300b"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - b3d56354-f71f-47fc-8e9b-54aa2b5dc46d
+      X-Runtime:
+      - '0.020101'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '239'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"MIT","tarball_file_size":2261,"version":"0.1.0","published_at":"2014-11-03T13:49:58Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock","file":"https://supermarket.chef.io/api/v1/cookbooks/acadock/versions/0.1.0/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:15 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/accel-ppp
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:16 GMT
+      Etag:
+      - W/"7f1b84eb12dc014e828602dfd69fbfb7"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 87856bc0-affe-46f5-b4fc-2082772f56be
+      X-Runtime:
+      - '0.020041'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '391'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"name":"accel-ppp","maintainer":"frostyslav","description":"Installs/Configures
+        accel-pppd","category":"Networking","latest_version":"https://supermarket.chef.io/api/v1/cookbooks/accel-ppp/versions/1.0.2","external_url":"https://github.com/frostyslav/chef-accel-pppd","source_url":"https://github.com/frostyslav/chef-accel-pppd","issues_url":"","average_rating":null,"created_at":"2014-07-11T11:33:01.471Z","updated_at":"2014-07-14T06:43:33.629Z","up_for_adoption":null,"deprecated":false,"versions":["https://supermarket.chef.io/api/v1/cookbooks/accel-ppp/versions/1.0.2","https://supermarket.chef.io/api/v1/cookbooks/accel-ppp/versions/1.0.1"],"metrics":{"downloads":{"total":2423576,"versions":{"1.0.1":1340250,"1.0.2":1083327}},"followers":3,"collaborators":0}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:16 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/accel-ppp/versions/1.0.2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:17 GMT
+      Etag:
+      - W/"06a827f2b416b6446e075d7344a8e785"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 59bb4048-095d-4ec2-b2d0-dd04482629df
+      X-Runtime:
+      - '0.037337'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '806'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":13227,"version":"1.0.2","published_at":"2014-07-14T06:43:33Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/accel-ppp","file":"https://supermarket.chef.io/api/v1/cookbooks/accel-ppp/versions/1.0.2/download","quality_metrics":[{"name":"Contributing
+        File","failed":true,"feedback":"Failure: To pass this metric, your cookbook
+        metadata must include a source url, the source url must be in the form of
+        https://github.com/user/repo, and your repo must contain a CONTRIBUTING.md
+        file"},{"name":"Testing File","failed":true,"feedback":"Failure: To pass this
+        metric, your cookbook metadata must include a source url, the source url must
+        be in the form of https://github.com/user/repo, and your repo must contain
+        a TESTING.md file"},{"name":"License","failed":false,"feedback":"accel-ppp
+        has a recognized open source license."},{"name":"Supported Platforms","failed":false,"feedback":"accel-ppp
+        supports at least one platform."},{"name":"Publish","failed":false,"feedback":"accel-ppp
+        passed the publish metric"},{"name":"Foodcritic","failed":true,"feedback":"FC064:
+        Ensure issues_url is set in metadata: accel-ppp/metadata.rb:1\nFC065: Ensure
+        source_url is set in metadata: accel-ppp/metadata.rb:1\nFC066: Ensure chef_version
+        is set in metadata: accel-ppp/metadata.rb:1\nFC069: Ensure standardized license
+        defined in metadata: accel-ppp/metadata.rb:1\nRun with Foodcritic Version
+        11.1.0 with tags metadata,correctness ~FC031 ~FC045 and failure tags any"},{"name":"Collaborator
+        Number","failed":true,"feedback":"Failure: Cookbook has 0 collaborators. A
+        cookbook must have at least 2 collaborators to pass this metric."},{"name":"No
+        Binaries","failed":false,"feedback":"passed the No Binaries metric. Contains
+        no obvious binaries."},{"name":"Version Tag","failed":true,"feedback":"Failure:
+        To pass this metric, your cookbook metadata must include a source url, the
+        source url must be in the form of https://github.com/user/repo, and your repo
+        must include a tag that matches this cookbook version number"}],"supports":{"centos":">=
+        0.0.0","debian":">= 0.0.0","ubuntu":">= 0.0.0","redhat":">= 0.0.0"},"dependencies":{"checkinstall":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:17 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/accel-ppp/versions/1.0.1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:18 GMT
+      Etag:
+      - W/"9e1e8a80420fc4cc6788ad35d4d658ce"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 4c31f08a-85ff-43fa-aad6-a7142099c42f
+      X-Runtime:
+      - '0.097689'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '278'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":13216,"version":"1.0.1","published_at":"2014-07-11T11:33:01Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/accel-ppp","file":"https://supermarket.chef.io/api/v1/cookbooks/accel-ppp/versions/1.0.1/download","quality_metrics":[],"supports":{"centos":">=
+        0.0.0","debian":">= 0.0.0","ubuntu":">= 0.0.0","redhat":">= 0.0.0"},"dependencies":{"checkinstall":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:18 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/accounts
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:19 GMT
+      Etag:
+      - W/"f34670ae8dad309e4b9dd1549dec1ec2"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - bec9dda9-b49d-4fb5-81b0-1fb0a26bcca2
+      X-Runtime:
+      - '0.030349'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '392'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"name":"accounts","maintainer":"vvk","description":"System Accounts
+        management","category":"Utilities","latest_version":"https://supermarket.chef.io/api/v1/cookbooks/accounts/versions/0.2.1","external_url":"https://github.com/svanzoest-cookbooks/accounts","source_url":"https://github.com/svanzoest-cookbooks/accounts","issues_url":"https://github.com/svanzoest-cookbooks/accounts/issues","average_rating":null,"created_at":"2009-12-02T21:22:22.000Z","updated_at":"2017-02-18T20:40:06.975Z","up_for_adoption":null,"deprecated":false,"versions":["https://supermarket.chef.io/api/v1/cookbooks/accounts/versions/0.2.1","https://supermarket.chef.io/api/v1/cookbooks/accounts/versions/0.1.0"],"metrics":{"downloads":{"total":2263932,"versions":{"0.1.0":1159005,"0.2.1":1104928}},"followers":39,"collaborators":3}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:19 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/accounts/versions/0.2.1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:20 GMT
+      Etag:
+      - W/"30240a7edfa2aaae7e01352058389f7a"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - dfb96d44-90c5-4646-b23e-09345a2ed894
+      X-Runtime:
+      - '0.071045'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '824'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":4223,"version":"0.2.1","published_at":"2014-07-10T22:41:25Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/accounts","file":"https://supermarket.chef.io/api/v1/cookbooks/accounts/versions/0.2.1/download","quality_metrics":[{"name":"Version
+        Tag","failed":false,"feedback":"passed the version tag metric."},{"name":"Contributing
+        File","failed":true,"feedback":"Failure: To pass this metric, your cookbook
+        metadata must include a source url, the source url must be in the form of
+        https://github.com/user/repo, and your repo must contain a CONTRIBUTING.md
+        file"},{"name":"Testing File","failed":true,"feedback":"Failure: To pass this
+        metric, your cookbook metadata must include a source url, the source url must
+        be in the form of https://github.com/user/repo, and your repo must contain
+        a TESTING.md file"},{"name":"License","failed":false,"feedback":"accounts
+        has a recognized open source license."},{"name":"Publish","failed":false,"feedback":"accounts
+        passed the publish metric"},{"name":"Collaborator Number","failed":false,"feedback":"passed
+        the Collaborators Metric with 3 collaborators."},{"name":"Supported Platforms","failed":false,"feedback":"accounts
+        supports at least one platform."},{"name":"No Binaries","failed":false,"feedback":"passed
+        the No Binaries metric. Contains no obvious binaries."},{"name":"Foodcritic","failed":true,"feedback":"FC064:
+        Ensure issues_url is set in metadata: accounts/metadata.rb:1\nFC065: Ensure
+        source_url is set in metadata: accounts/metadata.rb:1\nFC066: Ensure chef_version
+        is set in metadata: accounts/metadata.rb:1\nFC069: Ensure standardized license
+        defined in metadata: accounts/metadata.rb:1\nFC072: Metadata should not contain
+        \"attribute\" keyword: accounts/metadata.rb:1\nFC076: Metadata uses the deprecated
+        \"conflicts\" keyword: accounts/metadata.rb:1\nFC077: Metadata uses the deprecated
+        \"replaces\" keyword: accounts/metadata.rb:1\nRun with Foodcritic Version
+        11.1.0 with tags metadata,correctness ~FC031 ~FC045 and failure tags any"}],"supports":{"centos":">=
+        0.0.0","debian":">= 0.0.0","ubuntu":">= 0.0.0","redhat":">= 0.0.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:20 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/accounts/versions/0.1.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:21 GMT
+      Etag:
+      - W/"f12e10646e9aed40f812cd443ba33faa"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - cb2a57d9-e567-4908-a82d-c3fd705386e6
+      X-Runtime:
+      - '0.125069'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '256'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":4370,"version":"0.1.0","published_at":"2009-12-02T21:22:23Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/accounts","file":"https://supermarket.chef.io/api/v1/cookbooks/accounts/versions/0.1.0/download","quality_metrics":[],"supports":{"centos":">=
+        0.0.0","debian":">= 0.0.0","ubuntu":">= 0.0.0","redhat":">= 0.0.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:21 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/accumulator
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:22 GMT
+      Etag:
+      - W/"c5dbe111b7cecc0cdb9e5c31f0f3a52c"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - b14e7ff5-4548-49c8-8780-8abf85e9a823
+      X-Runtime:
+      - '0.027098'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '364'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"name":"accumulator","maintainer":"kisoku","description":"Installs/Configures
+        accumulator","category":"Other","latest_version":"https://supermarket.chef.io/api/v1/cookbooks/accumulator/versions/0.2.0","external_url":"","source_url":"","issues_url":null,"average_rating":null,"created_at":"2013-05-03T04:31:03.000Z","updated_at":"2013-05-22T02:18:25.000Z","up_for_adoption":null,"deprecated":false,"versions":["https://supermarket.chef.io/api/v1/cookbooks/accumulator/versions/0.2.0","https://supermarket.chef.io/api/v1/cookbooks/accumulator/versions/0.1.3"],"metrics":{"downloads":{"total":2104861,"versions":{"0.1.3":986286,"0.2.0":1118575}},"followers":4,"collaborators":0}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:22 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/accumulator/versions/0.2.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:23 GMT
+      Etag:
+      - W/"aa4a7a6ab8cb71b1e87664f6f7b2a8de"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 5fecab80-0c6d-445a-ab06-5c97980b4210
+      X-Runtime:
+      - '0.021219'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '771'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":2429,"version":"0.2.0","published_at":"2013-05-22T02:18:25Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/accumulator","file":"https://supermarket.chef.io/api/v1/cookbooks/accumulator/versions/0.2.0/download","quality_metrics":[{"name":"Contributing
+        File","failed":true,"feedback":"Failure: To pass this metric, your cookbook
+        metadata must include a source url, the source url must be in the form of
+        https://github.com/user/repo, and your repo must contain a CONTRIBUTING.md
+        file"},{"name":"Collaborator Number","failed":true,"feedback":"Failure: Cookbook
+        has 0 collaborators. A cookbook must have at least 2 collaborators to pass
+        this metric."},{"name":"Version Tag","failed":true,"feedback":"Failure: To
+        pass this metric, your cookbook metadata must include a source url, the source
+        url must be in the form of https://github.com/user/repo, and your repo must
+        include a tag that matches this cookbook version number"},{"name":"License","failed":false,"feedback":"accumulator
+        has a recognized open source license."},{"name":"Publish","failed":false,"feedback":"accumulator
+        passed the publish metric"},{"name":"Testing File","failed":true,"feedback":"Failure:
+        To pass this metric, your cookbook metadata must include a source url, the
+        source url must be in the form of https://github.com/user/repo, and your repo
+        must contain a TESTING.md file"},{"name":"Supported Platforms","failed":true,"feedback":"accumulator
+        should declare what platform(s) it supports."},{"name":"No Binaries","failed":false,"feedback":"passed
+        the No Binaries metric. Contains no obvious binaries."},{"name":"Foodcritic","failed":true,"feedback":"FC064:
+        Ensure issues_url is set in metadata: accumulator/metadata.rb:1\nFC065: Ensure
+        source_url is set in metadata: accumulator/metadata.rb:1\nFC066: Ensure chef_version
+        is set in metadata: accumulator/metadata.rb:1\nFC067: Ensure at least one
+        platform supported in metadata: accumulator/metadata.rb:1\nFC069: Ensure standardized
+        license defined in metadata: accumulator/metadata.rb:1\nRun with Foodcritic
+        Version 11.1.0 with tags metadata,correctness ~FC031 ~FC045 and failure tags
+        any"}]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:23 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/accumulator/versions/0.1.3
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:23 GMT
+      Etag:
+      - W/"9fc117107c44f35809a6541c48c23507"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - d3b939e7-139d-4144-a7fe-7c07306b6541
+      X-Runtime:
+      - '0.037996'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '215'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":1409,"version":"0.1.3","published_at":"2013-05-03T04:31:04Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/accumulator","file":"https://supermarket.chef.io/api/v1/cookbooks/accumulator/versions/0.1.3/download","quality_metrics":[]}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:24 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acd
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:24 GMT
+      Etag:
+      - W/"1bf3a8ffb17758b886f425b1d7a72480"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 20cd7b69-f182-4b29-b61a-3ac3da7f4b12
+      X-Runtime:
+      - '0.026778'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '344'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"name":"acd","maintainer":"ryanh","description":"Installs/Configures
+        acd","category":"Other","latest_version":"https://supermarket.chef.io/api/v1/cookbooks/acd/versions/0.1.0","external_url":"https://github.com/rhass/acd","source_url":"https://github.com/rhass/acd","issues_url":"https://github.com/rhass/acd/issues","average_rating":null,"created_at":"2016-08-29T04:54:16.853Z","updated_at":"2016-08-29T04:54:16.843Z","up_for_adoption":null,"deprecated":false,"versions":["https://supermarket.chef.io/api/v1/cookbooks/acd/versions/0.1.0"],"metrics":{"downloads":{"total":313,"versions":{"0.1.0":313}},"followers":0,"collaborators":0}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:24 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/acd/versions/0.1.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 03 Jul 2017 10:54:25 GMT
+      Etag:
+      - W/"c5e968c2dac75aa94dd635182315a342"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - f87612de-e5eb-4d67-917f-eb3575d4f44f
+      X-Runtime:
+      - '0.021857'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '700'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"apachev2","tarball_file_size":4039,"version":"0.1.0","published_at":"2016-08-29T04:54:16Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acd","file":"https://supermarket.chef.io/api/v1/cookbooks/acd/versions/0.1.0/download","quality_metrics":[{"name":"Testing
+        File","failed":true,"feedback":"Failure: To pass this metric, your cookbook
+        metadata must include a source url, the source url must be in the form of
+        https://github.com/user/repo, and your repo must contain a TESTING.md file"},{"name":"Version
+        Tag","failed":false,"feedback":"passed the version tag metric."},{"name":"Collaborator
+        Number","failed":true,"feedback":"Failure: Cookbook has 0 collaborators. A
+        cookbook must have at least 2 collaborators to pass this metric."},{"name":"Foodcritic","failed":false,"feedback":"\nRun
+        with Foodcritic Version 11.1.0 with tags metadata,correctness ~FC031 ~FC045
+        and failure tags any"},{"name":"Publish","failed":false,"feedback":"acd passed
+        the publish metric"},{"name":"Contributing File","failed":true,"feedback":"Failure:
+        To pass this metric, your cookbook metadata must include a source url, the
+        source url must be in the form of https://github.com/user/repo, and your repo
+        must contain a CONTRIBUTING.md file"},{"name":"Supported Platforms","failed":true,"feedback":"acd
+        should declare what platform(s) it supports."},{"name":"License","failed":false,"feedback":"acd
+        has a recognized open source license."},{"name":"No Binaries","failed":false,"feedback":"passed
+        the No Binaries metric. Contains no obvious binaries."}],"dependencies":{"poise-python":">=
+        0.0.0","poise":">= 0.0.0","build-essential":">= 0.0.0"}}'
+    http_version: 
+  recorded_at: Mon, 03 Jul 2017 10:54:25 GMT
+recorded_with: VCR 3.0.3

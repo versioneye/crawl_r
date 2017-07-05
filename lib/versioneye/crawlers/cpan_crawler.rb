@@ -1,6 +1,6 @@
 class CpanCrawler < Versioneye::Crawl
 
-  A_API_URL       = 'http://api.metacpan.org'
+  A_API_URL       = 'https://fastapi.metacpan.org/v1'
   A_LANGUAGE_PERL = Product::A_LANGUAGE_PERL
   A_TYPE_CPAN     = Project::A_TYPE_CPAN
   A_SCROLL_TTL    = '2m'
@@ -44,7 +44,7 @@ class CpanCrawler < Versioneye::Crawl
   ensure
     #remove scrolling session
     HTTParty.delete(
-      "#{A_API_URL}/v0/release/_search",
+      "#{A_API_URL}/release/_search",
       { body: "[#{scroll_id}]" }
     )
   end
@@ -88,7 +88,7 @@ class CpanCrawler < Versioneye::Crawl
   end
 
   def self.start_release_scroll(all, from_days_ago, to_days_ago)
-    releases_url = "#{A_API_URL}/v0/release/_search?scroll=#{A_SCROLL_TTL}"
+    releases_url = "#{A_API_URL}/release/_search?scroll=#{A_SCROLL_TTL}"
 
     releases_query = {
       "query" => {"match_all" => {}},
@@ -117,17 +117,17 @@ class CpanCrawler < Versioneye::Crawl
   end
 
   def self.fetch_author_details(author_id)
-    author_url = "#{A_API_URL}/v0/author/#{author_id}"
+    author_url = "#{A_API_URL}/author/#{author_id}"
     fetch_json author_url
   end
 
   def self.fetch_release_details(author_id, release_id)
-    release_url = "#{A_API_URL}/v0/release/#{author_id}/#{release_id}"
+    release_url = "#{A_API_URL}/release/#{author_id}/#{release_id}"
     fetch_json release_url
   end
 
   def self.fetch_module_details(module_id)
-    module_url = "#{A_API_URL}/v0/module/#{module_id}"
+    module_url = "#{A_API_URL}/module/#{module_id}"
     fetch_json module_url
   end
 
@@ -207,7 +207,7 @@ class CpanCrawler < Versioneye::Crawl
     upsert_version_license(prod, release_version_label, release_doc)
 
     if author_doc
-      upsert_author(prod, release_version_label, author_doc)
+      upsert_developer(prod, release_version_label, author_doc)
     end
 
 		if release_doc.has_key?(:metadata)
@@ -249,31 +249,44 @@ class CpanCrawler < Versioneye::Crawl
 					asciiname: tkns.join(' ')
 			}
 
-			contrib = upsert_author(prod, version_label, author_doc, 'contributor')
+			contrib = upsert_developer(prod, version_label, author_doc, 'contributor')
       acc << contrib if contrib
       acc
 		end
 	end
 
-  def self.upsert_author(prod, version_label, author_doc, role = 'author')
-    email = author_doc[:email].first
-		author = Developer.find_or_initialize_by(
+  def self.upsert_developer(prod, version_label, author_doc, role = 'author')
+    dev_email = author_doc[:email].first.to_s.strip
+   	dev_name = author_doc[:asciiname]
+    if dev_name.empty?
+      logger.error "upsert_developer: author document has no developer name"
+      logger.error author_doc
+      return
+    end
+
+    author = Developer.find_or_initialize_by(
 			language: A_LANGUAGE_PERL,
 			prod_key: prod[:prod_key],
 			version: version_label,
-			email: email
+			name: dev_name
 		)
 
 		role.to_s.downcase!
     website = (author_doc.has_key?(:website) ? author_doc[:website].first : nil)
+
     author.update({
 			organization: author_doc[:pauseid],
-      name: author_doc[:asciiname],
+      email: dev_email,
       homepage: website,
       role: role,
 			contributor: (role == 'contributor')
     })
-    author.save
+
+    unless author.save
+      logger.error "upsert_developer: failed to save a new package author"
+      logger.error author.errors.full_messages.to_sentence
+      return nil
+    end
 
     author
   end

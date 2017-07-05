@@ -77,7 +77,7 @@
     "github_base_url": "https://github.com",
     "github_api_url": "https://api.github.com",
     "github_client_id": "",
-    "github_client_secret": "",
+    "github_client_secret": "env_GITHUB_CLIENT_SECRET",
     "github_pass": "test_version_12",
     "github_user": "testveye",
     "projects_unlimited": false,
