@@ -2,9 +2,7 @@ require 'spec_helper'
 
 describe CpanCrawler do
   let(:all_releases_url){ "#{CpanCrawler::A_API_URL}/release/_search?scroll=2m" }
-  let(:author_url){ "#{CpanCrawler::A_API_URL}/author/VTI" }
-  let(:release_url){ "#{CpanCrawler::A_API_URL}/release/VTI/Routes-Tiny-0.16" }
-  let(:module_url){ "#{CpanCrawler::A_API_URL}/module/Routes::Tiny" }
+  let(:release_url){ "#{CpanCrawler::A_API_URL}/release/VTI/Routes-Tiny-0.16?join=author" }
   let(:scroll_url){ "#{CpanCrawler::A_API_URL}/release/_search?scroll=2m&scroll_id=abc123" }
   let(:delete_scroll_url){ "#{CpanCrawler::A_API_URL}/release/_search"  }
   let(:search_url){ "#{CpanCrawler::A_API_URL}/_search/scroll?scroll=2m&scroll_id=abc123" }
@@ -51,7 +49,7 @@ describe CpanCrawler do
 
   context "match_license" do
     it "matches perl license_id with spdx_id" do
-      expect( CpanCrawler.match_license('perl_5')[:spdx_id] ).to eq('Artistic-1.0-Perl')
+      expect( CpanCrawler.match_license('perl_5')[:name] ).to eq('Perl5')
       expect( CpanCrawler.match_license('apache')[:spdx_id] ).to eq('Apache-2.0')
       expect( CpanCrawler.match_license('apache_2_0')[:spdx_id] ).to eq('Apache-2.0')
       expect( CpanCrawler.match_license('unknown')[:spdx_id]).to be_nil
@@ -270,21 +268,19 @@ describe CpanCrawler do
     end
   end
 
-  context "upsert_product" do
+  context "persist_release" do
     after :each do
       Product.delete_all
     end
 
     it "saves a new product from release data" do
-      prod_db = CpanCrawler.upsert_product(nil, release_dt, product1[:prod_key])
+      prod_db = CpanCrawler.persist_release(author_dt, release_dt)
 
       expect(prod_db).not_to be_nil
       expect(prod_db[:name]).to eq(product1[:name])
       expect(prod_db[:prod_key]).to eq(product1[:prod_key])
       expect(prod_db[:language]).to eq(product1[:language])
       expect(prod_db[:version]).to eq(product1[:version])
-      expect(prod_db[:group_id]).to eq(release_dt[:author])
-      expect(prod_db[:parent_id]).to eq(release_dt[:main_module])
 
     end
   end
@@ -297,7 +293,6 @@ describe CpanCrawler do
       FakeWeb.register_uri(:post, scroll_url, body: "[]")
 
       FakeWeb.register_uri(:get, search_url, body: "[]")
-      FakeWeb.register_uri(:get, author_url, body: author_json)
       FakeWeb.register_uri(:get, release_url, body: release_json)
       FakeWeb.register_uri(:delete, delete_scroll_url, body: "[]")
     end
@@ -309,28 +304,23 @@ describe CpanCrawler do
     end
 
     it "process first scroll, fetches 1st release, author details and saves correct results" do
-      res = CpanCrawler.crawl
-      expect(res).to be_truthy
-      expect(Product.all.count).to eq(3)
+      pkg_queue = Queue.new
+      pkg_queue << ['VTI', 'Routes-Tiny-0.16']
+      pkg_queue.close
+
+      res = CpanCrawler.work_release(pkg_queue)
+
+      expect(res).to eq(1)
+      expect(Product.all.count).to eq(1)
 
       prod = Product.find_by(language: 'Perl', prod_key: 'Routes::Tiny')
       expect(prod).not_to be_nil
       expect(prod[:version]).to eq(product1[:version])
-      expect(Developer.all.size).to eq(21)
-      expect(Dependency.all.size).to eq(24)
+      expect(Developer.all.size).to eq(7)
+      expect(Dependency.all.size).to eq(8)
 
-      #it also saved other modules as products
-      module2 = Product.find_by(language: 'Perl', prod_key: 'Routes::Tiny::Match')
-      expect(module2).not_to be_nil
-      expect(module2[:name]).to eq('Routes::Tiny::Match')
-      expect(module2[:version]).to eq(product1[:version])
-      expect(module2[:parent_id]).to eq(product1[:prod_key])
+      expect(prod.modules.size).to eq(3)
 
-      module3 = Product.find_by(language: 'Perl', prod_key: 'Routes::Tiny::Pattern')
-      expect(module3).not_to be_nil
-      expect(module3[:name]).to eq('Routes::Tiny::Pattern')
-      expect(module3[:version]).to eq(product1[:version])
-      expect(module3[:parent_id]).to eq(product1[:prod_key])
     end
   end
 end
