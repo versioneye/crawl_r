@@ -107,7 +107,7 @@ class CpanCrawler < Versioneye::Crawl
 
   # retrieves all artifacts ids and puts on the work queue
   # it must retrieve all the package ids, before ES scroll kills search context
-  def self.paginate_releases(pkg_queue, all, from_days_ago, to_days_ago = nil, timeout = 10)
+  def self.paginate_releases(pkg_queue, all, from_days_ago, to_days_ago = 0, timeout = 10)
     page_nr = 1
     scroll_id = nil
     page = start_release_scroll(all, from_days_ago, to_days_ago)
@@ -214,7 +214,7 @@ class CpanCrawler < Versioneye::Crawl
     nil
   end
 
-  def self.start_release_scroll(all, from_days_ago, to_days_ago)
+  def self.start_release_scroll(all, from_days_ago, to_days_ago = 0)
     releases_url = "#{A_API_URL}/release/_search?scroll=#{A_SCROLL_TTL}"
 
     releases_query = {
