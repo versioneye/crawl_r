@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.github.com/?client_id=&client_secret=13ee630b022043181370be67a6bc1bb3b92fffe7
+    uri: https://api.github.com/?client_id=&client_secret=e3d82ff615ab1d8cfffdebb9da8330148af925ba
     body:
       encoding: US-ASCII
       string: ''
@@ -23,7 +23,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Mon, 03 Jul 2017 11:19:50 GMT
+      - Thu, 06 Jul 2017 07:26:23 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -33,9 +33,9 @@ http_interactions:
       X-Ratelimit-Limit:
       - '60'
       X-Ratelimit-Remaining:
-      - '55'
+      - '20'
       X-Ratelimit-Reset:
-      - '1499084387'
+      - '1499327532'
       Cache-Control:
       - public, max-age=60, s-maxage=60
       Vary:
@@ -61,19 +61,19 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.010679'
+      - '0.010907'
       X-Served-By:
-      - 77fbfb53269bbb85f82f23584d59f7c1
+      - 15bc4ab707db6d6b474783868c7cc828
       X-Github-Request-Id:
-      - C2BF:7CD4:1186A71:172567E:595A2855
+      - D059:10353:EF6B63:120ED01:595DE61F
     body:
       encoding: ASCII-8BIT
       string: '{"current_user_url":"https://api.github.com/user","current_user_authorizations_html_url":"https://github.com/settings/connections/applications{/client_id}","authorizations_url":"https://api.github.com/authorizations","code_search_url":"https://api.github.com/search/code?q={query}{&page,per_page,sort,order}","commit_search_url":"https://api.github.com/search/commits?q={query}{&page,per_page,sort,order}","emails_url":"https://api.github.com/user/emails","emojis_url":"https://api.github.com/emojis","events_url":"https://api.github.com/events","feeds_url":"https://api.github.com/feeds","followers_url":"https://api.github.com/user/followers","following_url":"https://api.github.com/user/following{/target}","gists_url":"https://api.github.com/gists{/gist_id}","hub_url":"https://api.github.com/hub","issue_search_url":"https://api.github.com/search/issues?q={query}{&page,per_page,sort,order}","issues_url":"https://api.github.com/issues","keys_url":"https://api.github.com/user/keys","notifications_url":"https://api.github.com/notifications","organization_repositories_url":"https://api.github.com/orgs/{org}/repos{?type,page,per_page,sort}","organization_url":"https://api.github.com/orgs/{org}","public_gists_url":"https://api.github.com/gists/public","rate_limit_url":"https://api.github.com/rate_limit","repository_url":"https://api.github.com/repos/{owner}/{repo}","repository_search_url":"https://api.github.com/search/repositories?q={query}{&page,per_page,sort,order}","current_user_repositories_url":"https://api.github.com/user/repos{?type,page,per_page,sort}","starred_url":"https://api.github.com/user/starred{/owner}{/repo}","starred_gists_url":"https://api.github.com/gists/starred","team_url":"https://api.github.com/teams","user_url":"https://api.github.com/users/{user}","user_organizations_url":"https://api.github.com/user/orgs","user_repositories_url":"https://api.github.com/users/{user}/repos{?type,page,per_page,sort}","user_search_url":"https://api.github.com/search/users?q={query}{&page,per_page,sort,order}"}'
     http_version: 
-  recorded_at: Mon, 03 Jul 2017 11:19:50 GMT
+  recorded_at: Thu, 06 Jul 2017 07:26:23 GMT
 - request:
     method: get
-    uri: https://api.github.com/repos/rmetzler/render-as-markdown?client_id=&client_secret=13ee630b022043181370be67a6bc1bb3b92fffe7
+    uri: https://api.github.com/repos/rmetzler/render-as-markdown?client_id=&client_secret=e3d82ff615ab1d8cfffdebb9da8330148af925ba
     body:
       encoding: US-ASCII
       string: ''
@@ -94,7 +94,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Mon, 03 Jul 2017 11:19:50 GMT
+      - Thu, 06 Jul 2017 07:26:24 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -104,9 +104,9 @@ http_interactions:
       X-Ratelimit-Limit:
       - '60'
       X-Ratelimit-Remaining:
-      - '54'
+      - '19'
       X-Ratelimit-Reset:
-      - '1499084387'
+      - '1499327532'
       Cache-Control:
       - public, max-age=60, s-maxage=60
       Vary:
@@ -133,19 +133,19 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.047975'
+      - '0.048985'
       X-Github-Request-Id:
-      - C2C0:7CCF:72FAB2:971EBF:595A2856
+      - D05A:10358:E44B01:11387D4:595DE61F
     body:
       encoding: ASCII-8BIT
       string: '{"id":13358749,"name":"render-as-markdown","full_name":"rmetzler/render-as-markdown","owner":{"login":"rmetzler","id":58824,"avatar_url":"https://avatars3.githubusercontent.com/u/58824?v=3","gravatar_id":"","url":"https://api.github.com/users/rmetzler","html_url":"https://github.com/rmetzler","followers_url":"https://api.github.com/users/rmetzler/followers","following_url":"https://api.github.com/users/rmetzler/following{/other_user}","gists_url":"https://api.github.com/users/rmetzler/gists{/gist_id}","starred_url":"https://api.github.com/users/rmetzler/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/rmetzler/subscriptions","organizations_url":"https://api.github.com/users/rmetzler/orgs","repos_url":"https://api.github.com/users/rmetzler/repos","events_url":"https://api.github.com/users/rmetzler/events{/privacy}","received_events_url":"https://api.github.com/users/rmetzler/received_events","type":"User","site_admin":false},"private":false,"html_url":"https://github.com/rmetzler/render-as-markdown","description":"This
         gem is a Markdown helper that renders well formatted Markdown for bigger Markdown
         elements like tables","fork":false,"url":"https://api.github.com/repos/rmetzler/render-as-markdown","forks_url":"https://api.github.com/repos/rmetzler/render-as-markdown/forks","keys_url":"https://api.github.com/repos/rmetzler/render-as-markdown/keys{/key_id}","collaborators_url":"https://api.github.com/repos/rmetzler/render-as-markdown/collaborators{/collaborator}","teams_url":"https://api.github.com/repos/rmetzler/render-as-markdown/teams","hooks_url":"https://api.github.com/repos/rmetzler/render-as-markdown/hooks","issue_events_url":"https://api.github.com/repos/rmetzler/render-as-markdown/issues/events{/number}","events_url":"https://api.github.com/repos/rmetzler/render-as-markdown/events","assignees_url":"https://api.github.com/repos/rmetzler/render-as-markdown/assignees{/user}","branches_url":"https://api.github.com/repos/rmetzler/render-as-markdown/branches{/branch}","tags_url":"https://api.github.com/repos/rmetzler/render-as-markdown/tags","blobs_url":"https://api.github.com/repos/rmetzler/render-as-markdown/git/blobs{/sha}","git_tags_url":"https://api.github.com/repos/rmetzler/render-as-markdown/git/tags{/sha}","git_refs_url":"https://api.github.com/repos/rmetzler/render-as-markdown/git/refs{/sha}","trees_url":"https://api.github.com/repos/rmetzler/render-as-markdown/git/trees{/sha}","statuses_url":"https://api.github.com/repos/rmetzler/render-as-markdown/statuses/{sha}","languages_url":"https://api.github.com/repos/rmetzler/render-as-markdown/languages","stargazers_url":"https://api.github.com/repos/rmetzler/render-as-markdown/stargazers","contributors_url":"https://api.github.com/repos/rmetzler/render-as-markdown/contributors","subscribers_url":"https://api.github.com/repos/rmetzler/render-as-markdown/subscribers","subscription_url":"https://api.github.com/repos/rmetzler/render-as-markdown/subscription","commits_url":"https://api.github.com/repos/rmetzler/render-as-markdown/commits{/sha}","git_commits_url":"https://api.github.com/repos/rmetzler/render-as-markdown/git/commits{/sha}","comments_url":"https://api.github.com/repos/rmetzler/render-as-markdown/comments{/number}","issue_comment_url":"https://api.github.com/repos/rmetzler/render-as-markdown/issues/comments{/number}","contents_url":"https://api.github.com/repos/rmetzler/render-as-markdown/contents/{+path}","compare_url":"https://api.github.com/repos/rmetzler/render-as-markdown/compare/{base}...{head}","merges_url":"https://api.github.com/repos/rmetzler/render-as-markdown/merges","archive_url":"https://api.github.com/repos/rmetzler/render-as-markdown/{archive_format}{/ref}","downloads_url":"https://api.github.com/repos/rmetzler/render-as-markdown/downloads","issues_url":"https://api.github.com/repos/rmetzler/render-as-markdown/issues{/number}","pulls_url":"https://api.github.com/repos/rmetzler/render-as-markdown/pulls{/number}","milestones_url":"https://api.github.com/repos/rmetzler/render-as-markdown/milestones{/number}","notifications_url":"https://api.github.com/repos/rmetzler/render-as-markdown/notifications{?since,all,participating}","labels_url":"https://api.github.com/repos/rmetzler/render-as-markdown/labels{/name}","releases_url":"https://api.github.com/repos/rmetzler/render-as-markdown/releases{/id}","deployments_url":"https://api.github.com/repos/rmetzler/render-as-markdown/deployments","created_at":"2013-10-06T07:30:14Z","updated_at":"2014-01-06T13:09:46Z","pushed_at":"2014-01-06T13:09:46Z","git_url":"git://github.com/rmetzler/render-as-markdown.git","ssh_url":"git@github.com:rmetzler/render-as-markdown.git","clone_url":"https://github.com/rmetzler/render-as-markdown.git","svn_url":"https://github.com/rmetzler/render-as-markdown","homepage":"http://rmetzler.github.io/render-as-markdown","size":392,"stargazers_count":0,"watchers_count":0,"language":"Ruby","has_issues":true,"has_projects":true,"has_downloads":true,"has_wiki":true,"has_pages":true,"forks_count":0,"mirror_url":null,"open_issues_count":1,"forks":0,"open_issues":1,"watchers":0,"default_branch":"master","network_count":0,"subscribers_count":1}'
     http_version: 
-  recorded_at: Mon, 03 Jul 2017 11:19:50 GMT
+  recorded_at: Thu, 06 Jul 2017 07:26:24 GMT
 - request:
     method: get
-    uri: https://api.github.com/repos/rmetzler/render-as-markdown/tags?client_id=&client_secret=13ee630b022043181370be67a6bc1bb3b92fffe7
+    uri: https://api.github.com/repos/rmetzler/render-as-markdown/tags?client_id=&client_secret=e3d82ff615ab1d8cfffdebb9da8330148af925ba
     body:
       encoding: US-ASCII
       string: ''
@@ -166,7 +166,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Mon, 03 Jul 2017 11:19:51 GMT
+      - Thu, 06 Jul 2017 07:26:24 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -176,9 +176,9 @@ http_interactions:
       X-Ratelimit-Limit:
       - '60'
       X-Ratelimit-Remaining:
-      - '53'
+      - '18'
       X-Ratelimit-Reset:
-      - '1499084387'
+      - '1499327532'
       Cache-Control:
       - public, max-age=60, s-maxage=60
       Vary:
@@ -206,19 +206,19 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.034897'
+      - '0.042119'
       X-Served-By:
       - 15bc4ab707db6d6b474783868c7cc828
       X-Github-Request-Id:
-      - C2C1:7CD4:1186B0D:1725747:595A2857
+      - D05B:1034D:439AD1:519689:595DE620
     body:
       encoding: ASCII-8BIT
       string: '[{"name":"v0.0.6","zipball_url":"https://api.github.com/repos/rmetzler/render-as-markdown/zipball/v0.0.6","tarball_url":"https://api.github.com/repos/rmetzler/render-as-markdown/tarball/v0.0.6","commit":{"sha":"8421d68fde085f25d92a84d4fe5baa9a90d341d9","url":"https://api.github.com/repos/rmetzler/render-as-markdown/commits/8421d68fde085f25d92a84d4fe5baa9a90d341d9"}},{"name":"v0.0.5","zipball_url":"https://api.github.com/repos/rmetzler/render-as-markdown/zipball/v0.0.5","tarball_url":"https://api.github.com/repos/rmetzler/render-as-markdown/tarball/v0.0.5","commit":{"sha":"1f6c9f047c82f19e632e5d40602f611e1cb67a6f","url":"https://api.github.com/repos/rmetzler/render-as-markdown/commits/1f6c9f047c82f19e632e5d40602f611e1cb67a6f"}},{"name":"v0.0.4","zipball_url":"https://api.github.com/repos/rmetzler/render-as-markdown/zipball/v0.0.4","tarball_url":"https://api.github.com/repos/rmetzler/render-as-markdown/tarball/v0.0.4","commit":{"sha":"725155400b35488ab65e8dd44264e055a397fd74","url":"https://api.github.com/repos/rmetzler/render-as-markdown/commits/725155400b35488ab65e8dd44264e055a397fd74"}},{"name":"0.0.4","zipball_url":"https://api.github.com/repos/rmetzler/render-as-markdown/zipball/0.0.4","tarball_url":"https://api.github.com/repos/rmetzler/render-as-markdown/tarball/0.0.4","commit":{"sha":"725155400b35488ab65e8dd44264e055a397fd74","url":"https://api.github.com/repos/rmetzler/render-as-markdown/commits/725155400b35488ab65e8dd44264e055a397fd74"}}]'
     http_version: 
-  recorded_at: Mon, 03 Jul 2017 11:19:51 GMT
+  recorded_at: Thu, 06 Jul 2017 07:26:24 GMT
 - request:
     method: get
-    uri: https://api.github.com/repos/rmetzler/render-as-markdown/commits/8421d68fde085f25d92a84d4fe5baa9a90d341d9?client_id=&client_secret=13ee630b022043181370be67a6bc1bb3b92fffe7
+    uri: https://api.github.com/repos/rmetzler/render-as-markdown/commits/8421d68fde085f25d92a84d4fe5baa9a90d341d9?client_id=&client_secret=e3d82ff615ab1d8cfffdebb9da8330148af925ba
     body:
       encoding: US-ASCII
       string: ''
@@ -239,7 +239,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Mon, 03 Jul 2017 11:19:51 GMT
+      - Thu, 06 Jul 2017 07:26:25 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -249,13 +249,14 @@ http_interactions:
       X-Ratelimit-Limit:
       - '60'
       X-Ratelimit-Remaining:
-      - '52'
+      - '17'
       X-Ratelimit-Reset:
-      - '1499084387'
+      - '1499327532'
       Cache-Control:
       - public, max-age=60, s-maxage=60
       Vary:
       - Accept
+      - Accept-Encoding
       Etag:
       - W/"17f7ea99124b82ae1d0b4234fc5caea3"
       Last-Modified:
@@ -278,9 +279,11 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.034761'
+      - '0.074219'
+      X-Served-By:
+      - 88531cdcf1929112ec480e1806d44a33
       X-Github-Request-Id:
-      - C2C2:7CD6:1BEECD7:24F0C4D:595A2857
+      - D05C:10358:E44C9B:11389C3:595DE620
     body:
       encoding: ASCII-8BIT
       string: '{"sha":"8421d68fde085f25d92a84d4fe5baa9a90d341d9","commit":{"author":{"name":"Richard
@@ -291,10 +294,10 @@ http_interactions:
         = ''0.0.5''\n+  VERSION = ''0.0.6''\n end\n \n #puts \"This is version #{RenderAsMarkdown::VERSION}
         of gem #{RenderAsMarkdown::GEM}\""}]}'
     http_version: 
-  recorded_at: Mon, 03 Jul 2017 11:19:51 GMT
+  recorded_at: Thu, 06 Jul 2017 07:26:25 GMT
 - request:
     method: get
-    uri: https://api.github.com/repos/rmetzler/render-as-markdown/commits/1f6c9f047c82f19e632e5d40602f611e1cb67a6f?client_id=&client_secret=13ee630b022043181370be67a6bc1bb3b92fffe7
+    uri: https://api.github.com/repos/rmetzler/render-as-markdown/commits/1f6c9f047c82f19e632e5d40602f611e1cb67a6f?client_id=&client_secret=e3d82ff615ab1d8cfffdebb9da8330148af925ba
     body:
       encoding: US-ASCII
       string: ''
@@ -315,7 +318,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Mon, 03 Jul 2017 11:19:52 GMT
+      - Thu, 06 Jul 2017 07:26:25 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -325,9 +328,9 @@ http_interactions:
       X-Ratelimit-Limit:
       - '60'
       X-Ratelimit-Remaining:
-      - '51'
+      - '16'
       X-Ratelimit-Reset:
-      - '1499084387'
+      - '1499327532'
       Cache-Control:
       - public, max-age=60, s-maxage=60
       Vary:
@@ -355,11 +358,11 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.026716'
+      - '0.067491'
       X-Served-By:
       - 15bc4ab707db6d6b474783868c7cc828
       X-Github-Request-Id:
-      - C2C3:7CD6:1BEED20:24F0CBA:595A2858
+      - D05D:10356:8B12D9:A7CCA7:595DE621
     body:
       encoding: ASCII-8BIT
       string: '{"sha":"1f6c9f047c82f19e632e5d40602f611e1cb67a6f","commit":{"author":{"name":"Richard
@@ -369,10 +372,10 @@ http_interactions:
         = ''0.0.4''\n+  VERSION = ''0.0.5''\n end\n \n #puts \"This is version #{RenderAsMarkdown::VERSION}
         of gem #{RenderAsMarkdown::GEM}\""}]}'
     http_version: 
-  recorded_at: Mon, 03 Jul 2017 11:19:52 GMT
+  recorded_at: Thu, 06 Jul 2017 07:26:25 GMT
 - request:
     method: get
-    uri: https://api.github.com/repos/rmetzler/render-as-markdown/commits/725155400b35488ab65e8dd44264e055a397fd74?client_id=&client_secret=13ee630b022043181370be67a6bc1bb3b92fffe7
+    uri: https://api.github.com/repos/rmetzler/render-as-markdown/commits/725155400b35488ab65e8dd44264e055a397fd74?client_id=&client_secret=e3d82ff615ab1d8cfffdebb9da8330148af925ba
     body:
       encoding: US-ASCII
       string: ''
@@ -393,7 +396,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Mon, 03 Jul 2017 11:19:52 GMT
+      - Thu, 06 Jul 2017 07:26:26 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -403,9 +406,9 @@ http_interactions:
       X-Ratelimit-Limit:
       - '60'
       X-Ratelimit-Remaining:
-      - '50'
+      - '15'
       X-Ratelimit-Reset:
-      - '1499084387'
+      - '1499327532'
       Cache-Control:
       - public, max-age=60, s-maxage=60
       Vary:
@@ -433,11 +436,11 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.041994'
+      - '0.071644'
       X-Served-By:
-      - eef8b8685a106934dcbb4b7c59fba0bf
+      - 1e9204dbc0447a6f39c3b3c44d87b3f8
       X-Github-Request-Id:
-      - C2C4:7CD4:1186BBE:1725844:595A2858
+      - D05E:10356:8B1351:A7CD32:595DE621
     body:
       encoding: ASCII-8BIT
       string: '{"sha":"725155400b35488ab65e8dd44264e055a397fd74","commit":{"author":{"name":"Richard
@@ -448,10 +451,10 @@ http_interactions:
         = ''0.0.3''\n+  VERSION = ''0.0.4''\n end\n \n #puts \"This is version #{RenderAsMarkdown::VERSION}
         of gem #{RenderAsMarkdown::GEM}\""}]}'
     http_version: 
-  recorded_at: Mon, 03 Jul 2017 11:19:53 GMT
+  recorded_at: Thu, 06 Jul 2017 07:26:26 GMT
 - request:
     method: get
-    uri: https://api.github.com/repos/rmetzler/render-as-markdown/commits/725155400b35488ab65e8dd44264e055a397fd74?client_id=&client_secret=13ee630b022043181370be67a6bc1bb3b92fffe7
+    uri: https://api.github.com/repos/rmetzler/render-as-markdown/commits/725155400b35488ab65e8dd44264e055a397fd74?client_id=&client_secret=e3d82ff615ab1d8cfffdebb9da8330148af925ba
     body:
       encoding: US-ASCII
       string: ''
@@ -472,7 +475,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Mon, 03 Jul 2017 11:19:53 GMT
+      - Thu, 06 Jul 2017 07:26:26 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -482,9 +485,9 @@ http_interactions:
       X-Ratelimit-Limit:
       - '60'
       X-Ratelimit-Remaining:
-      - '49'
+      - '14'
       X-Ratelimit-Reset:
-      - '1499084387'
+      - '1499327532'
       Cache-Control:
       - public, max-age=60, s-maxage=60
       Vary:
@@ -512,11 +515,11 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.080050'
+      - '0.038247'
       X-Served-By:
-      - 62cdcc2d03a2f173f1c58590d1a90077
+      - 6694d697f15dfc31f0ffaf8cdb1d5a86
       X-Github-Request-Id:
-      - C2C5:7CD5:1B4D4CE:23C5580:595A2859
+      - D05F:10356:8B13B5:A7CDB8:595DE622
     body:
       encoding: ASCII-8BIT
       string: '{"sha":"725155400b35488ab65e8dd44264e055a397fd74","commit":{"author":{"name":"Richard
@@ -527,5 +530,5 @@ http_interactions:
         = ''0.0.3''\n+  VERSION = ''0.0.4''\n end\n \n #puts \"This is version #{RenderAsMarkdown::VERSION}
         of gem #{RenderAsMarkdown::GEM}\""}]}'
     http_version: 
-  recorded_at: Mon, 03 Jul 2017 11:19:53 GMT
+  recorded_at: Thu, 06 Jul 2017 07:26:26 GMT
 recorded_with: VCR 3.0.3

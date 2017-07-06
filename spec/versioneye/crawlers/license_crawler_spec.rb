@@ -238,7 +238,7 @@ describe LicenseCrawler do
       product = ProductFactory.create_new
       LicenseCrawler.process_github_master('ecomfe/zrender', product).should be_truthy
       License.count.should == 1
-      License.first.name.should eq('BSD 2-clause')
+      License.first.name.should eq('New BSD')
     end
 
     it "finds BSD 2-clause" do

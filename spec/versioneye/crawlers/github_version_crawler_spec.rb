@@ -2,20 +2,6 @@ require 'spec_helper'
 require 'vcr'
 require 'webmock'
 
-
-RSpec.configure do |c|
-  # so we can use :vcr rather than :vcr => true;
-  # in RSpec 3 this will no longer be necessary.
-  c.treat_symbols_as_metadata_keys_with_true_values = true
-
-  c.around(:each, :vcr) do |example|
-    name = example.metadata[:full_description].split(/\s+/, 2).join("/").underscore.gsub(/[^\w\/]+/, "_")
-    options = example.metadata.slice(:record, :match_requests_on).except(:example_group)
-    VCR.use_cassette(name, options) { example.call }
-  end
-end
-
-
 describe GithubVersionCrawler, :vcr do
 
   before :all do
