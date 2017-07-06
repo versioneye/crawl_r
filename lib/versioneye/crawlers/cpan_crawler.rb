@@ -1,3 +1,6 @@
+require 'thread'
+require 'csv'
+
 class CpanCrawler < Versioneye::Crawl
 
   A_API_URL       = 'https://fastapi.metacpan.org/v1'
@@ -6,88 +9,212 @@ class CpanCrawler < Versioneye::Crawl
   A_SCROLL_TTL    = '2m'
 
   def self.logger
-    if !defined?(@@log)
+    if !defined?(@@log) || @@log.nil?
       @@log = Versioneye::DynLog.new("log/cpan.log", 10).log
     end
+
     @@log
+  end
+
+  #paginates all over releases and dumps result into CSV
+  def self.crawl_artifact_ids(out_path = nil)
+    out_path ||= "tmp/cpan_artifacts.csv"
+
+    logger.debug("crawl_initial_artifacts: going to save artifacts into #{out_path}")
+    pkg_queue = Queue.new
+
+    Thread.abort_on_exception = true
+    producer = Thread.new do |t|
+      paginate_releases(pkg_queue, true, 0, nil, 1)
+    end
+
+    consumer = Thread.new do |t|
+      work_dump_artifacts(pkg_queue, out_path)
+    end
+
+    consumer.join
+    producer.join
+
+    logger.info "crawl_initial_artifacts: done"
   end
 
 
   #iterates over paginated results
   def self.crawl(all = true, from_days_ago = 2, to_days_ago = nil)
     logger.debug("crawl: starting...")
+    pkg_queue = Queue.new
 
+    Thread.abort_on_exception = true
+    producer = Thread.new do |t|
+      paginate_releases(pkg_queue, all, from_days_ago, to_days_ago)
+    end
+
+    consumers = []
+    consumers << Thread.new {|t| work_release(pkg_queue, 1) }
+    consumers << Thread.new {|t| work_release(pkg_queue, 2) }
+    consumers << Thread.new {|t| work_release(pkg_queue, 3) }
+    consumers << Thread.new {|t| work_release(pkg_queue, 4) }
+
+    consumers.each(&:join)
+    producer.join
+    logger.debug "crawl: done."
+
+  rescue => e
+    puts "EXCEPTION: #{e.inspect}"
+    puts "MESSAGE: #{e.message}"
+  end
+
+  def self.work_dump_artifacts(pkg_queue, out_path)
+    logger.debug "work_dump_releases: starting..."
+    n = 0
+    CSV.open(out_path, 'wb') do |csv|
+      while !(pkg_queue.closed? and pkg_queue.empty? )
+        artifact_id = pkg_queue.pop
+        if artifact_id
+          csv << artifact_id
+          n += 1
+        end
+
+        if (n % 1000) == 0
+          logger.info "work_dump_releases: #{n} lines, on queue #{pkg_queue.size}"
+        end
+      end
+    end
+
+    logger.debug "work_dump_releases: done, add #{n} lines"
+    n
+  end
+
+  def self.work_release(pkg_queue, id = 1)
+    n = 0
+    while !( pkg_queue.closed? and pkg_queue.empty? )
+      artifact_ids = pkg_queue.pop
+      if artifact_ids
+        author_id, pkg_id = artifact_ids
+        crawl_release(author_id, pkg_id)
+      end
+
+      if (n % 10) == 0
+        logger.info "== progress.#{id}: crawled #{n} packages, on queue #{pkg_queue.size}"
+      end
+
+      n += 1
+      Thread::pass
+    end
+
+    n
+  end
+
+  # retrieves all artifacts ids and puts on the work queue
+  # it must retrieve all the package ids, before ES scroll kills search context
+  def self.paginate_releases(pkg_queue, all, from_days_ago, to_days_ago = 0, timeout = 10)
     page_nr = 1
     scroll_id = nil
     page = start_release_scroll(all, from_days_ago, to_days_ago)
-
     while page
-      logger.debug "crawl_all: page.#{page_nr}"
+      logger.debug "paginate_releases: page.#{page_nr}"
       unless page.is_a?(Hash)
-        #quite when response was anything than Hashmap
-        log.error "crawl: got malformed response from first scroll request:\n #{page}"
+        #stop process when response was anything than Hashmap
+        logger.error "paginate_releases: got malformed response from first scroll request:\n #{page}"
         break
       end
 
-      scroll_id = page[:_scroll_id] if page.has_key?(:_scroll_id)
-      logger.debug "crawl: new scroll_id `#{scroll_id}`"
+      scroll_id = page.fetch(:_scroll_id)
+      logger.info "paginate_releases: new scroll_id `#{scroll_id}`"
 
-      crawl_release_page(page)
+      if artifacts_onto_queue(pkg_queue, page) == 0
+        logger.error "paginate_releases: failed to put release results onto queue"
+        break
+      end
+
       page_nr += 1
-      break if page.is_a?(Hash) and page[:hits].empty?
-
       page = fetch_release_scroll(scroll_id)
+      sleep timeout #give some time to work off
     end
 
-    logger.debug "crawl: done"
-    return true
+    logger.debug "paginate_releases: done"
+    true
   ensure
-    #remove scrolling session
-    HTTParty.delete(
-      "#{A_API_URL}/release/_search",
-      { body: "[#{scroll_id}]" }
-    )
+    pkg_queue.close
+    delete_release_scroll(scroll_id)
+    false
   end
 
-  #crawl release details for each item in the search results
-  def self.crawl_release_page(release_page)
-    logger.debug "crawl_release_page: crawling items from release_page"
-    return unless release_page.is_a?(Hash)
-    return unless release_page.has_key?(:hits)
-    return unless release_page[:hits].has_key?(:hits)
+  # puts extracted artifact ids onto work queue
+  # returns:
+  #   # of items were put onto queue
+  def self.artifacts_onto_queue(pkg_queue, release_page)
+    n = 0
+    if !release_page.is_a?(Hash) or !release_page.has_key?(:hits) or !release_page[:hits].has_key?(:hits)
+      logger.warn "artifacts_onto_queue: empty release page?\n#{release_page}"
+      return n
+    end
 
     res = release_page[:hits][:hits]
-    res.each {|hit| crawl_release(hit[:fields][:author], hit[:fields][:name]) }
+    res.each do |hit|
+      pkg_queue << extract_artifact_id(hit)
+      n += 1
+    end
+
+    n
   end
 
-  def self.crawl_release(author_id, release_id)
-    author_doc = fetch_author_details(author_id)
-    if author_doc.nil?
-      logger.error "crawl_release: failed to fetch details for the author `#{author_id}`"
+  def self.extract_artifact_id(release_hit)
+    doc = release_hit[:fields]
+    if doc.nil? or doc.empty?
+      logger.error "extract: search result has no fields :#{release_hit}"
       return
     end
 
+    # sometimes author field is mapped as array, sometimes string
+    author_id = if doc[:author].is_a?(String)
+                  doc[:author].to_s.strip
+                elsif doc[:author].is_a?(Array)
+                  if doc[:author].size > 1
+                    logger.error "extract_artifact_id: :author fields has more than 1 item #{doc[:author]}"
+                  end
+
+                  doc[:author].first
+                else
+                  logger.error "extract_artifact_id: author field has unsupported format: #{doc}"
+                end
+    return if author_id.to_s.empty?
+
+    prod_id = if doc[:name].is_a?(String)
+                doc[:name].to_s.strip
+              elsif doc[:name].is_a?(Array)
+                if doc[:name].size > 1
+                  logger.error "extract_artifact_id: :name field has more than 1 item #{doc[:name]}"
+                end
+
+                doc[:name].first
+              else
+                logger.error "extract_artifact_id: package ID has unsupported format: #{doc}"
+              end
+    return if prod_id.to_s.empty?
+
+    [author_id, prod_id]
+  end
+
+  def self.crawl_release(author_id, release_id)
     release_doc = fetch_release_details(author_id, release_id)
     if release_doc.nil?
       logger.error "crawl_release: failed to fetch release info for #{author_id}/#{release_id}"
       return
     end
 
-    module_id = to_module_name(release_doc[:distribution])
-    module_doc = fetch_module_details(module_id)
-    if module_doc.nil?
-      logger.warn "crawl_release: no module #{module_id} for release #{author_id}/#{release_id} - will fallback to release data."
-      module_doc = {
-        version: release_doc[:version],
-        description: release_doc[:abstract]
-      }
-    end
+    author_doc = release_doc[:author][:_source]
 
-    logger.debug "crawl_release: saving #{author_id}/#{release_id}"
-    persist_release(author_doc, release_doc, module_doc)
+    #save product and it submodules
+    persist_release(author_doc, release_doc)
+  rescue => e
+    logger.error "crawl_release: failed to crawl #{author_id}/#{release_id}"
+    logger.error "\treason: #{e.message}"
+    logger.error e.backtrace.join('\n')
+    nil
   end
 
-  def self.start_release_scroll(all, from_days_ago, to_days_ago)
+  def self.start_release_scroll(all, from_days_ago, to_days_ago = 0)
     releases_url = "#{A_API_URL}/release/_search?scroll=#{A_SCROLL_TTL}"
 
     releases_query = {
@@ -99,7 +226,7 @@ class CpanCrawler < Versioneye::Crawl
       },
       "fields"  => [ "author", "name"],
       "sort"    => [{ "date" => "asc" }],
-      "size"    => 100
+      "size"    => 5000
     }
 
     if all == false
@@ -116,76 +243,77 @@ class CpanCrawler < Versioneye::Crawl
     post_json(releases_url, {body: query_json})
   end
 
-  def self.fetch_author_details(author_id)
-    author_url = "#{A_API_URL}/author/#{author_id}"
-    fetch_json author_url
-  end
-
   def self.fetch_release_details(author_id, release_id)
-    release_url = "#{A_API_URL}/release/#{author_id}/#{release_id}"
+    release_url = "#{A_API_URL}/release/#{author_id}/#{release_id}?join=author"
     fetch_json release_url
-  end
 
-  def self.fetch_module_details(module_id)
-    module_url = "#{A_API_URL}/module/#{module_id}"
-    fetch_json module_url
+  rescue => e
+    logger.error "fetch_release_details: failed to fetch release details from #{release_url}"
+    logger.error "reason: #{e.message}"
+    logger.error e.backtrace.join('\n')
+    nil
   end
-
 
   def self.fetch_release_scroll(scroll_id)
     scroll_url = "#{A_API_URL}/_search/scroll?scroll=#{A_SCROLL_TTL}&scroll_id=#{scroll_id}"
     fetch_json scroll_url
+
+  rescue => e
+    logger.error "fetch_release_scroll: failed to fetch next batch of releases: #{scroll_url}"
+    logger.error "reason: #{e.message}"
+    logger.error e.backtrace.join('\n')
+    nil
   end
 
-  def self.persist_release(author_doc, release_doc, module_doc)
+  #remove scrolling session
+  def self.delete_release_scroll(scroll_id)
+    scroll_url = "#{A_API_URL}/release/_search"
+    scroll_dt = JSON.dump({scroll_id: [scroll_id]})
 
-    #when package doesnt provide modules, then translate name to module name
-    if release_doc[:provides].is_a?(Array) and release_doc[:provides].size > 0
-      modules = release_doc[:provides]
-    elsif release_doc[:provides].is_a?(Hash) and release_doc[:provides].keys.size > 0
-      modules = release_doc[:provides].keys.map{|x| x.to_s}
-    else
-      default_module = to_module_name( release_doc[:distribution] )
-      logger.debug "persist_release: using default module name #{default_module}"
-      modules = [default_module]
-    end
-
-    #saves each module as own product
-    prods = modules.reduce([]) do |acc, prod_key|
-      acc << upsert_product(author_doc, release_doc, module_doc, prod_key)
-      acc
-    end
-
-    prods
+    HTTParty.delete(scroll_url, body: scroll_dt )
+  rescue => e
+    logger.error "delete_release_scroll: failed to remove scroll session #{scroll_id}"
+    logger.error "\t reason: #{e.message}"
+    logger.error e.backtrace.join('\n')
+    nil
   end
 
-  def self.upsert_product(author_doc, release_doc, module_doc, prod_key)
+
+  # updates or insert new PERL package
+  # it uses module names as prod_key, because package names may include versions or release details
+  # which means some package has many different names
+  def self.persist_release(author_doc, release_doc)
+    prod_key = release_doc[:main_module].to_s
+    if prod_key.empty?
+      prod_key = to_module_name( release_doc[:distribution] )
+    end
+
     prod = Product.find_or_initialize_by(language: A_LANGUAGE_PERL, prod_type: A_TYPE_CPAN, prod_key: prod_key)
 
-    release_version_label = release_doc[:version].to_s.gsub(/\Av/i, '')
-    latest_version_label  = module_doc[:version].to_s.gsub(/\Av/i, '')
-    artifact_id = "#{release_doc[:author]}/#{release_doc[:name]}"
-    parent_id   = if release_doc[:main_module]
-                    release_doc[:main_module]
-                  else
-                    to_module_name(release_doc[:distribution]) #use distribution name as parent id
-                  end
+    release_version_label = release_doc[:version].to_s.gsub(/\Av/i, '').to_s.strip
+    author_id = release_doc[:author][:_id]
+    artifact_id = "#{author_id}/#{release_doc[:name]}"
 
     prod.update({
+      prod_key_dc: prod_key.to_s.downcase,
       name: prod_key,
-      group_id: release_doc[:author],       # MetaCPAN organizes packages under usernames
-      parent_id: parent_id,                 # refers to main modules
-      artifact_id: artifact_id,             # ID to get data from releases API
-      version: latest_version_label,
-			description: module_doc[:description]
+      name_downcase: name.to_s.downcase,
+      group_id: author_id,       # MetaCPAN organizes packages under usernames
+      description: release_doc[:abstract],
+      version: release_version_label,        # should be overwritten by BgWorker
+      modules: extract_modules(release_doc)
     })
-    if prod.save
-      logger.info "upsert_product: add new product #{prod.to_s}"
-    else
-      logger.warn "upsert_product: failed to save #{prod.to_s} - #{prod.errors.full_messages.to_s}"
+
+    unless prod.save
+      logger.warn "persist_release: failed to save #{prod.to_s} - #{prod.errors.full_messages.to_s}"
+      return
     end
 
+    logger.debug "\t-- new CPAN #{artifact_id} - #{prod}"
     upsert_version(prod, release_version_label, release_doc)
+    CrawlerUtils.create_newest( prod, release_version_label, logger )
+    CrawlerUtils.create_notifications( prod, release_version_label, logger )
+
 
     release_doc[:dependency].to_a.each {|dep_doc| upsert_dependency(dep_doc, prod_key, release_version_label)}
     release_doc[:resources].to_a.each do |title, url_doc|
@@ -204,15 +332,15 @@ class CpanCrawler < Versioneye::Crawl
       upsert_version_link(prod, release_version_label, title, url)
     end
     upsert_version_download(prod, release_version_label, release_doc)
-    upsert_version_license(prod, release_version_label, release_doc)
+    upsert_version_licenses(prod, release_version_label, release_doc[:license])
 
     if author_doc
       upsert_developer(prod, release_version_label, author_doc)
     end
 
-		if release_doc.has_key?(:metadata)
-			upsert_contributors(prod, release_version_label, release_doc[:metadata][:x_contributors])
-		end
+    if release_doc.has_key?(:metadata)
+      upsert_contributors(prod, release_version_label, release_doc[:metadata][:x_contributors])
+    end
 
     prod
   end
@@ -221,10 +349,17 @@ class CpanCrawler < Versioneye::Crawl
     version_db = prod.versions.find_or_initialize_by(version: version_label)
 
     release_date = safely_to_date(release_doc[:date])
+    release_status = release_doc[:maturity]
+    if release_doc[:status].to_s.downcase == 'backpan'
+      release_status += '/backpan' #it is removed from public, but still accessible from backup
+    end
+
+    artifact_id = "#{release_doc[:author][:_id]}/#{release_doc[:name]}" #id to get release details from api
     version_db.update({
+      release_id: artifact_id,
       released_at: release_date,
       released_string: release_doc[:date],
-      status: release_doc[:maturity]
+      status: release_status
     })
 
     version_db
@@ -233,31 +368,32 @@ class CpanCrawler < Versioneye::Crawl
   def self.safely_to_date(date_txt)
     DateTime.parse date_txt
   rescue => e
-    logger.error "safely_to_date: failed to parse date string `#{date_txt}`\n#{e.message}"
+    logger.er.error "safely_to_date: failed to parse date string `#{date_txt}`\n#{e.message}"
     nil
   end
 
-	def self.upsert_contributors(prod, version_label, contributors)
-		return if contributors.nil?
+  def self.upsert_contributors(prod, version_label, contributors)
+    return if contributors.nil?
 
-		contributors.reduce([]) do |acc, contributor_line|
-			tkns = contributor_line.to_s.gsub(/\<|\>/, '').split(/\s+/)
-			next if tkns.empty?
+    contributors.reduce([]) do |acc, contributor_line|
+      tkns = contributor_line.to_s.gsub(/\<|\>/, '').split(/\s+/)
+      next if tkns.empty?
 
-			author_doc = {
-					email: [tkns.pop],
-					asciiname: tkns.join(' ')
-			}
+      author_doc = {
+        email: [tkns.pop],
+        asciiname: tkns.join(' ')
+      }
 
-			contrib = upsert_developer(prod, version_label, author_doc, 'contributor')
+      contrib = upsert_developer(prod, version_label, author_doc, 'contributor')
       acc << contrib if contrib
       acc
-		end
-	end
+    end
+  end
 
   def self.upsert_developer(prod, version_label, author_doc, role = 'author')
     dev_email = author_doc[:email].first.to_s.strip
-   	dev_name = author_doc[:asciiname]
+    dev_name = author_doc[:asciiname].to_s.strip
+    dev_name = author_doc[:name].to_s.strip if dev_name.empty?
     if dev_name.empty?
       logger.error "upsert_developer: author document has no developer name"
       logger.error author_doc
@@ -265,21 +401,21 @@ class CpanCrawler < Versioneye::Crawl
     end
 
     author = Developer.find_or_initialize_by(
-			language: A_LANGUAGE_PERL,
-			prod_key: prod[:prod_key],
-			version: version_label,
-			name: dev_name
-		)
+      language: A_LANGUAGE_PERL,
+      prod_key: prod[:prod_key],
+      version: version_label,
+      name: dev_name
+    )
 
-		role.to_s.downcase!
+    role.to_s.downcase!
     website = (author_doc.has_key?(:website) ? author_doc[:website].first : nil)
 
     author.update({
-			organization: author_doc[:pauseid],
+      organization: author_doc[:pauseid],
       email: dev_email,
       homepage: website,
       role: role,
-			contributor: (role == 'contributor')
+      contributor: (role == 'contributor')
     })
 
     unless author.save
@@ -306,8 +442,14 @@ class CpanCrawler < Versioneye::Crawl
     dep[:version] = dep_version
     dep[:scope]   = dep_scope
 
-    dep.save
-    dep.update_known
+    unless dep.save
+      log.error "\tupsert_dependency:  failed to save dep for #{prod_key}/#{version_label}"
+      log.error "\t\tdata: #{dep_doc}"
+      log.error "\t\treason: #{dep.errors.full_messages.to_sentence}"
+      return
+    end
+
+    #dep.update_known
     dep
   end
 
@@ -333,6 +475,21 @@ class CpanCrawler < Versioneye::Crawl
     )
   end
 
+  def self.upsert_version_licenses(prod, version_label, license_ids)
+    licenses = if license_ids.is_a?(Array)
+                 license_ids
+               elsif license_ids.is_a?(String)
+                 [license_ids]
+               else
+                 logger.warn "upsert_version_licenses: weird data format: #{license_ids}"
+                 [license_ids.to_s]
+               end
+
+    licenses.to_a.each do |license_id|
+      upsert_version_license(prod, version_label, license_id)
+    end
+  end
+
   def self.upsert_version_license(prod, version_label, license_id)
     license_dt = match_license(license_id)
     version_label = version_label.to_s.strip
@@ -347,9 +504,35 @@ class CpanCrawler < Versioneye::Crawl
     lic_db[:url] = license_dt[:url]
     lic_db[:spdx_id] = license_dt[:spdx_id]
 
-    lic_db.save
+    unless lic_db.save
+      logger.error "\tupsert_version_license: failed to save license for #{prod}/#{version_label}"
+      logger.error "\treason: #{lic_db.errors.full_messages.to_sentence}"
+      return nil
+    end
+
     lic_db
   end
+
+  def self.extract_modules(release_doc)
+    modules = []
+
+    #when package doesnt provide modules, then translate name to module name
+    if release_doc[:provides].is_a?(Array) and release_doc[:provides].size > 0
+      modules = release_doc[:provides]
+    elsif release_doc[:provides].is_a?(Hash) and release_doc[:provides].keys.size > 0
+      modules = release_doc[:provides].keys.map{|x| x.to_s}.to_a
+    else
+      default_module = release_doc[:main_module].to_s
+      if default_module.empty?
+        default_module = to_module_name( release_doc[:distribution] )
+      end
+
+      modules << default_module
+    end
+
+    modules
+  end
+
 
   def self.match_dependency_scope(scope_lbl)
     scope_lbl = scope_lbl.to_s.downcase
@@ -364,17 +547,17 @@ class CpanCrawler < Versioneye::Crawl
   end
 
   def self.to_module_name(dist_name)
-    dist_name.to_s.gsub(/\-/, '::')
+    dist_name.to_s.gsub(/\-|_/, '::')
   end
 
-
-	#source: http://blogs.perl.org/users/kentnl_kent_fredric/2012/05/ensure-abstract-and-license-fields-in-your-meta.html
+  # CPAN uses it's own system to unify license names
+  #source: http://blogger.perl.org/users/kentnl_kent_fredric/2012/05/ensure-abstract-and-license-fields-in-your-meta.html
   def self.match_license(license_id)
     case license_id.to_s.downcase
     when 'perl_5'
       {
-        spdx_id: 'Artistic-1.0-Perl',
-        url: 'http://dev.perl.org/licenses/artistic.html',
+        name: 'Perl5',
+        url: 'http://dev.perl.org/licenses/',
       }
     when 'apache', 'apache_2_0'
       {
@@ -403,93 +586,99 @@ class CpanCrawler < Versioneye::Crawl
         url: 'https://spdx.org/licenses/BSD-Source-Code.html'
       }
     when 'unrestricted'
-			{
-				spdx_id: 'CC0-1.0',
-				url: 'https://creativecommons.org/publicdomain/zero/1.0/legalcode'
-			}
+      {
+        spdx_id: 'CC0-1.0',
+        url: 'https://creativecommons.org/publicdomain/zero/1.0/legalcode'
+      }
     when 'freebsd'
       {
         spdx_id: 'BSD-2-Clause',
         url: 'https://opensource.org/licenses/BSD-2-Clause'
       }
-		when 'gfdl_1_2'
+    when 'gfdl_1_2'
       {
-				spdx_id: 'GFDL-1.1',
-				url: 'https://www.gnu.org/licenses/old-licenses/fdl-1.1.txt'
-			}
+        spdx_id: 'GFDL-1.1',
+        url: 'https://www.gnu.org/licenses/old-licenses/fdl-1.1.txt'
+      }
     when 'gfdl_1_3'
-			{
-				spdx_id: 'GFDL-1.3',
-				url: 'https://www.gnu.org/licenses/fdl-1.3.txt'
-			}
+      {
+        spdx_id: 'GFDL-1.3',
+        url: 'https://www.gnu.org/licenses/fdl-1.3.txt'
+      }
     when 'gpl_1'
-			{
-				spdx_id: 'GPL-1.0',
-				url: 'https://www.gnu.org/licenses/old-licenses/gpl-1.0-standalone.html'
-			}
+      {
+        spdx_id: 'GPL-1.0',
+        url: 'https://www.gnu.org/licenses/old-licenses/gpl-1.0-standalone.html'
+      }
     when 'gpl_2'
-			{
-				spdx_id: 'GPL-2.0',
-				url: 'https://opensource.org/licenses/GPL-2.0'
-			}
+      {
+        spdx_id: 'GPL-2.0',
+        url: 'https://opensource.org/licenses/GPL-2.0'
+      }
     when 'gpl', 'gpl_3'
-			{
-				spdx_id: 'GPL-3.0',
-				url: 'https://opensource.org/licenses/GPL-3.0'
-			}
+      {
+        spdx_id: 'GPL-3.0',
+        url: 'https://opensource.org/licenses/GPL-3.0'
+      }
     when 'lgpl', 'lgpl_2_1'
-			{
-				spdx_id: 'LGPL-2.1',
-				url: 'https://opensource.org/licenses/LGPL-2.1'
-			}
+      {
+        spdx_id: 'LGPL-2.1',
+        url: 'https://opensource.org/licenses/LGPL-2.1'
+      }
     when 'lgpl_3_0'
       {
-				spdx_id: 'LGPL-3.0',
-				url: 'https://opensource.org/licenses/LGPL-3.0'
-			}
+        spdx_id: 'LGPL-3.0',
+        url: 'https://opensource.org/licenses/LGPL-3.0'
+      }
     when 'mit'
-			{
-				spdx_id: 'MIT',
-				url: 'https://opensource.org/licenses/MIT'
-			}
-    when 'mozilla_1_0'
-			{
-				spdx_id: 'MPL-1.0',
-				url: 'https://opensource.org/licenses/MPL-1.0'
-			}
-    when 'mozilla', 'mozilla_1_1'
-			{
-				spdx_id: 'MPL-1.1',
-				url: 'https://opensource.org/licenses/MPL-1.1'
-			}
-    when 'openssl'
-			{
-				name: 'OpenSSL license',
-				url: 'https://www.openssl.org/source/license.txt'
-			}
-    when 'qpl_1_0'
-			{
-				spdx_id: 'QPL-1.0',
-				url: 'https://opensource.org/licenses/QPL-1.0'
-			}
-    when 'ssleay'
-			{
-				name: 'Original SSLeay License',
-				url: 'http://h41379.www4.hpe.com/doc/83final/ba554_90007/apcs02.html'
-			}
-		when 'sun'
-			{
-				spdx_id: 'SISSL',
-				url: 'https://opensource.org/licenses/sisslpl'
-			}
-    when 'zlib'
-			{
-				spdx_id: 'Zlib',
-				url: 'http://www.zimbra.com/legal/zimbra-public-license-1-4/'
-			}
-    else
       {
-        name: 'Unknown',
+        spdx_id: 'MIT',
+        url: 'https://opensource.org/licenses/MIT'
+      }
+    when 'mozilla_1_0'
+      {
+        spdx_id: 'MPL-1.0',
+        url: 'https://opensource.org/licenses/MPL-1.0'
+      }
+    when 'mozilla', 'mozilla_1_1'
+      {
+        spdx_id: 'MPL-1.1',
+        url: 'https://opensource.org/licenses/MPL-1.1'
+      }
+    when 'openssl'
+      {
+        name: 'OpenSSL license',
+        url: 'https://www.openssl.org/source/license.txt'
+      }
+    when 'qpl_1_0'
+      {
+        spdx_id: 'QPL-1.0',
+        url: 'https://opensource.org/licenses/QPL-1.0'
+      }
+    when 'ssleay'
+      {
+        name: 'Original SSLeay License',
+        url: 'http://h41379.www4.hpe.com/doc/83final/ba554_90007/apcs02.html'
+      }
+    when 'sun'
+      {
+        spdx_id: 'SISSL',
+        url: 'https://opensource.org/licenses/sisslpl'
+      }
+    when 'zlib'
+      {
+        spdx_id: 'Zlib',
+        url: 'http://www.zimbra.com/legal/zimbra-public-license-1-4/'
+      }
+    when 'unknown'
+      {
+        name: 'Cpan Unknown',
+        spdx_id: nil
+      }
+    else
+      logger.warn "match_license: no match for #{license_id}"
+      {
+        name: license_id.to_s,
         url: nil,
         spdx_id: nil,
       }
