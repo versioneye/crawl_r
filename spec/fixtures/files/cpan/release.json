@@ -1,197 +1,252 @@
 {
-   "version" : "0.16",
-   "resources" : {
-      "homepage" : "https://github.com/vti/routes-tiny",
-      "bugtracker" : {
-         "web" : "https://github.com/vti/routes-tiny/issues"
+  "version": "0.16",
+  "resources": {
+    "homepage": "https://github.com/vti/routes-tiny",
+    "bugtracker": {
+      "web": "https://github.com/vti/routes-tiny/issues"
+    },
+    "repository": {
+      "web": "https://github.com/vti/routes-tiny",
+      "url": "git://github.com/vti/routes-tiny.git",
+      "type": "git"
+    }
+  },
+  "maturity": "released",
+  "abstract": "Routes",
+  "dependency": [
+    {
+      "module": "Scalar::Util",
+      "phase": "runtime",
+      "version_numified": 0,
+      "relationship": "requires",
+      "version": "0"
+    },
+    {
+      "module": "Carp",
+      "relationship": "requires",
+      "version_numified": 0,
+      "phase": "runtime",
+      "version": "0"
+    },
+    {
+      "module": "Module::Build",
+      "version_numified": 0.38,
+      "relationship": "requires",
+      "phase": "configure",
+      "version": "0.38"
+    },
+    {
+      "version": "0",
+      "module": "Test::CPAN::Meta",
+      "phase": "develop",
+      "relationship": "requires",
+      "version_numified": 0
+    },
+    {
+      "module": "Test::Spellunker",
+      "version_numified": 0.002007,
+      "relationship": "requires",
+      "phase": "develop",
+      "version": "v0.2.7"
+    },
+    {
+      "version_numified": 0.04,
+      "relationship": "requires",
+      "phase": "develop",
+      "module": "Test::MinimumVersion::Fast",
+      "version": "0.04"
+    },
+    {
+      "version": "1.41",
+      "module": "Test::Pod",
+      "phase": "develop",
+      "version_numified": 1.41,
+      "relationship": "requires"
+    },
+    {
+      "version_numified": 0.04,
+      "relationship": "requires",
+      "phase": "develop",
+      "module": "Test::PAUSE::Permissions",
+      "version": "0.04"
+    }
+  ],
+  "main_module": "Routes::Tiny",
+  "name": "Routes-Tiny-0.16",
+  "id": "K9sCMmcpH5I9qnf3fnDfnemLRBI",
+  "download_url": "https://cpan.metacpan.org/authors/id/V/VT/VTI/Routes-Tiny-0.16.tar.gz",
+  "version_numified": 0.16,
+  "stat": {
+    "mode": 33188,
+    "mtime": 1471594246,
+    "uid": 1001,
+    "size": 17833,
+    "gid": 1001
+  },
+  "metadata": {
+    "abstract": "Routes",
+    "prereqs": {
+      "configure": {
+        "requires": {
+          "Module::Build": "0.38"
+        }
       },
-      "repository" : {
-         "web" : "https://github.com/vti/routes-tiny",
-         "url" : "git://github.com/vti/routes-tiny.git",
-         "type" : "git"
+      "runtime": {
+        "requires": {
+          "Scalar::Util": "0",
+          "Carp": "0"
+        }
+      },
+      "develop": {
+        "requires": {
+          "Test::Pod": "1.41",
+          "Test::Spellunker": "v0.2.7",
+          "Test::CPAN::Meta": "0",
+          "Test::MinimumVersion::Fast": "0.04",
+          "Test::PAUSE::Permissions": "0.04"
+        }
       }
-   },
-   "maturity" : "released",
-   "abstract" : "Routes",
-   "dependency" : [
-      {
-         "module" : "Scalar::Util",
-         "phase" : "runtime",
-         "version_numified" : 0,
-         "relationship" : "requires",
-         "version" : "0"
+    },
+    "author": [
+      "Viacheslav Tykhanovskyi, C<vti@cpan.org>."
+    ],
+    "no_index": {
+      "directory": [
+        "t",
+        "xt",
+        "inc",
+        "share",
+        "eg",
+        "examples",
+        "author",
+        "builder",
+        "t",
+        "xt",
+        "inc",
+        "local",
+        "perl5",
+        "fatlib",
+        "example",
+        "blib",
+        "examples",
+        "eg"
+      ]
+    },
+    "x_contributors": [
+      "Sergey Zasenko <d3fin3@gmail.com>",
+      "Dmitry Smal <mialinx@gmail.com>",
+      "Dinar Sabitov <lolall@yandex.ru>",
+      "Jonathan R. Warden <john.warden@gmail.com>",
+      "Alexander Batyrshin <0x62ash@gmail.com>",
+      "Viacheslav Tykhanovskyi <viacheslav.t@gmail.com>",
+      "vti <vti@clarive.com>"
+    ],
+    "generated_by": "Minilla/v2.5.0, CPAN::Meta::Converter version 2.150005",
+    "x_serialization_backend": "JSON::PP version 2.27300",
+    "provides": {
+      "Routes::Tiny": {
+        "file": "lib/Routes/Tiny.pm",
+        "version": "0.16"
       },
-      {
-         "module" : "Carp",
-         "relationship" : "requires",
-         "version_numified" : 0,
-         "phase" : "runtime",
-         "version" : "0"
+      "Routes::Tiny::Match": {
+        "file": "lib/Routes/Tiny/Match.pm"
       },
-      {
-         "module" : "Module::Build",
-         "version_numified" : 0.38,
-         "relationship" : "requires",
-         "phase" : "configure",
-         "version" : "0.38"
-      },
-      {
-         "version" : "0",
-         "module" : "Test::CPAN::Meta",
-         "phase" : "develop",
-         "relationship" : "requires",
-         "version_numified" : 0
-      },
-      {
-         "module" : "Test::Spellunker",
-         "version_numified" : 0.002007,
-         "relationship" : "requires",
-         "phase" : "develop",
-         "version" : "v0.2.7"
-      },
-      {
-         "version_numified" : 0.04,
-         "relationship" : "requires",
-         "phase" : "develop",
-         "module" : "Test::MinimumVersion::Fast",
-         "version" : "0.04"
-      },
-      {
-         "version" : "1.41",
-         "module" : "Test::Pod",
-         "phase" : "develop",
-         "version_numified" : 1.41,
-         "relationship" : "requires"
-      },
-      {
-         "version_numified" : 0.04,
-         "relationship" : "requires",
-         "phase" : "develop",
-         "module" : "Test::PAUSE::Permissions",
-         "version" : "0.04"
+      "Routes::Tiny::Pattern": {
+        "file": "lib/Routes/Tiny/Pattern.pm"
       }
-   ],
-   "author" : "VTI",
-   "main_module" : "Routes::Tiny",
-   "name" : "Routes-Tiny-0.16",
-   "id" : "K9sCMmcpH5I9qnf3fnDfnemLRBI",
-   "download_url" : "https://cpan.metacpan.org/authors/id/V/VT/VTI/Routes-Tiny-0.16.tar.gz",
-   "version_numified" : 0.16,
-   "stat" : {
-      "mode" : 33188,
-      "mtime" : 1471594246,
-      "uid" : 1001,
-      "size" : 17833,
-      "gid" : 1001
-   },
-   "metadata" : {
-      "abstract" : "Routes",
-      "prereqs" : {
-         "configure" : {
-            "requires" : {
-               "Module::Build" : "0.38"
-            }
-         },
-         "runtime" : {
-            "requires" : {
-               "Scalar::Util" : "0",
-               "Carp" : "0"
-            }
-         },
-         "develop" : {
-            "requires" : {
-               "Test::Pod" : "1.41",
-               "Test::Spellunker" : "v0.2.7",
-               "Test::CPAN::Meta" : "0",
-               "Test::MinimumVersion::Fast" : "0.04",
-               "Test::PAUSE::Permissions" : "0.04"
-            }
-         }
+    },
+    "version": "0.16",
+    "resources": {
+      "homepage": "https://github.com/vti/routes-tiny",
+      "repository": {
+        "web": "https://github.com/vti/routes-tiny",
+        "type": "git",
+        "url": "git://github.com/vti/routes-tiny.git"
       },
-      "author" : [
-         "Viacheslav Tykhanovskyi, C<vti@cpan.org>."
-      ],
-      "no_index" : {
-         "directory" : [
-            "t",
-            "xt",
-            "inc",
-            "share",
-            "eg",
-            "examples",
-            "author",
-            "builder",
-            "t",
-            "xt",
-            "inc",
-            "local",
-            "perl5",
-            "fatlib",
-            "example",
-            "blib",
-            "examples",
-            "eg"
-         ]
-      },
-      "x_contributors" : [
-         "Sergey Zasenko <d3fin3@gmail.com>",
-         "Dmitry Smal <mialinx@gmail.com>",
-         "Dinar Sabitov <lolall@yandex.ru>",
-         "Jonathan R. Warden <john.warden@gmail.com>",
-         "Alexander Batyrshin <0x62ash@gmail.com>",
-         "Viacheslav Tykhanovskyi <viacheslav.t@gmail.com>",
-         "vti <vti@clarive.com>"
-      ],
-      "generated_by" : "Minilla/v2.5.0, CPAN::Meta::Converter version 2.150005",
-      "x_serialization_backend" : "JSON::PP version 2.27300",
-      "provides" : {
-         "Routes::Tiny" : {
-            "file" : "lib/Routes/Tiny.pm",
-            "version" : "0.16"
-         },
-         "Routes::Tiny::Match" : {
-            "file" : "lib/Routes/Tiny/Match.pm"
-         },
-         "Routes::Tiny::Pattern" : {
-            "file" : "lib/Routes/Tiny/Pattern.pm"
-         }
-      },
-      "version" : "0.16",
-      "resources" : {
-         "homepage" : "https://github.com/vti/routes-tiny",
-         "repository" : {
-            "web" : "https://github.com/vti/routes-tiny",
-            "type" : "git",
-            "url" : "git://github.com/vti/routes-tiny.git"
-         },
-         "bugtracker" : {
-            "web" : "https://github.com/vti/routes-tiny/issues"
-         }
-      },
-      "license" : [
-         "artistic_2"
-      ],
-      "release_status" : "stable",
-      "dynamic_config" : 0,
-      "meta-spec" : {
-         "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
-         "version" : "2"
-      },
-      "name" : "Routes-Tiny"
-   },
-   "provides" : [
-      "Routes::Tiny",
-      "Routes::Tiny::Match",
-      "Routes::Tiny::Pattern"
-   ],
-   "first" : false,
-   "changes_file" : "Changes",
-   "status" : "latest",
-   "authorized" : true,
-   "license" : [
+      "bugtracker": {
+        "web": "https://github.com/vti/routes-tiny/issues"
+      }
+    },
+    "license": [
       "artistic_2"
-   ],
-   "archive" : "Routes-Tiny-0.16.tar.gz",
-   "distribution" : "Routes-Tiny",
-   "date" : "2016-08-19T08:10:46"
+    ],
+    "release_status": "stable",
+    "dynamic_config": 0,
+    "meta-spec": {
+      "url": "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version": "2"
+    },
+    "name": "Routes-Tiny"
+  },
+  "provides": [
+    "Routes::Tiny",
+    "Routes::Tiny::Match",
+    "Routes::Tiny::Pattern"
+  ],
+  "first": false,
+  "changes_file": "Changes",
+  "status": "latest",
+  "authorized": true,
+  "license": [
+    "artistic_2"
+  ],
+  "archive": "Routes-Tiny-0.16.tar.gz",
+  "distribution": "Routes-Tiny",
+  "date": "2016-08-19T08:10:46",
+  "author": {
+    "_id": "VTI",
+    "_source": {
+      "name": "Вячеслав Тихановский",
+      "pauseid": "VTI",
+      "updated": "2015-07-31T17:08:17",
+      "user": "1nHdPu_MRzmkjJU-NXpstw",
+      "gravatar_url": "https://secure.gravatar.com/avatar/b03e2e03fea48f3aee2be87fcc4201a0?s=130&d=http%3A%2F%2Fwww.gravatar.com%2Favatar%2Fb03e2e03fea48f3aee2be87fcc4201a0%3Fs%3D130%26d%3Didenticon",
+      "email": [
+        "vti@cpan.org"
+      ],
+      "asciiname": "Viacheslav Tykhanovskyi",
+      "dir": "id/V/VT/VTI",
+      "country": "ua",
+      "website": [
+        "http://showmetheco.de/"
+      ],
+      "profile": [
+        {
+          "id": "vti",
+          "name": "coderwall"
+        },
+        {
+          "id": "vti",
+          "name": "github"
+        },
+        {
+          "id": "VTI",
+          "name": "github-meets-cpan"
+        },
+        {
+          "id": "vtivti",
+          "name": "twitter"
+        },
+        {
+          "id": "vti",
+          "name": "gittip"
+        }
+      ],
+      "city": "Kiev",
+      "donation": [
+        {
+          "id": "viacheslav.t+es@gmail.com",
+          "name": "paypal"
+        },
+        {
+          "id": "",
+          "name": "wishlist"
+        },
+        {
+          "name": "flattr",
+          "id": ""
+        }
+      ]
+    }
+  }
 }
