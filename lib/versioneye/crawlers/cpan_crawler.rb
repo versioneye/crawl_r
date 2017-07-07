@@ -199,8 +199,8 @@ class CpanCrawler < Versioneye::Crawl
 
     release_version_label = release_doc[:version].to_s.gsub(/\Av/i, '').to_s.strip
     author_id = release_doc[:author][:_id]
-    prod_name = release_doc[:name]
-    artifact_id = "#{author_id}/#{prod_name}"
+    prod_name = release_doc[:distribution]
+    artifact_id = "#{author_id}/#{release_doc[:name]}" #unique release id
 
 
     prod.update({
