@@ -199,12 +199,14 @@ class CpanCrawler < Versioneye::Crawl
 
     release_version_label = release_doc[:version].to_s.gsub(/\Av/i, '').to_s.strip
     author_id = release_doc[:author][:_id]
-    artifact_id = "#{author_id}/#{release_doc[:name]}"
+    prod_name = release_doc[:name]
+    artifact_id = "#{author_id}/#{prod_name}"
+
 
     prod.update({
       prod_key_dc: prod_key.to_s.downcase,
-      name: prod_key,
-      name_downcase: name.to_s.downcase,
+      name: prod_name,
+      name_downcase: prod_name.to_s.downcase,
       group_id: author_id,       # MetaCPAN organizes packages under usernames
       description: release_doc[:abstract],
       version: release_version_label,        # should be overwritten by BgWorker

@@ -1,7 +1,7 @@
 PATH
   remote: ../versioneye-core
   specs:
-    versioneye-core (12.6.21)
+    versioneye-core (12.6.24)
       actionmailer (~> 5.1.0)
       aws-sdk (~> 2.10.7)
       bunny (~> 2.7.0)
