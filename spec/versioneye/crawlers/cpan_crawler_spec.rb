@@ -67,7 +67,7 @@ describe CpanCrawler do
 
   let(:product1){
     Product.new(
-      name: 'Routes::Tiny',
+      name: 'Routes-Tiny',
       prod_key: 'Routes::Tiny',
       version: '0.16',
       prod_type: CpanCrawler::A_TYPE_CPAN,
