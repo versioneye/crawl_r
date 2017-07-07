@@ -122,7 +122,7 @@ namespace :versioneye do
         url: /bitbucket/i,
         spdx_id: nil
       )
-    
+
       n, n_moved = BitbucketLicenseCrawler.crawl_moved_pages(licenses, true)
       p "Done! checked #{n} existing pages - #{n_moved} have beed moved."
     end
