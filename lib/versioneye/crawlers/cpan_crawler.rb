@@ -1,6 +1,3 @@
-require 'thread'
-require 'csv'
-
 class CpanCrawler < Versioneye::Crawl
 
   A_API_URL       = 'https://fastapi.metacpan.org/v1'
@@ -14,95 +11,6 @@ class CpanCrawler < Versioneye::Crawl
     end
 
     @@log
-  end
-
-  # paginates all over releases and dumps result into CSV
-  def self.crawl_artifact_ids(out_path = nil)
-    out_path ||= "tmp/cpan_artifacts.csv"
-
-    logger.debug("crawl_initial_artifacts: going to save artifacts into #{out_path}")
-    pkg_queue = Queue.new
-
-    Thread.abort_on_exception = true
-    producer = Thread.new do |t|
-      paginate_releases(pkg_queue, true, 0, nil, 1)
-    end
-
-    consumer = Thread.new do |t|
-      work_dump_artifacts(pkg_queue, out_path)
-    end
-
-    consumer.join
-    producer.join
-
-    logger.info "crawl_initial_artifacts: done"
-  end
-
-
-  #iterates over paginated results
-  def self.crawl(all = true, from_days_ago = 2, to_days_ago = nil)
-    logger.debug("crawl: starting...")
-    pkg_queue = Queue.new
-
-    Thread.abort_on_exception = true
-    producer = Thread.new do |t|
-      paginate_releases(pkg_queue, all, from_days_ago, to_days_ago)
-    end
-
-    consumers = []
-    consumers << Thread.new {|t| work_release(pkg_queue, 1) }
-    consumers << Thread.new {|t| work_release(pkg_queue, 2) }
-    consumers << Thread.new {|t| work_release(pkg_queue, 3) }
-    consumers << Thread.new {|t| work_release(pkg_queue, 4) }
-
-    consumers.each(&:join)
-    producer.join
-    logger.debug "crawl: done."
-
-  rescue => e
-    puts "EXCEPTION: #{e.inspect}"
-    puts "MESSAGE: #{e.message}"
-  end
-
-  def self.work_dump_artifacts(pkg_queue, out_path)
-    logger.debug "work_dump_releases: starting..."
-    n = 0
-    CSV.open(out_path, 'wb') do |csv|
-      while !(pkg_queue.closed? and pkg_queue.empty? )
-        artifact_id = pkg_queue.pop
-        if artifact_id
-          csv << artifact_id
-          n += 1
-        end
-
-        if (n % 1000) == 0
-          logger.info "work_dump_releases: #{n} lines, on queue #{pkg_queue.size}"
-        end
-      end
-    end
-
-    logger.debug "work_dump_releases: done, add #{n} lines"
-    n
-  end
-
-  def self.work_release(pkg_queue, id = 1)
-    n = 0
-    while !( pkg_queue.closed? and pkg_queue.empty? )
-      artifact_ids = pkg_queue.pop
-      if artifact_ids
-        author_id, pkg_id = artifact_ids
-        crawl_release(author_id, pkg_id)
-      end
-
-      if (n % 10) == 0
-        logger.info "== progress.#{id}: crawled #{n} packages, on queue #{pkg_queue.size}"
-      end
-
-      n += 1
-      Thread::pass
-    end
-
-    n
   end
 
   # retrieves all artifacts ids and puts on the work queue
@@ -137,7 +45,6 @@ class CpanCrawler < Versioneye::Crawl
   ensure
     pkg_queue.close
     delete_release_scroll(scroll_id)
-    false
   end
 
   # puts extracted artifact ids onto work queue
@@ -292,12 +199,14 @@ class CpanCrawler < Versioneye::Crawl
 
     release_version_label = release_doc[:version].to_s.gsub(/\Av/i, '').to_s.strip
     author_id = release_doc[:author][:_id]
-    artifact_id = "#{author_id}/#{release_doc[:name]}"
+    prod_name = release_doc[:distribution]
+    artifact_id = "#{author_id}/#{release_doc[:name]}" #unique release id
+
 
     prod.update({
       prod_key_dc: prod_key.to_s.downcase,
-      name: prod_key,
-      name_downcase: name.to_s.downcase,
+      name: prod_name,
+      name_downcase: prod_name.to_s.downcase,
       group_id: author_id,       # MetaCPAN organizes packages under usernames
       description: release_doc[:abstract],
       version: release_version_label,        # should be overwritten by BgWorker
@@ -359,7 +268,8 @@ class CpanCrawler < Versioneye::Crawl
       release_id: artifact_id,
       released_at: release_date,
       released_string: release_doc[:date],
-      status: release_status
+      status: release_status,
+      modules: release_doc[:provides].to_a
     })
 
     version_db
