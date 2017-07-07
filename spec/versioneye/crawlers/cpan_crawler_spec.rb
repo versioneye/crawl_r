@@ -304,13 +304,9 @@ describe CpanCrawler do
     end
 
     it "process first scroll, fetches 1st release, author details and saves correct results" do
-      pkg_queue = Queue.new
-      pkg_queue << ['VTI', 'Routes-Tiny-0.16']
-      pkg_queue.close
+      res = CpanCrawler.crawl_release( 'VTI', 'Routes-Tiny-0.16' )
 
-      res = CpanCrawler.work_release(pkg_queue)
-
-      expect(res).to eq(1)
+      expect(res).not_to be_nil
       expect(Product.all.count).to eq(1)
 
       prod = Product.find_by(language: 'Perl', prod_key: 'Routes::Tiny')

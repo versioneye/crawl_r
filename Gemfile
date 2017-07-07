@@ -1,8 +1,7 @@
 source "http://rubygems.org"
 
-gem 'versioneye-core'    , :git => 'https://github.com/versioneye/versioneye-core.git', :tag => 'v12.6.24'
-#TODO: remove it
-# gem 'versioneye-core'    , :path => "../versioneye-core"
+gem 'versioneye-core'    , :git => 'https://github.com/versioneye/versioneye-core.git', :tag => 'v12.6.25'
+#gem 'versioneye-core'    , :path => "../versioneye-core"
 
 gem 'rufus-scheduler', '3.4.2'
 

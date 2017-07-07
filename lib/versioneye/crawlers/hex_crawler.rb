@@ -182,8 +182,8 @@ class HexCrawler < Versioneye::Crawl
     prod_db.update(
       name: product_doc[:name],
       prod_key_dc: product_doc[:name].to_s.downcase,
-      description: product_doc[:meta][:description],
-      downloads: product_doc[:downloads][:all].to_i
+      description: get_product_desc( product_doc ),
+      downloads: get_product_count( product_doc )
     )
     prod_db.save
 
@@ -360,5 +360,29 @@ class HexCrawler < Versioneye::Crawl
     pkg_id = pkg_id.to_s.strip
     fetch_json "#{A_API_URL}/packages/#{pkg_id}/releases/#{version_label}"
   end
+
+
+  private
+
+
+    def self.get_product_count product_doc
+      product_doc[:downloads].each do |ha|
+        return ha[:all].to_i if ha.keys.include?(:all)
+      end
+      nil
+    rescue => e
+      self.logger.error "ERROR in get_product_count Message: #{e.message}"
+      self.logger.error e.backtrace.join("\n")
+      nil
+    end
+
+
+    def self.get_product_desc product_doc
+      product_doc[:meta][:description]
+    rescue => e
+      self.logger.error "ERROR in get_product_desc Message: #{e.message}"
+      self.logger.error e.backtrace.join("\n")
+      nil
+    end
 
 end
