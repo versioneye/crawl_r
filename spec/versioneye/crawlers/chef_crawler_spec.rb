@@ -9,11 +9,10 @@ describe ChefCrawler do
       expect( License.count ).to eq(0)
 
       VCR.use_cassette("chef/crawl") do
-        ChefCrawler.crawl true
+        ChefCrawler.crawl true, true
 
-        expect( Product.count ).to eq(10)
-        expect( License.count > 1 ).to be_truthy
-        expect( Dependency.count > 1 ).to be_truthy
+        expect( Product.count ).to eq(1)
+        expect( License.count > 0 ).to be_truthy
       end
 
     end

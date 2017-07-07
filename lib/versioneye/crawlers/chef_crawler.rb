@@ -15,25 +15,27 @@ class ChefCrawler < Versioneye::Crawl
   end
 
 
-  def self.crawl early_exit = false
+  def self.crawl( early_exit = false, only_first = false)
     start = 0
     while 1 == 1
       url = "#{A_CHEF_REGISTRY_INDEX}?start=#{start}"
-      resp = JSON.parse HTTParty.get( url ).response.body
-      break if resp['items'].empty?
+      resp = fetch_json url
+      break if resp[:items].empty?
 
-      resp['items'].each do |item|
-        crawl_package item['cookbook_name']
+      resp[:items].each do |item|
+        crawl_package item[:cookbook_name]
+        break if only_first # quit early to speed up tests
       end
       start += 10
       logger.info "API start point: #{start}"
+
       break if early_exit
     end
   end
 
 
   def self.crawl_package name
-    logger.info "crawl: #{name}"
+    logger.info "chef crawl: #{name}"
     url = "#{A_CHEF_REGISTRY_INDEX}/#{name}"
     package = JSON.parse HTTParty.get( url ).response.body
     product = find_and_update_product_by name, package
