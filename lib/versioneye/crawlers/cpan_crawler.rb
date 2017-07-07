@@ -16,7 +16,7 @@ class CpanCrawler < Versioneye::Crawl
     @@log
   end
 
-  #paginates all over releases and dumps result into CSV
+  # paginates all over releases and dumps result into CSV
   def self.crawl_artifact_ids(out_path = nil)
     out_path ||= "tmp/cpan_artifacts.csv"
 
