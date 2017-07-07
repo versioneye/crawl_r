@@ -266,7 +266,8 @@ class CpanCrawler < Versioneye::Crawl
       release_id: artifact_id,
       released_at: release_date,
       released_string: release_doc[:date],
-      status: release_status
+      status: release_status,
+      modules: release_doc[:provides].to_a
     })
 
     version_db
