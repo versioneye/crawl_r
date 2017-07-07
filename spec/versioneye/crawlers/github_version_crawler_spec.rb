@@ -1,8 +1,6 @@
 require 'spec_helper'
-require 'vcr'
-require 'webmock'
 
-describe GithubVersionCrawler, :vcr do
+describe GithubVersionCrawler do
 
   before :all do
     FakeWeb.allow_net_connect = true
@@ -12,10 +10,6 @@ describe GithubVersionCrawler, :vcr do
   after :all do
     # remove Webmock
     WebMock.allow_net_connect!
-
-    # # restore Fakeweb
-    # FakeWeb.allow_net_connect = false
-    # FakeWeb.clean_registry
   end
 
   describe ".owner_and_repo" do
@@ -31,7 +25,6 @@ describe GithubVersionCrawler, :vcr do
   end
 
   describe "#tags_for_repo" do
-    # use_vcr_cassette
 
     it "returns tags" do
       url = 'https://github.com/0xced/ABGetMe.git'
