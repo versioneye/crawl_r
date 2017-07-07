@@ -1,0 +1,237 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/ruport/ruport/master/LICENSE.md
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - 3418:2022:2E08010:2FDD9DB:595FB983
+      Content-Length:
+      - '15'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:40:35 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1534-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499445636.629302,VS0,VE120
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - d0a1a0075e47702f418d52525bcb690e549f877a
+      Expires:
+      - Fri, 07 Jul 2017 16:45:35 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: UTF-8
+      string: '404: Not Found
+
+'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:40:35 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/ruport/ruport/master/LICENSE.txt
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - 624E:1B149:322FE3E:342F542:595FB984
+      Content-Length:
+      - '15'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:40:36 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1527-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499445636.902069,VS0,VE113
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - f0b2788708a99813b7025ece6080eb861c30c94a
+      Expires:
+      - Fri, 07 Jul 2017 16:45:36 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: UTF-8
+      string: '404: Not Found
+
+'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:40:36 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/ruport/ruport/master/LICENSE
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      Etag:
+      - '"ac813c2fc58e29702a87ab44184e75d1a17df941"'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Cache-Control:
+      - max-age=300
+      X-Geo-Block-List:
+      - ''
+      X-Github-Request-Id:
+      - 2A7C:6799:1A4E704:1B5AB87:595FB984
+      Content-Length:
+      - '1176'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:40:36 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1535-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499445636.154664,VS0,VE128
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 72c11c2e4054d0da510455b24a2b9a68d062fdbd
+      Expires:
+      - Fri, 07 Jul 2017 16:45:36 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: ASCII-8BIT
+      string: "Ruport is copyrighted free software originally produced by Gregory
+        Brown \n<gregory.t.brown@gmail.com> which now contains a number of community\ncontributions
+        and is actively developed by Michael Milner <mikem836@gmail.com>.\n\nSee the
+        AUTHORS file for a complete list of contributors.  \n\nLicensing terms follow
+        (License of Ruby 1.8):\n\nYou can redistribute Ruport and/or modify it under
+        either the terms of the GPL\n(see COPYING file), or the conditions below:\n\n
+        \ 1. You may make and give away verbatim copies of the source form of the\n
+        \    software without restriction, provided that you duplicate all of the\n
+        \    original copyright notices and associated disclaimers.\n\n  2. You may
+        modify your copy of the software in any way, provided that\n     you do at
+        least ONE of the following:\n\n       a) place your modifications in the Public
+        Domain or otherwise\n          make them Freely Available, such as by posting
+        said\n    modifications to Usenet or an equivalent medium, or by allowing\n
+        \   the author to include your modifications in the software.\n\n       b)
+        use the modified software only within your corporation or\n          organization.\n\n
+        \      c) rename any non-standard executables so the names do not conflict\n
+        \   with standard executables, which must also be provided.\n\n       d) make
+        other distribution arrangements with the author.\n\n  3. You may distribute
+        the software in object code or executable\n     form, provided that you do
+        at least ONE of the following:\n\n       a) distribute the executables and
+        library files of the software,\n    together with instructions (in the manual
+        page or equivalent)\n    on where to get the original distribution.\n\n       b)
+        accompany the distribution with the machine-readable source of\n    the software.\n\n
+        \      c) give non-standard executables non-standard names, with\n          instructions
+        on where to get the original software distribution.\n\n       d) make other
+        distribution arrangements with the author.\n\n  4. You may modify and include
+        the part of the software into any other\n     software (possibly commercial).
+        \n\n  5. The scripts and library files supplied as input to or produced as
+        \n     output from the software do not automatically fall under the\n     copyright
+        of the software, but belong to whomever generated them, \n     and may be
+        sold commercially, and may be aggregated with this\n     software.\n\n  6.
+        THIS SOFTWARE IS PROVIDED \"AS IS\" AND WITHOUT ANY EXPRESS OR\n     IMPLIED
+        WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED\n     WARRANTIES OF
+        MERCHANTABILITY AND FITNESS FOR A PARTICULAR\n     PURPOSE.\n"
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:40:36 GMT
+recorded_with: VCR 3.0.3
