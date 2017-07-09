@@ -14,7 +14,7 @@ http_interactions:
       Content-Type:
       - application/json
       Authorization:
-      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      - Basic dGVzdHZleWU6dGVzdF8xN19IQV9i
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
@@ -25,7 +25,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Fri, 07 Jul 2017 15:43:05 GMT
+      - Sun, 09 Jul 2017 13:10:52 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -35,9 +35,9 @@ http_interactions:
       X-Ratelimit-Limit:
       - '5000'
       X-Ratelimit-Remaining:
-      - '5000'
+      - '4992'
       X-Ratelimit-Reset:
-      - '1499445785'
+      - '1499606618'
       Cache-Control:
       - no-cache
       X-Github-Media-Type:
@@ -58,18 +58,18 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.033587'
+      - '0.041198'
       Vary:
       - Accept-Encoding
       X-Served-By:
-      - edf23fdc48375d9066b698b8d98062e9
+      - 10ea50bffaded85949561216def301f3
       X-Github-Request-Id:
-      - DC05:17D43:259808:35C614:595FAC08
+      - 7D39:2E3C1:29DB2F3:43481EC:59622B5C
     body:
       encoding: ASCII-8BIT
-      string: '{"resources":{"core":{"limit":5000,"remaining":5000,"reset":1499445785},"search":{"limit":30,"remaining":30,"reset":1499442245},"graphql":{"limit":5000,"remaining":5000,"reset":1499445785}},"rate":{"limit":5000,"remaining":5000,"reset":1499445785}}'
+      string: '{"resources":{"core":{"limit":5000,"remaining":4992,"reset":1499606618},"search":{"limit":30,"remaining":30,"reset":1499605912},"graphql":{"limit":5000,"remaining":5000,"reset":1499609452}},"rate":{"limit":5000,"remaining":4992,"reset":1499606618}}'
     http_version: 
-  recorded_at: Fri, 07 Jul 2017 15:43:05 GMT
+  recorded_at: Sun, 09 Jul 2017 13:11:10 GMT
 - request:
     method: get
     uri: https://api.github.com/
@@ -84,7 +84,7 @@ http_interactions:
       Content-Type:
       - application/json
       Authorization:
-      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      - Basic dGVzdHZleWU6dGVzdF8xN19IQV9i
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
@@ -95,7 +95,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Fri, 07 Jul 2017 15:43:05 GMT
+      - Sun, 09 Jul 2017 13:10:53 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -105,15 +105,16 @@ http_interactions:
       X-Ratelimit-Limit:
       - '5000'
       X-Ratelimit-Remaining:
-      - '4999'
+      - '4991'
       X-Ratelimit-Reset:
-      - '1499445785'
+      - '1499606618'
       Cache-Control:
       - private, max-age=60, s-maxage=60
       Vary:
       - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
       Etag:
-      - W/"2124aafe60d24524ad58f9fad9808ca3"
+      - W/"e7794d8d8897c410c412ffb0119f3bf4"
       X-Github-Media-Type:
       - github.v3; format=json
       Access-Control-Expose-Headers:
@@ -132,14 +133,16 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.040547'
+      - '0.027041'
+      X-Served-By:
+      - 49aa99f015c25437a7443c4d3a58cd17
       X-Github-Request-Id:
-      - DC07:17D45:234CF0:311353:595FAC09
+      - 7D96:2E3BF:32C4570:47BE878:59622B5D
     body:
       encoding: ASCII-8BIT
       string: '{"current_user_url":"https://api.github.com/user","current_user_authorizations_html_url":"https://github.com/settings/connections/applications{/client_id}","authorizations_url":"https://api.github.com/authorizations","code_search_url":"https://api.github.com/search/code?q={query}{&page,per_page,sort,order}","commit_search_url":"https://api.github.com/search/commits?q={query}{&page,per_page,sort,order}","emails_url":"https://api.github.com/user/emails","emojis_url":"https://api.github.com/emojis","events_url":"https://api.github.com/events","feeds_url":"https://api.github.com/feeds","followers_url":"https://api.github.com/user/followers","following_url":"https://api.github.com/user/following{/target}","gists_url":"https://api.github.com/gists{/gist_id}","hub_url":"https://api.github.com/hub","issue_search_url":"https://api.github.com/search/issues?q={query}{&page,per_page,sort,order}","issues_url":"https://api.github.com/issues","keys_url":"https://api.github.com/user/keys","notifications_url":"https://api.github.com/notifications","organization_repositories_url":"https://api.github.com/orgs/{org}/repos{?type,page,per_page,sort}","organization_url":"https://api.github.com/orgs/{org}","public_gists_url":"https://api.github.com/gists/public","rate_limit_url":"https://api.github.com/rate_limit","repository_url":"https://api.github.com/repos/{owner}/{repo}","repository_search_url":"https://api.github.com/search/repositories?q={query}{&page,per_page,sort,order}","current_user_repositories_url":"https://api.github.com/user/repos{?type,page,per_page,sort}","starred_url":"https://api.github.com/user/starred{/owner}{/repo}","starred_gists_url":"https://api.github.com/gists/starred","team_url":"https://api.github.com/teams","user_url":"https://api.github.com/users/{user}","user_organizations_url":"https://api.github.com/user/orgs","user_repositories_url":"https://api.github.com/users/{user}/repos{?type,page,per_page,sort}","user_search_url":"https://api.github.com/search/users?q={query}{&page,per_page,sort,order}"}'
     http_version: 
-  recorded_at: Fri, 07 Jul 2017 15:43:05 GMT
+  recorded_at: Sun, 09 Jul 2017 13:11:10 GMT
 - request:
     method: get
     uri: https://api.github.com/repos/versioneye/versioneye-security
@@ -154,7 +157,7 @@ http_interactions:
       Content-Type:
       - application/json
       Authorization:
-      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      - Basic dGVzdHZleWU6dGVzdF8xN19IQV9i
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
@@ -165,7 +168,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Fri, 07 Jul 2017 15:43:07 GMT
+      - Sun, 09 Jul 2017 13:10:54 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -175,16 +178,16 @@ http_interactions:
       X-Ratelimit-Limit:
       - '5000'
       X-Ratelimit-Remaining:
-      - '4998'
+      - '4990'
       X-Ratelimit-Reset:
-      - '1499445785'
+      - '1499606618'
       Cache-Control:
       - private, max-age=60, s-maxage=60
       Vary:
       - Accept, Authorization, Cookie, X-GitHub-OTP
       - Accept-Encoding
       Etag:
-      - W/"e038317eec119ac0bf31645d4a3d9823"
+      - W/"013306d9dde2b07855dcd1d3331f21f7"
       Last-Modified:
       - Mon, 12 Jun 2017 15:11:52 GMT
       X-Github-Media-Type:
@@ -205,17 +208,17 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.188535'
+      - '0.072081'
       X-Served-By:
-      - 7b641bda7ec2ca7cd9df72d2578baf75
+      - 15bc4ab707db6d6b474783868c7cc828
       X-Github-Request-Id:
-      - DC08:17D42:1A8A2F:2523B2:595FAC09
+      - 7DC5:2E3BF:32C4642:47BE9A8:59622B5D
     body:
       encoding: ASCII-8BIT
       string: '{"id":44393965,"name":"versioneye-security","full_name":"versioneye/versioneye-security","owner":{"login":"versioneye","id":3974102,"avatar_url":"https://avatars0.githubusercontent.com/u/3974102?v=3","gravatar_id":"","url":"https://api.github.com/users/versioneye","html_url":"https://github.com/versioneye","followers_url":"https://api.github.com/users/versioneye/followers","following_url":"https://api.github.com/users/versioneye/following{/other_user}","gists_url":"https://api.github.com/users/versioneye/gists{/gist_id}","starred_url":"https://api.github.com/users/versioneye/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/versioneye/subscriptions","organizations_url":"https://api.github.com/users/versioneye/orgs","repos_url":"https://api.github.com/users/versioneye/repos","events_url":"https://api.github.com/users/versioneye/events{/privacy}","received_events_url":"https://api.github.com/users/versioneye/received_events","type":"Organization","site_admin":false},"private":false,"html_url":"https://github.com/versioneye/versioneye-security","description":"Security
         Crawler for VersionEye","fork":false,"url":"https://api.github.com/repos/versioneye/versioneye-security","forks_url":"https://api.github.com/repos/versioneye/versioneye-security/forks","keys_url":"https://api.github.com/repos/versioneye/versioneye-security/keys{/key_id}","collaborators_url":"https://api.github.com/repos/versioneye/versioneye-security/collaborators{/collaborator}","teams_url":"https://api.github.com/repos/versioneye/versioneye-security/teams","hooks_url":"https://api.github.com/repos/versioneye/versioneye-security/hooks","issue_events_url":"https://api.github.com/repos/versioneye/versioneye-security/issues/events{/number}","events_url":"https://api.github.com/repos/versioneye/versioneye-security/events","assignees_url":"https://api.github.com/repos/versioneye/versioneye-security/assignees{/user}","branches_url":"https://api.github.com/repos/versioneye/versioneye-security/branches{/branch}","tags_url":"https://api.github.com/repos/versioneye/versioneye-security/tags","blobs_url":"https://api.github.com/repos/versioneye/versioneye-security/git/blobs{/sha}","git_tags_url":"https://api.github.com/repos/versioneye/versioneye-security/git/tags{/sha}","git_refs_url":"https://api.github.com/repos/versioneye/versioneye-security/git/refs{/sha}","trees_url":"https://api.github.com/repos/versioneye/versioneye-security/git/trees{/sha}","statuses_url":"https://api.github.com/repos/versioneye/versioneye-security/statuses/{sha}","languages_url":"https://api.github.com/repos/versioneye/versioneye-security/languages","stargazers_url":"https://api.github.com/repos/versioneye/versioneye-security/stargazers","contributors_url":"https://api.github.com/repos/versioneye/versioneye-security/contributors","subscribers_url":"https://api.github.com/repos/versioneye/versioneye-security/subscribers","subscription_url":"https://api.github.com/repos/versioneye/versioneye-security/subscription","commits_url":"https://api.github.com/repos/versioneye/versioneye-security/commits{/sha}","git_commits_url":"https://api.github.com/repos/versioneye/versioneye-security/git/commits{/sha}","comments_url":"https://api.github.com/repos/versioneye/versioneye-security/comments{/number}","issue_comment_url":"https://api.github.com/repos/versioneye/versioneye-security/issues/comments{/number}","contents_url":"https://api.github.com/repos/versioneye/versioneye-security/contents/{+path}","compare_url":"https://api.github.com/repos/versioneye/versioneye-security/compare/{base}...{head}","merges_url":"https://api.github.com/repos/versioneye/versioneye-security/merges","archive_url":"https://api.github.com/repos/versioneye/versioneye-security/{archive_format}{/ref}","downloads_url":"https://api.github.com/repos/versioneye/versioneye-security/downloads","issues_url":"https://api.github.com/repos/versioneye/versioneye-security/issues{/number}","pulls_url":"https://api.github.com/repos/versioneye/versioneye-security/pulls{/number}","milestones_url":"https://api.github.com/repos/versioneye/versioneye-security/milestones{/number}","notifications_url":"https://api.github.com/repos/versioneye/versioneye-security/notifications{?since,all,participating}","labels_url":"https://api.github.com/repos/versioneye/versioneye-security/labels{/name}","releases_url":"https://api.github.com/repos/versioneye/versioneye-security/releases{/id}","deployments_url":"https://api.github.com/repos/versioneye/versioneye-security/deployments","created_at":"2015-10-16T15:27:51Z","updated_at":"2017-06-12T15:11:52Z","pushed_at":"2017-06-08T15:53:08Z","git_url":"git://github.com/versioneye/versioneye-security.git","ssh_url":"git@github.com:versioneye/versioneye-security.git","clone_url":"https://github.com/versioneye/versioneye-security.git","svn_url":"https://github.com/versioneye/versioneye-security","homepage":"https://www.versioneye.com","size":170,"stargazers_count":7,"watchers_count":7,"language":"Ruby","has_issues":true,"has_projects":true,"has_downloads":true,"has_wiki":true,"has_pages":false,"forks_count":4,"mirror_url":null,"open_issues_count":2,"forks":4,"open_issues":2,"watchers":7,"default_branch":"master","permissions":{"admin":false,"push":false,"pull":true},"organization":{"login":"versioneye","id":3974102,"avatar_url":"https://avatars0.githubusercontent.com/u/3974102?v=3","gravatar_id":"","url":"https://api.github.com/users/versioneye","html_url":"https://github.com/versioneye","followers_url":"https://api.github.com/users/versioneye/followers","following_url":"https://api.github.com/users/versioneye/following{/other_user}","gists_url":"https://api.github.com/users/versioneye/gists{/gist_id}","starred_url":"https://api.github.com/users/versioneye/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/versioneye/subscriptions","organizations_url":"https://api.github.com/users/versioneye/orgs","repos_url":"https://api.github.com/users/versioneye/repos","events_url":"https://api.github.com/users/versioneye/events{/privacy}","received_events_url":"https://api.github.com/users/versioneye/received_events","type":"Organization","site_admin":false},"network_count":4,"subscribers_count":3}'
     http_version: 
-  recorded_at: Fri, 07 Jul 2017 15:43:07 GMT
+  recorded_at: Sun, 09 Jul 2017 13:11:11 GMT
 - request:
     method: get
     uri: https://api.github.com/repos/versioneye/versioneye-security/tags?per_page=100
@@ -230,7 +233,7 @@ http_interactions:
       Content-Type:
       - application/json
       Authorization:
-      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      - Basic dGVzdHZleWU6dGVzdF8xN19IQV9i
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
@@ -241,7 +244,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Fri, 07 Jul 2017 15:43:08 GMT
+      - Sun, 09 Jul 2017 13:10:54 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -251,16 +254,15 @@ http_interactions:
       X-Ratelimit-Limit:
       - '5000'
       X-Ratelimit-Remaining:
-      - '4997'
+      - '4989'
       X-Ratelimit-Reset:
-      - '1499445785'
+      - '1499606618'
       Cache-Control:
       - private, max-age=60, s-maxage=60
       Vary:
       - Accept, Authorization, Cookie, X-GitHub-OTP
-      - Accept-Encoding
       Etag:
-      - W/"2002eb568e209eab9e3fb794eb689a84"
+      - W/"a2e09e849695075eceb67c34ebde11e7"
       Last-Modified:
       - Mon, 12 Jun 2017 15:11:52 GMT
       X-Github-Media-Type:
@@ -281,16 +283,14 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.050185'
-      X-Served-By:
-      - 88531cdcf1929112ec480e1806d44a33
+      - '0.054706'
       X-Github-Request-Id:
-      - DC09:17D43:259C0C:35CBED:595FAC0B
+      - 7D3C:2E3BF:32C46F6:47BEAB2:59622B5E
     body:
       encoding: ASCII-8BIT
       string: '[{"name":"v1.3.0","zipball_url":"https://api.github.com/repos/versioneye/versioneye-security/zipball/v1.3.0","tarball_url":"https://api.github.com/repos/versioneye/versioneye-security/tarball/v1.3.0","commit":{"sha":"c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877"}},{"name":"v1.2.1","zipball_url":"https://api.github.com/repos/versioneye/versioneye-security/zipball/v1.2.1","tarball_url":"https://api.github.com/repos/versioneye/versioneye-security/tarball/v1.2.1","commit":{"sha":"764e054c8c6e40401ffbe446c4cb235ce8f553ff","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/764e054c8c6e40401ffbe446c4cb235ce8f553ff"}},{"name":"v1.2.0","zipball_url":"https://api.github.com/repos/versioneye/versioneye-security/zipball/v1.2.0","tarball_url":"https://api.github.com/repos/versioneye/versioneye-security/tarball/v1.2.0","commit":{"sha":"5980954680afef7913a296241b3321391c7c6167","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/5980954680afef7913a296241b3321391c7c6167"}},{"name":"v1.1.1","zipball_url":"https://api.github.com/repos/versioneye/versioneye-security/zipball/v1.1.1","tarball_url":"https://api.github.com/repos/versioneye/versioneye-security/tarball/v1.1.1","commit":{"sha":"5785e698f8ab12c8c531d7de0a92f80ccfad710e","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/5785e698f8ab12c8c531d7de0a92f80ccfad710e"}},{"name":"v1.1.0","zipball_url":"https://api.github.com/repos/versioneye/versioneye-security/zipball/v1.1.0","tarball_url":"https://api.github.com/repos/versioneye/versioneye-security/tarball/v1.1.0","commit":{"sha":"f8c1fecedb3286743b50807a06856a6ab6967194","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/f8c1fecedb3286743b50807a06856a6ab6967194"}},{"name":"v1.0.2","zipball_url":"https://api.github.com/repos/versioneye/versioneye-security/zipball/v1.0.2","tarball_url":"https://api.github.com/repos/versioneye/versioneye-security/tarball/v1.0.2","commit":{"sha":"0ca54747c9579c2427d1331eb4f3b7bf40d06143","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/0ca54747c9579c2427d1331eb4f3b7bf40d06143"}},{"name":"v1.0.1","zipball_url":"https://api.github.com/repos/versioneye/versioneye-security/zipball/v1.0.1","tarball_url":"https://api.github.com/repos/versioneye/versioneye-security/tarball/v1.0.1","commit":{"sha":"38f1ded5f5bfff172256f952c544ebc1cb8b76f5","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/38f1ded5f5bfff172256f952c544ebc1cb8b76f5"}},{"name":"v1.0.0","zipball_url":"https://api.github.com/repos/versioneye/versioneye-security/zipball/v1.0.0","tarball_url":"https://api.github.com/repos/versioneye/versioneye-security/tarball/v1.0.0","commit":{"sha":"09a1c57dc74926a31792e3988315135278461c89","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/09a1c57dc74926a31792e3988315135278461c89"}},{"name":"v0.1.1","zipball_url":"https://api.github.com/repos/versioneye/versioneye-security/zipball/v0.1.1","tarball_url":"https://api.github.com/repos/versioneye/versioneye-security/tarball/v0.1.1","commit":{"sha":"d4127068129bc56abb40ca1af96ff04b14acca94","url":"https://api.github.com/repos/versioneye/versioneye-security/commits/d4127068129bc56abb40ca1af96ff04b14acca94"}}]'
     http_version: 
-  recorded_at: Fri, 07 Jul 2017 15:43:08 GMT
+  recorded_at: Sun, 09 Jul 2017 13:11:12 GMT
 - request:
     method: get
     uri: https://api.github.com/repos/versioneye/versioneye-security/commits/c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877
@@ -305,7 +305,7 @@ http_interactions:
       Content-Type:
       - application/json
       Authorization:
-      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      - Basic dGVzdHZleWU6dGVzdF8xN19IQV9i
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
@@ -316,7 +316,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Fri, 07 Jul 2017 15:43:08 GMT
+      - Sun, 09 Jul 2017 13:10:55 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -326,15 +326,15 @@ http_interactions:
       X-Ratelimit-Limit:
       - '5000'
       X-Ratelimit-Remaining:
-      - '4996'
+      - '4988'
       X-Ratelimit-Reset:
-      - '1499445785'
+      - '1499606618'
       Cache-Control:
       - private, max-age=60, s-maxage=60
       Vary:
       - Accept, Authorization, Cookie, X-GitHub-OTP
       Etag:
-      - W/"4a626f1884a064cca686d01582e58562"
+      - W/"f7e03174cdc73987c6fbd36a9a26fef0"
       Last-Modified:
       - Wed, 03 Aug 2016 14:35:53 GMT
       X-Github-Media-Type:
@@ -355,9 +355,9 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.138606'
+      - '0.066059'
       X-Github-Request-Id:
-      - DC0A:17D41:135878:1B7C77:595FAC0C
+      - 7DC7:2E3C1:29DB57C:4348647:59622B5F
     body:
       encoding: ASCII-8BIT
       string: '{"sha":"c5d4c05b0751e4c97a76fd4ef3e8b70fc2616877","commit":{"author":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-08-03T14:35:53Z"},"committer":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-08-03T14:35:53Z"},"message":"Add
@@ -411,7 +411,7 @@ http_interactions:
         \n+    scheduler.every ''60m'' do\n+      SecurityProducer.new \"snyk_security\"\n+    end\n+\n     scheduler.join\n     while
         1 == 1\n       p \"keep alive rake task\""}]}'
     http_version: 
-  recorded_at: Fri, 07 Jul 2017 15:43:08 GMT
+  recorded_at: Sun, 09 Jul 2017 13:11:12 GMT
 - request:
     method: get
     uri: https://api.github.com/repos/versioneye/versioneye-security/commits/764e054c8c6e40401ffbe446c4cb235ce8f553ff
@@ -426,7 +426,7 @@ http_interactions:
       Content-Type:
       - application/json
       Authorization:
-      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      - Basic dGVzdHZleWU6dGVzdF8xN19IQV9i
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
@@ -437,7 +437,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Fri, 07 Jul 2017 15:43:09 GMT
+      - Sun, 09 Jul 2017 13:10:56 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -447,16 +447,16 @@ http_interactions:
       X-Ratelimit-Limit:
       - '5000'
       X-Ratelimit-Remaining:
-      - '4995'
+      - '4987'
       X-Ratelimit-Reset:
-      - '1499445785'
+      - '1499606618'
       Cache-Control:
       - private, max-age=60, s-maxage=60
       Vary:
       - Accept, Authorization, Cookie, X-GitHub-OTP
       - Accept-Encoding
       Etag:
-      - W/"fdc28508c84a13a882e050cf2086456e"
+      - W/"7e6e7ae00e63fa068136d9d06a021e42"
       Last-Modified:
       - Wed, 27 Jul 2016 11:14:28 GMT
       X-Github-Media-Type:
@@ -477,11 +477,11 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.140162'
+      - '0.048817'
       X-Served-By:
-      - c6c65e5196703428e7641f7d1e9bc353
+      - 7f48e2f7761567e923121f17538d7a6d
       X-Github-Request-Id:
-      - DC0B:17D43:259DBD:35CE59:595FAC0C
+      - 7DF6:2E3BE:1D07E15:2919066:59622B5F
     body:
       encoding: ASCII-8BIT
       string: '{"sha":"764e054c8c6e40401ffbe446c4cb235ce8f553ff","commit":{"author":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-07-27T11:14:28Z"},"committer":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-07-27T11:14:28Z"},"message":"Update
@@ -521,7 +521,7 @@ http_interactions:
         ''./lib/versioneye/node_security_crawler''\n \n require ''./lib/versioneye/producers/producer''\n
         require ''./lib/versioneye/producers/security_producer''"}]}'
     http_version: 
-  recorded_at: Fri, 07 Jul 2017 15:43:09 GMT
+  recorded_at: Sun, 09 Jul 2017 13:11:13 GMT
 - request:
     method: get
     uri: https://api.github.com/repos/versioneye/versioneye-security/commits/5980954680afef7913a296241b3321391c7c6167
@@ -536,7 +536,7 @@ http_interactions:
       Content-Type:
       - application/json
       Authorization:
-      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      - Basic dGVzdHZleWU6dGVzdF8xN19IQV9i
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
@@ -547,7 +547,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Fri, 07 Jul 2017 15:43:10 GMT
+      - Sun, 09 Jul 2017 13:10:56 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -557,15 +557,16 @@ http_interactions:
       X-Ratelimit-Limit:
       - '5000'
       X-Ratelimit-Remaining:
-      - '4994'
+      - '4986'
       X-Ratelimit-Reset:
-      - '1499445785'
+      - '1499606618'
       Cache-Control:
       - private, max-age=60, s-maxage=60
       Vary:
       - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
       Etag:
-      - W/"8b80174529cd11a6bb44cabf7c45f920"
+      - W/"bad24ab2222eada46b5684c136fdb4da"
       Last-Modified:
       - Wed, 27 Jul 2016 11:04:54 GMT
       X-Github-Media-Type:
@@ -586,9 +587,11 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.100872'
+      - '0.050045'
+      X-Served-By:
+      - a30e6f9aa7cf5731b87dfb3b9992202d
       X-Github-Request-Id:
-      - DC0C:17D43:259ED8:35CFF2:595FAC0D
+      - 7DCA:2E3BF:32C49D9:47BEE92:59622B60
     body:
       encoding: ASCII-8BIT
       string: '{"sha":"5980954680afef7913a296241b3321391c7c6167","commit":{"author":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-07-27T11:04:54Z"},"committer":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-07-27T11:04:54Z"},"message":"Add
@@ -639,7 +642,7 @@ http_interactions:
         do\n+    puts \"START NodeSecurityCrawler\"\n+    VersioneyeSecurity.new\n+    NodeSecurityCrawler.crawl\n+    puts
         \"---\"\n+  end\n+\n end"}]}'
     http_version: 
-  recorded_at: Fri, 07 Jul 2017 15:43:10 GMT
+  recorded_at: Sun, 09 Jul 2017 13:11:14 GMT
 - request:
     method: get
     uri: https://api.github.com/repos/versioneye/versioneye-security/commits/5785e698f8ab12c8c531d7de0a92f80ccfad710e
@@ -654,7 +657,7 @@ http_interactions:
       Content-Type:
       - application/json
       Authorization:
-      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      - Basic dGVzdHZleWU6dGVzdF8xN19IQV9i
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
@@ -665,7 +668,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Fri, 07 Jul 2017 15:43:10 GMT
+      - Sun, 09 Jul 2017 13:10:57 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -675,16 +678,16 @@ http_interactions:
       X-Ratelimit-Limit:
       - '5000'
       X-Ratelimit-Remaining:
-      - '4993'
+      - '4985'
       X-Ratelimit-Reset:
-      - '1499445785'
+      - '1499606618'
       Cache-Control:
       - private, max-age=60, s-maxage=60
       Vary:
       - Accept, Authorization, Cookie, X-GitHub-OTP
       - Accept-Encoding
       Etag:
-      - W/"f6b378aec79a9d4ff51589fc9916d00f"
+      - W/"c6db32cda553eb5ddf210b8a9a5a804d"
       Last-Modified:
       - Mon, 04 Jul 2016 09:38:25 GMT
       X-Github-Media-Type:
@@ -705,11 +708,11 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.333360'
+      - '0.061942'
       X-Served-By:
-      - 769054b6618fd34f3638f01469b229db
+      - e14705a23c085afeff5e104b1fc3922a
       X-Github-Request-Id:
-      - DC0D:17D42:1A8F3A:252A33:595FAC0E
+      - 7DFB:2E3BF:32C4A8C:47BEFCC:59622B61
     body:
       encoding: ASCII-8BIT
       string: '{"sha":"5785e698f8ab12c8c531d7de0a92f80ccfad710e","commit":{"author":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-07-04T09:38:25Z"},"committer":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-07-04T09:38:25Z"},"message":"Update
@@ -720,7 +723,7 @@ http_interactions:
         = \"AGPL-3.0\"\n   s.date = \"2014-05-25\"\n   s.description = \"VersionEye
         crawlers implemented in Ruby\"\n   s.email = \"robert.reiz.81@gmail.com\""}]}'
     http_version: 
-  recorded_at: Fri, 07 Jul 2017 15:43:11 GMT
+  recorded_at: Sun, 09 Jul 2017 13:11:14 GMT
 - request:
     method: get
     uri: https://api.github.com/repos/versioneye/versioneye-security/commits/f8c1fecedb3286743b50807a06856a6ab6967194
@@ -735,7 +738,7 @@ http_interactions:
       Content-Type:
       - application/json
       Authorization:
-      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      - Basic dGVzdHZleWU6dGVzdF8xN19IQV9i
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
@@ -746,7 +749,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Fri, 07 Jul 2017 15:43:11 GMT
+      - Sun, 09 Jul 2017 13:10:58 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -756,15 +759,16 @@ http_interactions:
       X-Ratelimit-Limit:
       - '5000'
       X-Ratelimit-Remaining:
-      - '4992'
+      - '4984'
       X-Ratelimit-Reset:
-      - '1499445785'
+      - '1499606618'
       Cache-Control:
       - private, max-age=60, s-maxage=60
       Vary:
       - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
       Etag:
-      - W/"f9a5a648cd6d373365d8d40cfaf42f1f"
+      - W/"d71b71b1d2a7a1ba5e42fd862760f588"
       Last-Modified:
       - Mon, 04 Jul 2016 09:36:35 GMT
       X-Github-Media-Type:
@@ -785,9 +789,11 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.102330'
+      - '0.057536'
+      X-Served-By:
+      - 77fbfb53269bbb85f82f23584d59f7c1
       X-Github-Request-Id:
-      - DC0E:17D41:135A5B:1B7F0F:595FAC0F
+      - 7D44:2E3BF:32C4B58:47BF107:59622B61
     body:
       encoding: ASCII-8BIT
       string: '{"sha":"f8c1fecedb3286743b50807a06856a6ab6967194","commit":{"author":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-07-04T09:36:35Z"},"committer":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-07-04T09:36:35Z"},"message":"Change
@@ -829,7 +835,7 @@ http_interactions:
         of this repository is available under the AGPL-v3 license, see the [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.en.html)
         for full details."}]}'
     http_version: 
-  recorded_at: Fri, 07 Jul 2017 15:43:11 GMT
+  recorded_at: Sun, 09 Jul 2017 13:11:15 GMT
 - request:
     method: get
     uri: https://api.github.com/repos/versioneye/versioneye-security/commits/0ca54747c9579c2427d1331eb4f3b7bf40d06143
@@ -844,7 +850,7 @@ http_interactions:
       Content-Type:
       - application/json
       Authorization:
-      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      - Basic dGVzdHZleWU6dGVzdF8xN19IQV9i
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
@@ -855,7 +861,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Fri, 07 Jul 2017 15:43:12 GMT
+      - Sun, 09 Jul 2017 13:10:58 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -865,16 +871,16 @@ http_interactions:
       X-Ratelimit-Limit:
       - '5000'
       X-Ratelimit-Remaining:
-      - '4991'
+      - '4983'
       X-Ratelimit-Reset:
-      - '1499445785'
+      - '1499606618'
       Cache-Control:
       - private, max-age=60, s-maxage=60
       Vary:
       - Accept, Authorization, Cookie, X-GitHub-OTP
       - Accept-Encoding
       Etag:
-      - W/"7c66112eac11ab0399443b674fad5795"
+      - W/"a8a6f60d0b84b8a18fac0cad1ac72cb1"
       Last-Modified:
       - Mon, 04 Jul 2016 09:26:57 GMT
       X-Github-Media-Type:
@@ -895,11 +901,11 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.189666'
+      - '0.048401'
       X-Served-By:
-      - 9e60649f02cd840ee8baa9960690f79f
+      - 593010132f82159af0ded24b4932e109
       X-Github-Request-Id:
-      - DC0F:17D41:135ABB:1B7FA2:595FAC0F
+      - 7DA2:2E3C1:29DB8E4:4348BFB:59622B62
     body:
       encoding: ASCII-8BIT
       string: '{"sha":"0ca54747c9579c2427d1331eb4f3b7bf40d06143","commit":{"author":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-07-04T09:26:57Z"},"committer":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-07-04T09:26:57Z"},"message":"Update
@@ -955,7 +961,7 @@ http_interactions:
         (= 0.2.3)\n   rufus-scheduler (= 3.2.1)\n   shoulda\n-  simplecov (~> 0.11.1)\n+  simplecov
         (~> 0.12.0)\n   syck (= 1.1.0)\n   versioneye-core!\n "}]}'
     http_version: 
-  recorded_at: Fri, 07 Jul 2017 15:43:12 GMT
+  recorded_at: Sun, 09 Jul 2017 13:11:16 GMT
 - request:
     method: get
     uri: https://api.github.com/repos/versioneye/versioneye-security/commits/38f1ded5f5bfff172256f952c544ebc1cb8b76f5
@@ -970,7 +976,7 @@ http_interactions:
       Content-Type:
       - application/json
       Authorization:
-      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      - Basic dGVzdHZleWU6dGVzdF8xN19IQV9i
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
@@ -981,7 +987,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Fri, 07 Jul 2017 15:43:12 GMT
+      - Sun, 09 Jul 2017 13:10:59 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -991,16 +997,16 @@ http_interactions:
       X-Ratelimit-Limit:
       - '5000'
       X-Ratelimit-Remaining:
-      - '4990'
+      - '4982'
       X-Ratelimit-Reset:
-      - '1499445785'
+      - '1499606618'
       Cache-Control:
       - private, max-age=60, s-maxage=60
       Vary:
       - Accept, Authorization, Cookie, X-GitHub-OTP
       - Accept-Encoding
       Etag:
-      - W/"d57ede05272f413918a51fc9718b4e66"
+      - W/"c018f413f7f53de3df1d6cc9d4e9203a"
       Last-Modified:
       - Fri, 06 May 2016 15:46:30 GMT
       X-Github-Media-Type:
@@ -1021,11 +1027,11 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.141221'
+      - '0.053414'
       X-Served-By:
-      - 77fbfb53269bbb85f82f23584d59f7c1
+      - 10ea50bffaded85949561216def301f3
       X-Github-Request-Id:
-      - DC10:17D42:1A916C:252D41:595FAC10
+      - 7D75:2E3C1:29DB968:4348CD9:59622B63
     body:
       encoding: ASCII-8BIT
       string: '{"sha":"38f1ded5f5bfff172256f952c544ebc1cb8b76f5","commit":{"author":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-05-06T15:46:30Z"},"committer":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-05-06T15:46:30Z"},"message":"Update
@@ -1037,7 +1043,7 @@ http_interactions:
         = \"1.0.1\"\n \n   s.required_rubygems_version = Gem::Requirement.new(\">=
         0\") if s.respond_to? :required_rubygems_version=\n   s.require_paths = [\"lib\"]"}]}'
     http_version: 
-  recorded_at: Fri, 07 Jul 2017 15:43:13 GMT
+  recorded_at: Sun, 09 Jul 2017 13:11:16 GMT
 - request:
     method: get
     uri: https://api.github.com/repos/versioneye/versioneye-security/commits/09a1c57dc74926a31792e3988315135278461c89
@@ -1052,7 +1058,7 @@ http_interactions:
       Content-Type:
       - application/json
       Authorization:
-      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      - Basic dGVzdHZleWU6dGVzdF8xN19IQV9i
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
@@ -1063,7 +1069,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Fri, 07 Jul 2017 15:43:13 GMT
+      - Sun, 09 Jul 2017 13:11:00 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -1073,16 +1079,16 @@ http_interactions:
       X-Ratelimit-Limit:
       - '5000'
       X-Ratelimit-Remaining:
-      - '4989'
+      - '4981'
       X-Ratelimit-Reset:
-      - '1499445785'
+      - '1499606618'
       Cache-Control:
       - private, max-age=60, s-maxage=60
       Vary:
       - Accept, Authorization, Cookie, X-GitHub-OTP
       - Accept-Encoding
       Etag:
-      - W/"22c10f0dc8a70b78c27d9a59cddd08e4"
+      - W/"f577dedf218a846c63054c4bd064b25e"
       Last-Modified:
       - Fri, 04 Mar 2016 11:04:52 GMT
       X-Github-Media-Type:
@@ -1103,11 +1109,11 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.111149'
+      - '0.046657'
       X-Served-By:
-      - 10ea50bffaded85949561216def301f3
+      - 5aeb3f30c9e3ef6ef7bcbcddfd9a68f7
       X-Github-Request-Id:
-      - DC11:17D45:2358C4:31230E:595FAC11
+      - 7DD2:2E3C1:29DBA37:4348DB5:59622B63
     body:
       encoding: ASCII-8BIT
       string: '{"sha":"09a1c57dc74926a31792e3988315135278461c89","commit":{"author":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-03-04T11:04:52Z"},"committer":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-03-04T11:04:52Z"},"message":"Fix
@@ -1125,7 +1131,7 @@ http_interactions:
         \"env_MC_PORT_11211_TCP_PORT\",\n     \"s3_infographics_bucket\": \"veye_test_infographics\",\n     \"s3_projects_bucket\":
         \"veye_test_projects\",\n     \"s3_receipt_bucket\": \"veye-test-receipt\","}]}'
     http_version: 
-  recorded_at: Fri, 07 Jul 2017 15:43:13 GMT
+  recorded_at: Sun, 09 Jul 2017 13:11:17 GMT
 - request:
     method: get
     uri: https://api.github.com/repos/versioneye/versioneye-security/commits/d4127068129bc56abb40ca1af96ff04b14acca94
@@ -1140,7 +1146,7 @@ http_interactions:
       Content-Type:
       - application/json
       Authorization:
-      - Basic dGVzdHZleWU6dGVzdF92ZXJzaW9uXzEy
+      - Basic dGVzdHZleWU6dGVzdF8xN19IQV9i
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
@@ -1151,7 +1157,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Fri, 07 Jul 2017 15:43:14 GMT
+      - Sun, 09 Jul 2017 13:11:00 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -1161,16 +1167,16 @@ http_interactions:
       X-Ratelimit-Limit:
       - '5000'
       X-Ratelimit-Remaining:
-      - '4988'
+      - '4980'
       X-Ratelimit-Reset:
-      - '1499445785'
+      - '1499606618'
       Cache-Control:
       - private, max-age=60, s-maxage=60
       Vary:
       - Accept, Authorization, Cookie, X-GitHub-OTP
       - Accept-Encoding
       Etag:
-      - W/"cebfb4fde040cc86fed3737e4f0707b7"
+      - W/"982dc46f8bd139e42622b2215e0d379a"
       Last-Modified:
       - Fri, 06 May 2016 15:45:00 GMT
       X-Github-Media-Type:
@@ -1191,11 +1197,11 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.130209'
+      - '0.090290'
       X-Served-By:
-      - e14705a23c085afeff5e104b1fc3922a
+      - 9e60649f02cd840ee8baa9960690f79f
       X-Github-Request-Id:
-      - DC12:17D45:2359E5:31247A:595FAC11
+      - 7D49:2E3BF:32C4F0A:47BF657:59622B64
     body:
       encoding: ASCII-8BIT
       string: '{"sha":"d4127068129bc56abb40ca1af96ff04b14acca94","commit":{"author":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-05-06T15:45:00Z"},"committer":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2016-05-06T15:45:00Z"},"message":"Update
@@ -1234,5 +1240,5 @@ http_interactions:
         \"rake gemspec\"\n+rake gemspec\n+\n+echo \"git add .\"\n+git add .\n+\n+echo
         \"git commit -m ''Update gemspec''\"\n+git commit -m ''Update gemspec''"}]}'
     http_version: 
-  recorded_at: Fri, 07 Jul 2017 15:43:14 GMT
+  recorded_at: Sun, 09 Jul 2017 13:11:18 GMT
 recorded_with: VCR 3.0.3
