@@ -1,0 +1,244 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/php/php-src/master/LICENSE.md
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - 52CA:10708:1F9ED3B:2149A71:595FB214
+      Content-Length:
+      - '15'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:08:52 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1548-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499443732.319209,VS0,VE118
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 91a4092940c6d31a7034e2bdf5820358324b52b5
+      Expires:
+      - Fri, 07 Jul 2017 16:13:52 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: UTF-8
+      string: '404: Not Found
+
+'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:08:52 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/php/php-src/master/LICENSE.txt
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - EC4C:415E:2A20D55:2BD817D:595FB214
+      Content-Length:
+      - '15'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:08:52 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1534-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499443733.584496,VS0,VE127
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - f151b6bd414c4753850d7a6ce217bb552d45a39d
+      Expires:
+      - Fri, 07 Jul 2017 16:13:52 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: UTF-8
+      string: '404: Not Found
+
+'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:08:52 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/php/php-src/master/LICENSE
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      Etag:
+      - '"9964e0737cc9be0521b056be697a5fbeb14d01ef"'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Cache-Control:
+      - max-age=300
+      X-Geo-Block-List:
+      - ''
+      X-Github-Request-Id:
+      - EDC6:5A9C:347B535:366C8D1:595FB214
+      Content-Length:
+      - '1464'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:08:52 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1527-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499443733.860277,VS0,VE119
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 39e42cb5db419a2af252d3448a403c23538f3b66
+      Expires:
+      - Fri, 07 Jul 2017 16:13:52 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: ASCII-8BIT
+      string: "--------------------------------------------------------------------
+        \n                  The PHP License, version 3.01\nCopyright (c) 1999 - 2017
+        The PHP Group. All rights reserved.\n--------------------------------------------------------------------
+        \n\nRedistribution and use in source and binary forms, with or without\nmodification,
+        is permitted provided that the following conditions\nare met:\n\n  1. Redistributions
+        of source code must retain the above copyright\n     notice, this list of
+        conditions and the following disclaimer.\n \n  2. Redistributions in binary
+        form must reproduce the above copyright\n     notice, this list of conditions
+        and the following disclaimer in\n     the documentation and/or other materials
+        provided with the\n     distribution.\n \n  3. The name \"PHP\" must not be
+        used to endorse or promote products\n     derived from this software without
+        prior written permission. For\n     written permission, please contact group@php.net.\n
+        \ \n  4. Products derived from this software may not be called \"PHP\", nor\n
+        \    may \"PHP\" appear in their name, without prior written permission\n
+        \    from group@php.net.  You may indicate that your software works in\n     conjunction
+        with PHP by saying \"Foo for PHP\" instead of calling\n     it \"PHP Foo\"
+        or \"phpfoo\"\n \n  5. The PHP Group may publish revised and/or new versions
+        of the\n     license from time to time. Each version will be given a\n     distinguishing
+        version number.\n     Once covered code has been published under a particular
+        version\n     of the license, you may always continue to use it under the
+        terms\n     of that version. You may also choose to use such covered code\n
+        \    under the terms of any subsequent version of the license\n     published
+        by the PHP Group. No one other than the PHP Group has\n     the right to modify
+        the terms applicable to covered code created\n     under this License.\n\n
+        \ 6. Redistributions of any form whatsoever must retain the following\n     acknowledgment:\n
+        \    \"This product includes PHP software, freely available from\n     <http://www.php.net/software/>\".\n\nTHIS
+        SOFTWARE IS PROVIDED BY THE PHP DEVELOPMENT TEAM ``AS IS'' AND \nANY EXPRESSED
+        OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,\nTHE IMPLIED WARRANTIES
+        OF MERCHANTABILITY AND FITNESS FOR A \nPARTICULAR PURPOSE ARE DISCLAIMED.
+        \ IN NO EVENT SHALL THE PHP\nDEVELOPMENT TEAM OR ITS CONTRIBUTORS BE LIABLE
+        FOR ANY DIRECT, \nINDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+        DAMAGES \n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+        OR \nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)\nHOWEVER
+        CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,\nSTRICT LIABILITY,
+        OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)\nARISING IN ANY WAY OUT OF THE
+        USE OF THIS SOFTWARE, EVEN IF ADVISED\nOF THE POSSIBILITY OF SUCH DAMAGE.\n\n--------------------------------------------------------------------
+        \n\nThis software consists of voluntary contributions made by many\nindividuals
+        on behalf of the PHP Group.\n\nThe PHP Group can be contacted via Email at
+        group@php.net.\n\nFor more information on the PHP Group and the PHP project,
+        \nplease see <http://www.php.net>.\n\nPHP includes the Zend Engine, freely
+        available at\n<http://www.zend.com>.\n"
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:08:52 GMT
+recorded_with: VCR 3.0.3

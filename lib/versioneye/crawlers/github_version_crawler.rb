@@ -39,7 +39,7 @@ class GithubVersionCrawler < Versioneye::Crawl
 
     # save product versions
     tags.to_a.each do |tag|
-      version = upsert_product_version(product, tag)
+      upsert_product_version(product, tag)
       # TODO check license. RR or TG.
     end
 

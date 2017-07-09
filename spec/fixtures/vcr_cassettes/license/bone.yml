@@ -1,0 +1,174 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/solutious/bone/master/LICENSE.md
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - 8620:5A9C:34A9268:369BD75:595FB982
+      Content-Length:
+      - '15'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:40:34 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1533-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499445635.845645,VS0,VE117
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 47f42167ef5c0af62306946380ff1a1868d95b74
+      Expires:
+      - Fri, 07 Jul 2017 16:45:34 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: UTF-8
+      string: '404: Not Found
+
+'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:40:34 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/solutious/bone/master/LICENSE.txt
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      Etag:
+      - '"3feff4d4191595cbccd712d8f1795d91ac8be25a"'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Cache-Control:
+      - max-age=300
+      X-Geo-Block-List:
+      - ''
+      X-Github-Request-Id:
+      - 8E3C:785D:33FEF25:35E45A2:595FB982
+      Content-Length:
+      - '1241'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:40:35 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1540-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499445635.126790,VS0,VE127
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - bf74d120f98e9fa67308a17d236fcd7689e774bf
+      Expires:
+      - Fri, 07 Jul 2017 16:45:35 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: ASCII-8BIT
+      string: "Copyright (c) 2009-2011 Delano Mandelbaum, Solutious Inc.\nDistributes
+        under the same terms as Ruby (copied below).\n---------------------------------------------------------------------------\nRuby
+        is copyrighted free software by Yukihiro Matsumoto <matz@netlab.co.jp>.\nYou
+        can redistribute it and/or modify it under either the terms of the GPL\n(see
+        COPYING.txt file), or the conditions below:\n\n  1. You may make and give
+        away verbatim copies of the source form of the\n     software without restriction,
+        provided that you duplicate all of the\n     original copyright notices and
+        associated disclaimers.\n\n  2. You may modify your copy of the software in
+        any way, provided that\n     you do at least ONE of the following:\n\n       a)
+        place your modifications in the Public Domain or otherwise\n          make
+        them Freely Available, such as by posting said\n\t  modifications to Usenet
+        or an equivalent medium, or by allowing\n\t  the author to include your modifications
+        in the software.\n\n       b) use the modified software only within your corporation
+        or\n          organization.\n\n       c) rename any non-standard executables
+        so the names do not conflict\n\t  with standard executables, which must also
+        be provided.\n\n       d) make other distribution arrangements with the author.\n\n
+        \ 3. You may distribute the software in object code or executable\n     form,
+        provided that you do at least ONE of the following:\n\n       a) distribute
+        the executables and library files of the software,\n\t  together with instructions
+        (in the manual page or equivalent)\n\t  on where to get the original distribution.\n\n
+        \      b) accompany the distribution with the machine-readable source of\n\t
+        \ the software.\n\n       c) give non-standard executables non-standard names,
+        with\n          instructions on where to get the original software distribution.\n\n
+        \      d) make other distribution arrangements with the author.\n\n  4. You
+        may modify and include the part of the software into any other\n     software
+        (possibly commercial).  But some files in the distribution\n     are not written
+        by the author, so that they are not under this terms.\n\n     They are gc.c(partly),
+        utils.c(partly), regex.[ch], st.[ch] and some\n     files under the ./missing
+        directory.  See each file for the copying\n     condition.\n\n  5. The scripts
+        and library files supplied as input to or produced as \n     output from the
+        software do not automatically fall under the\n     copyright of the software,
+        but belong to whomever generated them, \n     and may be sold commercially,
+        and may be aggregated with this\n     software.\n\n  6. THIS SOFTWARE IS PROVIDED
+        \"AS IS\" AND WITHOUT ANY EXPRESS OR\n     IMPLIED WARRANTIES, INCLUDING,
+        WITHOUT LIMITATION, THE IMPLIED\n     WARRANTIES OF MERCHANTABILITY AND FITNESS
+        FOR A PARTICULAR\n     PURPOSE.\n"
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:40:35 GMT
+recorded_with: VCR 3.0.3

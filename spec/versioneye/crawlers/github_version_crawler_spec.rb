@@ -1,22 +1,6 @@
 require 'spec_helper'
-require 'vcr'
-require 'webmock'
 
-
-RSpec.configure do |c|
-  # so we can use :vcr rather than :vcr => true;
-  # in RSpec 3 this will no longer be necessary.
-  c.treat_symbols_as_metadata_keys_with_true_values = true
-
-  c.around(:each, :vcr) do |example|
-    name = example.metadata[:full_description].split(/\s+/, 2).join("/").underscore.gsub(/[^\w\/]+/, "_")
-    options = example.metadata.slice(:record, :match_requests_on).except(:example_group)
-    VCR.use_cassette(name, options) { example.call }
-  end
-end
-
-
-describe GithubVersionCrawler, :vcr do
+describe GithubVersionCrawler do
 
   before :all do
     FakeWeb.allow_net_connect = true
@@ -26,10 +10,6 @@ describe GithubVersionCrawler, :vcr do
   after :all do
     # remove Webmock
     WebMock.allow_net_connect!
-
-    # # restore Fakeweb
-    # FakeWeb.allow_net_connect = false
-    # FakeWeb.clean_registry
   end
 
   describe ".owner_and_repo" do
@@ -45,7 +25,6 @@ describe GithubVersionCrawler, :vcr do
   end
 
   describe "#tags_for_repo" do
-    # use_vcr_cassette
 
     it "returns tags" do
       url = 'https://github.com/0xced/ABGetMe.git'

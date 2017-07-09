@@ -366,14 +366,23 @@ class HexCrawler < Versioneye::Crawl
 
 
     def self.get_product_count product_doc
-      product_doc[:downloads].each do |ha|
-        return ha[:all].to_i if ha.keys.include?(:all)
+      stats_doc = product_doc[:downloads]
+
+      if stats_doc.is_a?(Hash)
+        return stats_doc.fetch(:all, '0').to_i
       end
-      nil
+
+      if stats_doc.is_a?(Array)
+        stats = stats_doc.reduce({}) {|acc, h| acc.merge(h);}
+        return stats.fetch(:all, 0).to_i
+      end
+
+      0
     rescue => e
       self.logger.error "ERROR in get_product_count Message: #{e.message}"
       self.logger.error e.backtrace.join("\n")
-      nil
+
+      0
     end
 
 
