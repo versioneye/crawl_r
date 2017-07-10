@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.github.com/repos/versioneye/naturalsorter/commits/3cc7ef47557d7d790c7e55e667d451f56d276c13?client_id=23baa3ad794ac9a9214b&client_secret=bf2bc9df8933e9a1784bbcec2b46527b6e8098dd
+    uri: https://api.github.com/repos/versioneye/naturalsorter/commits/3cc7ef47557d7d790c7e55e667d451f56d276c13?client_id=23baa3ad794ac9a9214b&client_secret=58460421e1e76c4acf0a58f0440eb0d754297117
     body:
       encoding: US-ASCII
       string: ''
@@ -23,7 +23,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Sun, 09 Jul 2017 11:44:45 GMT
+      - Mon, 10 Jul 2017 09:45:28 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -31,15 +31,16 @@ http_interactions:
       Status:
       - 200 OK
       X-Ratelimit-Limit:
-      - '5000'
+      - '60'
       X-Ratelimit-Remaining:
-      - '4995'
+      - '53'
       X-Ratelimit-Reset:
-      - '1499603865'
+      - '1499683245'
       Cache-Control:
       - public, max-age=60, s-maxage=60
       Vary:
       - Accept
+      - Accept-Encoding
       Etag:
       - W/"2aa6ffdfdb3e318eb7eb5d0e80190ae6"
       Last-Modified:
@@ -62,9 +63,11 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.039092'
+      - '0.033346'
+      X-Served-By:
+      - a30e6f9aa7cf5731b87dfb3b9992202d
       X-Github-Request-Id:
-      - 7D94:2E3C1:28903D6:4126744:5962172C
+      - 7D92:2E3C0:132E8CC:1BE2222:59634CB7
     body:
       encoding: ASCII-8BIT
       string: '{"sha":"3cc7ef47557d7d790c7e55e667d451f56d276c13","commit":{"author":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2013-06-17T10:00:51Z"},"committer":{"name":"reiz","email":"robert.reiz.81@gmail.com","date":"2013-06-17T10:00:51Z"},"message":"remove
@@ -144,5 +147,5 @@ http_interactions:
         b)  \n+  def self.compare_string_length_odd(a, b)\n     return  1 if a.length
         > b.length\n     return -1 if a.length < b.length\n     return  0"}]}'
     http_version: 
-  recorded_at: Sun, 09 Jul 2017 11:45:02 GMT
+  recorded_at: Mon, 10 Jul 2017 09:45:50 GMT
 recorded_with: VCR 3.0.3

@@ -7,12 +7,10 @@ describe GithubVersionCrawler do
   end
 
   after :all do
-    # remove Webmock
     WebMock.allow_net_connect!
   end
 
   describe ".owner_and_repo" do
-
     example "1" do
       repo = 'https://github.com/0xced/ABGetMe.git'
       parsed = GithubVersionCrawler.parse_github_url(repo)

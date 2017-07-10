@@ -250,6 +250,7 @@ class GithubVersionCrawler < Versioneye::Crawl
   # NB! deprecated - it doesnt allow use it to crawl user data or switch keys
   def self.fetch_commit_date( owner_repo, sha )
     return nil unless owner_repo
+
     api = OctokitApi.client
     commit = api.commit(owner_repo, sha)
     return commit[:commit][:committer][:date].to_s
