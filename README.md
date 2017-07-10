@@ -1,14 +1,12 @@
+[![CircleCI](https://circleci.com/gh/versioneye/crawl_r.svg?style=svg)](https://circleci.com/gh/versioneye/crawl_r)
+
 # ruby_crawl
 
-This repo contains some crawlers written in ruby.
+This repo contains some crawlers implemented in Ruby.
 
 ## Usage
 
-* fire-up VersionEye core on docker
-
-```
-docker-compose up -d
-```
+First fire up the VersionEye backend services like described [here](https://github.com/versioneye/ops_contrib#start-backend-services-for-versioneye).
 
 * initialize ENV variables
 
