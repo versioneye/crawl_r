@@ -3,16 +3,17 @@ require 'httparty'
 
 describe LicenseMatcher do
   lic_matcher = LicenseMatcher.new
-  let(:licenses_json_path){'data/spdx_licenses/licenses.json'} 
+  let(:licenses_json_path){'data/spdx_licenses/licenses.json'}
   let(:corpus_path){ 'data/spdx_licenses/plain' }
   let(:spec_path){ 'spec/fixtures/files/licenses' }
+  let(:filenames){ Dir.entries('data/spdx_licenses/plain').to_a.delete_if {|f| /\.+/.match?(f)} }
 
   let(:mit_txt){ File.read("#{corpus_path}/MIT") }
   let(:pg_txt){ File.read("#{corpus_path}/PostgreSQL") }
   let(:lgpl_txt){ File.read("#{corpus_path}/LGPL-2.0") }
   let(:bsd3_txt){ File.read("#{corpus_path}/BSD-3-Clause") }
   let(:dotnet_txt){ File.read('data/custom_licenses/ms_dotnet') }
-  let(:mit_issue11){ File.read("#{spec_path}/mit_issue11.txt")}   
+  let(:mit_issue11){ File.read("#{spec_path}/mit_issue11.txt")}
 
   it "finds correct matches for text files" do
     expect( lic_matcher.match_text(mit_txt).first.first ).to eq("mit")
@@ -26,7 +27,7 @@ describe LicenseMatcher do
   it "matches MIT license so it could fix the issue#11" do
     res = lic_matcher.match_text(mit_issue11)
     expect( res.size ).to eq(3)
-    
+
     spdx_id, score = res.first
     expect( spdx_id ).to eq("mit")
     expect( score ).to be > 0.9
@@ -57,7 +58,7 @@ describe LicenseMatcher do
     expect( spdx_id ).to eq('apache-2.0')
     expect( score ).to be > min_score
 
-    spdx_id, score = lic_matcher.match_html(apache_plex).first 
+    spdx_id, score = lic_matcher.match_html(apache_plex).first
     expect( spdx_id ).to eq('apache-2.0')
     expect( score ).to be > min_score
 
@@ -65,7 +66,7 @@ describe LicenseMatcher do
     expect( spdx_id ).to eq('bsd-3-clear')
     expect( score ).to be > min_score
 
-    spdx_id, score = lic_matcher.match_html(mit_ooi).first 
+    spdx_id, score = lic_matcher.match_html(mit_ooi).first
     expect( spdx_id ).to eq('mit')
     expect( score ).to be > min_score
 
@@ -77,20 +78,22 @@ describe LicenseMatcher do
 
     spdx_id, score = lic_matcher.match_html(cpol).first
     expect( spdx_id ).to eq('cpol-1.02')
-    expect( score ).to be > min_score 
+    expect( score ).to be > min_score
   end
 
   it "matches all the license files in the corpuse correctly" do
-    lic_matcher.spdx_ids.each do |lic_id|
-      lic_id = lic_id.downcase
-      next if lic_id == 'ms_dotnet' or lic_id == 'cpol-1.02'
-    
 
-      lic_txt = File.read "#{corpus_path}/#{lic_id}"
+    filenames.each do |lic_name|
+      lic_id = lic_name.downcase
+      next if lic_id == 'ms_dotnet' or lic_id == 'cpol-1.02'
+
+
+      lic_txt = File.read "#{corpus_path}/#{lic_name}"
 
       res = lic_matcher.match_text(lic_txt)
-      #p "#{lic_id} => #{res} "
+      p "#{lic_name} => #{res} "
       expect(res).not_to be_nil
+      expect(res.empty? ).to be_falsey
       expect(res.first.first).to eq(lic_id)
     end
   end
