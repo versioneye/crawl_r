@@ -6,6 +6,7 @@ describe LicenseMatcher do
   let(:licenses_json_path){'data/spdx_licenses/licenses.json'}
   let(:corpus_path){ 'data/spdx_licenses/plain' }
   let(:spec_path){ 'spec/fixtures/files/licenses' }
+  let(:filenames){ Dir.entries('data/spdx_licenses/plain').to_a.delete_if {|f| /\.+/.match?(f)} }
 
   let(:mit_txt){ File.read("#{corpus_path}/MIT") }
   let(:pg_txt){ File.read("#{corpus_path}/PostgreSQL") }
@@ -81,36 +82,18 @@ describe LicenseMatcher do
   end
 
   it "matches all the license files in the corpuse correctly" do
-    lic_matcher.spdx_ids.each do |lic_id|
-      lic_id = lic_id.downcase
+
+    filenames.each do |lic_name|
+      lic_id = lic_name.downcase
       next if lic_id == 'ms_dotnet' or lic_id == 'cpol-1.02'
 
-      lic_txt = nil
-      begin
-        lic_txt = File.read "#{corpus_path}/#{lic_id}"
-      rescue => e
-        p e.message
-      end
 
-      if lic_txt.nil?
-        begin
-          lic_txt = File.read "#{corpus_path}/#{lic_id.upcase}"
-        rescue => e
-          p e.message
-        end
-      end
-
-      if lic_txt.nil?
-        begin
-          lic_txt = File.read "#{corpus_path}/#{lic_id.downcase}"
-        rescue => e
-          p e.message
-        end
-      end
+      lic_txt = File.read "#{corpus_path}/#{lic_name}"
 
       res = lic_matcher.match_text(lic_txt)
-      #p "#{lic_id} => #{res} "
+      p "#{lic_name} => #{res} "
       expect(res).not_to be_nil
+      expect(res.empty? ).to be_falsey
       expect(res.first.first).to eq(lic_id)
     end
   end
