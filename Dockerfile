@@ -1,6 +1,9 @@
 FROM        versioneye/ruby-base:2.4.32
 MAINTAINER  Robert Reiz <reiz@versioneye.com>
 
+RUN rm -Rf /app; \
+    mkdir /app
+
 ADD . /app
 
 RUN cp /app/supervisord.conf /etc/supervisord.conf; \
