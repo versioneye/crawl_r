@@ -37,3 +37,12 @@ docker-compose down
 ```
 Copyright (c) 2014 VersionEye. See LICENSE.txt for
 further details.
+
+## Support
+
+For commercial support send a message to `support@versioneye.com`.
+
+## License
+
+This repository is licensed under the [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.en.html) license.
+Send a message to `support@versioneye.com` if you are interested in a commercial license.
