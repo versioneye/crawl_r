@@ -4,7 +4,7 @@ machine:
 
 dependencies:
   override:
-    - docker pull versioneye/mongodb:3.2.6
+    - docker pull versioneye/mongodb:3.4
     - docker pull reiz/elasticsearch:0.9.1-1
     - docker pull reiz/memcached:1.4.14
     - docker pull reiz/rabbitmq:3.4.2
@@ -20,4 +20,4 @@ database:
 test:
   override:
     - docker build -t versioneye/crawlr:1.0.0 .
-    - docker run --env RAILS_ENV=test --env GITHUB_PASS=$GITHUB_PASS --env GITHUB_USER=$GITHUB_USER --env GITHUB_CLIENT_SECRET=$GITHUB_CLIENT_SECRET --link mongodb:db --link elasticsearch:es --link memcached:mc --link rabbitmq:rm -v $CIRCLE_TEST_REPORTS:$CIRCLE_TEST_REPORTS versioneye/crawlr:1.0.0 rspec -r rspec_junit_formatter --format RspecJunitFormatter -o $CIRCLE_TEST_REPORTS/rspec/junit.xml
+    - docker run --env RAILS_ENV=test --env GITHUB_PASS=$GITHUB_PASS --env GITHUB_USER=$GITHUB_USER --env GITHUB_CLIENT_SECRET=$GITHUB_CLIENT_SECRET --link mongodb:db --link elasticsearch:es --link memcached:mc --link rabbitmq:rm -v $CIRCLE_TEST_REPORTS:$CIRCLE_TEST_REPORTS versioneye/crawlr:1.0.0 bundle exec rspec -r rspec_junit_formatter --format RspecJunitFormatter -o $CIRCLE_TEST_REPORTS/rspec/junit.xml
