@@ -38,7 +38,7 @@ class LicenseMatcher
 
   def init_id_idx(licenses_json_doc)
     idx = {}
-    licenses_json_doc.to_a.each do |spdx_item| 
+    licenses_json_doc.to_a.each do |spdx_item|
       lic_id = spdx_item[:id].to_s.downcase
       idx[lic_id] = spdx_item[:id]
     end
@@ -148,12 +148,12 @@ class LicenseMatcher
   def match_rules(text, early_exit = false)
     matches = []
     text = preprocess_text(text)
-    
+
     #if text is already spdx_id, then shortcut matching
     if @rules.has_key?(text.downcase)
-      return [[text.downcase, 1.0]] 
+      return [[text.downcase, 1.0]]
     end
-    
+
     text += ' ' # required to make wordborder matcher to work with 1word texts
     @rules.each do |spdx_id, rules|
       match_res = matches_any_rule?(rules, text)
@@ -176,7 +176,7 @@ class LicenseMatcher
   def ignore?(lic_text)
     ignore_rules = get_ignore_rules
     m = matches_any_rule?(ignore_rules, lic_text.to_s)
-    not m.nil? 
+    not m.nil?
   end
 
   def matches_any_rule?(rules, license_name)
@@ -196,19 +196,19 @@ class LicenseMatcher
 #-- helpers
   def preprocess_text(text)
     text = safe_encode(text)
-    
+
     #remove markdown url tags
     text = text.gsub(/\[.+?\]\(.+?\)/, ' ')
 
     #remove spam words
     text.gsub!(/\bTHE\b/i, '')
-    
+
     #remove some XML grabage
     text = text.gsub(/\<\!\[CDATA.*?\]\]\>/, ' ').to_s
     text = text.gsub(/\<\!--.+?--\>/,  ' ').to_s
     text = text.gsub(/<\!\[CDATA.+?\]>/, ' ').to_s
 
-    return text.to_s.strip.gsub(/\s+/, ' ') 
+    return text.to_s.strip.gsub(/\s+/, ' ')
   end
 
   def preprocess_html(html_text)
@@ -292,13 +292,13 @@ class LicenseMatcher
     t_max = t_scores.max
 
     r_total = rules_results.reduce(0) {|acc, i| acc += i[3];  acc}
-    
+
     text_results.to_a.each do |t|
       #find match in rules results and calc rankscore
       lic_id = t[0].downcase
       r = rules_results.to_a.find {|x| x[0].downcase == lic_id }
       next if r.nil? #there was no matching rules
-      
+
       t_score = t[1] #score of confidence
       r_score = r[3] #length of match
 
@@ -374,7 +374,7 @@ class LicenseMatcher
   def init_rules(license_json_doc)
     rules = {}
     rules = build_rules_from_spdx_json(license_json_doc)
-    
+
     get_custom_rules.each do |spdx_id, custom_rules_array|
       spdx_id = spdx_id.to_s.strip.downcase
 
@@ -419,7 +419,7 @@ class LicenseMatcher
       rules << Regexp.new("\\b[\\(]?https?:\/\/(www\.)?#{lic_url}[\/]?[\\)]?\\b".gsub(/\s+/, ''), Regexp::IGNORECASE)
     end
 
-    
+
     spdx_name = preprocess_text(spdx_item[:name])
     spdx_name.gsub!(/\(.+?\)/, '')       #remove SPDX ids in the license names
     spdx_name.gsub!(/\./, '\\.')         #mark version dots as not regex selector
@@ -429,7 +429,7 @@ class LicenseMatcher
     spdx_name.gsub!(/\s+/, '\\s\\+')     #replace spaces with space selector
 
     rules << Regexp.new("\\b#{spdx_name}\\b", Regexp::IGNORECASE)
-    
+
     #use spdx_id in full-text match if it's uniq and doest ambiquity like MIT, Fair, Glide
     spdx_id = spdx_item[:id].to_s.strip.downcase
     if spdx_id.match /[\d|-]|ware\z/
@@ -463,7 +463,7 @@ class LicenseMatcher
       /^\(c\)\s+\d{2,4}\d/,
       /^LICENSE\s*$/i, /^FREE\s*$/i, /\ASee\sLicense\s*\b/i, /^TODO\s*$/i, /^FREEWARE\s*$/i,
       /^All\srights\sreserved\s*$/i, /^COPYING\s*$/i, /^OTHER\s*$/i, /^NONE\s*$/i, /^DUAL\s*$/i,
-      /^KEEP\s+IT\s+REAL\s*\b/i, /\ABE\s+REAL\s*\z/i, /\APrivate\s*\z/i, /\ACommercial\s*\z/i, 
+      /^KEEP\s+IT\s+REAL\s*\b/i, /\ABE\s+REAL\s*\z/i, /\APrivate\s*\z/i, /\ACommercial\s*\z/i,
       /\ASee\s+LICENSE\s+file\b/i, /\ASee\sthe\sLICENSE\b/i, /\ALICEN[C|S]E\s*\z/i,
       /^PUBLIC\s*$/i, /^see file LICENSE\s*$/i, /^__license__\s*$/i,
       /\bLIEULA\b/i, /\AEULA\s*\z/i, /^qQuickLicen[c|s]e\b/i, /^For\sfun\b/i, /\AVarious\s*\z/i,
@@ -666,7 +666,7 @@ class LicenseMatcher
                           ],
       "ECL-1.0"       => [ /\bECL[-|\s|_]?v?1\.0\b/i, /\bECL[-|\s|_]?v?1\b/i ],
       "ECL-2.0"       => [
-                          /\bECL[-|\s|_]?v?2\.0\b/i, /\bECL[-|\s|_]?v?2\b/i, 
+                          /\bECL[-|\s|_]?v?2\.0\b/i, /\bECL[-|\s|_]?v?2\b/i,
                           /\bEDUCATIONAL\s+COMMUNITY\s+LICENSE[,]?\sVERSION\s2\.0\b/i
                          ],
       "EFL-1.0"       => [/\bEFL[-|\s|_]?v?1\.0\b/i, /\bEFL[-|\s|_]?v?1\b/i ],
@@ -677,7 +677,7 @@ class LicenseMatcher
                           /\bEiffel\sForum\sLicense\b/i
                          ],
       "EPL-1.0"       => [
-                          /\bEPL[-|\s|_]?v?1\.0\b/i, /\bEPL[-|\s|_]?v?1\b/i,                         
+                          /\bEPL[-|\s|_]?v?1\.0\b/i, /\bEPL[-|\s|_]?v?1\b/i,
                           /\bECLIPSE\s+PUBLIC\s+LICENSE\s+[v]?1\.0\b/i,
                           /\bECLIPSE\s+PUBLIC\s+LICENSE\b/i,
                           /^ECLIPSE$/i, /\AEPL\s*\z/
@@ -700,7 +700,7 @@ class LicenseMatcher
                           /\b[\(]?FDL[\)]?\b/
                          ],
       "GPL-1.0"       => [
-                          /\bGPL[-|\s|_]?v?1\.0\b/i, /\bGPL[-|\s|_]?v?1\b/i, 
+                          /\bGPL[-|\s|_]?v?1\.0\b/i, /\bGPL[-|\s|_]?v?1\b/i,
                           /\bGNU\sPUBLIC\sLICEN[S|C]E\sv?1\b/i
                          ],
       "GPL-2.0"       => [
@@ -747,8 +747,8 @@ class LicenseMatcher
                           /\bLESSER\sGENERAL\sPUBLIC\sLICENSE[\,]?\sVersion\s2\.1[\,]?\b/i,
                           /\bLESSER\sGENERAL\sPUBLIC\sLICENSE[\,]?\sv?2\.1\b/i
                          ],
-      "LGPL-3.0"      => [/\bLGPL[-|\s|_]?v?3\.0\b/i, /\bLGPL[-|\s|_]?v?3[\+]?\b/i, 
-                          /\bLGLP[\s|-|v]?3\.0\b/i, /^LPLv3\s*$/, /\bLPGL[-|\s|_]?v?3[\+]?\b/i, 
+      "LGPL-3.0"      => [/\bLGPL[-|\s|_]?v?3\.0\b/i, /\bLGPL[-|\s|_]?v?3[\+]?\b/i,
+                          /\bLGLP[\s|-|v]?3\.0\b/i, /^LPLv3\s*$/, /\bLPGL[-|\s|_]?v?3[\+]?\b/i,
                           /\bLESSER\s+GENERAL\s+PUBLIC\s+License\s+[v]?3\b/i,
                           /\bLesser\sGeneral\sPublic\sLicense\sv?\.?\s+3\.0\b/i,
                           /\bhttps?:\/\/www\.gnu\.org\/copyleft\/lesser.html\b/i,
@@ -774,7 +774,7 @@ class LicenseMatcher
                           /\bMPL[-|\s|\_]?v?1\.1\b/i,
                          ],
       "MPL-2.0"       => [
-                          /\bMPL[-|\s|\_]?v?2\.0\b/i, /\bMPL[-|\s|\_]?v?2\b/i, 
+                          /\bMPL[-|\s|\_]?v?2\.0\b/i, /\bMPL[-|\s|\_]?v?2\b/i,
                           /\bMOZILLA\s+PUBLIC\s+LICENSE\s+2\.0\b/i,
                           /\bMozilla\sPublic\sLicense[\,]?\s+v?[\.]?\s*2\.0\b/i,
                           /\bMOZILLA\s+PUBLIC\s+LICENSE[,]?\s+version\s+2\.0\b/i,
@@ -831,7 +831,7 @@ class LicenseMatcher
                           /\bRPL[-|\s|_]?v?1\.5\b/i, /\ARPL\s*\z/i,
                           /\bhttps?:\/\/www\.opensource\.org\/licenses\/rpl\.php\b/i
                          ],
-      "Ruby"          => [/\bRUBY\sLICEN[S|C]E\b/i, /\ARUBY\b/i, /\bRUBY\'s\b/i], 
+      "Ruby"          => [/\bRUBY\sLICEN[S|C]E\b/i, /\ARUBY\b/i, /\bRUBY\'s\b/i],
       "QPL-1.0"       => [/\bQPL[-|\s|_]?v?1\.0\b/i,
                           /\bQT\sPublic\sLicen[c|s]e\b/i,
                           /\bPyQ\sGeneral\sLicense\b/i],
@@ -863,7 +863,7 @@ class LicenseMatcher
       "ZPL-1.1"       => [/\bZPL[-|\s|\_]?v?1\.1\b/i, /\bZPL[-|\s|\_]?v?1(?!\.)\b/i,
                           /\bZPL[-|\s|\_]?1\.0\b/i],
       "ZPL-2.1"       => [
-                          /\bZPL[-|\s|\/|_|]?v?2\.1\b/i, /\bZPL[-|\s|_]?v?2(?!\.)\b/i, 
+                          /\bZPL[-|\s|\/|_|]?v?2\.1\b/i, /\bZPL[-|\s|_]?v?2(?!\.)\b/i,
                           /\bZPL\s+2\.\d\b/i, /\bZOPE\s+PUBLIC\s+LICENSE\b/i,
                           /\bZPL\s?$/i
                          ],

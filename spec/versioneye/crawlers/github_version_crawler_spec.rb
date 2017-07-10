@@ -4,7 +4,6 @@ describe GithubVersionCrawler do
 
   before :all do
     FakeWeb.allow_net_connect = true
-
   end
 
   after :all do
@@ -24,22 +23,6 @@ describe GithubVersionCrawler do
     end
   end
 
-  describe "#tags_for_repo" do
-
-    it "returns tags" do
-      url = 'https://github.com/0xced/ABGetMe.git'
-      owner_repo = GithubVersionCrawler.parse_github_url url
-
-      VCR.use_cassette('github/crawl_versions/tags_for_repo') do
-        tags = GithubVersionCrawler.tags_for_repo owner_repo
-        expect( tags ).not_to be_nil
-        expect( tags.size ).to eq(1)
-        t = tags.first
-        expect( t.name ).to eq('1.0.0')
-        expect( t.commit.sha).to eq( '8d8d7ca9f3429c952b83d1ecf03178e8efb99cb2' )
-      end
-    end
-  end
 
   describe ".fetch_commit_date" do
 

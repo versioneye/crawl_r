@@ -213,7 +213,9 @@ class GithubVersionCrawler < Versioneye::Crawl
     owner_repo = parse_github_url github_url
     return nil if owner_repo.nil? || owner_repo.empty?
 
-    tags_data  = tags_for_repo owner_repo
+    owner     = owner_repo[:owner]
+    repo      = owner_repo[:repo]
+    tags_data = GithubVersionFetcher.new().fetch_all_repo_tags(owner, repo)
     return nil if tags_data.nil? || tags_data.empty?
 
     tags_data.each do |tag|
@@ -245,31 +247,12 @@ class GithubVersionCrawler < Versioneye::Crawl
     nil
   end
 
-  #NB! deprecated - it doesnt allow use it to crawl user data or switch keys
+  # NB! deprecated - it doesnt allow use it to crawl user data or switch keys
   def self.fetch_commit_date( owner_repo, sha )
     return nil unless owner_repo
     api = OctokitApi.client
     commit = api.commit(owner_repo, sha)
     return commit[:commit][:committer][:date].to_s
-  rescue => e
-    logger.error e.message
-    logger.error e.backtrace.join("\n")
-    nil
-  end
-
-
-  # NB! deprecated - it only returns first page of tags
-  # use GithubVersionFetcher.new().fetch_all_repo_tags(owner, repo)
-  #
-  # params:
-  # owner_repo - hashmap, {owner: "versioneye", repo: "versioneye-core"}
-  def self.tags_for_repo( owner_repo )
-    return nil unless owner_repo
-
-    api = OctokitApi.client
-    repo = repo_data owner_repo, api
-    repo.rels[:tags].get.data
-
   rescue => e
     logger.error e.message
     logger.error e.backtrace.join("\n")

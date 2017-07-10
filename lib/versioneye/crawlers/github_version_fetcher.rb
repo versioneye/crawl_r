@@ -70,7 +70,7 @@ class GithubVersionFetcher < Versioneye::Crawl
       return
     end
 
-    api.root.rels[:repository].get(
+    @api.root.rels[:repository].get(
       :uri => { owner: owner, repo: repo },
     ).data
 
@@ -169,30 +169,29 @@ class GithubVersionFetcher < Versioneye::Crawl
     end
 
     remaining
-
   rescue
     logger.error "check_limit_or_pause: failed to check api-limit"
     return 0
   end
 
+
   def get_login_from_settings
     confs = Settings.instance
-    if !confs.github_client_id.to_s.empty?
-      {
-        client_id: confs.github_client_id.to_s,
-        client_secret: confs.github_client_secret.to_s
-      }
-    elsif !confs.github_pass.to_s.empty?
-      {
+    if !confs.github_pass.to_s.empty?
+      return {
         login: confs.github_user.to_s,
         password: confs.github_pass.to_s
       }
+    elsif !confs.github_client_id.to_s.empty?
+      return {
+        client_id: confs.github_client_id.to_s,
+        client_secret: confs.github_client_secret.to_s
+      }
     elsif !confs.github_client_secret.to_s.empty?
-      {access_token: confs.github_client_secret.to_s}
-    else
-      log.warn "No authorization data"
-      nil
+      return { access_token: confs.github_client_secret.to_s }
     end
+    log.warn "No authorization data"
+    nil
   end
 
 
