@@ -233,8 +233,9 @@ class CpanCrawler < Versioneye::Crawl
 
 
   def self.upsert_dependencies( prod, release_version_label, release_doc )
+    logger.info " - dependency: #{release_doc[:dependency]}"
     release_doc[:dependency].to_a.each do |dep_doc|
-      upsert_dependency(dep_doc, prod_key, release_version_label)
+      upsert_dependency(dep_doc, prod.prod_key, release_version_label)
     end
   end
 
