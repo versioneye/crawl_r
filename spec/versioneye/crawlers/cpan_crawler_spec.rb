@@ -52,7 +52,7 @@ describe CpanCrawler do
       expect( CpanCrawler.match_license('perl_5')[:name] ).to eq('Perl5')
       expect( CpanCrawler.match_license('apache')[:spdx_id] ).to eq('Apache-2.0')
       expect( CpanCrawler.match_license('apache_2_0')[:spdx_id] ).to eq('Apache-2.0')
-      expect( CpanCrawler.match_license('unknown')[:spdx_id]).to be_nil
+      expect( CpanCrawler.match_license('unknown')).to be_nil
     end
   end
 
@@ -259,9 +259,7 @@ describe CpanCrawler do
     end
 
     it "saves a project contributors correctly" do
-      contribs = release_dt[:metadata][:x_contributors]
-
-      contribs = CpanCrawler.upsert_contributors(product1, product1[:version], contribs)
+      contribs = CpanCrawler.upsert_contributors(product1, product1[:version], release_dt)
       expect(Developer.all.size).to eq(7)
       expect(contribs[0][:name]).to eq('Sergey Zasenko')
       expect(contribs[0][:email]).to eq('d3fin3@gmail.com')
