@@ -15,7 +15,6 @@ class CpanCrawlProducer < Producer
       return
     end
 
-
     connection = get_connection
     connection.start
 

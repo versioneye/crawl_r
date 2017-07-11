@@ -14,7 +14,7 @@ class CpanCrawlWorker < Worker
   # crawl CPAN release and insert result into database
   # params:
   #   artifact_id: String, csv of author_id and release_id
-  def process_work(artifact_id)
+  def process_work( artifact_id )
     author_id, release_id = artifact_id.to_s.split(',')
 
     prod_db = CpanCrawler.crawl_release(author_id, release_id)
@@ -31,4 +31,5 @@ class CpanCrawlWorker < Worker
     log.error e.backtrace.join('\n')
     false
   end
+
 end
