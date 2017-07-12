@@ -439,5 +439,20 @@ namespace :versioneye do
     puts "--- THE END ---"
   end
 
+  desc "Start CpanPaginateWorker"
+  task :cpan_paginate_worker do
+    puts "START CpanPaginateWorker"
+    RubyCrawl.new
+    CpanPaginateWorker.new.work
+    puts "--- THE END ---"
+  end
+
+  desc "Start CpanCrawlWorker"
+  task :cpan_crawl_worker do
+    puts "START CpanCrawlWorker"
+    RubyCrawl.new
+    CpanCrawlWorker.new.work
+    puts "--- THE END ---"
+  end
 
 end
