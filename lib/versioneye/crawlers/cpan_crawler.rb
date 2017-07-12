@@ -395,6 +395,7 @@ class CpanCrawler < Versioneye::Crawl
     )
     link.name = title.to_s
     link.save
+    link
   rescue => e
     logger.error "ERROR in upsert_version_link - #{e.message}"
     logger.error e.backtrace.join('\n')
@@ -410,6 +411,7 @@ class CpanCrawler < Versioneye::Crawl
     )
     archive.name = release_doc[:archive].to_s
     archive.save
+    archive
   rescue => e
     logger.error "ERROR in upsert_version_download - #{e.message}"
     logger.error e.backtrace.join('\n')
