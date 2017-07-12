@@ -233,7 +233,6 @@ class CpanCrawler < Versioneye::Crawl
 
 
   def self.upsert_dependencies( prod, release_version_label, release_doc )
-    logger.info " - dependency: #{release_doc[:dependency]}"
     release_doc[:dependency].to_a.each do |dep_doc|
       upsert_dependency(dep_doc, prod.prod_key, release_version_label)
     end
@@ -260,8 +259,10 @@ class CpanCrawler < Versioneye::Crawl
 
 
   def self.upsert_version(prod, version_label, release_doc)
-    version_db = prod.versions.find_or_initialize_by(version: version_label)
+    version_db = prod.version_by_number(version_label)
+    return true if version_db # skip existing versions
 
+    prod.add_version( version_label )
     release_date = safely_to_date(release_doc[:date])
     release_status = release_doc[:maturity]
     if release_doc[:status].to_s.downcase == 'backpan'
@@ -269,6 +270,7 @@ class CpanCrawler < Versioneye::Crawl
     end
 
     artifact_id = "#{release_doc[:author][:_id]}/#{release_doc[:name]}" #id to get release details from api
+    version_db = prod.version_by_number(version_label)
     version_db.update({
       release_id: artifact_id,
       released_at: release_date,
@@ -285,6 +287,10 @@ class CpanCrawler < Versioneye::Crawl
       logger.error "Version could not be saved because: #{version_db.errors.full_messages.to_sentence}"
       return false
     end
+  rescue => e
+    logger.error "ERROR in upsert_version #{e.message}"
+    logger.error e.backtrace.join('\n')
+    false
   end
 
 
@@ -375,7 +381,7 @@ class CpanCrawler < Versioneye::Crawl
       log.error "\tupsert_dependency:  failed to save dep for #{prod_key}/#{version_label}"
       log.error "\t\tdata: #{dep_doc}"
       log.error "\t\treason: #{dep.errors.full_messages.to_sentence}"
-      return
+      return nil
     end
     dep
   rescue => e
