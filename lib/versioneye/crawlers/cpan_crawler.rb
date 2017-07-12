@@ -354,6 +354,9 @@ class CpanCrawler < Versioneye::Crawl
     end
 
     author
+  rescue => e
+    logger.error "ERROR in upsert_developer - #{e.message}"
+    logger.error e.backtrace.join('\n')
   end
 
 
@@ -375,30 +378,41 @@ class CpanCrawler < Versioneye::Crawl
       return
     end
     dep
+  rescue => e
+    logger.error "ERROR in upsert_dependency - #{e.message}"
+    logger.error e.backtrace.join('\n')
   end
 
 
   def self.upsert_version_link(prod, version_label, title, url)
     return if url.to_s.empty?
 
-    Versionlink.find_or_create_by(
+    link = Versionlink.find_or_create_by(
       language: prod.language,
       prod_key: prod.prod_key,
       version_id: version_label,
-      link: url,
-      name: title.to_s
+      link: url
     )
+    link.name = title.to_s
+    link.save
+  rescue => e
+    logger.error "ERROR in upsert_version_link - #{e.message}"
+    logger.error e.backtrace.join('\n')
   end
 
 
   def self.upsert_version_download(prod, version_label, release_doc)
-    Versionarchive.find_or_create_by(
+    archive = Versionarchive.find_or_create_by(
       language: A_LANGUAGE_PERL,
       prod_key: prod.prod_key,
       version_id: version_label,
-      name: release_doc[:archive],
       link: release_doc[:download_url]
     )
+    archive.name = release_doc[:archive].to_s
+    archive.save
+  rescue => e
+    logger.error "ERROR in upsert_version_download - #{e.message}"
+    logger.error e.backtrace.join('\n')
   end
 
 
