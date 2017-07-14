@@ -375,8 +375,9 @@ class CpanCrawler < Versioneye::Crawl
       dep_prod_key: dep_doc[:module]
     )
 
-    dep[:version] = dep_doc[:version].to_s.gsub(/\Av/i, '')
-    dep[:scope]   = match_dependency_scope(dep_doc[:phase])
+    dep.version = dep_doc[:version].to_s.gsub(/\Av/i, '')
+    dep.scope   = match_dependency_scope(dep_doc[:phase])
+    dep.name    = dep_doc[:module]
     unless dep.save
       log.error "\tupsert_dependency:  failed to save dep for #{prod_key}/#{version_label}"
       log.error "\t\tdata: #{dep_doc}"
