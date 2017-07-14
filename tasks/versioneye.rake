@@ -139,6 +139,12 @@ namespace :versioneye do
       end
     end
 
+    value = '20 3 * * *'
+    if !value.to_s.empty?
+      scheduler.cron value do
+        CpanPaginateProducer.new false, 7, 0
+      end
+    end
 
     value = '1 4 * * *'
     if !value.to_s.empty?
