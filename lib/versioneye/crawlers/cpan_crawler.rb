@@ -328,6 +328,8 @@ class CpanCrawler < Versioneye::Crawl
     dev_email = author_doc[:email].first.to_s.strip
     dev_name  = author_doc[:asciiname].to_s.strip
     dev_name  = author_doc[:name].to_s.strip if dev_name.empty?
+    dev_name  = author_doc[:pauseid].to_s.strip if dev_name.empty? # found from logs
+
     if dev_name.empty?
       logger.error "upsert_developer: author document has no developer name"
       logger.error author_doc
