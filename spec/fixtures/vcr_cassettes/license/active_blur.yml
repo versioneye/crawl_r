@@ -1,0 +1,217 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/nearinfinity/active_blur/master/LICENSE.md
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - D190:1B149:322F948:342F021:595FB975
+      Content-Length:
+      - '15'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:40:21 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1544-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499445621.029687,VS0,VE118
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 8263dd0f43532873b8d7953e10eb8b8b1022e255
+      Expires:
+      - Fri, 07 Jul 2017 16:45:21 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: UTF-8
+      string: '404: Not Found
+
+'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:40:21 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/nearinfinity/active_blur/master/LICENSE.txt
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - 1386:7C27:21278E0:22B464D:595FB975
+      Content-Length:
+      - '15'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:40:21 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1551-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499445621.338217,VS0,VE121
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - de3511a6e787f44b1764775d94a732994f57748a
+      Expires:
+      - Fri, 07 Jul 2017 16:45:21 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: UTF-8
+      string: '404: Not Found
+
+'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:40:21 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/nearinfinity/active_blur/master/LICENSE
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      Etag:
+      - '"1d11bfde953b17b05ad236a918184e8df0a44564"'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Cache-Control:
+      - max-age=300
+      X-Geo-Block-List:
+      - ''
+      X-Github-Request-Id:
+      - 54C8:1B149:322F97D:342F069:595FB976
+      Content-Length:
+      - '383'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:40:21 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1528-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499445622.637504,VS0,VE120
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - ea1545e956195790be27884c663e5beb607c09a1
+      Expires:
+      - Fri, 07 Jul 2017 16:45:21 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: ASCII-8BIT
+      string: |-
+        Copyright (c) 2012 Near Infinity Corporation
+
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:40:21 GMT
+recorded_with: VCR 3.0.3

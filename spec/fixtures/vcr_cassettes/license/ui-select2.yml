@@ -1,0 +1,225 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/angular-ui/ui-select2/master/LICENSE.md
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - B1CE:5A98:4FB4F4:53670A:595FB967
+      Content-Length:
+      - '15'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:40:07 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1524-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499445607.868587,VS0,VE427
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - c4812834c9509e443b7186ac47059a0c71672a8d
+      Expires:
+      - Fri, 07 Jul 2017 16:45:07 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: UTF-8
+      string: '404: Not Found
+
+'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:40:07 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/angular-ui/ui-select2/master/LICENSE.txt
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - 850E:10704:110FDAD:11FD43E:595FB966
+      Content-Length:
+      - '15'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:40:07 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1549-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499445607.435166,VS0,VE112
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 379c648d7c40d946ab33ad2818fcb8860a68f02c
+      Expires:
+      - Fri, 07 Jul 2017 16:45:07 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: UTF-8
+      string: '404: Not Found
+
+'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:40:07 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/angular-ui/ui-select2/master/LICENSE
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      Etag:
+      - '"dfc5e0ca17cc295303531d19e411c865d0fc5a52"'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Cache-Control:
+      - max-age=300
+      X-Geo-Block-List:
+      - ''
+      X-Github-Request-Id:
+      - 6AD8:2BD8:D3D77E:E08030:595FB967
+      Content-Length:
+      - '674'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:40:07 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1532-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499445608.689827,VS0,VE121
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 43a676b1a3e8a3b71e6d8cdfc4eaaa5fbf824224
+      Expires:
+      - Fri, 07 Jul 2017 16:45:07 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        The MIT License
+
+        Copyright (c) 2012 the AngularUI Team, http://angular-ui.github.com
+
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+
+        The above copyright notice and this permission notice shall be included in
+        all copies or substantial portions of the Software.
+
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+        THE SOFTWARE.
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:40:07 GMT
+recorded_with: VCR 3.0.3

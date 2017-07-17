@@ -1,0 +1,231 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/citrus/spree_essential_cms/master/LICENSE.md
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - 8DBC:5AA0:27CF4A8:294D22A:595FB97D
+      Content-Length:
+      - '15'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:40:29 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1539-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499445629.402475,VS0,VE116
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 6eb9c538860835c901e605e8878c90af1bdb2c98
+      Expires:
+      - Fri, 07 Jul 2017 16:45:29 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: UTF-8
+      string: '404: Not Found
+
+'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:40:29 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/citrus/spree_essential_cms/master/LICENSE.txt
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - C7EE:7C27:2127AE2:22B485A:595FB97D
+      Content-Length:
+      - '15'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:40:29 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1533-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499445630.671111,VS0,VE122
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 6ace46c02ee51e5a33a1ab36af2e32a6fa348016
+      Expires:
+      - Fri, 07 Jul 2017 16:45:29 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: UTF-8
+      string: '404: Not Found
+
+'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:40:29 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/citrus/spree_essential_cms/master/LICENSE
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      Etag:
+      - '"40168a97dc500e561fa9cf6e79f5a41f8fb85452"'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Cache-Control:
+      - max-age=300
+      X-Geo-Block-List:
+      - ''
+      X-Github-Request-Id:
+      - ED5C:1B149:322FC1D:342F305:595FB97E
+      Content-Length:
+      - '814'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:40:30 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1540-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499445630.947315,VS0,VE116
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - f9220c004cd37b55acff7301f604091d272ca888
+      Expires:
+      - Fri, 07 Jul 2017 16:45:30 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        Copyright (c) 2011 - 2012 Spencer Steffen and Citrus Media Group.
+        All rights reserved.
+
+        Redistribution and use in source and binary forms, with or without modification,
+        are permitted provided that the following conditions are met:
+
+            * Redistributions of source code must retain the above copyright notice,
+              this list of conditions and the following disclaimer.
+
+            * Redistributions in binary form must reproduce the above copyright notice,
+              this list of conditions and the following disclaimer in the documentation
+              and/or other materials provided with the distribution.
+
+            * Neither the name of Citrus Media Group nor the names of its
+              contributors may be used to endorse or promote products derived from this
+              software without specific prior written permission.
+
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+        ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+        WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+        DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+        ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+        (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+        LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+        ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+        (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+        SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:40:30 GMT
+recorded_with: VCR 3.0.3

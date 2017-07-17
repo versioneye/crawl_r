@@ -1,0 +1,512 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks?start=0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 07 Jul 2017 15:57:27 GMT
+      Etag:
+      - W/"e786d47911ff7c8afd0350b178ab66b4"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - b5b1ce17-29ce-4ed9-8e6c-35c2c8b27ebc
+      X-Runtime:
+      - '0.028268'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '446'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"start":0,"total":3327,"items":[{"cookbook_name":"1password","cookbook_maintainer":"jtimberman","cookbook_description":"Installs
+        1password","cookbook":"https://supermarket.chef.io/api/v1/cookbooks/1password"},{"cookbook_name":"301","cookbook_maintainer":"markhuge","cookbook_description":"Installs/Configures
+        301","cookbook":"https://supermarket.chef.io/api/v1/cookbooks/301"},{"cookbook_name":"7dtd","cookbook_maintainer":"gregf","cookbook_description":"Installs/Configures
+        the 7 Days To Die server","cookbook":"https://supermarket.chef.io/api/v1/cookbooks/7dtd"},{"cookbook_name":"7-zip","cookbook_maintainer":"sneal","cookbook_description":"Installs/Configures
+        the 7-zip file archiver","cookbook":"https://supermarket.chef.io/api/v1/cookbooks/7-zip"},{"cookbook_name":"abiquo","cookbook_maintainer":"nacx","cookbook_description":"Installs
+        and configures an Abiquo platform","cookbook":"https://supermarket.chef.io/api/v1/cookbooks/abiquo"},{"cookbook_name":"acadock","cookbook_maintainer":"soulou","cookbook_description":"Installs/Configures
+        acadock monitoring tool","cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acadock"},{"cookbook_name":"accel-ppp","cookbook_maintainer":"frostyslav","cookbook_description":"Installs/Configures
+        accel-pppd","cookbook":"https://supermarket.chef.io/api/v1/cookbooks/accel-ppp"},{"cookbook_name":"accounts","cookbook_maintainer":"vvk","cookbook_description":"System
+        Accounts management","cookbook":"https://supermarket.chef.io/api/v1/cookbooks/accounts"},{"cookbook_name":"accumulator","cookbook_maintainer":"kisoku","cookbook_description":"Installs/Configures
+        accumulator","cookbook":"https://supermarket.chef.io/api/v1/cookbooks/accumulator"},{"cookbook_name":"acd","cookbook_maintainer":"ryanh","cookbook_description":"Installs/Configures
+        acd","cookbook":"https://supermarket.chef.io/api/v1/cookbooks/acd"}]}'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 15:57:27 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/1password
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 07 Jul 2017 15:57:27 GMT
+      Etag:
+      - W/"ac5ae825d519dc996b87f570f6eb6974"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 1c463052-5841-4714-a02c-406075b62e0a
+      X-Runtime:
+      - '0.018597'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '452'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"name":"1password","maintainer":"jtimberman","description":"Installs
+        1password","category":"Other","latest_version":"https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.3.0","external_url":"https://github.com/jtimberman/1password-cookbook","source_url":"https://github.com/jtimberman/1password-cookbook","issues_url":null,"average_rating":null,"created_at":"2011-02-26T05:16:12.000Z","updated_at":"2016-01-16T16:47:27.967Z","up_for_adoption":null,"deprecated":false,"versions":["https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.3.0","https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.2.1","https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.2.0","https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.1.0","https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.6","https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.4","https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.2","https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.0"],"metrics":{"downloads":{"total":6486378,"versions":{"1.0.0":1034941,"1.0.2":1034878,"1.0.4":1274843,"1.0.6":1274836,"1.1.0":1274918,"1.2.0":296337,"1.2.1":294772,"1.3.0":853}},"followers":51,"collaborators":1}}'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 15:57:28 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.3.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 07 Jul 2017 15:57:28 GMT
+      Etag:
+      - W/"b6245e23551a1222728460d385a48bd8"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - ec048edf-736f-451c-8cb4-0f39a64dd8df
+      X-Runtime:
+      - '0.027034'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '742'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":5743,"version":"1.3.0","published_at":"2016-01-16T16:47:28Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/1password","file":"https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.3.0/download","quality_metrics":[{"name":"Version
+        Tag","failed":false,"feedback":"passed the version tag metric."},{"name":"Contributing
+        File","failed":true,"feedback":"Failure: To pass this metric, your cookbook
+        metadata must include a source url, the source url must be in the form of
+        https://github.com/user/repo, and your repo must contain a CONTRIBUTING.md
+        file"},{"name":"Testing File","failed":true,"feedback":"Failure: To pass this
+        metric, your cookbook metadata must include a source url, the source url must
+        be in the form of https://github.com/user/repo, and your repo must contain
+        a TESTING.md file"},{"name":"License","failed":false,"feedback":"1password
+        has a recognized open source license."},{"name":"No Binaries","failed":false,"feedback":"passed
+        the No Binaries metric. Contains no obvious binaries."},{"name":"Foodcritic","failed":true,"feedback":"FC064:
+        Ensure issues_url is set in metadata: 1password/metadata.rb:1\nFC065: Ensure
+        source_url is set in metadata: 1password/metadata.rb:1\nFC066: Ensure chef_version
+        is set in metadata: 1password/metadata.rb:1\nFC069: Ensure standardized license
+        defined in metadata: 1password/metadata.rb:1\nRun with Foodcritic Version
+        11.1.0 with tags metadata,correctness ~FC031 ~FC045 and failure tags any"},{"name":"Supported
+        Platforms","failed":false,"feedback":"1password supports at least one platform."},{"name":"Collaborator
+        Number","failed":true,"feedback":"Failure: Cookbook has 1 collaborators. A
+        cookbook must have at least 2 collaborators to pass this metric."},{"name":"Publish","failed":false,"feedback":"1password
+        passed the publish metric"}],"supports":{"mac_os_x":">= 0.0.0"}}'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 15:57:28 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.2.1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 07 Jul 2017 15:57:29 GMT
+      Etag:
+      - W/"8f9ce956e35ace6989a05e87e5555d08"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 50ca5e2f-e758-412e-8543-7e28a87f10d8
+      X-Runtime:
+      - '0.030407'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '270'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":5677,"version":"1.2.1","published_at":"2015-03-21T17:14:03Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/1password","file":"https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.2.1/download","quality_metrics":[{"name":"Foodcritic","failed":false,"feedback":""}],"supports":{"mac_os_x":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 15:57:29 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.2.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 07 Jul 2017 15:57:30 GMT
+      Etag:
+      - W/"2266a64a5e961c04db47a6ce5d794557"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 2652261c-11fa-4ee6-8159-1692ba06eb98
+      X-Runtime:
+      - '0.035936'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '352'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":1728,"version":"1.2.0","published_at":"2015-03-20T23:42:56Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/1password","file":"https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.2.0/download","quality_metrics":[{"name":"Foodcritic","failed":true,"feedback":"FC031:
+        Cookbook without metadata file: /tmp/cook/d800b64b6b93e678580a8e4e/1password/metadata.rb:1\nFC045:
+        Consider setting cookbook name in metadata: /tmp/cook/d800b64b6b93e678580a8e4e/1password/metadata.rb:1"}],"supports":{"mac_os_x":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 15:57:30 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.1.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 07 Jul 2017 15:57:31 GMT
+      Etag:
+      - W/"cc52d0217229b5b4613620ffec242da2"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 61a7092a-d206-497f-b760-76a929a1ddb0
+      X-Runtime:
+      - '0.058939'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '239'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":1758,"version":"1.1.0","published_at":"2014-06-01T01:44:30Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/1password","file":"https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.1.0/download","quality_metrics":[],"supports":{"mac_os_x":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 15:57:31 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.6
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 07 Jul 2017 15:57:32 GMT
+      Etag:
+      - W/"4775d1698d0c0ca915bd424d1814f86f"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - b8c4fe34-5d16-4038-96a8-4fef9d84d66e
+      X-Runtime:
+      - '0.198734'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '239'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":5384,"version":"1.0.6","published_at":"2012-12-29T22:40:15Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/1password","file":"https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.6/download","quality_metrics":[],"supports":{"mac_os_x":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 15:57:32 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.4
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 07 Jul 2017 15:57:33 GMT
+      Etag:
+      - W/"a2cdbd3477da7590bc70acb210e62917"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - 6b2dbcdd-57b0-4453-87ab-bb3f0efd38aa
+      X-Runtime:
+      - '0.051585'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '240'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":5383,"version":"1.0.4","published_at":"2012-11-18T21:32:45Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/1password","file":"https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.4/download","quality_metrics":[],"supports":{"mac_os_x":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 15:57:33 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 07 Jul 2017 15:57:33 GMT
+      Etag:
+      - W/"c0b9ad08b75d7b662f9dc477e19f7b55"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - bd04b457-b1b3-487c-985c-fd183b42341a
+      X-Runtime:
+      - '0.039616'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '238'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":5504,"version":"1.0.2","published_at":"2012-11-18T21:31:39Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/1password","file":"https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.2/download","quality_metrics":[],"supports":{"mac_os_x":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 15:57:33 GMT
+- request:
+    method: get
+    uri: https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 07 Jul 2017 15:57:34 GMT
+      Etag:
+      - W/"a0e263f69c0b6d1eb7b59de1caebb8bb"
+      Server:
+      - nginx/1.8.1
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Request-Id:
+      - cd222b4a-5f74-4ddd-bea6-38f60045d8fd
+      X-Runtime:
+      - '0.021368'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '239'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"license":"Apache 2.0","tarball_file_size":1776,"version":"1.0.0","published_at":"2011-02-26T05:16:12Z","average_rating":null,"cookbook":"https://supermarket.chef.io/api/v1/cookbooks/1password","file":"https://supermarket.chef.io/api/v1/cookbooks/1password/versions/1.0.0/download","quality_metrics":[],"supports":{"mac_os_x":">=
+        0.0.0"}}'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 15:57:34 GMT
+recorded_with: VCR 3.0.3

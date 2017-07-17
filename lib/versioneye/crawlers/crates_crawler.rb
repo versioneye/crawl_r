@@ -315,8 +315,8 @@ class CratesCrawler < Versioneye::Crawl
 
 
   #-- functions that fetch data over internet
-  #origins of the urls
-  #https://github.com/rust-lang/crates.io/blob/master/src/lib.rs
+  # origins of the urls
+  # https://github.com/rust-lang/crates.io/blob/master/src/lib.rs
   def self.fetch_product_list(api_key, page_nr, per_page = 100)
     resource_url = "#{API_URL}/crates?page=#{page_nr.to_i}&per_page=#{per_page}&api_key=#{api_key}"
     res = fetch_json resource_url

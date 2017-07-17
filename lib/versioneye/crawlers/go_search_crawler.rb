@@ -1,5 +1,4 @@
 class GoSearchCrawler < Versioneye::Crawl
-
   A_GOSEARCH_URL = 'http://go-search.org/api'
   A_MAX_WAIT_TIME      = 180
 
@@ -11,7 +10,7 @@ class GoSearchCrawler < Versioneye::Crawl
   end
 
   # crawls all the packages got from go-search index
-  def self.crawl( crawl_tags = true )
+  def self.crawl( crawl_tags = true, token = nil)
     logger.info "Fetching a list of Go packages"
     all_pkgs = fetch_package_index
     if all_pkgs.to_a.empty?
@@ -135,12 +134,17 @@ class GoSearchCrawler < Versioneye::Crawl
 
 
   def self.trigger_tag_crawl prod
-    user = user_with_gh_token
+    user = User.where(:github_token.ne => nil).first
+    if user.nil?
+      logger.error "trigger_tag_crawl: No user with Github Token. Will not fire tag crawler"
+      return
+    end
+
     msg = GosearchVersionProducer.build_message prod.prod_key, user.email
     GosearchVersionProducer.new msg
   rescue => e
-    log.error "ERROR in trigger_tag_crawl " + e.message
-    log.error e.backtrace.join("\n")
+    logger.error "ERROR in trigger_tag_crawl " + e.message
+    logger.error e.backtrace.join("\n")
   end
 
 end

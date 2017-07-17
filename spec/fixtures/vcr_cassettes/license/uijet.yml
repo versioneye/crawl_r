@@ -1,0 +1,224 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/ydaniv/uijet/master/LICENSE.md
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - B1CE:5A98:4FB634:53685D:595FB981
+      Content-Length:
+      - '15'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:40:33 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1547-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499445634.783209,VS0,VE116
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 522619dd6562687e5036524619a3c8c3f1fb81a6
+      Expires:
+      - Fri, 07 Jul 2017 16:45:33 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: UTF-8
+      string: '404: Not Found
+
+'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:40:33 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/ydaniv/uijet/master/LICENSE.txt
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - 7A18:7C27:2127BF1:22B4985:595FB981
+      Content-Length:
+      - '15'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:40:34 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1538-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499445634.051594,VS0,VE113
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 20ef9a91f85e651d4608e22bd97f91a91dc85359
+      Expires:
+      - Fri, 07 Jul 2017 16:45:34 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: UTF-8
+      string: '404: Not Found
+
+'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:40:34 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/ydaniv/uijet/master/LICENSE
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      Etag:
+      - '"f8aab592669469214f85395539951f2003c7acf1"'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Cache-Control:
+      - max-age=300
+      X-Geo-Block-List:
+      - ''
+      X-Github-Request-Id:
+      - 2C32:785A:ED4A96:F68DF4:595FB981
+      Content-Length:
+      - '825'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:40:34 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1541-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499445634.302428,VS0,VE132
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 551e151b3e4834381e03e90e70a6991c03ae7c67
+      Expires:
+      - Fri, 07 Jul 2017 16:45:34 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: ASCII-8BIT
+      string: "Copyright 2011-2015 Yehonatan Daniv. All rights reserved.\r\n\r\nRedistribution
+        and use in source and binary forms, with or without modification, are\r\npermitted
+        provided that the following conditions are met:\r\n\r\n   1. Redistributions
+        of source code must retain the above copyright notice, this list of\r\n      conditions
+        and the following disclaimer.\r\n\r\n   2. Redistributions in binary form
+        must reproduce the above copyright notice, this list\r\n      of conditions
+        and the following disclaimer in the documentation and/or other materials\r\n
+        \     provided with the distribution.\r\n\r\nTHIS SOFTWARE IS PROVIDED BY
+        Yehonatan Daniv ''AS IS'' AND ANY EXPRESS OR IMPLIED\r\nWARRANTIES, INCLUDING,
+        BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND\r\nFITNESS
+        FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL Yehonatan Daniv
+        OR\r\nCONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+        EXEMPLARY, OR\r\nCONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+        OF SUBSTITUTE GOODS OR\r\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+        INTERRUPTION) HOWEVER CAUSED AND ON\r\nANY THEORY OF LIABILITY, WHETHER IN
+        CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING\r\nNEGLIGENCE OR OTHERWISE)
+        ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF\r\nADVISED OF
+        THE POSSIBILITY OF SUCH DAMAGE.\r\n\r\nThe views and conclusions contained
+        in the software and documentation are those of the\r\nauthors and should not
+        be interpreted as representing official policies, either expressed\r\nor implied,
+        of Yehonatan Daniv."
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:40:34 GMT
+recorded_with: VCR 3.0.3

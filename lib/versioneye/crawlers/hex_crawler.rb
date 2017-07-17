@@ -130,6 +130,8 @@ class HexCrawler < Versioneye::Crawl
     end
 
     upsert_version(prod_db, version_doc)
+    CrawlerUtils.create_newest( prod_db, version_doc[:version].to_s, logger )
+    CrawlerUtils.create_notifications( prod_db, version_doc[:version].to_s, logger )
 
     # Dependencies
     version_doc[:requirements].to_a.each do |dep_id, dep_doc|
@@ -180,8 +182,8 @@ class HexCrawler < Versioneye::Crawl
     prod_db.update(
       name: product_doc[:name],
       prod_key_dc: product_doc[:name].to_s.downcase,
-      description: product_doc[:meta][:description],
-      downloads: product_doc[:downloads][:all].to_i
+      description: get_product_desc( product_doc ),
+      downloads: get_product_count( product_doc )
     )
     prod_db.save
 
@@ -358,5 +360,38 @@ class HexCrawler < Versioneye::Crawl
     pkg_id = pkg_id.to_s.strip
     fetch_json "#{A_API_URL}/packages/#{pkg_id}/releases/#{version_label}"
   end
+
+
+  private
+
+
+    def self.get_product_count product_doc
+      stats_doc = product_doc[:downloads]
+
+      if stats_doc.is_a?(Hash)
+        return stats_doc.fetch(:all, '0').to_i
+      end
+
+      if stats_doc.is_a?(Array)
+        stats = stats_doc.reduce({}) {|acc, h| acc.merge(h);}
+        return stats.fetch(:all, 0).to_i
+      end
+
+      0
+    rescue => e
+      self.logger.error "ERROR in get_product_count Message: #{e.message}"
+      self.logger.error e.backtrace.join("\n")
+
+      0
+    end
+
+
+    def self.get_product_desc product_doc
+      product_doc[:meta][:description]
+    rescue => e
+      self.logger.error "ERROR in get_product_desc Message: #{e.message}"
+      self.logger.error e.backtrace.join("\n")
+      nil
+    end
 
 end

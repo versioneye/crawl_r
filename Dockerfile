@@ -1,5 +1,8 @@
-FROM        versioneye/ruby-base:2.4.21
+FROM        versioneye/ruby-base:2.3.3-1
 MAINTAINER  Robert Reiz <reiz@versioneye.com>
+
+RUN rm -Rf /app; \
+    mkdir /app
 
 ADD . /app
 

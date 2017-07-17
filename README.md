@@ -1,14 +1,12 @@
+[![CircleCI](https://circleci.com/gh/versioneye/crawl_r.svg?style=svg)](https://circleci.com/gh/versioneye/crawl_r)
+
 # ruby_crawl
 
-This repo contains some crawlers written in ruby.
+This repo contains some crawlers implemented in Ruby.
 
 ## Usage
 
-* fire-up VersionEye core on docker
-
-```
-docker-compose up -d
-```
+First fire up the VersionEye backend services like described [here](https://github.com/versioneye/ops_contrib#start-backend-services-for-versioneye).
 
 * initialize ENV variables
 
@@ -39,3 +37,12 @@ docker-compose down
 ```
 Copyright (c) 2014 VersionEye. See LICENSE.txt for
 further details.
+
+## Support
+
+For commercial support send a message to `support@versioneye.com`.
+
+## License
+
+This repository is licensed under the [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.en.html) license.
+Send a message to `support@versioneye.com` if you are interested in a commercial license.

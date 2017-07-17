@@ -1,0 +1,168 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/cujojs/msgs/master/LICENSE.md
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - E64E:1222C:279842F:29631B1:595FB965
+      Content-Length:
+      - '15'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:40:06 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1520-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499445606.159765,VS0,VE114
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 6200cb1244deb6558bd03304db94a20bdef5cd69
+      Expires:
+      - Fri, 07 Jul 2017 16:45:06 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: UTF-8
+      string: '404: Not Found
+
+'
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:40:06 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/cujojs/msgs/master/LICENSE.txt
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - https://www.VersionEye.com - https://twitter.com/VersionEye
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      Etag:
+      - '"fafdcf6f67f29b212e891f2e26d48208fa895388"'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Cache-Control:
+      - max-age=300
+      X-Geo-Block-List:
+      - ''
+      X-Github-Request-Id:
+      - 17CA:785A:ED46D3:F68A23:595FB966
+      Content-Length:
+      - '792'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 07 Jul 2017 16:40:06 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-hhn1540-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1499445606.427535,VS0,VE118
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - 0434ce79af5e17ddd822c04428ca9b0e96babed7
+      Expires:
+      - Fri, 07 Jul 2017 16:45:06 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        Q29weXJpZ2h0IChjKSAyMDEyLTIwMTQgdGhlIG9yaWdpbmFsIGF1dGhvciBv
+        ciBhdXRob3JzCgpQZXJtaXNzaW9uIGlzIGhlcmVieSBncmFudGVkLCBmcmVl
+        IG9mIGNoYXJnZSwgdG8gYW55IHBlcnNvbiBvYnRhaW5pbmcgYSBjb3B5IG9m
+        CnRoaXMgc29mdHdhcmUgYW5kIGFzc29jaWF0ZWQgZG9jdW1lbnRhdGlvbiBm
+        aWxlcyAodGhlICJTb2Z0d2FyZSIpLCB0byBkZWFsIGluCnRoZSBTb2Z0d2Fy
+        ZSB3aXRob3V0IHJlc3RyaWN0aW9uLCDigKhpbmNsdWRpbmcgd2l0aG91dCBs
+        aW1pdGF0aW9uIHRoZSByaWdodHMgdG8KdXNlLCBjb3B5LCBtb2RpZnksIG1l
+        cmdlLCBwdWJsaXNoLCBkaXN0cmlidXRlLCBzdWJsaWNlbnNlLCBhbmQvb3Ig
+        c2VsbCBjb3BpZXMKb2YgdGhlIFNvZnR3YXJlLCBhbmQgdG8gcGVybWl0IHBl
+        cnNvbnMgdG8gd2hvbSB0aGUgU29mdHdhcmUgaXMgZnVybmlzaGVkIOKAqHRv
+        IGRvCnNvLCBzdWJqZWN0IHRvIHRoZSBmb2xsb3dpbmcgY29uZGl0aW9uczoK
+        ClRoZSBhYm92ZSBjb3B5cmlnaHQgbm90aWNlIGFuZCB0aGlzIHBlcm1pc3Np
+        b24gbm90aWNlIHNoYWxsIGJlIGluY2x1ZGVkIGluIGFsbApjb3BpZXMgb3Ig
+        c3Vic3RhbnRpYWwgcG9ydGlvbnMgb2YgdGhlIFNvZnR3YXJlLgoKVEhFIFNP
+        RlRXQVJFIElTIFBST1ZJREVEICJBUyBJUyIsIFdJVEhPVVQgV0FSUkFOVFkg
+        T0YgQU5ZIEtJTkQsIEVYUFJFU1MgT1IKSU1QTElFRCwgSU5DTFVESU5HIEJV
+        VCBOT1QgTElNSVRFRCBUTyBUSEUgV0FSUkFOVElFUyBPRiBNRVJDSEFOVEFC
+        SUxJVFksCkZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFIEFORCBO
+        T05JTkZSSU5HRU1FTlQuICBJTiBOTyBFVkVOVCBTSEFMTCBUSEUKQVVUSE9S
+        UyBPUiBDT1BZUklHSFQgSE9MREVSUyBCRSBMSUFCTEUgRk9SIEFOWSBDTEFJ
+        TSwgREFNQUdFUyBPUiBPVEhFUgpMSUFCSUxJVFksIFdIRVRIRVIgSU4gQU4g
+        QUNUSU9OIE9GIENPTlRSQUNULCBUT1JUIE9SIE9USEVSV0lTRSwgQVJJU0lO
+        RyBGUk9NLApPVVQgT0YgT1IgSU4gQ09OTkVDVElPTiBXSVRIIFRIRSBTT0ZU
+        V0FSRSBPUiBUSEUgVVNFIE9SIE9USEVSIERFQUxJTkdTIElOIFRIRQpTT0ZU
+        V0FSRS4KCgotLS0KCkNvZGUgcHVibGlzaGVkIGJ5IFNjb3R0IEFuZHJld3Mg
+        cHJpb3IgdG8gMjAxMy0wOS0yMSBpcyBjb3B5cmlnaHQgUGl2b3RhbCBhbmQK
+        bGljZW5zZWQgdW5kZXIgdGhlIGFib3ZlIHRlcm1zLgoKR29QaXZvdGFsLCBJ
+        bmMuCjE5MDAgU291dGggTm9yZm9sayBTdHJlZXQsIFN1aXRlIDEyNQpTYW4g
+        TWF0ZW8sIENBIDk0NDAzCg==
+    http_version: 
+  recorded_at: Fri, 07 Jul 2017 16:40:06 GMT
+recorded_with: VCR 3.0.3
