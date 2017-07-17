@@ -4,7 +4,7 @@ class CpanCrawler < Versioneye::Crawl
   A_LANGUAGE_PERL = Product::A_LANGUAGE_PERL
   A_TYPE_CPAN     = Project::A_TYPE_CPAN
   A_SCROLL_TTL    = '2m'
-
+  A_TIMEOUT       = 30 # seconds
 
   def self.logger
     if !defined?(@@log) || @@log.nil?
@@ -156,7 +156,7 @@ class CpanCrawler < Versioneye::Crawl
 
   def self.fetch_release_details(author_id, release_id)
     release_url = "#{A_API_URL}/release/#{author_id}/#{release_id}?join=author"
-    fetch_json release_url
+    fetch_json(release_url, A_TIMEOUT)
   rescue => e
     logger.error "fetch_release_details: failed to fetch release details from #{release_url}"
     logger.error "reason: #{e.message}"
@@ -203,7 +203,6 @@ class CpanCrawler < Versioneye::Crawl
     release_version_label = release_doc[:version].to_s.gsub(/\Av/i, '').to_s.strip
     author_id = release_doc[:author][:_id]
     prod_name = release_doc[:distribution]
-    artifact_id = "#{author_id}/#{release_doc[:name]}" # Unique release id
 
     prod.update({
       prod_key_dc: prod_key.to_s.downcase,
