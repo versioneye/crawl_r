@@ -36,6 +36,7 @@ class GithubVersionFetcher < Versioneye::Crawl
     init_logger
 
     login_data ||= get_login_from_settings if use_env_logins
+
     @api = Octokit::Client::new(login_data)
   end
 
@@ -95,7 +96,7 @@ class GithubVersionFetcher < Versioneye::Crawl
   # will follow hypermedia pagination until end
   def paginate_rels(rels, allow_limit_pauses = true)
     results = []
-    n, n_tries = 1, 1
+    n = 1
 
     while true do
       if rels.nil? or rels[:next].nil?
