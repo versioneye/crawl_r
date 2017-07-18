@@ -198,6 +198,14 @@ class CpanCrawler < Versioneye::Crawl
       prod_key = to_module_name( release_doc[:distribution] )
     end
 
+    # handles the special case for some Perl releases
+    # it returns fields main_module=`open` and distribution=`perl`
+    # but first perl packages as released both values are perl
+    # this block here unifies it, solves #issue 695
+    if release_doc[:main_module] == 'open' and release_doc[:distribution].downcase == 'perl'
+      prod_key = release_doc[:distribution]
+    end
+
     prod = Product.find_or_initialize_by(language: A_LANGUAGE_PERL, prod_type: A_TYPE_CPAN, prod_key: prod_key)
 
     release_version_label = release_doc[:version].to_s.gsub(/\Av/i, '').to_s.strip
