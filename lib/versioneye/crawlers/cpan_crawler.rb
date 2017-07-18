@@ -4,7 +4,7 @@ class CpanCrawler < Versioneye::Crawl
   A_LANGUAGE_PERL = Product::A_LANGUAGE_PERL
   A_TYPE_CPAN     = Project::A_TYPE_CPAN
   A_SCROLL_TTL    = '2m'
-
+  A_TIMEOUT       = 30 # seconds
 
   def self.logger
     if !defined?(@@log) || @@log.nil?
@@ -156,7 +156,7 @@ class CpanCrawler < Versioneye::Crawl
 
   def self.fetch_release_details(author_id, release_id)
     release_url = "#{A_API_URL}/release/#{author_id}/#{release_id}?join=author"
-    fetch_json release_url
+    fetch_json(release_url, A_TIMEOUT)
   rescue => e
     logger.error "fetch_release_details: failed to fetch release details from #{release_url}"
     logger.error "reason: #{e.message}"
@@ -198,12 +198,19 @@ class CpanCrawler < Versioneye::Crawl
       prod_key = to_module_name( release_doc[:distribution] )
     end
 
+    # handles the special case for some Perl releases
+    # it returns fields main_module=`open` and distribution=`perl`
+    # but first perl packages as released both values are perl
+    # this block here unifies it, solves #issue 695
+    if release_doc[:main_module] == 'open' and release_doc[:distribution].downcase == 'perl'
+      prod_key = release_doc[:distribution]
+    end
+
     prod = Product.find_or_initialize_by(language: A_LANGUAGE_PERL, prod_type: A_TYPE_CPAN, prod_key: prod_key)
 
     release_version_label = release_doc[:version].to_s.gsub(/\Av/i, '').to_s.strip
     author_id = release_doc[:author][:_id]
     prod_name = release_doc[:distribution]
-    artifact_id = "#{author_id}/#{release_doc[:name]}" # Unique release id
 
     prod.update({
       prod_key_dc: prod_key.to_s.downcase,
@@ -329,6 +336,8 @@ class CpanCrawler < Versioneye::Crawl
     dev_email = author_doc[:email].first.to_s.strip
     dev_name  = author_doc[:asciiname].to_s.strip
     dev_name  = author_doc[:name].to_s.strip if dev_name.empty?
+    dev_name  = author_doc[:pauseid].to_s.strip if dev_name.empty? # found from logs
+
     if dev_name.empty?
       logger.error "upsert_developer: author document has no developer name"
       logger.error author_doc
