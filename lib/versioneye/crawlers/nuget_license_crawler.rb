@@ -1,5 +1,6 @@
 class NugetLicenseCrawler < Versioneye::Crawl
 
+
   def self.logger
     if !defined?(@@log) || @@log.nil?
       @@log = Versioneye::DynLog.new("log/license.log", 10).log
@@ -7,12 +8,14 @@ class NugetLicenseCrawler < Versioneye::Crawl
     @@log
   end
 
+
   def self.to_nuget_page_url(pkg_id, pkg_version)
-    #parse_url "https://www.nuget.org/packages/#{pkg_id}/#{pkg_version}"
+    # parse_url "https://www.nuget.org/packages/#{pkg_id}/#{pkg_version}"
     parse_url "https://www.nuget.org/packages/#{pkg_id}"
   end
 
-  #fetches license info from the nuget page of the package license
+
+  # Fetches license info from the nuget page of the package license
   def self.crawl_licenses(licenses, update = false)
     return if licenses.nil? or licenses.empty?
 
@@ -21,7 +24,7 @@ class NugetLicenseCrawler < Versioneye::Crawl
     n, n_lic = [0, 0]
     licenses.to_a.each do |lic_db|
       n += 1
-      
+
       lic_uri = to_nuget_page_url(lic_db[:prod_key], lic_db[:version])
       lic_id = url_cache.fetch(lic_uri) do
         logger.info "crawl_licenses: fetching #{lic_uri.to_s}"
@@ -35,10 +38,9 @@ class NugetLicenseCrawler < Versioneye::Crawl
 
       n_lic += 1
       if update == true
-        lic_db[:spdx_id]  = lic_id
-        lic_db[:comments] = "NugetLicenseCrawler.crawl_licenses"
+        lic_db.spdx_id  = lic_id
+        lic_db.comments = "NugetLicenseCrawler.crawl_licenses 1.0"
         lic_db.save
-
         logger.info "crawl_licenses: updated #{lic_db.to_s} => #{lic_id}"
       else
         logger.info "crawl_licenses: found #{lic_db.to_s} => #{lic_id}"
@@ -52,7 +54,7 @@ class NugetLicenseCrawler < Versioneye::Crawl
   def self.fetch_and_process_nuget_page(page_uri)
     res = fetch page_uri
     return if res.nil?
-  
+
     if res.code < 200 or res.code > 400
       logger.error "fetch_and_process_nuget_page: no response from #{page_uri.to_s}"
       return
@@ -74,4 +76,5 @@ class NugetLicenseCrawler < Versioneye::Crawl
     return if elems.nil? or elems.empty?
     elems.first.text
   end
+
 end
