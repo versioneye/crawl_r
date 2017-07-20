@@ -93,7 +93,7 @@ class LicenseCrawler < Versioneye::Crawl
       spdx_id = lic_matcher.to_spdx_id(lic_id)
       license.name = spdx_id
       license.spdx_id = spdx_id
-      license.comments = "#{license.language}_license_crawler_update"
+      license.comments = "#{license.language}_license_crawler_crawl_unidentified_urls_1"
       res = license.save if update
       if res
         logger.info "\tprocess_license: updated #{license.to_s} SPDX ID #{license.spdx_id} from #{the_url}"
