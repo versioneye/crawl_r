@@ -34,7 +34,7 @@ class LicenseCrawler < Versioneye::Crawl
   def self.parse_url url_text
     uri = to_uri url_text
     return nil if uri.nil?
-      
+
     uri.to_s.strip
   end
 
@@ -144,7 +144,7 @@ class LicenseCrawler < Versioneye::Crawl
       logger.error "\tfetch_match: unsupported content-type #{res.headers['content-type']} - #{prod_id}, #{url}"
 			return []
     end
-    
+
     matches = lic_matcher.match_text(lic_text, 3, true)
 
     if matches.nil? or matches.empty?
