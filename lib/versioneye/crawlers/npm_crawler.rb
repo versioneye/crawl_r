@@ -127,11 +127,38 @@ class NpmCrawler < Versioneye::Crawl
     create_author       product, version_number, version_obj['author']
     create_contributors product, version_number, version_obj['contributors']
     create_maintainers  product, version_number, version_obj['maintainers']
+
+    attach_version_tags(product, version_obj['dist-tags'])
+
   rescue => e
     self.logger.error "ERROR in create_new_version Message:   #{e.message}"
     self.logger.error e.backtrace.join("\n")
   end
 
+  # adds distribution tags to the versions
+  def self.attach_version_tags(product, dist_tags)
+    if dist_tags.is_a?(Hash) == false
+      logger.error "attach_version_tags: dist_tags is not hash table - `#{dist_tags}`"
+      return
+    end
+
+    tagged_versions = dist_tags.values.to_set
+
+    product.versions.to_a.each do |version_db|
+      # skip untagged versions, otherwise continue
+      if tagged_versions.include?(version_db[:version])
+        # collect all the tags where version is the value
+        version_tags = dist_tags.reduce([]) do |acc, tag_ver|
+          tag, version = tag_ver
+          acc << tag if version_db[:version] == version
+          acc
+        end
+
+        version_db[:tags] = version_tags
+        version_db.save
+      end
+    end
+  end
 
   def self.init_product prod_key
     product = Product.where( :language => Product::A_LANGUAGE_NODEJS, :prod_key => prod_key ).first
@@ -388,7 +415,6 @@ class NpmCrawler < Versioneye::Crawl
 
 
     def self.github_repo_names product
-      matcher = "github.com\/([\w\.\-]+\/[\w\.\-]+)"
       names = []
       product.http_version_links_combined.each do |link|
         matches = link.link.match( /github.com\/([\w\.\-]+\/[\w\.\-]+)/ )

@@ -1,7 +1,5 @@
-GIT
-  remote: https://github.com/versioneye/versioneye-core.git
-  revision: 38812c87aebeb1d4a2ad4929c83bc3fe4df50920
-  tag: v12.7.11
+PATH
+  remote: ../versioneye-core
   specs:
     versioneye-core (12.7.11)
       actionmailer (~> 5.1.0)
@@ -9,6 +7,7 @@ GIT
       bunny (~> 2.7.0)
       cocoapods-core (~> 0.39.0)
       dalli (~> 2.7.6)
+      erlang_config (~> 0)
       etcd (~> 0.3.0)
       gemnasium-parser (~> 0.1.9)
       httparty (~> 0.15.4)
@@ -95,6 +94,7 @@ GEM
     docile (1.1.5)
     domain_name (0.5.20170404)
       unf (>= 0.0.5, < 1.0.0)
+    erlang_config (0.0.1)
     erubi (1.6.1)
     et-orbi (1.0.5)
       tzinfo
