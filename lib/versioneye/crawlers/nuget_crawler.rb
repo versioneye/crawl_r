@@ -222,6 +222,15 @@ class NugetCrawler < Versioneye::Crawl
       release_dt = parse_date_string( publish_date_label )
     end
 
+    #if package has no release or created date - then use commit Date
+    if release_dt.nil?
+      publish_date_label = product_doc[:'catalog:commitTimeStamp']
+      release_dt = parse_date_string(publish_date_label)
+
+      logger.warn "create_new_version: no `created` or `published` fields\n#{product}\n#{product_doc}"
+      logger.warn "\twill use commitTimeStamp instead - #{publish_date_label}"
+    end
+
     version_db = Version.new({
       version: product_doc[:version],
       released_at: release_dt,
