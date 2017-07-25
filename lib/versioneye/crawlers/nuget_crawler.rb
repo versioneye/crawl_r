@@ -373,7 +373,7 @@ class NugetCrawler < Versioneye::Crawl
 
   def self.upsert_artefact_sha(product, version, sha, sha_method)
     artefact = Artefact.where(sha_value: sha).first
-    if artefact and artefact[:prod_key] != product[:prod_key] and artefact[:version] != version
+    if artefact and artefact[:prod_key] != product[:prod_key]
       logger.error "#-- CRITICAL ERROR ---------------------------------------------------"
       logger.error "upsert_artefact_sha: sha `#{sha}` belongs to other product #{artefact}"
       logger.error "\tcurrent_product: #{product} => #{version}, #{sha_method}"
@@ -383,15 +383,17 @@ class NugetCrawler < Versioneye::Crawl
     artefact ||= Artefact.new(
       :language   => product.language,
       :prod_key   => product.prod_key,
-      :version    => version,
-      :prod_type  => product.prod_type,
+      :prod_type  => product.prod_type
     )
 
     artefact.update(
+      version: version.to_s.strip,
       packaging: 'nupkg',
       sha_value: sha,
       sha_method: sha_method
     )
+
+
     artefact.save
   rescue => e
     logger.error "upsert_artefact_sha: failed to save #{product} sha #{sha_method}:#{sha}"
