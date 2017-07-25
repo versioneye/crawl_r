@@ -119,6 +119,10 @@ class NpmCrawler < Versioneye::Crawl
 
       create_new_version product, version_number, version_obj, time
     end
+
+    # save product dist tags to the saved versions
+    attach_version_tags(product, prod_json['dist-tags'])
+
     ProductService.update_version_data( product )
   rescue => e
     self.logger.error "ERROR in crawle_package Message: #{e.message}"
@@ -146,8 +150,6 @@ class NpmCrawler < Versioneye::Crawl
     create_author       product, version_number, version_obj['author']
     create_contributors product, version_number, version_obj['contributors']
     create_maintainers  product, version_number, version_obj['maintainers']
-
-    attach_version_tags(product, version_obj['dist-tags'])
 
   rescue => e
     self.logger.error "ERROR in create_new_version Message:   #{e.message}"
