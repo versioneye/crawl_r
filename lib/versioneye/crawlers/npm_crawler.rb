@@ -269,6 +269,10 @@ class NpmCrawler < Versioneye::Crawl
         :name => dist_name,
         :link => dist_url})
     Versionarchive.create_if_not_exist_by_name( archive )
+  rescue => e
+    self.logger.error "ERROR in create_download Message: #{e.message}"
+    self.logger.error e.backtrace.join("\n")
+
   end
 
 
@@ -395,17 +399,23 @@ class NpmCrawler < Versioneye::Crawl
 
 
   def self.bugs_for version_obj
+    return if version_obj.is_a?(Hash) == false
+    return if version_obj.has_key?('bugs') == false
+
     version_obj['bugs']['web']
   rescue => e
-    p e
+    logger.error "bugs_for - #{e.message}"
     nil
   end
 
 
   def self.repository_for version_obj
+    return if version_obj.is_a?(Hash) == false
+    return if version_obj.has_key?('repository') == false
+
     version_obj['repository']['url']
   rescue => e
-    p e
+    logger.error "repository_for - #{e.message}"
     nil
   end
 
