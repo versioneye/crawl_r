@@ -8,6 +8,7 @@ class NugetCrawler < Versioneye::Crawl
   A_PROFILE_URL     = "https://www.nuget.org/profiles"
   A_LANGUAGE_CSHARP = Product::A_LANGUAGE_CSHARP
   A_TYPE_NUGET      = Project::A_TYPE_NUGET
+  A_TIMEOUT         = 30 # seconds
 
 
   def self.logger
@@ -46,7 +47,7 @@ class NugetCrawler < Versioneye::Crawl
   # otherwise will only crawl catalogs published on the date_txt
   # date_txt format: YYYY-mm-dd or any other format supported by DateTime.parse
   def self.crawl(date_txt = nil)
-    catalog = self.fetch_json("#{A_NUGET_URL}#{A_CATALOG_PATH}")
+    catalog = self.fetch_json("#{A_NUGET_URL}#{A_CATALOG_PATH}", A_TIMEOUT)
     if catalog.nil?
       self.logger.error "crawl: Failed to fetch the Nuget catalog."
       return nil
@@ -80,7 +81,7 @@ class NugetCrawler < Versioneye::Crawl
 
     self.logger.info "Crawling catalog page: #{the_page[:@id]} - items: #{the_page[:count]}"
 
-    page_items = fetch_json the_page[:@id]
+    page_items = fetch_json( the_page[:@id], A_TIMEOUT )
     if page_items.nil?
       logger.warn "crawl_catalog_page: failed to fetch items on the catalog page: #{the_page}"
       return
@@ -95,7 +96,7 @@ class NugetCrawler < Versioneye::Crawl
       return
     end
 
-    doc = fetch_json the_package[:@id]
+    doc = fetch_json( the_package[:@id], A_TIMEOUT)
     if doc.nil?
       logger.warn "crawl_package: failed to fetch package details from: #{the_package}"
       return
@@ -362,15 +363,31 @@ class NugetCrawler < Versioneye::Crawl
 
 
   def self.upsert_artefact_sha(product, version, sha, sha_method)
-    artefact = Artefact.find_or_create_by(
-                  :language   => product.language,
-                  :prod_key   => product.prod_key,
-                  :version    => version,
-                  :prod_type  => product.prod_type,
-                  :packaging  => 'nupkg',
-                  :sha_value  => sha,
-                  :sha_method => sha_method )
+    artefact = Artefact.where(sha_value: sha).first
+    if artefact and artefact[:prod_key] != product[:prod_key] and artefact[:version] != version
+      logger.error "#-- CRITICAL ERROR ---------------------------------------------------"
+      logger.error "upsert_artefact_sha: sha `#{sha}` belongs to other product #{artefact}"
+      logger.error "\tcurrent_product: #{product} => #{version}, #{sha_method}"
+      return false
+    end
+
+    artefact ||= Artefact.new(
+      :language   => product.language,
+      :prod_key   => product.prod_key,
+      :version    => version,
+      :prod_type  => product.prod_type,
+    )
+
+    artefact.update(
+      packaging: 'nupkg',
+      sha_value: sha,
+      sha_method: sha_method
+    )
     artefact.save
+  rescue => e
+    logger.error "upsert_artefact_sha: failed to save #{product} sha #{sha_method}:#{sha}"
+    logger.error "\treason: #{e.message}"
+    false
   end
 
 
