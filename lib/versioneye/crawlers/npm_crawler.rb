@@ -1,8 +1,7 @@
 class NpmCrawler < Versioneye::Crawl
 
-
   A_NPM_REGISTRY_INDEX = 'https://skimdb.npmjs.com/registry/_all_docs'
-
+  A_NPM_REGISTRY_URL    = 'http://registry.npmjs.org'
 
   def self.logger
     if !defined?(@@log) || @@log.nil?
@@ -27,6 +26,26 @@ class NpmCrawler < Versioneye::Crawl
     end
   end
 
+  # fetches and updated the dist tags of the NPM product
+  # it used to fetch those tags for previously crawled products;
+  def self.crawl_dist_tags(prod_key)
+    pkg_url = "#{A_NPM_REGISTRY_URL}/#{prod_key}"
+    package_doc = fetch_json(pkg_url, 30, false)
+    if package_doc.nil?
+      logger.error "crawl_dist_tags: failed to fetch `#{prod_key}`"
+      return false
+    end
+
+    prod_db = Product.fetch_product(Product::A_LANGUAGE_NODEJS, prod_key)
+    if prod_db.nil?
+      logger.error "crawl_dist_tags: found no product `nodejs/#{prod_key}`"
+      return false
+    end
+
+    attach_version_tags( prod_db,  package_doc['dist-tags'])
+
+    true
+  end
 
   def self.crawl_scoped
     Projectdependency.where(:language => "Node.JS", :name => /@/).distinct(:name).each do |name|
