@@ -106,14 +106,14 @@ module Versioneye
     end
 
     def self.fetch url
-     HTTParty.get url, { timeout: 5 }
+      HTTParty.get url, { timeout: 20 }
     rescue
       logger.error "failed to fetch data from #{url}"
       nil
     end
 
 
-    def self.fetch_json( url, ttl = 5)
+    def self.fetch_json( url, ttl = 20)
       res = Timeout::timeout(ttl) { HTTParty.get(url) }
       if res.code != 200
         self.logger.error "Failed to fetch JSON doc from: #{url} - #{res}"
@@ -127,7 +127,7 @@ module Versioneye
       nil
     end
 
-    def self.post_json(url, options, ttl = 5)
+    def self.post_json(url, options, ttl = 20)
       res = Timeout::timeout(ttl) { HTTParty.post(url, options) }
       if res.code > 205
         logger.error "Failed to post data to the url: #{url}, #{res.code} - #{res.message}\n#{options}"
