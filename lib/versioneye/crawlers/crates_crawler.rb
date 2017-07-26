@@ -34,6 +34,15 @@ class CratesCrawler < Versioneye::Crawl
   end
 
 
+  def recrawl
+    api_key = fetch_api_key
+    return if api_key.to_s.empty?
+
+    Product.all.to_a.each do |prod|
+      crawl_package(prod[:prod_key], api_key, false)
+    end
+  end
+
   def self.crawl_product_list(api_key, page_nr = 1, per_page = 100)
     logger.info "going to crawl product list from #{page_nr}, per_page: #{per_page}"
 
