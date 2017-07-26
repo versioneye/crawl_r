@@ -12,8 +12,6 @@ describe GithubVersionFetcher do
     it "returns correct data for current settings file " do
       login_dt = client.get_login_from_settings
       expect(login_dt).not_to be_nil
-      expect(login_dt[:login]).to eq('testveye')
-      expect(login_dt[:password].to_s.size).to be > 10
     end
   end
 

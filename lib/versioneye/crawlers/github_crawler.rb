@@ -2,6 +2,7 @@ class GithubCrawler < Versioneye::Crawl
 
   include HTTParty
 
+  attr_reader :token
 
   def self.logger
     if !defined?(@@log) || @@log.nil?
@@ -11,7 +12,9 @@ class GithubCrawler < Versioneye::Crawl
   end
 
 
-  def self.crawl
+  def self.crawl(auth_token = nil)
+    @@token = auth_token
+
     crawl = self.crawle_object
     resources = self.get_first_level_list
     logger.info "#{resources.count} resources to crawle"
@@ -32,7 +35,8 @@ class GithubCrawler < Versioneye::Crawl
 
   def self.crawle_package name, crawl = nil, resource = nil
     logger.info "crawl github package #{name}"
-    repository = OctokitApi.client.repo name
+
+    repository = OctokitApi.client(@@token).repo name
     return nil if repository.nil?
 
     product = fetch_product repository, resource.force_fullname

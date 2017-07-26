@@ -25,27 +25,29 @@ describe GithubVersionCrawler do
   describe ".fetch_commit_date" do
 
     it "should return the date for a commit" do
-      # VCR.use_cassette('github/crawl_versions/fetch_commit_date') do
+      VCR.use_cassette('github/crawl_versions/fetch_commit_date') do
 
         user_repo = {:owner => 'versioneye', :repo => 'naturalsorter' }
-        date = GithubVersionCrawler.fetch_commit_date user_repo, '3cc7ef47557d7d790c7e55e667d451f56d276c13'
+        date = GithubVersionCrawler.fetch_commit_date(
+          user_repo, '3cc7ef47557d7d790c7e55e667d451f56d276c13'
+        )
 
         expect( date ).not_to be_nil
         expect( date ).to eq("2013-06-17 10:00:51 UTC")
-      # end
+      end
     end
   end
 
   describe ".versions_for_github_url" do
 
     it "returns correct versions for render-as-markdown" do
-      # VCR.use_cassette('github/crawl_versions/versions_for_github_url') do
+      VCR.use_cassette('github/crawl_versions/versions_for_github_url') do
         repo_url = 'https://github.com/versioneye/pom_json_format.git'
         versions = GithubVersionCrawler.versions_for_github_url repo_url
 
         expect( versions ).not_to be_nil
         expect( versions.size ).to eq(1)
-      # end
+      end
     end
   end
 

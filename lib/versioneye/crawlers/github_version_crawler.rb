@@ -215,7 +215,7 @@ class GithubVersionCrawler < Versioneye::Crawl
 
     owner     = owner_repo[:owner]
     repo      = owner_repo[:repo]
-    tags_data = GithubVersionFetcher.new().fetch_all_repo_tags(owner, repo)
+    tags_data = GithubVersionFetcher.new.fetch_all_repo_tags(owner, repo)
     return nil if tags_data.nil? || tags_data.empty?
 
     tags_data.each do |tag|
