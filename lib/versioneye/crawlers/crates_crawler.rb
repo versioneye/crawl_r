@@ -260,12 +260,12 @@ class CratesCrawler < Versioneye::Crawl
   def self.upsert_version_license(product_db, version_label, license_name)
     license_name = license_name.to_s.strip
 
-    lic_db = License.where(
+    lic_db = License.find_or_create_by(
       language: product_db[:language],
       prod_key: product_db[:prod_key],
       version: version_label,
       name: license_name
-    ).first_or_create
+    )
 
     lic_db.update(source: 'crates')
     lic_db.save
@@ -283,15 +283,16 @@ class CratesCrawler < Versioneye::Crawl
               Dependency::A_SCOPE_COMPILE
             end
 
-    dep_db = Dependency.where(
+    dep_db = Dependency.find_or_create_by(
       prod_type: A_TYPE_CARGO,
       language: product_db.language,
       prod_key: product_db.prod_key,
       prod_version: version_id,
+
       dep_prod_key: dep_doc[:crate_id],
       version: dep_doc[:req],
       scope: scope
-    ).first_or_create
+    )
     dep_db.name = dep_doc[:crate_id]
     dep_db.save
     dep_db
@@ -313,12 +314,12 @@ class CratesCrawler < Versioneye::Crawl
 
 
   def self.upsert_version_link(product_db, version_id, name, url)
-    url_db = Versionlink.where(
+    url_db = Versionlink.find_or_create_by(
       language: product_db[:language],
       prod_key: product_db[:prod_key],
       version_id: version_id,
       link: url.to_s.strip
-    ).first_or_create
+    )
 
     url_db.update(name: name.to_s.strip)
     url_db.save
@@ -330,12 +331,12 @@ class CratesCrawler < Versioneye::Crawl
     pkg_name = "#{product_db[:prod_key]}-#{version_id}.crate"
     url = "#{API_HOST}/#{dl_path}"
 
-    url_db = Versionarchive.where(
+    url_db = Versionarchive.find_or_create_by(
       language: product_db[:language],
       prod_key: product_db[:prod_key],
       version_id: version_id,
       name: pkg_name
-    ).first_or_create
+    )
 
     url_db.update(link: url)
     url_db.save
