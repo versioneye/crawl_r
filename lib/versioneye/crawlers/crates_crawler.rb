@@ -86,9 +86,22 @@ class CratesCrawler < Versioneye::Crawl
 
   def self.process_versions( product_db, product_doc, api_key, ignore_existing )
     owners = fetch_product_owners( api_key, product_db.prod_key )
-    product_license = product_doc[:crate][:license].to_s
+    if product_doc.nil?
+      logger.error "process_versions: product json response cant be empty"
+      return
+    end
+
+    if product_doc.has_key?(:versions) == false
+      logger.error "process_versions: product json has no :verisons field\n#{product_doc}"
+    end
+
     product_doc[:versions].each do |version_doc|
       version_num = version_doc[:num].to_s.strip
+      if version_num.empty?
+        log.error "process_versions: version_doc has no :num field\n#{version_doc}"
+        next
+      end
+
       if !product_db.version_by_number( version_num ).nil? && ignore_existing
         logger.info "process_versions: #{product_db.prod_key}:#{version_num} exist already"
         next
@@ -100,7 +113,7 @@ class CratesCrawler < Versioneye::Crawl
         next
       end
 
-      upsert_version_licenses( product_db, version_db.version, product_license )
+      upsert_version_licenses( product_db, version_db.version, version_doc[:license] )
       upsert_version_links(    product_db, version_db.version, product_doc[:crate] )
       upsert_version_archive(  product_db, version_db.version, version_doc[:dl_path] )
       upset_version_devs(      product_db, version_db, owners )
@@ -133,6 +146,11 @@ class CratesCrawler < Versioneye::Crawl
   #-- persistance helpers
 
   def self.upsert_product(product_doc)
+    if product_doc.nil?
+      logger.error "upsert_product: API response had no :crate subdocument"
+      return
+    end
+
     prod_key    = product_doc[:id].to_s.strip
     prod_key_dc = prod_key.downcase
     product_db = Product.where(
@@ -216,6 +234,11 @@ class CratesCrawler < Versioneye::Crawl
 
 
   def self.upsert_version_licenses(product_db, version_label, license_label)
+    if license_label.nil? or license_label.empty?
+      logger.error "upsert_version_licenses: missing license of #{product_db}/#{version_label}"
+      return
+    end
+
     licenses = license_label.to_s.strip.split('/')
     licenses.to_a.each do |license|
       self.upsert_version_license(product_db, version_label, license)

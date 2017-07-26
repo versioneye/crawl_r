@@ -23,7 +23,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 26 Apr 2017 08:25:41 GMT
+      - Wed, 26 Jul 2017 09:25:37 GMT
       Content-Type:
       - application/json; charset=utf-8
       Content-Length:
@@ -37,15 +37,15 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        eyJ1c2VycyI6W3siYXZhdGFyIjoiaHR0cHM6Ly9hdmF0YXJzLmdpdGh1YnVz
-        ZXJjb250ZW50LmNvbS91LzU2NTc5MD92PTMiLCJlbWFpbCI6ImRuZmFnbmFu
-        QGdtYWlsLmNvbSIsImlkIjoyLCJraW5kIjoidXNlciIsImxvZ2luIjoidGhl
-        aHlkcm9pbXB1bHNlIiwibmFtZSI6IkRhbmllbCBGYWduYW4iLCJ1cmwiOiJo
-        dHRwczovL2dpdGh1Yi5jb20vdGhlaHlkcm9pbXB1bHNlIn0seyJhdmF0YXIi
-        OiJodHRwczovL2F2YXRhcnMwLmdpdGh1YnVzZXJjb250ZW50LmNvbS91Lzk0
-        NDcxMzc/dj0zIiwiZW1haWwiOm51bGwsImlkIjozMDMsImtpbmQiOiJ1c2Vy
-        IiwibG9naW4iOiJibGFiYWVyZSIsIm5hbWUiOiJCZW5vw650IExhYmFlcmUi
-        LCJ1cmwiOiJodHRwczovL2dpdGh1Yi5jb20vYmxhYmFlcmUifV19
+        eyJ1c2VycyI6W3siaWQiOjIsImxvZ2luIjoidGhlaHlkcm9pbXB1bHNlIiwi
+        a2luZCI6InVzZXIiLCJlbWFpbCI6ImRuZmFnbmFuQGdtYWlsLmNvbSIsInVy
+        bCI6Imh0dHBzOi8vZ2l0aHViLmNvbS90aGVoeWRyb2ltcHVsc2UiLCJuYW1l
+        IjoiRGFuaWVsIEZhZ25hbiIsImF2YXRhciI6Imh0dHBzOi8vYXZhdGFycy5n
+        aXRodWJ1c2VyY29udGVudC5jb20vdS81NjU3OTA/dj0zIn0seyJpZCI6MzAz
+        LCJsb2dpbiI6ImJsYWJhZXJlIiwia2luZCI6InVzZXIiLCJlbWFpbCI6bnVs
+        bCwidXJsIjoiaHR0cHM6Ly9naXRodWIuY29tL2JsYWJhZXJlIiwibmFtZSI6
+        IkJlbm/DrnQgTGFiYWVyZSIsImF2YXRhciI6Imh0dHBzOi8vYXZhdGFyczAu
+        Z2l0aHVidXNlcmNvbnRlbnQuY29tL3UvOTQ0NzEzNz92PTMifV19
     http_version: 
-  recorded_at: Wed, 26 Apr 2017 08:25:44 GMT
+  recorded_at: Wed, 26 Jul 2017 09:25:38 GMT
 recorded_with: VCR 3.0.3
