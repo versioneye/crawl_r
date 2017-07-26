@@ -34,11 +34,11 @@ class CratesCrawler < Versioneye::Crawl
   end
 
 
-  def recrawl
+  def self.recrawl
     api_key = fetch_api_key
     return if api_key.to_s.empty?
 
-    Product.all.to_a.each do |prod|
+    Product.where(language: Product::A_LANGUAGE_RUST).to_a.each do |prod|
       crawl_package(prod[:prod_key], api_key, false)
     end
   end
