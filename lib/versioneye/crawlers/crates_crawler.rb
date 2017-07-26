@@ -145,7 +145,7 @@ class CratesCrawler < Versioneye::Crawl
     end
 
     logger.info "crawl_dependencies: fetching version details for #{product_db.prod_key} - #{version}"
-    dep_docs = fetch_version_dependencies( api_key, product_db[:prod_key], version )
+    dep_docs = fetch_version_dependencies( api_key, product_db.prod_key, version )
     dep_docs.to_a.each do |dep_doc|
       upsert_product_dependency(product_db, version, dep_doc)
     end
@@ -275,14 +275,6 @@ class CratesCrawler < Versioneye::Crawl
 
 
   def self.upsert_product_dependency(product_db, version_id, dep_doc)
-    dep_db = Dependency.where(
-      prod_type: A_TYPE_CARGO,
-      language: product_db.language,
-      prod_key: product_db.prod_key,
-      prod_version: version_id,
-      dep_prod_key: dep_doc[:crate_id],
-    ).first_or_create
-
     scope = if dep_doc[:optional]
               Dependency::A_SCOPE_OPTIONAL
             elsif dep_doc[:target] == 'test'
@@ -291,12 +283,17 @@ class CratesCrawler < Versioneye::Crawl
               Dependency::A_SCOPE_COMPILE
             end
 
-    dep_db.update(
+    dep_db = Dependency.where(
+      prod_type: A_TYPE_CARGO,
+      language: product_db.language,
+      prod_key: product_db.prod_key,
+      prod_version: version_id,
+      dep_prod_key: dep_doc[:crate_id],
       version: dep_doc[:req],
-      name: dep_doc[:crate_id],
       scope: scope
-    )
-
+    ).first_or_create
+    dep_db.name = dep_doc[:crate_id]
+    dep_db.save
     dep_db
   end
 
