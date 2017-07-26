@@ -23,7 +23,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 26 Apr 2017 08:25:41 GMT
+      - Wed, 26 Jul 2017 09:25:36 GMT
       Content-Type:
       - application/json; charset=utf-8
       Content-Length:
@@ -36,7 +36,7 @@ http_interactions:
       - 1.1 vegur
     body:
       encoding: UTF-8
-      string: '{"dependencies":[{"crate_id":"libc","default_features":true,"downloads":0,"features":[],"id":89992,"kind":"normal","optional":false,"req":"^0.2.11","target":null,"version_id":28431},{"crate_id":"nanomsg-sys","default_features":true,"downloads":0,"features":[],"id":89993,"kind":"normal","optional":false,"req":"^0.6.0","target":null,"version_id":28431}]}'
+      string: '{"dependencies":[{"id":89992,"version_id":28431,"crate_id":"libc","req":"^0.2.11","optional":false,"default_features":true,"features":[],"target":null,"kind":"normal","downloads":0},{"id":89993,"version_id":28431,"crate_id":"nanomsg-sys","req":"^0.6.0","optional":false,"default_features":true,"features":[],"target":null,"kind":"normal","downloads":0}]}'
     http_version: 
-  recorded_at: Wed, 26 Apr 2017 08:25:43 GMT
+  recorded_at: Wed, 26 Jul 2017 09:25:37 GMT
 recorded_with: VCR 3.0.3

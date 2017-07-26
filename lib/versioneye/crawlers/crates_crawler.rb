@@ -34,6 +34,15 @@ class CratesCrawler < Versioneye::Crawl
   end
 
 
+  def self.recrawl
+    api_key = fetch_api_key
+    return if api_key.to_s.empty?
+
+    Product.where(language: Product::A_LANGUAGE_RUST).to_a.each do |prod|
+      crawl_package(prod[:prod_key], api_key, false)
+    end
+  end
+
   def self.crawl_product_list(api_key, page_nr = 1, per_page = 100)
     logger.info "going to crawl product list from #{page_nr}, per_page: #{per_page}"
 
@@ -86,9 +95,22 @@ class CratesCrawler < Versioneye::Crawl
 
   def self.process_versions( product_db, product_doc, api_key, ignore_existing )
     owners = fetch_product_owners( api_key, product_db.prod_key )
-    product_license = product_doc[:crate][:license].to_s
+    if product_doc.nil?
+      logger.error "process_versions: product json response cant be empty"
+      return
+    end
+
+    if product_doc.has_key?(:versions) == false
+      logger.error "process_versions: product json has no :verisons field\n#{product_doc}"
+    end
+
     product_doc[:versions].each do |version_doc|
       version_num = version_doc[:num].to_s.strip
+      if version_num.empty?
+        log.error "process_versions: version_doc has no :num field\n#{version_doc}"
+        next
+      end
+
       if !product_db.version_by_number( version_num ).nil? && ignore_existing
         logger.info "process_versions: #{product_db.prod_key}:#{version_num} exist already"
         next
@@ -100,7 +122,7 @@ class CratesCrawler < Versioneye::Crawl
         next
       end
 
-      upsert_version_licenses( product_db, version_db.version, product_license )
+      upsert_version_licenses( product_db, version_db.version, version_doc[:license] )
       upsert_version_links(    product_db, version_db.version, product_doc[:crate] )
       upsert_version_archive(  product_db, version_db.version, version_doc[:dl_path] )
       upset_version_devs(      product_db, version_db, owners )
@@ -123,7 +145,7 @@ class CratesCrawler < Versioneye::Crawl
     end
 
     logger.info "crawl_dependencies: fetching version details for #{product_db.prod_key} - #{version}"
-    dep_docs = fetch_version_dependencies( api_key, product_db[:prod_key], version )
+    dep_docs = fetch_version_dependencies( api_key, product_db.prod_key, version )
     dep_docs.to_a.each do |dep_doc|
       upsert_product_dependency(product_db, version, dep_doc)
     end
@@ -133,6 +155,11 @@ class CratesCrawler < Versioneye::Crawl
   #-- persistance helpers
 
   def self.upsert_product(product_doc)
+    if product_doc.nil?
+      logger.error "upsert_product: API response had no :crate subdocument"
+      return
+    end
+
     prod_key    = product_doc[:id].to_s.strip
     prod_key_dc = prod_key.downcase
     product_db = Product.where(
@@ -216,6 +243,11 @@ class CratesCrawler < Versioneye::Crawl
 
 
   def self.upsert_version_licenses(product_db, version_label, license_label)
+    if license_label.nil? or license_label.empty?
+      logger.error "upsert_version_licenses: missing license of #{product_db}/#{version_label}"
+      return
+    end
+
     licenses = license_label.to_s.strip.split('/')
     licenses.to_a.each do |license|
       self.upsert_version_license(product_db, version_label, license)
@@ -228,12 +260,12 @@ class CratesCrawler < Versioneye::Crawl
   def self.upsert_version_license(product_db, version_label, license_name)
     license_name = license_name.to_s.strip
 
-    lic_db = License.where(
+    lic_db = License.find_or_create_by(
       language: product_db[:language],
       prod_key: product_db[:prod_key],
       version: version_label,
       name: license_name
-    ).first_or_create
+    )
 
     lic_db.update(source: 'crates')
     lic_db.save
@@ -243,14 +275,6 @@ class CratesCrawler < Versioneye::Crawl
 
 
   def self.upsert_product_dependency(product_db, version_id, dep_doc)
-    dep_db = Dependency.where(
-      prod_type: A_TYPE_CARGO,
-      language: product_db.language,
-      prod_key: product_db.prod_key,
-      prod_version: version_id,
-      dep_prod_key: dep_doc[:crate_id],
-    ).first_or_create
-
     scope = if dep_doc[:optional]
               Dependency::A_SCOPE_OPTIONAL
             elsif dep_doc[:target] == 'test'
@@ -259,12 +283,18 @@ class CratesCrawler < Versioneye::Crawl
               Dependency::A_SCOPE_COMPILE
             end
 
-    dep_db.update(
+    dep_db = Dependency.find_or_create_by(
+      prod_type: A_TYPE_CARGO,
+      language: product_db.language,
+      prod_key: product_db.prod_key,
+      prod_version: version_id,
+
+      dep_prod_key: dep_doc[:crate_id],
       version: dep_doc[:req],
-      name: dep_doc[:crate_id],
       scope: scope
     )
-
+    dep_db.name = dep_doc[:crate_id]
+    dep_db.save
     dep_db
   end
 
@@ -284,12 +314,12 @@ class CratesCrawler < Versioneye::Crawl
 
 
   def self.upsert_version_link(product_db, version_id, name, url)
-    url_db = Versionlink.where(
+    url_db = Versionlink.find_or_create_by(
       language: product_db[:language],
       prod_key: product_db[:prod_key],
       version_id: version_id,
       link: url.to_s.strip
-    ).first_or_create
+    )
 
     url_db.update(name: name.to_s.strip)
     url_db.save
@@ -301,12 +331,12 @@ class CratesCrawler < Versioneye::Crawl
     pkg_name = "#{product_db[:prod_key]}-#{version_id}.crate"
     url = "#{API_HOST}/#{dl_path}"
 
-    url_db = Versionarchive.where(
+    url_db = Versionarchive.find_or_create_by(
       language: product_db[:language],
       prod_key: product_db[:prod_key],
       version_id: version_id,
       name: pkg_name
-    ).first_or_create
+    )
 
     url_db.update(link: url)
     url_db.save
