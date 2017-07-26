@@ -113,14 +113,14 @@ module Versioneye
     end
 
 
-    def self.fetch_json( url, ttl = 20)
+    def self.fetch_json( url, ttl = 20, symbolize = true)
       res = Timeout::timeout(ttl) { HTTParty.get(url) }
       if res.code != 200
         self.logger.error "Failed to fetch JSON doc from: #{url} - #{res}"
         return nil
       end
 
-      JSON.parse(res.body, {symbolize_names: true})
+      JSON.parse(res.body, {symbolize_names: symbolize})
     rescue => e
       logger.error "Failed to parse JSON response from #{url} - #{e.message.to_s}"
       logger.error e.backtrace.join('\n')

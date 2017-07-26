@@ -1,8 +1,7 @@
 class NpmCrawler < Versioneye::Crawl
 
-
   A_NPM_REGISTRY_INDEX = 'https://skimdb.npmjs.com/registry/_all_docs'
-
+  A_NPM_REGISTRY_URL    = 'http://registry.npmjs.org'
 
   def self.logger
     if !defined?(@@log) || @@log.nil?
@@ -27,6 +26,26 @@ class NpmCrawler < Versioneye::Crawl
     end
   end
 
+  # fetches and updated the dist tags of the NPM product
+  # it used to fetch those tags for previously crawled products;
+  def self.crawl_dist_tags(prod_key)
+    pkg_url = "#{A_NPM_REGISTRY_URL}/#{prod_key}"
+    package_doc = fetch_json(pkg_url, 30, false)
+    if package_doc.nil?
+      logger.error "crawl_dist_tags: failed to fetch `#{prod_key}`"
+      return false
+    end
+
+    prod_db = Product.fetch_product(Product::A_LANGUAGE_NODEJS, prod_key)
+    if prod_db.nil?
+      logger.error "crawl_dist_tags: found no product `nodejs/#{prod_key}`"
+      return false
+    end
+
+    attach_version_tags( prod_db,  package_doc['dist-tags'])
+
+    true
+  end
 
   def self.crawl_scoped
     Projectdependency.where(:language => "Node.JS", :name => /@/).distinct(:name).each do |name|
@@ -100,6 +119,10 @@ class NpmCrawler < Versioneye::Crawl
 
       create_new_version product, version_number, version_obj, time
     end
+
+    # save product dist tags to the saved versions
+    attach_version_tags(product, prod_json['dist-tags'])
+
     ProductService.update_version_data( product )
   rescue => e
     self.logger.error "ERROR in crawle_package Message: #{e.message}"
@@ -127,11 +150,36 @@ class NpmCrawler < Versioneye::Crawl
     create_author       product, version_number, version_obj['author']
     create_contributors product, version_number, version_obj['contributors']
     create_maintainers  product, version_number, version_obj['maintainers']
+
   rescue => e
     self.logger.error "ERROR in create_new_version Message:   #{e.message}"
     self.logger.error e.backtrace.join("\n")
   end
 
+  # adds distribution tags to the versions
+  def self.attach_version_tags(product, dist_tags)
+    if dist_tags.is_a?(Hash) == false
+      logger.error "attach_version_tags: dist_tags is not hash table - `#{dist_tags}`"
+      return
+    end
+
+    tagged_versions = dist_tags.values.to_set
+
+    product.versions.to_a.each do |version_db|
+      # skip untagged versions, otherwise continue
+      if tagged_versions.include?(version_db[:version])
+        # collect all the tags where version is the value
+        version_tags = dist_tags.reduce([]) do |acc, tag_ver|
+          tag, version = tag_ver
+          acc << tag if version_db[:version] == version
+          acc
+        end
+
+        version_db[:tags] = version_tags
+        version_db.save
+      end
+    end
+  end
 
   def self.init_product prod_key
     product = Product.where( :language => Product::A_LANGUAGE_NODEJS, :prod_key => prod_key ).first
@@ -221,6 +269,10 @@ class NpmCrawler < Versioneye::Crawl
         :name => dist_name,
         :link => dist_url})
     Versionarchive.create_if_not_exist_by_name( archive )
+  rescue => e
+    self.logger.error "ERROR in create_download Message: #{e.message}"
+    self.logger.error e.backtrace.join("\n")
+
   end
 
 
@@ -347,17 +399,23 @@ class NpmCrawler < Versioneye::Crawl
 
 
   def self.bugs_for version_obj
+    return if version_obj.is_a?(Hash) == false
+    return if version_obj.has_key?('bugs') == false
+
     version_obj['bugs']['web']
   rescue => e
-    p e
+    logger.error "bugs_for - #{e.message}"
     nil
   end
 
 
   def self.repository_for version_obj
+    return if version_obj.is_a?(Hash) == false
+    return if version_obj.has_key?('repository') == false
+
     version_obj['repository']['url']
   rescue => e
-    p e
+    logger.error "repository_for - #{e.message}"
     nil
   end
 
@@ -388,7 +446,6 @@ class NpmCrawler < Versioneye::Crawl
 
 
     def self.github_repo_names product
-      matcher = "github.com\/([\w\.\-]+\/[\w\.\-]+)"
       names = []
       product.http_version_links_combined.each do |link|
         matches = link.link.match( /github.com\/([\w\.\-]+\/[\w\.\-]+)/ )

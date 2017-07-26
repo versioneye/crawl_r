@@ -10,7 +10,7 @@ describe NpmCrawler do
       prod_type: Project::A_TYPE_NPM
     )
   }
-  
+
   describe "check_licenses" do
     after do
       License.delete_all
@@ -29,10 +29,10 @@ describe NpmCrawler do
     it "saves deprecated array of hash-maps of license type and urls" do
       licenses_doc = {
         "licenses" => [
-          { 
+          {
             "type"  => "MIT",
             "url"   => "http://www.opensource.org/licenses/mit-license.php"
-          }, 
+          },
           {
             "type"  => "Apache-2.0",
             "url"   => "http://opensource.org/licenses/apache2.0.php"
@@ -40,7 +40,7 @@ describe NpmCrawler do
         ]
       }
       NpmCrawler.check_licenses(product1, product1[:version], licenses_doc)
-      
+
       licenses = License.where(language: Product::A_LANGUAGE_NODEJS, prod_key: product1[:prod_key])
       expect(licenses.size).to eq(2)
       expect(licenses[0][:name]).to eq('MIT')
@@ -60,6 +60,38 @@ describe NpmCrawler do
       expect(licenses.size).to eq(2)
       expect(licenses[0][:name]).to eq('MIT')
       expect(licenses[1][:name]).to eq('Apache-2.0')
+    end
+  end
+
+  describe 'attach_version_tags' do
+    before do
+    end
+
+    it 'attaches tags to right versions' do
+      product1.versions = []
+      product1.versions << Version.new(version: '0.6.3', tags: [])
+      product1.versions << Version.new(version: '1.0.1', tags: [])
+      product1.versions << Version.new(version: '2.0.0-beta', tags: [])
+
+      dist_tags = {
+        'latest' => '1.0.1',
+        'beta' => '2.0.0-beta',
+        'deleted' => '0.3.1'
+      }
+
+      NpmCrawler.attach_version_tags(product1, dist_tags)
+
+      ver1 = product1.version_by_number '1.0.1'
+      expect(ver1).not_to be_nil
+      expect(ver1.tags).to eq(['latest'])
+
+      ver2 = product1.version_by_number '2.0.0-beta'
+      expect(ver2).not_to be_nil
+      expect(ver2.tags).to eq(['beta'])
+
+      ver3 = product1.version_by_number '0.6.3'
+      expect(ver3).not_to be_nil
+      expect(ver3.tags).to eq([])
     end
   end
 
