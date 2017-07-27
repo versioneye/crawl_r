@@ -170,8 +170,8 @@ class NpmCrawler < Versioneye::Crawl
       version_db.save
       dist_tags.keys.each do |key|
         version_value = dist_tags[key].to_s
-        if version_value.eql?(version_db.version.to_s) && !version_db.tags.include?(version_value)
-          version_db.tags << version_value
+        if version_value.eql?(version_db.version.to_s) && !version_db.tags.include?(key)
+          version_db.tags << key
           version_db.save
         end
       end
