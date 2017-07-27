@@ -3,6 +3,7 @@ class NpmCrawler < Versioneye::Crawl
   A_NPM_REGISTRY_INDEX = 'https://skimdb.npmjs.com/registry/_all_docs'
   A_NPM_REGISTRY_URL    = 'http://registry.npmjs.org'
 
+
   def self.logger
     if !defined?(@@log) || @@log.nil?
       @@log = Versioneye::DynLog.new("log/npm.log", 10).log
@@ -25,6 +26,7 @@ class NpmCrawler < Versioneye::Crawl
       end
     end
   end
+
 
   # fetches and updated the dist tags of the NPM product
   # it used to fetch those tags for previously crawled products;
@@ -150,7 +152,6 @@ class NpmCrawler < Versioneye::Crawl
     create_author       product, version_number, version_obj['author']
     create_contributors product, version_number, version_obj['contributors']
     create_maintainers  product, version_number, version_obj['maintainers']
-
   rescue => e
     self.logger.error "ERROR in create_new_version Message:   #{e.message}"
     self.logger.error e.backtrace.join("\n")
@@ -269,7 +270,6 @@ class NpmCrawler < Versioneye::Crawl
   rescue => e
     self.logger.error "ERROR in create_download Message: #{e.message}"
     self.logger.error e.backtrace.join("\n")
-
   end
 
 
@@ -327,6 +327,7 @@ class NpmCrawler < Versioneye::Crawl
       create_licenses( product, version_number, licenses )
     end
   end
+
 
   def self.create_licenses( product, version_number, licenses )
     licenses.each do |licence|
