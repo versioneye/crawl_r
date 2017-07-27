@@ -156,30 +156,27 @@ class NpmCrawler < Versioneye::Crawl
     self.logger.error e.backtrace.join("\n")
   end
 
+
   # adds distribution tags to the versions
   def self.attach_version_tags(product, dist_tags)
     if dist_tags.is_a?(Hash) == false
-      logger.error "attach_version_tags: dist_tags is not hash table - `#{dist_tags}`"
+      logger.error "attach_version_tags: dist_tags is not hash table - `#{dist_tags}` for #{product.prod_key}"
       return
     end
 
-    tagged_versions = dist_tags.values.to_set
-
     product.versions.to_a.each do |version_db|
-      # skip untagged versions, otherwise continue
-      if tagged_versions.include?(version_db[:version])
-        # collect all the tags where version is the value
-        version_tags = dist_tags.reduce([]) do |acc, tag_ver|
-          tag, version = tag_ver
-          acc << tag if version_db[:version] == version
-          acc
+      version_db.tags = []
+      version_db.save
+      dist_tags.keys.each do |key|
+        version_value = dist_tags[key].to_s
+        if version_value.eql?(version_db.version.to_s) && !version_db.tags.include?(version_value)
+          version_db.tags << version_value
+          version_db.save
         end
-
-        version_db[:tags] = version_tags
-        version_db.save
       end
     end
   end
+
 
   def self.init_product prod_key
     product = Product.where( :language => Product::A_LANGUAGE_NODEJS, :prod_key => prod_key ).first
