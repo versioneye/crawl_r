@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/versioneye/versioneye-core.git
-  revision: f4435d4f90c697ef7db33eb20494b1c104bb2289
-  tag: v12.10.24
+  revision: 75854d0ad66d3178eaa9a932706c21c693098bcb
+  tag: v12.10.25
   specs:
-    versioneye-core (12.10.24)
+    versioneye-core (12.10.25)
       actionmailer (~> 5.1.0)
       aws-sdk (~> 2.10.7)
       bunny (~> 2.7.0)
@@ -60,17 +60,17 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    addressable (2.5.1)
-      public_suffix (~> 2.0, >= 2.0.2)
+    addressable (2.5.2)
+      public_suffix (>= 2.0.2, < 4.0)
     amq-protocol (2.2.0)
     ansi (1.5.0)
-    aws-sdk (2.10.31)
-      aws-sdk-resources (= 2.10.31)
-    aws-sdk-core (2.10.31)
+    aws-sdk (2.10.35)
+      aws-sdk-resources (= 2.10.35)
+    aws-sdk-core (2.10.35)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.10.31)
-      aws-sdk-core (= 2.10.31)
+    aws-sdk-resources (2.10.35)
+      aws-sdk-core (= 2.10.35)
     aws-sigv4 (1.0.1)
     bson (4.2.2)
     builder (3.2.3)
@@ -154,7 +154,7 @@ GEM
     persistent_httparty (0.1.2)
       httparty (~> 0.9)
       persistent_http (< 2)
-    public_suffix (2.0.5)
+    public_suffix (3.0.0)
     rack (2.0.3)
     rack-test (0.6.3)
       rack (>= 1.0)
