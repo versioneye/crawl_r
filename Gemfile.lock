@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/versioneye/versioneye-core.git
-  revision: 8d717f2ab26ed12737bf33d231ea78ff1cfb38d0
-  tag: v12.10.38
+  revision: bd1f43c3e61c924cb26f483b9904bf957a009d6f
+  tag: v12.10.41
   specs:
-    versioneye-core (12.10.38)
+    versioneye-core (12.10.41)
       actionmailer (~> 5.1.0)
       aws-sdk (~> 2.10.7)
       bunny (~> 2.7.0)
@@ -64,13 +64,13 @@ GEM
       public_suffix (>= 2.0.2, < 4.0)
     amq-protocol (2.2.0)
     ansi (1.5.0)
-    aws-sdk (2.10.66)
-      aws-sdk-resources (= 2.10.66)
-    aws-sdk-core (2.10.66)
+    aws-sdk (2.10.71)
+      aws-sdk-resources (= 2.10.71)
+    aws-sdk-core (2.10.71)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.10.66)
-      aws-sdk-core (= 2.10.66)
+    aws-sdk-resources (2.10.71)
+      aws-sdk-core (= 2.10.71)
     aws-sigv4 (1.0.2)
     bson (4.2.2)
     builder (3.2.3)
@@ -99,7 +99,7 @@ GEM
       unf (>= 0.0.5, < 1.0.0)
     erlang_config (0.0.1)
     erubi (1.7.0)
-    et-orbi (1.0.7)
+    et-orbi (1.0.8)
       tzinfo
     etcd (0.3.0)
       mixlib-log
@@ -112,7 +112,7 @@ GEM
     gemnasium-parser (0.1.9)
     gene_pool (1.4.1)
       thread_safe
-    globalid (0.4.0)
+    globalid (0.4.1)
       activesupport (>= 4.2.0)
     hashdiff (0.3.7)
     hashr (0.0.22)
@@ -166,7 +166,7 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
-    rake (12.1.0)
+    rake (12.2.1)
     rdoc (5.1.0)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
@@ -219,7 +219,7 @@ GEM
       multi_json (~> 1.3)
       rake
       rest-client (~> 1.6)
-    tomlrb (1.2.5)
+    tomlrb (1.2.6)
     tzinfo (1.2.3)
       thread_safe (~> 0.1)
     unf (0.1.4)
