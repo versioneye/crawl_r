@@ -6,8 +6,7 @@ RUN rm -Rf /app; \
 
 ADD . /app
 
-RUN gem install bundler; \
-    cp /app/supervisord.conf /etc/supervisord.conf; \
+RUN cp /app/supervisord.conf /etc/supervisord.conf; \
     cd /app/ && bundle install;
 
 
