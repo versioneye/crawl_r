@@ -1,4 +1,4 @@
-FROM        versioneye/ruby-base:2.3.3-8
+FROM        versioneye/ruby-base:2.6.3-1
 MAINTAINER  Robert Reiz <reiz@versioneye.com>
 
 RUN rm -Rf /app; \
@@ -6,7 +6,9 @@ RUN rm -Rf /app; \
 
 ADD . /app
 
-RUN cp /app/supervisord.conf /etc/supervisord.conf; \
+RUN gem install bundler; \
+    cp /app/supervisord.conf /etc/supervisord.conf; \
     cd /app/ && bundle install;
+
 
 CMD /usr/bin/supervisord -c /etc/supervisord.conf
