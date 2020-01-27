@@ -6,9 +6,10 @@ gem 'versioneye-core', :git => 'https://github.com/versioneye/versioneye-core.gi
 gem 'rufus-scheduler', '3.4.2'
 
 # rubygems for text similarities
-gem 'narray', '0.6.1.2'
-gem 'tf-idf-similarity', '0.1.6'
-gem 'fuzzy_match', '2.0.4'
+gem 'narray'            , '0.6.1.2'
+gem 'tf-idf-similarity' , '0.1.6'
+gem 'fuzzy_match'       , '2.0.4'
+gem 'irb'               , '~> 1.2'
 
 group :development do
   gem "shoulda"  , ">= 0"

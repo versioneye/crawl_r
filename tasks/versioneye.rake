@@ -84,53 +84,53 @@ namespace :versioneye do
       end
     end
 
-    # Crawl it once a hour. A crawl takes ~ 3 minutes!
-    value = '30 * * * *'
-    if !value.to_s.empty?
-      scheduler.cron value do
-        CommonCrawlProducer.new '::github::'
-      end
-    end
+    # # Crawl it once a hour. A crawl takes ~ 3 minutes!
+    # value = '30 * * * *'
+    # if !value.to_s.empty?
+    #   scheduler.cron value do
+    #     CommonCrawlProducer.new '::github::'
+    #   end
+    # end
 
     # Crawl it once a hour. A crawl takes ~ 1 minute!
-    value = '33 * * * *'
-    if !value.to_s.empty?
-      scheduler.cron value do
-        CommonCrawlProducer.new '::coreos::'
-      end
-    end
+    # value = '33 * * * *'
+    # if !value.to_s.empty?
+    #   scheduler.cron value do
+    #     CommonCrawlProducer.new '::coreos::'
+    #   end
+    # end
 
 
     # Crawl it once a day. A crawl takes ~ 20 minutes!
-    value = GlobalSetting.get(env, 'SCHEDULE_CRAWL_COCOAPODS')
-    value = '1 0 * * *' if value.to_s.empty?
-    if !value.to_s.empty?
-      scheduler.cron value do
-        CommonCrawlProducer.new "cocoa_pods_1"
-      end
-    end
+    # value = GlobalSetting.get(env, 'SCHEDULE_CRAWL_COCOAPODS')
+    # value = '1 0 * * *' if value.to_s.empty?
+    # if !value.to_s.empty?
+    #   scheduler.cron value do
+    #     CommonCrawlProducer.new "cocoa_pods_1"
+    #   end
+    # end
 
     # This crawl takes almost 7 hours
-    value = '0 1 * * *'
-    if !value.to_s.empty?
-      scheduler.cron value do
-        NpmCrawlProducer.new '::npm::'
-      end
-    end
+    # value = '0 1 * * *'
+    # if !value.to_s.empty?
+    #   scheduler.cron value do
+    #     NpmCrawlProducer.new '::npm::'
+    #   end
+    # end
 
-    value = '1 1 * * *'
-    if !value.to_s.empty?
-      scheduler.cron value do
-        NpmCrawlProducer.new '::crawl_scoped::'
-      end
-    end
+    # value = '1 1 * * *'
+    # if !value.to_s.empty?
+    #   scheduler.cron value do
+    #     NpmCrawlProducer.new '::crawl_scoped::'
+    #   end
+    # end
 
-    value = '11 2 * * *'
-    if !value.to_s.empty?
-      scheduler.cron value do
-        BowerCrawlProducer.new '::bower::'
-      end
-    end
+    # value = '11 2 * * *'
+    # if !value.to_s.empty?
+    #   scheduler.cron value do
+    #     BowerCrawlProducer.new '::bower::'
+    #   end
+    # end
 
     value = '0 3 * * *'
     if !value.to_s.empty?
@@ -139,26 +139,26 @@ namespace :versioneye do
       end
     end
 
-    value = '20 3 * * *'
-    if !value.to_s.empty?
-      scheduler.cron value do
-        CpanPaginateProducer.new false, 7, 0
-      end
-    end
+    # value = '20 3 * * *'
+    # if !value.to_s.empty?
+    #   scheduler.cron value do
+    #     CpanPaginateProducer.new false, 7, 0
+    #   end
+    # end
 
-    value = '1 4 * * *'
-    if !value.to_s.empty?
-      scheduler.cron value do
-        NugetCrawlProducer.new '::nuget::'
-      end
-    end
+    # value = '1 4 * * *'
+    # if !value.to_s.empty?
+    #   scheduler.cron value do
+    #     NugetCrawlProducer.new '::nuget::'
+    #   end
+    # end
 
-    value = '1 5 * * *'
-    if !value.to_s.empty?
-      scheduler.cron value do
-        CommonCrawlProducer.new '::chef::'
-      end
-    end
+    # value = '1 5 * * *'
+    # if !value.to_s.empty?
+    #   scheduler.cron value do
+    #     CommonCrawlProducer.new '::chef::'
+    #   end
+    # end
 
     value = '1 6 * * *'
     if !value.to_s.empty?
@@ -167,19 +167,19 @@ namespace :versioneye do
       end
     end
 
-    value = '1 7 * * *'
-    if !value.to_s.empty?
-      scheduler.cron value do
-        CratesCrawlProducer.new '::crates::'
-      end
-    end
+    # value = '1 7 * * *'
+    # if !value.to_s.empty?
+    #   scheduler.cron value do
+    #     CratesCrawlProducer.new '::crates::'
+    #   end
+    # end
 
-    value = '1 8 * * *'
-    if !value.to_s.empty?
-      scheduler.cron value do
-        HexCrawlProducer.new '::hex::'
-      end
-    end
+    # value = '1 8 * * *'
+    # if !value.to_s.empty?
+    #   scheduler.cron value do
+    #     HexCrawlProducer.new '::hex::'
+    #   end
+    # end
 
     value = '1 11 * * *'
     if !value.to_s.empty?
