@@ -26,7 +26,7 @@ class PackagistCrawler < Versioneye::Crawl
     end
     duration = Time.now - start_time
     self.logger.info(" *** This crawl took #{duration} *** ")
-    return nil
+    nil
   end
 
 
@@ -39,17 +39,13 @@ class PackagistCrawler < Versioneye::Crawl
 
   def self.crawl_project_dep_keys
     prod_keys = Projectdependency.all.distinct(:prod_key)
-    prod_keys.each do |key|
-      crawle_package key
-    end
+    crawl false, prod_keys
   end
 
 
   def self.crawl_known_products
     prod_keys = Product.all.distinct(:prod_key)
-    prod_keys.each do |key|
-      crawle_package key
-    end
+    crawl false, prod_keys
   end
 
 
