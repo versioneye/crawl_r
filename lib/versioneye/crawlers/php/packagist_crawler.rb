@@ -37,6 +37,22 @@ class PackagistCrawler < Versioneye::Crawl
   end
 
 
+  def self.crawl_project_dep_keys
+    prod_keys = Projectdependency.all.distinct(:prod_key)
+    prod_keys.each do |key|
+      crawle_package key
+    end
+  end
+
+
+  def self.crawl_known_products
+    prod_keys = Product.all.distinct(:prod_key)
+    prod_keys.each do |key|
+      crawle_package key
+    end
+  end
+
+
   def self.crawle_package name
     self.logger.info "crawl #{name}"
     return nil if name.to_s.empty?
