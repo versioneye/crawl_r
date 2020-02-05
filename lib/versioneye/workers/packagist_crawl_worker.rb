@@ -29,7 +29,8 @@ class PackagistCrawlWorker < Worker
     return nil if package_name.to_s.empty?
 
     if package_name.eql?('::packagist::')
-      PackagistCrawler.crawl
+      PackagistCrawler.crawl_project_dep_keys
+      PackagistCrawler.crawl_known_products
     else
       PackagistCrawler.crawle_package package_name
     end
